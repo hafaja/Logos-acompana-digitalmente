@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logos Acompanya</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F6E5C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF2EF; --paper:#FFFFFF; --ink:#12312B; --ink-soft:#4C5C57; --line:#D7DED9;
+    --teal:#0F6E5C; --teal-dark:#0A4F42; --ochre:#C97D3B; --ochre-soft:#F3E3D3;
+    --alert:#A8431F; --alert-soft:#FBE7DE;
+    --font-display:'Fraunces',serif; --font-body:'Atkinson Hyperlegible',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);font-family:var(--font-body);color:var(--ink);}
+  #app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);display:flex;flex-direction:column;}
+  .topbar{padding:16px 20px 10px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:var(--font-display);font-weight:600;font-size:19px;color:var(--teal-dark);}
+  .content{padding:0 20px 20px;flex:1;}
+  h2.screen-title{font-family:var(--font-display);font-weight:600;font-size:22px;margin:6px 0 4px;}
+  .subtle{color:var(--ink-soft);font-size:13.5px;line-height:1.45;margin:0 0 16px;}
+  .back-btn{border:none;background:none;cursor:pointer;font-weight:700;font-size:14px;color:var(--teal-dark);}
+  .trust-banner{display:flex;gap:10px;background:var(--ochre-soft);border:1.5px solid var(--ochre);border-radius:14px;padding:12px 14px;margin-bottom:18px;}
+  .trust-banner strong{font-size:13px;display:block;margin-bottom:2px;color:#7A4A1F;}
+  .trust-banner span{font-size:12.5px;color:#7A4A1F;line-height:1.4;}
+  .service-row{display:flex;gap:12px;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer;}
+  .service-row .icon{width:38px;height:38px;border-radius:10px;background:#E4EFEC;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+  .service-row .txt strong{display:block;font-size:14.5px;}
+  .service-row .txt span{font-size:12px;color:var(--ink-soft);}
+  .verified-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--teal-dark);background:#E4EFEC;border:1px solid var(--teal);border-radius:999px;padding:3px 9px;}
+  .pending-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#7A4A1F;background:var(--ochre-soft);border:1px solid var(--ochre);border-radius:999px;padding:3px 9px;}
+  .detail-block{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .detail-block h4{margin:0 0 8px;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);}
+  .detail-block ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;}
+  .detail-block p{margin:0;font-size:13.5px;line-height:1.55;}
+  .official-link{display:flex;align-items:center;justify-content:space-between;background:var(--teal);color:#fff;border-radius:12px;padding:13px 16px;text-decoration:none;margin-top:4px;}
+  .official-link .l1{font-size:13.5px;font-weight:700;}
+  .official-link .l2{font-size:11px;opacity:.85;word-break:break-all;}
+  .link-unavailable{background:var(--alert-soft);border:1.5px solid var(--alert);border-radius:12px;padding:13px 16px;margin-top:4px;font-size:13px;color:var(--alert);}
+  .warning-block{display:flex;gap:10px;background:var(--alert-soft);border:1.5px solid var(--alert);border-radius:14px;padding:12px 14px;margin:16px 0 4px;}
+  .warning-block strong{display:block;font-size:12.5px;color:var(--alert);margin-bottom:2px;}
+  .warning-block span{font-size:12px;color:#7A2F14;line-height:1.4;}
+  .navbar{display:flex;border-top:1.5px solid var(--line);background:var(--paper);padding:10px 6px 14px;position:sticky;bottom:0;}
+  .navbar button{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--font-body);font-size:10.5px;font-weight:700;color:var(--ink-soft);padding:4px 0;}
+  .navbar button.active{color:var(--teal-dark);}
+  .screen{display:none;}
+  .screen.active{display:block;}
+  .placeholder{padding:40px 10px;text-align:center;color:var(--ink-soft);font-size:13.5px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="screen active" id="screen-home">
+    <div class="topbar"><span class="brand">Logos Acompanya</span></div>
+    <div class="content">
+      <h2 class="screen-title">Hola</h2>
+      <p class="subtle">Cuéntanos qué necesitas, con tus palabras. (Buscador y orientación por IA: pendiente de construir — Fase 2 del plan.)</p>
+      <div class="trust-banner">
+        <div>
+          <strong>Aquí encuentras lo que necesitas</strong>
+          <span>De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
+        </div>
+      </div>
+      <button onclick="showScreen('catalog')" style="width:100%;background:var(--teal);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;">Ver el catálogo de servicios</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-catalog">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content">
+      <h2 class="screen-title">Catálogo de servicios</h2>
+      <p class="subtle">Contenido real de Fase 0 — <span id="count-label"></span> fichas cargadas desde servicios.json.</p>
+      <div id="catalog-list"></div>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-detail">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('catalog')">← Volver</button></div>
+    <div class="content" id="detail-content"></div>
+  </div>
+
+  <div class="screen" id="screen-profile">
+    <div class="topbar"><span class="brand">Mi espacio</span></div>
+    <div class="placeholder">Módulo 1 (perfil, historial de trámites, documentos) — pendiente de construir. El diseño de referencia está en /design/prototype.html.</div>
+  </div>
+
+  <div class="navbar">
+    <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
+    <button data-target="catalog" onclick="showScreen('catalog')">Catálogo</button>
+    <button data-target="profile" onclick="showScreen('profile')">Mi espacio</button>
+  </div>
+</div>
+
+<script>
+let SERVICIOS = [];
+
+async function loadServicios(){
+  try{
+    const res = await fetch('content/servicios.json');
+    const data = await res.json();
+    SERVICIOS = data.servicios;
+    renderCatalog();
+  }catch(err){
+    document.getElementById('catalog-list').innerHTML =
+      '<div class="placeholder">No se pudo cargar servicios.json. Si abriste este archivo con doble clic, sírvelo con un servidor local (ej. <code>python3 -m http.server</code>) — los navegadores bloquean fetch() sobre file://.</div>';
+  }
+}
+
+function renderCatalog(){
+  document.getElementById('count-label').textContent = SERVICIOS.length;
+  const list = document.getElementById('catalog-list');
+  list.innerHTML = SERVICIOS.map(s => `
+    <div class="service-row" onclick="showDetail('${s.id}')">
+      <div class="icon">📋</div>
+      <div class="txt">
+        <strong>${s.nombre.es}</strong>
+        <span>${s.organismo}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showDetail(id){
+  const s = SERVICIOS.find(x => x.id === id);
+  if(!s) return;
+  const stamp = s.estado_enlace === 'verificado'
+    ? `<span class="verified-stamp">✓ Verificado por Logos · ${s.ultima_verificacion}</span>`
+    : `<span class="pending-stamp">⏳ Enlace pendiente de confirmar</span>`;
+
+  const linkBlock = s.enlace_oficial
+    ? `<a class="official-link" href="${s.enlace_oficial}" target="_blank" rel="noopener">
+         <div><div class="l1">Ir a la fuente oficial</div><div class="l2">${s.enlace_oficial}</div></div>
+       </a>`
+    : `<div class="link-unavailable">Este enlace todavía no está confirmado. Contacta con Logos para tramitar este servicio mientras tanto.</div>`;
+
+  document.getElementById('detail-content').innerHTML = `
+    <h2 class="screen-title">${s.nombre.es}</h2>
+    <p class="subtle" style="margin-bottom:8px;">${s.nombre.ca}</p>
+    ${stamp}
+    <div class="detail-block" style="margin-top:14px;">
+      <h4>Para qué sirve</h4><p>${s.para_que_sirve.es}</p>
+    </div>
+    <div class="detail-block">
+      <h4>Requisitos</h4><ul>${s.requisitos.map(r=>`<li>${r}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-block">
+      <h4>Documentación</h4><ul>${s.documentacion.map(d=>`<li>${d}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-block">
+      <h4>Coste</h4><p>${s.coste}</p>
+    </div>
+    ${linkBlock}
+    <div class="warning-block">
+      <div><strong>Este enlace es el único oficial</strong>
+      <span>No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.</span></div>
+    </div>
+  `;
+  showScreen('detail');
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.navbar button').forEach(b=>b.classList.remove('active'));
+  const target = name === 'detail' ? 'catalog' : name;
+  const btn = document.querySelector('.navbar button[data-target="'+target+'"]');
+  if(btn) btn.classList.add('active');
+}
+
+loadServicios();
+</script>
+</body>
+</html>

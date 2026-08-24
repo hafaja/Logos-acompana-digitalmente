@@ -1,0 +1,102 @@
+{
+  "version": "0.1",
+  "nota": "Contenido inicial de Fase 0. Los servicios con enlace_oficial null aún no tienen enlace confirmado por Logos — no publicar sin completarlo.",
+  "servicios": [
+    {
+      "id": "dependencia-reconeixement",
+      "nombre": { "es": "Reconocimiento de la situación de dependencia", "ca": "Reconeixement de la situació de dependència" },
+      "ambito": "dependencia",
+      "para_quien": {
+        "es": "Cualquier persona, sin límite de edad, que haya perdido autonomía física, mental, intelectual o sensorial y necesite ayuda de otra persona.",
+        "ca": ""
+      },
+      "para_que_sirve": {
+        "es": "Es el paso previo obligatorio para acceder a las ayudas de dependencia (SAD, teleasistencia, prestación al cuidador, residencia).",
+        "ca": ""
+      },
+      "requisitos": [
+        "Residir en territorio español, 5 años en total (2 inmediatamente anteriores a la solicitud)",
+        "Sin límite de edad para solicitar la valoración"
+      ],
+      "documentacion": [
+        "Formulario específico de reconocimiento/revisión de dependencia",
+        "DNI/NIE original y fotocopia",
+        "Informe médico",
+        "Declaración responsable de la situación económica"
+      ],
+      "organismo": "Departament de Drets Socials i Inclusió — Generalitat de Catalunya",
+      "enlace_oficial": "https://tramits.gencat.cat/ca/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia",
+      "coste": "gratuito",
+      "como_se_solicita": "Online (idCAT / certificado digital) o presencial en oficinas de Benestar Social i Família",
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-24"
+    },
+    {
+      "id": "discapacitat-certificat",
+      "nombre": { "es": "Certificado de discapacidad", "ca": "Reconeixement o revisió de la situació de discapacitat" },
+      "ambito": "discapacidad",
+      "para_quien": { "es": "Personas que quieren que se reconozca oficialmente su grado de discapacidad.", "ca": "" },
+      "para_que_sirve": { "es": "Da acceso a derechos, servicios, programas y prestaciones que compensan las desventajas derivadas de la discapacidad.", "ca": "" },
+      "requisitos": ["Determinados por la valoración del Centre d'Atenció a la Discapacitat (CAD)"],
+      "documentacion": [
+        "DNI/NIE de la persona solicitante o representante legal",
+        "Informes médicos que acrediten la condición"
+      ],
+      "organismo": "Generalitat de Catalunya — Centre d'Atenció a la Discapacitat (CAD)",
+      "enlace_oficial": "https://web.gencat.cat/ca/tramits/tramits-temes/Reconeixement-o-revisio-de",
+      "coste": "gratuito",
+      "como_se_solicita": "Online o presencial en el CAD del territorio",
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-24"
+    },
+    {
+      "id": "sad-atencio-domiciliaria",
+      "nombre": { "es": "Servicio de Atención Domiciliaria (SAD)", "ca": "Servei d'Atenció Domiciliària (SAD)" },
+      "ambito": "personas-mayores",
+      "para_quien": { "es": "Personas mayores o con dependencia/discapacidad reconocida que necesitan apoyo en su domicilio.", "ca": "" },
+      "para_que_sirve": { "es": "Permite seguir viviendo en casa con seguridad, con visitas de un profesional según horas asignadas.", "ca": "" },
+      "requisitos": [
+        "Estar empadronado en el municipio",
+        "Tener dependencia reconocida o valoración positiva de trabajador/a social",
+        "No disponer de suficiente apoyo familiar"
+      ],
+      "documentacion": [
+        "DNI de todos los miembros de la unidad de convivencia",
+        "Justificante de pensión(es), si procede",
+        "Informe social y/o de salud",
+        "Resolución de dependencia, si se dispone"
+      ],
+      "organismo": "Serveis Socials Bàsics — Ajuntament de Tarragona",
+      "enlace_oficial": null,
+      "coste": "puede tener copago según ingresos",
+      "como_se_solicita": "Entrevista con trabajador/a social de referencia",
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente_confirmar_logos",
+      "ultima_verificacion": null
+    },
+    {
+      "id": "teleassistencia",
+      "nombre": { "es": "Teleasistencia", "ca": "Teleassistència" },
+      "ambito": "personas-mayores",
+      "para_quien": {
+        "es": "Mayores de 65 años que viven solos sin red de apoyo, personas con dependencia reconocida, o menores de 75 con discapacidad que supere ciertos baremos.",
+        "ca": ""
+      },
+      "para_que_sirve": { "es": "Dispositivo conectado 24h a un centro de atención para pedir ayuda ante una emergencia.", "ca": "" },
+      "requisitos": ["Cumplir alguno de los perfiles anteriores, valorado por trabajador/a social"],
+      "documentacion": [
+        "Impreso de solicitud",
+        "Informe médico del médico de cabecera (vigencia máxima 6 meses)"
+      ],
+      "organismo": "Serveis Socials Bàsics — Ajuntament de Tarragona",
+      "enlace_oficial": null,
+      "coste": "por confirmar",
+      "como_se_solicita": "Presencial en Serveis Socials o OAC del ayuntamiento",
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente_confirmar_logos",
+      "ultima_verificacion": null
+    }
+  ]
+}

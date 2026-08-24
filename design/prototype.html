@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logos Acompanya — Interfaz inicial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEF2EF;
+    --paper: #FFFFFF;
+    --ink: #12312B;
+    --ink-soft: #4C5C57;
+    --line: #D7DED9;
+    --teal: #0F6E5C;
+    --teal-dark: #0A4F42;
+    --ochre: #C97D3B;
+    --ochre-soft: #F3E3D3;
+    --alert: #A8431F;
+    --alert-soft: #FBE7DE;
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Atkinson Hyperlegible', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:var(--font-body);
+    color:var(--ink);
+    padding:32px 16px 64px;
+  }
+  .intro{
+    max-width:760px;
+    margin:0 auto 32px;
+    text-align:center;
+  }
+  .intro h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:28px;
+    margin:0 0 8px;
+    color:var(--teal-dark);
+  }
+  .intro p{
+    font-size:15px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:0;
+  }
+  .lang-toggle{
+    display:inline-flex;
+    margin-top:16px;
+    border:1.5px solid var(--teal);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .lang-toggle button{
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:13px;
+    padding:7px 18px;
+    border:none;
+    background:transparent;
+    color:var(--teal-dark);
+    cursor:pointer;
+  }
+  .lang-toggle button.active{
+    background:var(--teal);
+    color:#fff;
+  }
+
+  .stage{
+    display:flex;
+    justify-content:center;
+  }
+  .device{
+    width:375px;
+    max-width:92vw;
+    background:var(--paper);
+    border-radius:36px;
+    border:8px solid var(--ink);
+    box-shadow:0 24px 48px -20px rgba(18,49,43,0.35);
+    overflow:hidden;
+    position:relative;
+  }
+  .notch{
+    position:absolute;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:120px; height:22px;
+    background:var(--ink);
+    border-radius:0 0 14px 14px;
+    z-index:5;
+  }
+  .screen{
+    height:720px;
+    overflow-y:auto;
+    padding-top:34px;
+    display:none;
+    flex-direction:column;
+  }
+  .screen.active{ display:flex; }
+
+  /* top bar */
+  .topbar{
+    padding:6px 20px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .topbar .brand{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:18px;
+    color:var(--teal-dark);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .topbar .brand svg{ width:20px; height:20px; }
+  .back-btn{
+    border:none; background:none; cursor:pointer;
+    font-family:var(--font-body); font-weight:700; font-size:14px;
+    color:var(--teal-dark);
+    display:flex; align-items:center; gap:4px;
+  }
+
+  .content{ padding:0 20px 20px; flex:1; }
+
+  h2.screen-title{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:22px;
+    color:var(--ink);
+    margin:6px 0 4px;
+  }
+  .subtle{ color:var(--ink-soft); font-size:13.5px; line-height:1.45; margin:0 0 16px; }
+
+  /* search / ask box */
+  .ask-box{
+    background:var(--teal-dark);
+    border-radius:18px;
+    padding:18px;
+    margin:6px 0 18px;
+    color:#fff;
+  }
+  .ask-box .eyebrow{
+    font-size:11.5px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    opacity:.75;
+    margin-bottom:6px;
+    font-weight:700;
+  }
+  .ask-box textarea{
+    width:100%;
+    min-height:56px;
+    border:none;
+    border-radius:12px;
+    padding:10px 12px;
+    font-family:var(--font-body);
+    font-size:14.5px;
+    color:var(--ink);
+    resize:none;
+  }
+  .ask-box .go{
+    margin-top:10px;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .ask-box .go button{
+    background:var(--ochre);
+    color:#fff;
+    border:none;
+    border-radius:999px;
+    padding:9px 18px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:13.5px;
+    cursor:pointer;
+  }
+
+  /* trust banner - signature element */
+  .trust-banner{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:var(--ochre-soft);
+    border:1.5px solid var(--ochre);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:18px;
+  }
+  .trust-banner svg{ flex-shrink:0; width:26px; height:26px; margin-top:1px; }
+  .trust-banner strong{ font-size:13px; display:block; margin-bottom:2px; color:#7A4A1F;}
+  .trust-banner span{ font-size:12.5px; color:#7A4A1F; line-height:1.4; }
+
+  .section-label{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    margin:18px 0 8px;
+  }
+
+  .life-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .life-card{
+    background:var(--paper);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:12px 10px;
+    text-align:center;
+    cursor:pointer;
+  }
+  .life-card .emoji{ font-size:22px; display:block; margin-bottom:6px; }
+  .life-card span{ font-size:12.5px; font-weight:700; color:var(--ink); }
+
+  /* catalog list */
+  .service-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    background:var(--paper);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    cursor:pointer;
+  }
+  .service-row .icon{
+    width:38px;height:38px;border-radius:10px;
+    background:#E4EFEC;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    font-size:18px;
+  }
+  .service-row .txt strong{ display:block; font-size:14.5px; color:var(--ink); }
+  .service-row .txt span{ font-size:12px; color:var(--ink-soft); }
+
+  /* verified stamp - the signature device */
+  .verified-stamp{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--teal-dark);
+    background:#E4EFEC;
+    border:1px solid var(--teal);
+    border-radius:999px;
+    padding:3px 9px 3px 6px;
+  }
+  .verified-stamp svg{ width:13px; height:13px; }
+
+  .detail-block{
+    background:var(--paper);
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .detail-block h4{
+    margin:0 0 8px;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    color:var(--ink-soft);
+  }
+  .detail-block ul{ margin:0; padding-left:18px; font-size:13.5px; line-height:1.6; }
+  .detail-block p{ margin:0; font-size:13.5px; line-height:1.55; }
+
+  .official-link{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--teal);
+    color:#fff;
+    border-radius:12px;
+    padding:13px 16px;
+    text-decoration:none;
+    margin-top:4px;
+  }
+  .official-link .l1{ font-size:13.5px; font-weight:700; }
+  .official-link .l2{ font-size:11px; opacity:.85; }
+
+  .warning-block{
+    display:flex; gap:10px;
+    background:var(--alert-soft);
+    border:1.5px solid var(--alert);
+    border-radius:14px;
+    padding:12px 14px;
+    margin:16px 0 4px;
+  }
+  .warning-block svg{ width:22px; height:22px; flex-shrink:0; color:var(--alert); }
+  .warning-block strong{ display:block; font-size:12.5px; color:var(--alert); margin-bottom:2px;}
+  .warning-block span{ font-size:12px; color:#7A2F14; line-height:1.4; }
+
+  .help-btn{
+    width:100%;
+    margin-top:16px;
+    background:var(--ochre);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+  }
+
+  /* profile screen */
+  .profile-head{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:18px;
+  }
+  .avatar{
+    width:52px;height:52px;border-radius:50%;
+    background:var(--teal);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display); font-weight:600; font-size:19px;
+  }
+  .profile-head strong{ font-size:16px; display:block; }
+  .profile-head span{ font-size:12.5px; color:var(--ink-soft); }
+
+  .list-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:13px 2px;
+    border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .list-row .chip{
+    font-size:11px; font-weight:700;
+    padding:3px 9px; border-radius:999px;
+  }
+  .chip.pend{ background:var(--ochre-soft); color:#7A4A1F; }
+  .chip.done{ background:#E4EFEC; color:var(--teal-dark); }
+
+  /* bottom nav */
+  .navbar{
+    display:flex;
+    border-top:1.5px solid var(--line);
+    background:var(--paper);
+    padding:10px 6px 14px;
+  }
+  .navbar button{
+    flex:1;
+    background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-family:var(--font-body); font-size:10.5px; font-weight:700;
+    color:var(--ink-soft);
+    padding:4px 0;
+  }
+  .navbar button svg{ width:20px; height:20px; }
+  .navbar button.active{ color:var(--teal-dark); }
+
+  .caption{
+    text-align:center;
+    max-width:375px;
+    margin:14px auto 0;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  /* signup form */
+  .form-section{ margin-bottom:20px; }
+  .form-section .fs-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .form-section .fs-head strong{ font-size:13.5px; color:var(--teal-dark); }
+  .optional-tag{
+    font-size:10.5px; font-weight:700; color:var(--ink-soft);
+    background:#EEF2EF; border-radius:999px; padding:2px 8px;
+  }
+  .field{ margin-bottom:12px; }
+  .field label{
+    display:block; font-size:12px; font-weight:700;
+    color:var(--ink-soft); margin-bottom:4px;
+  }
+  .field input, .field select{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-family:var(--font-body);
+    font-size:13.5px;
+    color:var(--ink);
+    background:var(--paper);
+  }
+  .field-row{ display:flex; gap:10px; }
+  .field-row .field{ flex:1; }
+  .consent-box{
+    display:flex; gap:10px; align-items:flex-start;
+    background:#E4EFEC;
+    border-radius:12px;
+    padding:11px 13px;
+    font-size:12px;
+    color:var(--teal-dark);
+    line-height:1.45;
+    margin-top:6px;
+  }
+  .consent-box input{ margin-top:2px; }
+  .save-btn{
+    width:100%;
+    background:var(--teal);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+    margin-top:4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1 data-ca="Logos Acompanya — primera interfície" data-es="Logos Acompanya — primera interfaz">Logos Acompanya — primera interfaz</h1>
+  <p data-ca="Prototip navegable de la PWA. El segell verificat i l'avís antifrau apareixen a cada pantalla on hi ha diners, tràmits o enllaços de per mig, perquè la persona sàpiga sempre que és Logos i l'Administració qui parla — mai un tercer."
+     data-es="Prototipo navegable de la PWA. El sello verificado y el aviso antifraude aparecen en toda pantalla donde hay dinero, trámites o enlaces de por medio, para que la persona sepa siempre que es Logos y la Administración quien habla — nunca un tercero.">
+     Prototipo navegable de la PWA. El sello verificado y el aviso antifraude aparecen en toda pantalla donde hay dinero, trámites o enlaces de por medio, para que la persona sepa siempre que es Logos y la Administración quien habla — nunca un tercero.
+  </p>
+  <div class="lang-toggle">
+    <button id="btn-es" class="active" onclick="setLang('es')">CASTELLANO</button>
+    <button id="btn-ca" onclick="setLang('ca')">CATALÀ</button>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="device">
+    <div class="notch"></div>
+
+    <!-- ===================== HOME ===================== -->
+    <div class="screen active" id="screen-home">
+      <div class="topbar">
+        <div class="brand">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5z" fill="#0F6E5C"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-ca="Logos Acompanya" data-es="Logos Acompanya">Logos Acompanya</span>
+        </div>
+      </div>
+      <div class="content">
+        <h2 class="screen-title" data-ca="Hola, Montserrat" data-es="Hola, Montserrat">Hola, Montserrat</h2>
+        <p class="subtle" data-ca="Explica'ns què necessites, amb les teves paraules." data-es="Cuéntanos qué necesitas, con tus palabras.">Cuéntanos qué necesitas, con tus palabras.</p>
+
+        <div class="ask-box">
+          <div class="eyebrow" data-ca="EXPLICA LA TEVA SITUACIÓ" data-es="CUÉNTANOS TU SITUACIÓN">CUÉNTANOS TU SITUACIÓN</div>
+          <textarea readonly data-ca="Vivo sola, tengo 78 años y me cuesta hacer las tareas de casa..." data-es="Vivo sola, tengo 78 años y me cuesta hacer las tareas de casa...">Vivo sola, tengo 78 años y me cuesta hacer las tareas de casa...</textarea>
+          <div class="go"><button onclick="showScreen('catalog')" data-ca="Orienta'm" data-es="Oriéntame">Oriéntame</button></div>
+        </div>
+
+        <div class="trust-banner">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#C97D3B"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div>
+            <strong data-ca="Aquí trobaràs el que necessites" data-es="Aquí encuentras lo que necesitas">Aquí encuentras lo que necesitas</strong>
+            <span data-ca="De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada. Amb Logos, no tornaràs a sentir-te sol/a davant d'un tràmit."
+                  data-es="De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato. Con Logos, no volverás a sentirte solo/a frente a un trámite.">De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato. Con Logos, no volverás a sentirte solo/a frente a un trámite.</span>
+          </div>
+        </div>
+
+        <div class="section-label" data-ca="O TRIA UN ÀMBIT" data-es="O ELIGE UN ÁMBITO">O ELIGE UN ÁMBITO</div>
+        <div class="life-grid">
+          <div class="life-card" onclick="showScreen('catalog')"><span class="emoji">👵</span><span data-ca="Gent gran" data-es="Personas mayores">Personas mayores</span></div>
+          <div class="life-card" onclick="showScreen('catalog')"><span class="emoji">🏠</span><span data-ca="Habitatge" data-es="Vivienda">Vivienda</span></div>
+          <div class="life-card" onclick="showScreen('catalog')"><span class="emoji">🧩</span><span data-ca="Dependència" data-es="Dependencia">Dependencia</span></div>
+          <div class="life-card" onclick="showScreen('catalog')"><span class="emoji">💶</span><span data-ca="Economia" data-es="Economía">Economía</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== CATALOG ===================== -->
+    <div class="screen" id="screen-catalog">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('home')">← <span data-ca="Inici" data-es="Inicio">Inicio</span></button>
+      </div>
+      <div class="content">
+        <h2 class="screen-title" data-ca="Recursos suggerits" data-es="Recursos sugeridos">Recursos sugeridos</h2>
+        <p class="subtle" data-ca="Segons el que ens has explicat, això et pot correspondre." data-es="Según lo que nos has contado, esto puede corresponderte.">Según lo que nos has contado, esto puede corresponderte.</p>
+
+        <div class="service-row" onclick="showScreen('detail')">
+          <div class="icon">🧺</div>
+          <div class="txt">
+            <strong data-ca="Servei d'atenció domiciliària" data-es="Servicio de ayuda a domicilio">Servicio de ayuda a domicilio</strong>
+            <span data-ca="Serveis Socials · Generalitat" data-es="Servicios Sociales · Generalitat">Servicios Sociales · Generalitat</span>
+          </div>
+        </div>
+        <div class="service-row" onclick="showScreen('detail')">
+          <div class="icon">📟</div>
+          <div class="txt">
+            <strong data-ca="Teleassistència" data-es="Teleasistencia">Teleasistencia</strong>
+            <span data-ca="Ajuntament de Tarragona" data-es="Ayuntamiento de Tarragona">Ayuntamiento de Tarragona</span>
+          </div>
+        </div>
+        <div class="service-row" onclick="showScreen('detail')">
+          <div class="icon">📋</div>
+          <div class="txt">
+            <strong data-ca="Prestació per dependència" data-es="Prestación por dependencia">Prestación por dependencia</strong>
+            <span data-ca="Generalitat de Catalunya" data-es="Generalitat de Catalunya">Generalitat de Catalunya</span>
+          </div>
+        </div>
+
+        <div class="section-label" data-ca="TOTS ELS ÀMBITS" data-es="TODOS LOS ÁMBITOS">TODOS LOS ÁMBITOS</div>
+        <div class="life-grid">
+          <div class="life-card"><span class="emoji">👨‍👩‍👧</span><span data-ca="Família" data-es="Familia">Familia</span></div>
+          <div class="life-card"><span class="emoji">💼</span><span data-ca="Treball" data-es="Trabajo">Trabajo</span></div>
+          <div class="life-card"><span class="emoji">🩺</span><span data-ca="Salut" data-es="Salud">Salud</span></div>
+          <div class="life-card"><span class="emoji">🤝</span><span data-ca="Soledat" data-es="Soledad">Soledad</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DETAIL ===================== -->
+    <div class="screen" id="screen-detail">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('catalog')">← <span data-ca="Tornar" data-es="Volver">Volver</span></button>
+      </div>
+      <div class="content">
+        <h2 class="screen-title" data-ca="Servei d'atenció domiciliària" data-es="Servicio de ayuda a domicilio">Servicio de ayuda a domicilio</h2>
+        <span class="verified-stamp">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0F6E5C"/><path d="M8.5 12.2l2.3 2.3 4.7-4.9" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-ca="Verificat per Logos" data-es="Verificado por Logos">Verificado por Logos</span>
+        </span>
+
+        <div class="detail-block" style="margin-top:14px;">
+          <h4 data-ca="PER A QUÈ SERVEIX" data-es="PARA QUÉ SIRVE">PARA QUÉ SIRVE</h4>
+          <p data-ca="Suport a persones grans o amb dependència per fer tasques domèstiques, higiene personal o companyia, al seu propi domicili."
+             data-es="Apoyo a personas mayores o con dependencia para tareas domésticas, higiene personal o compañía, en su propio domicilio.">Apoyo a personas mayores o con dependencia para tareas domésticas, higiene personal o compañía, en su propio domicilio.</p>
+        </div>
+
+        <div class="detail-block">
+          <h4 data-ca="REQUISITS" data-es="REQUISITOS">REQUISITOS</h4>
+          <ul>
+            <li data-ca="Estar empadronat/da a Tarragona" data-es="Estar empadronado/a en Tarragona">Estar empadronado/a en Tarragona</li>
+            <li data-ca="Tenir dificultats reconegudes per a l'autonomia" data-es="Tener dificultades reconocidas para la autonomía">Tener dificultades reconocidas para la autonomía</li>
+            <li data-ca="No disposar de suport familiar suficient" data-es="No disponer de apoyo familiar suficiente">No disponer de apoyo familiar suficiente</li>
+          </ul>
+        </div>
+
+        <div class="detail-block">
+          <h4 data-ca="DOCUMENTACIÓ" data-es="DOCUMENTACIÓN">DOCUMENTACIÓN</h4>
+          <ul>
+            <li data-ca="DNI o NIE" data-es="DNI o NIE">DNI o NIE</li>
+            <li data-ca="Volant d'empadronament" data-es="Volante de empadronamiento">Volante de empadronamiento</li>
+            <li data-ca="Informe de salut, si escau" data-es="Informe de salud, si procede">Informe de salud, si procede</li>
+          </ul>
+        </div>
+
+        <a class="official-link" href="#" onclick="return false;">
+          <div>
+            <div class="l1" data-ca="Anar a la font oficial" data-es="Ir a la fuente oficial">Ir a la fuente oficial</div>
+            <div class="l2">dretssocials.gencat.cat</div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+
+        <div class="warning-block">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h16.9a2 2 0 001.8-3L14 3.9a2 2 0 00-3.4 0z"/></svg>
+          <div>
+            <strong data-ca="Aquest enllaç és l'únic oficial" data-es="Este enlace es el único oficial">Este enlace es el único oficial</strong>
+            <span data-ca="No comparteixis dades bancàries amb ningú que et contacti oferint-te aquest tràmit per telèfon, WhatsApp o a domicili."
+                  data-es="No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.">No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.</span>
+          </div>
+        </div>
+
+        <button class="help-btn" onclick="showScreen('profile')" data-ca="No puc sol·licitar-ho sol/a — vull ajuda de Logos" data-es="No puedo solicitarlo solo/a — quiero ayuda de Logos">No puedo solicitarlo solo/a — quiero ayuda de Logos</button>
+      </div>
+    </div>
+
+    <!-- ===================== PROFILE ===================== -->
+    <div class="screen" id="screen-profile">
+      <div class="topbar">
+        <div class="brand">
+          <span data-ca="El meu espai" data-es="Mi espacio">Mi espacio</span>
+        </div>
+      </div>
+      <div class="content">
+        <div class="profile-head">
+          <div class="avatar">M</div>
+          <div>
+            <strong>Montserrat Puig</strong>
+            <span data-ca="Tarragona · Perfil complet al 70%" data-es="Tarragona · Perfil completo al 70%">Tarragona · Perfil completo al 70%</span>
+          </div>
+        </div>
+
+        <button class="help-btn" style="margin-top:0;margin-bottom:18px;background:var(--teal);" onclick="showScreen('signup')" data-ca="Completar les meves dades" data-es="Completar mis datos">Completar mis datos</button>
+
+        <div class="section-label" data-ca="ELS MEUS TRÀMITS" data-es="MIS TRÁMITES">MIS TRÁMITES</div>
+        <div class="list-row">
+          <span data-ca="Teleassistència" data-es="Teleasistencia">Teleasistencia</span>
+          <span class="chip pend" data-ca="En curs" data-es="En curso">En curso</span>
+        </div>
+        <div class="list-row">
+          <span data-ca="Atenció domiciliària" data-es="Ayuda a domicilio">Ayuda a domicilio</span>
+          <span class="chip pend" data-ca="Derivat a Logos" data-es="Derivado a Logos">Derivado a Logos</span>
+        </div>
+        <div class="list-row">
+          <span data-ca="Targeta de transport" data-es="Tarjeta de transporte">Tarjeta de transporte</span>
+          <span class="chip done" data-ca="Fet" data-es="Hecho">Hecho</span>
+        </div>
+
+        <div class="section-label" data-ca="ELS MEUS DOCUMENTS" data-es="MIS DOCUMENTOS">MIS DOCUMENTOS</div>
+        <div class="list-row"><span data-ca="Volant d'empadronament.pdf" data-es="Volante de empadronamiento.pdf">Volante de empadronamiento.pdf</span><span style="color:var(--ink-soft);font-size:12px;">✓</span></div>
+        <div class="list-row"><span data-ca="DNI (escanejat)" data-es="DNI (escaneado)">DNI (escaneado)</span><span style="color:var(--ink-soft);font-size:12px;">✓</span></div>
+      </div>
+    </div>
+
+    <!-- ===================== SIGNUP / MIS DATOS ===================== -->
+    <div class="screen" id="screen-signup">
+      <div class="topbar">
+        <button class="back-btn" onclick="showScreen('profile')">← <span data-ca="El meu espai" data-es="Mi espacio">Mi espacio</span></button>
+      </div>
+      <div class="content">
+        <h2 class="screen-title" data-ca="Les meves dades" data-es="Mis datos">Mis datos</h2>
+        <p class="subtle" data-ca="Fes servir només el que et vagi bé ara. Pots completar la resta més endavant." data-es="Rellena solo lo que te venga bien ahora. Puedes completar el resto más adelante.">Rellena solo lo que te venga bien ahora. Puedes completar el resto más adelante.</p>
+
+        <div class="form-section">
+          <div class="fs-head">
+            <strong data-ca="IDENTIFICACIÓ" data-es="IDENTIFICACIÓN">IDENTIFICACIÓN</strong>
+          </div>
+          <div class="field">
+            <label data-ca="Nom i cognoms" data-es="Nombre y apellidos">Nombre y apellidos</label>
+            <input type="text" value="Montserrat Puig Roca" readonly>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>DNI / NIE</label>
+              <input type="text" value="•••••• 4 2 X" readonly>
+            </div>
+            <div class="field">
+              <label data-ca="Data de naixement" data-es="Fecha de nacimiento">Fecha de nacimiento</label>
+              <input type="text" value="12 / 04 / 1948" readonly>
+            </div>
+          </div>
+          <div class="field">
+            <label data-ca="Adreça" data-es="Dirección">Dirección</label>
+            <input type="text" value="C/ del Portal, 8 · Tarragona" readonly>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label data-ca="Telèfon" data-es="Teléfono">Teléfono</label>
+              <input type="text" value="600 123 456" readonly>
+            </div>
+            <div class="field">
+              <label data-ca="Correu (opcional)" data-es="Correo (opcional)">Correo (opcional)</label>
+              <input type="text" value="" placeholder="—" readonly>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="fs-head">
+            <strong data-ca="LA MEVA SITUACIÓ" data-es="MI SITUACIÓN">MI SITUACIÓN</strong>
+            <span class="optional-tag" data-ca="OPCIONAL" data-es="OPCIONAL">OPCIONAL</span>
+          </div>
+          <p class="subtle" style="margin-bottom:12px;" data-ca="Com més ens expliquis, millor et podrem orientar. Res d'això és obligatori."
+             data-es="Cuanto más nos cuentes, mejor podremos orientarte. Nada de esto es obligatorio.">Cuanto más nos cuentes, mejor podremos orientarte. Nada de esto es obligatorio.</p>
+          <div class="field">
+            <label data-ca="Amb qui vius" data-es="Con quién vives">Con quién vives</label>
+            <select><option data-ca="Visc sol/a" data-es="Vivo solo/a">Vivo solo/a</option></select>
+          </div>
+          <div class="field">
+            <label data-ca="Situació laboral" data-es="Situación laboral">Situación laboral</label>
+            <select><option data-ca="Jubilada" data-es="Jubilada">Jubilada</option></select>
+          </div>
+          <div class="field">
+            <label data-ca="Discapacitat o dependència reconeguda" data-es="Discapacidad o dependencia reconocida">Discapacidad o dependencia reconocida</label>
+            <select><option data-ca="No ho sé / no tinc valoració" data-es="No lo sé / no tengo valoración">No lo sé / no tengo valoración</option></select>
+          </div>
+          <div class="field">
+            <label data-ca="Nivell d'ingressos aproximat" data-es="Nivel de ingresos aproximado">Nivel de ingresos aproximado</label>
+            <select><option data-ca="Prefereixo no dir-ho" data-es="Prefiero no decirlo">Prefiero no decirlo</option></select>
+          </div>
+
+          <div class="consent-box">
+            <input type="checkbox" checked readonly>
+            <span data-ca="Aquestes dades són sensibles i només s'utilitzen per orientar-te millor. No es comparteixen amb ningú fora de Logos i les pots esborrar quan vulguis des d'aquí."
+                  data-es="Estos datos son sensibles y solo se usan para orientarte mejor. No se comparten con nadie fuera de Logos y puedes borrarlos cuando quieras desde aquí.">Estos datos son sensibles y solo se usan para orientarte mejor. No se comparten con nadie fuera de Logos y puedes borrarlos cuando quieras desde aquí.</span>
+          </div>
+        </div>
+
+        <button class="save-btn" data-ca="Desar les meves dades" data-es="Guardar mis datos">Guardar mis datos</button>
+      </div>
+    </div>
+
+    <div class="navbar">
+      <button class="active" data-target="home" onclick="showScreen('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9z"/></svg>
+        <span data-ca="Inici" data-es="Inicio">Inicio</span>
+      </button>
+      <button data-target="catalog" onclick="showScreen('catalog')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span data-ca="Catàleg" data-es="Catálogo">Catálogo</span>
+      </button>
+      <button data-target="profile" onclick="showScreen('profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span data-ca="El meu espai" data-es="Mi espacio">Mi espacio</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<p class="caption" data-ca="Prototip navegable — toca les targetes o la barra inferior."
+   data-es="Prototipo navegable — toca las tarjetas o la barra inferior.">Prototipo navegable — toca las tarjetas o la barra inferior.</p>
+
+<script>
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.navbar button').forEach(b=>b.classList.remove('active'));
+  var navBtn = document.querySelector('.navbar button[data-target="'+name+'"]');
+  if(navBtn) navBtn.classList.add('active');
+  if(name==='detail'){
+    var catBtn = document.querySelector('.navbar button[data-target="catalog"]');
+    if(catBtn) catBtn.classList.add('active');
+  }
+}
+function setLang(lang){
+  document.querySelectorAll('[data-ca]').forEach(function(el){
+    el.textContent = lang === 'ca' ? el.getAttribute('data-ca') : el.getAttribute('data-es');
+  });
+  document.getElementById('btn-es').classList.toggle('active', lang==='es');
+  document.getElementById('btn-ca').classList.toggle('active', lang==='ca');
+  document.documentElement.lang = lang;
+}
+</script>
+</body>
+</html>
