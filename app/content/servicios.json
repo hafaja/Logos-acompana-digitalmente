@@ -1,6 +1,6 @@
 {
-  "version": "0.1",
-  "nota": "Contenido inicial de Fase 0. Los servicios con enlace_oficial null aún no tienen enlace confirmado por Logos — no publicar sin completarlo.",
+  "version": "0.2",
+  "nota": "Contenido de Fase 0. Las cuatro fichas tienen enlace oficial verificado y traducción completa CA/ES.",
   "servicios": [
     {
       "id": "dependencia-reconeixement",
@@ -8,26 +8,27 @@
       "ambito": "dependencia",
       "para_quien": {
         "es": "Cualquier persona, sin límite de edad, que haya perdido autonomía física, mental, intelectual o sensorial y necesite ayuda de otra persona.",
-        "ca": ""
+        "ca": "Qualsevol persona, sense límit d'edat, que hagi perdut autonomia física, mental, intel·lectual o sensorial i necessiti l'ajuda d'una altra persona."
       },
       "para_que_sirve": {
         "es": "Es el paso previo obligatorio para acceder a las ayudas de dependencia (SAD, teleasistencia, prestación al cuidador, residencia).",
-        "ca": ""
+        "ca": "És el pas previ obligatori per accedir als ajuts de dependència (SAD, teleassistència, prestació al cuidador, residència)."
       },
-      "requisitos": [
-        "Residir en territorio español, 5 años en total (2 inmediatamente anteriores a la solicitud)",
-        "Sin límite de edad para solicitar la valoración"
-      ],
-      "documentacion": [
-        "Formulario específico de reconocimiento/revisión de dependencia",
-        "DNI/NIE original y fotocopia",
-        "Informe médico",
-        "Declaración responsable de la situación económica"
-      ],
+      "requisitos": {
+        "es": ["Residir en territorio español, 5 años en total (2 inmediatamente anteriores a la solicitud)", "Sin límite de edad para solicitar la valoración"],
+        "ca": ["Residir al territori espanyol, 5 anys en total (2 immediatament anteriors a la sol·licitud)", "Sense límit d'edat per sol·licitar la valoració"]
+      },
+      "documentacion": {
+        "es": ["Formulario específico de reconocimiento/revisión de dependencia", "DNI/NIE original y fotocopia", "Informe médico", "Declaración responsable de la situación económica"],
+        "ca": ["Formulari específic de reconeixement/revisió de dependència", "DNI/NIE original i fotocòpia", "Informe mèdic", "Declaració responsable de la situació econòmica"]
+      },
       "organismo": "Departament de Drets Socials i Inclusió — Generalitat de Catalunya",
       "enlace_oficial": "https://tramits.gencat.cat/ca/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia",
-      "coste": "gratuito",
-      "como_se_solicita": "Online (idCAT / certificado digital) o presencial en oficinas de Benestar Social i Família",
+      "coste": { "es": "gratuito", "ca": "gratuït" },
+      "como_se_solicita": {
+        "es": "Online (idCAT / certificado digital) o presencial en oficinas de Benestar Social i Família",
+        "ca": "En línia (idCAT / certificat digital) o presencialment a les oficines de Benestar Social i Família"
+      },
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-24"
@@ -36,17 +37,29 @@
       "id": "discapacitat-certificat",
       "nombre": { "es": "Certificado de discapacidad", "ca": "Reconeixement o revisió de la situació de discapacitat" },
       "ambito": "discapacidad",
-      "para_quien": { "es": "Personas que quieren que se reconozca oficialmente su grado de discapacidad.", "ca": "" },
-      "para_que_sirve": { "es": "Da acceso a derechos, servicios, programas y prestaciones que compensan las desventajas derivadas de la discapacidad.", "ca": "" },
-      "requisitos": ["Determinados por la valoración del Centre d'Atenció a la Discapacitat (CAD)"],
-      "documentacion": [
-        "DNI/NIE de la persona solicitante o representante legal",
-        "Informes médicos que acrediten la condición"
-      ],
+      "para_quien": {
+        "es": "Personas que quieren que se reconozca oficialmente su grado de discapacidad.",
+        "ca": "Persones que volen que es reconegui oficialment el seu grau de discapacitat."
+      },
+      "para_que_sirve": {
+        "es": "Da acceso a derechos, servicios, programas y prestaciones que compensan las desventajas derivadas de la discapacidad.",
+        "ca": "Dona accés a drets, serveis, programes i prestacions que compensen els desavantatges derivats de la discapacitat."
+      },
+      "requisitos": {
+        "es": ["Determinados por la valoración del Centre d'Atenció a la Discapacitat (CAD)"],
+        "ca": ["Determinats per la valoració del Centre d'Atenció a la Discapacitat (CAD)"]
+      },
+      "documentacion": {
+        "es": ["DNI/NIE de la persona solicitante o representante legal", "Informes médicos que acrediten la condición"],
+        "ca": ["DNI/NIE de la persona sol·licitant o representant legal", "Informes mèdics que acreditin la condició"]
+      },
       "organismo": "Generalitat de Catalunya — Centre d'Atenció a la Discapacitat (CAD)",
       "enlace_oficial": "https://web.gencat.cat/ca/tramits/tramits-temes/Reconeixement-o-revisio-de",
-      "coste": "gratuito",
-      "como_se_solicita": "Online o presencial en el CAD del territorio",
+      "coste": { "es": "gratuito", "ca": "gratuït" },
+      "como_se_solicita": {
+        "es": "Online o presencial en el CAD del territorio",
+        "ca": "En línia o presencialment al CAD del territori"
+      },
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-24"
@@ -55,23 +68,29 @@
       "id": "sad-atencio-domiciliaria",
       "nombre": { "es": "Servicio de Atención Domiciliaria (SAD)", "ca": "Servei d'Atenció Domiciliària (SAD)" },
       "ambito": "personas-mayores",
-      "para_quien": { "es": "Personas mayores o con dependencia/discapacidad reconocida que necesitan apoyo en su domicilio.", "ca": "" },
-      "para_que_sirve": { "es": "Permite seguir viviendo en casa con seguridad, con visitas de un profesional según horas asignadas.", "ca": "" },
-      "requisitos": [
-        "Estar empadronado en el municipio",
-        "Tener dependencia reconocida o valoración positiva de trabajador/a social",
-        "No disponer de suficiente apoyo familiar"
-      ],
-      "documentacion": [
-        "DNI de todos los miembros de la unidad de convivencia",
-        "Justificante de pensión(es), si procede",
-        "Informe social y/o de salud",
-        "Resolución de dependencia, si se dispone"
-      ],
+      "para_quien": {
+        "es": "Personas mayores o con dependencia/discapacidad reconocida que necesitan apoyo en su domicilio.",
+        "ca": "Persones grans o amb dependència/discapacitat reconeguda que necessiten suport al seu domicili."
+      },
+      "para_que_sirve": {
+        "es": "Permite seguir viviendo en casa con seguridad, con visitas de un profesional según horas asignadas.",
+        "ca": "Permet continuar vivint a casa amb seguretat, amb visites d'un professional segons les hores assignades."
+      },
+      "requisitos": {
+        "es": ["Estar empadronado en el municipio", "Tener dependencia reconocida o valoración positiva de trabajador/a social", "No disponer de suficiente apoyo familiar"],
+        "ca": ["Estar empadronat/da al municipi", "Tenir dependència reconeguda o valoració positiva de treballador/a social", "No disposar de suport familiar suficient"]
+      },
+      "documentacion": {
+        "es": ["DNI de todos los miembros de la unidad de convivencia", "Justificante de pensión(es), si procede", "Informe social y/o de salud", "Resolución de dependencia, si se dispone"],
+        "ca": ["DNI de tots els membres de la unitat de convivència", "Justificant de pensió(ns), si escau", "Informe social i/o de salut", "Resolució de dependència, si se'n disposa"]
+      },
       "organismo": "Institut Municipal de Serveis Socials (IMSS) — Ajuntament de Tarragona",
       "enlace_oficial": "https://cis.tarragona.cat/cataleg/procediments/show/servei-dajuda-a-domicili_1234",
-      "coste": "puede tener copago según ingresos",
-      "como_se_solicita": "El acceso es a través del Centre de Serveis Socials de la zona de residencia de la persona: se tramita la solicitud a partir de la valoración del centro y la firma del Pacte de Prestació de Servei. Presencial en las OMAC (Oficines Municipals d'Atenció Ciutadana).",
+      "coste": { "es": "puede tener copago según ingresos", "ca": "pot tenir copagament segons ingressos" },
+      "como_se_solicita": {
+        "es": "El acceso es a través del Centre de Serveis Socials de la zona de residencia de la persona: se tramita la solicitud a partir de la valoración del centro y la firma del Pacte de Prestació de Servei. Presencial en las OMAC (Oficines Municipals d'Atenció Ciutadana).",
+        "ca": "L'accés es fa a través del Centre de Serveis Socials de la zona de residència de la persona: es tramita la sol·licitud a partir de la valoració del centre i la signatura del Pacte de Prestació de Servei. Presencialment a les OMAC (Oficines Municipals d'Atenció Ciutadana)."
+      },
       "contacto": "IMSS, Pl. Prim 6, 43003 Tarragona · Tel. 977 550 086 · imsst@tarragona.cat",
       "relacionado_logos": true,
       "estado_enlace": "verificado",
@@ -83,18 +102,27 @@
       "ambito": "personas-mayores",
       "para_quien": {
         "es": "Mayores de 65 años que viven solos sin red de apoyo, personas con dependencia reconocida, o menores de 75 con discapacidad que supere ciertos baremos.",
-        "ca": ""
+        "ca": "Persones més grans de 65 anys que viuen soles sense xarxa de suport, persones amb dependència reconeguda, o menors de 75 anys amb discapacitat que superi determinats barems."
       },
-      "para_que_sirve": { "es": "Dispositivo conectado 24h a un centro de atención para pedir ayuda ante una emergencia.", "ca": "" },
-      "requisitos": ["Cumplir alguno de los perfiles anteriores, valorado por trabajador/a social"],
-      "documentacion": [
-        "Impreso de solicitud",
-        "Informe médico del médico de cabecera (vigencia máxima 6 meses)"
-      ],
+      "para_que_sirve": {
+        "es": "Dispositivo conectado 24h a un centro de atención para pedir ayuda ante una emergencia.",
+        "ca": "Dispositiu connectat 24 hores a un centre d'atenció per demanar ajuda davant d'una emergència."
+      },
+      "requisitos": {
+        "es": ["Cumplir alguno de los perfiles anteriores, valorado por trabajador/a social"],
+        "ca": ["Complir algun dels perfils anteriors, valorat per treballador/a social"]
+      },
+      "documentacion": {
+        "es": ["Impreso de solicitud", "Informe médico del médico de cabecera (vigencia máxima 6 meses)"],
+        "ca": ["Imprès de sol·licitud", "Informe mèdic del metge de capçalera (vigència màxima 6 mesos)"]
+      },
       "organismo": "Institut Municipal de Serveis Socials (IMSS) — Ajuntament de Tarragona",
       "enlace_oficial": "https://cis.tarragona.cat/cataleg/procediments/show/teleassistencia_1237",
-      "coste": "por confirmar",
-      "como_se_solicita": "Presencial en Serveis Socials o en las OMAC (Oficines Municipals d'Atenció Ciutadana)",
+      "coste": { "es": "por confirmar", "ca": "per confirmar" },
+      "como_se_solicita": {
+        "es": "Presencial en Serveis Socials o en las OMAC (Oficines Municipals d'Atenció Ciutadana)",
+        "ca": "Presencialment a Serveis Socials o a les OMAC (Oficines Municipals d'Atenció Ciutadana)"
+      },
       "contacto": "IMSS, Pl. Prim 6, 43003 Tarragona · Tel. 977 550 086 · imsst@tarragona.cat",
       "relacionado_logos": true,
       "estado_enlace": "verificado",
