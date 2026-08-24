@@ -414,14 +414,27 @@ async function submitAuth(){
   if(!email || !password){ renderAuthForm(LANG==='ca' ? 'Omple el correu i la contrasenya.' : 'Rellena el correo y la contraseña.'); return; }
   btn.disabled = true;
   btn.textContent = AUTH_MODE === 'login' ? t.entrando : t.creando;
-  const { error } = AUTH_MODE === 'login'
-    ? await sb.auth.signInWithPassword({ email, password })
-    : await sb.auth.signUp({ email, password });
-  if(error){
-    renderAuthForm(error.message);
+
+  if(AUTH_MODE === 'login'){
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if(error) renderAuthForm(error.message);
+    // si no hay error, onAuthStateChange refresca la pantalla sola
     return;
   }
-  // onAuthStateChange se encarga de refrescar la pantalla
+
+  // registro
+  const { data, error } = await sb.auth.signUp({ email, password });
+  if(error){ renderAuthForm(error.message); return; }
+  if(!data.session){
+    // Supabase exige confirmar el correo antes de crear la sesión: no se queda "cargando" sin más
+    const msg = LANG === 'ca'
+      ? 'Hem enviat un correu de confirmació a ' + email + '. Obre\'l i toca l\'enllaç per activar el compte, i després torna aquí i entra.'
+      : 'Hemos enviado un correo de confirmación a ' + email + '. Ábrelo y toca el enlace para activar la cuenta, y luego vuelve aquí y entra.';
+    AUTH_MODE = 'login';
+    renderAuthForm();
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-ok">${msg}</div>`);
+  }
+  // si data.session sí existe (confirmación de correo desactivada), onAuthStateChange refresca sola
 }
 
 async function cerrarSesion(){
