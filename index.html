@@ -60,6 +60,29 @@
   .life-card .emoji{font-size:22px;display:block;margin-bottom:6px;}
   .life-card span{font-size:12.5px;font-weight:700;color:var(--ink);}
   .next-tag{font-size:10px;font-weight:700;color:#8a8f8b;background:#EEF2EF;border-radius:999px;padding:2px 8px;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:4px;}
+  .field input,.field select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--paper);}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--teal);}
+  .primary-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;margin-top:4px;}
+  .primary-btn:disabled{opacity:.6;cursor:default;}
+  .link-btn{background:none;border:none;color:var(--teal-dark);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:0;}
+  .auth-error{background:var(--alert-soft);border:1.5px solid var(--alert);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--alert);margin-bottom:12px;}
+  .auth-ok{background:#E4EFEC;border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--teal-dark);margin-bottom:12px;}
+  .profile-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .avatar{width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:19px;flex-shrink:0;}
+  .profile-head strong{display:block;font-size:15.5px;}
+  .profile-head span{font-size:12.5px;color:var(--ink-soft);}
+  .list-row{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .list-row:last-child{border-bottom:none;}
+  .chip{font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 9px;}
+  .chip.en-curso{background:var(--ochre-soft);color:#7A4A1F;}
+  .chip.derivado{background:#E4EFEC;color:var(--teal-dark);}
+  .chip.hecho{background:#DDEFD9;color:#2F6B27;}
+  .empty-note{font-size:12.5px;color:var(--ink-soft);padding:8px 2px;}
+  .logout-btn{width:100%;background:none;border:1.5px solid var(--alert);color:var(--alert);border-radius:14px;padding:11px;font-family:var(--font-body);font-weight:700;font-size:13.5px;cursor:pointer;margin-top:20px;}
+  .doc-upload-row{border:1.5px dashed var(--line);border-radius:12px;padding:12px;text-align:center;margin-top:8px;}
+  .doc-upload-row input[type=file]{width:100%;font-size:12.5px;}
 </style>
 </head>
 <body>
@@ -108,8 +131,10 @@
   </div>
 
   <div class="screen" id="screen-profile">
-    <div class="topbar"><span class="brand">Mi espacio</span></div>
-    <div class="placeholder">Módulo 1 (perfil, historial de trámites, documentos) — pendiente de construir. El diseño de referencia está en /design/prototype.html.</div>
+    <div class="topbar"><span class="brand" id="profile-brand">Mi espacio</span></div>
+    <div class="content" id="profile-content">
+      <div class="placeholder" id="profile-loading">Cargando…</div>
+    </div>
   </div>
 
   <div class="navbar">
@@ -285,6 +310,281 @@ document.getElementById('back-from-detail').addEventListener('click', () => {
 });
 
 loadData();
+</script>
+
+<!-- ===================== MÓDULO 1: Mi espacio (Supabase) ===================== -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+// --- Configuración de conexión ---
+// La "publishable key" está pensada para ir en el navegador: la protección real
+// la da la seguridad RLS activada en las tablas de Supabase (cada persona solo
+// ve y edita sus propios datos, nunca los de otra).
+const SUPABASE_URL = 'https://foxtlpyfedwsvttzorql.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Ght82ml0pvg0_nQvunlXVA_u0WjRscq';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let CURRENT_USER = null;
+let AUTH_MODE = 'login'; // 'login' | 'signup'
+
+const T1 = {
+  es: {
+    miEspacio:'Mi espacio', entrar:'Entrar', crearCuenta:'Crear cuenta',
+    email:'Correo electrónico', password:'Contraseña',
+    noTengoCuenta:'¿No tienes cuenta? Regístrate', yaTengoCuenta:'¿Ya tienes cuenta? Entra',
+    entrando:'Entrando…', creando:'Creando cuenta…',
+    bienvenida:'Cuéntanos un poco de ti para que Logos pueda acompañarte mejor. Nada de esto es obligatorio.',
+    nombreCompleto:'Nombre y apellidos', telefono:'Teléfono', municipio:'Municipio',
+    convivencia:'Con quién vives', laboral:'Situación laboral',
+    discapacidad:'Discapacidad reconocida', dependencia:'Dependencia reconocida',
+    ingresos:'Nivel de ingresos aproximado', si:'Sí', no:'No', prefiero:'Prefiero no decirlo',
+    guardarDatos:'Guardar mis datos', datosGuardados:'Datos guardados correctamente.',
+    completarDatos:'Completar mis datos', misTramites:'MIS TRÁMITES', misDocumentos:'MIS DOCUMENTOS',
+    sinTramites:'Todavía no tienes trámites registrados.', sinDocumentos:'Todavía no has subido documentos.',
+    subirDocumento:'Subir un documento', subiendo:'Subiendo…',
+    cerrarSesion:'Cerrar sesión', perfilIncompleto:'Perfil incompleto',
+    enCurso:'En curso', derivado:'Derivado a Logos', hecho:'Hecho'
+  },
+  ca: {
+    miEspacio:'El meu espai', entrar:'Entra', crearCuenta:'Crea un compte',
+    email:'Correu electrònic', password:'Contrasenya',
+    noTengoCuenta:'No tens compte? Registra\'t', yaTengoCuenta:'Ja tens compte? Entra',
+    entrando:'Entrant…', creando:'Creant compte…',
+    bienvenida:'Explica\'ns una mica sobre tu perquè Logos et pugui acompanyar millor. Res d\'això és obligatori.',
+    nombreCompleto:'Nom i cognoms', telefono:'Telèfon', municipio:'Municipi',
+    convivencia:'Amb qui vius', laboral:'Situació laboral',
+    discapacidad:'Discapacitat reconeguda', dependencia:'Dependència reconeguda',
+    ingresos:'Nivell d\'ingressos aproximat', si:'Sí', no:'No', prefiero:'Prefereixo no dir-ho',
+    guardarDatos:'Desar les meves dades', datosGuardados:'Dades desades correctament.',
+    completarDatos:'Completar les meves dades', misTramites:'ELS MEUS TRÀMITS', misDocumentos:'ELS MEUS DOCUMENTS',
+    sinTramites:'Encara no tens tràmits registrats.', sinDocumentos:'Encara no has pujat documents.',
+    subirDocumento:'Pujar un document', subiendo:'Pujant…',
+    cerrarSesion:'Tancar sessió', perfilIncompleto:'Perfil incomplet',
+    enCurso:'En curs', derivado:'Derivat a Logos', hecho:'Fet'
+  }
+};
+
+async function initAuth(){
+  const { data } = await sb.auth.getSession();
+  CURRENT_USER = data.session ? data.session.user : null;
+  sb.auth.onAuthStateChange((_event, session) => {
+    CURRENT_USER = session ? session.user : null;
+    if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
+  });
+  if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
+}
+
+function renderProfileScreen(){
+  document.getElementById('profile-brand').textContent = T1[LANG].miEspacio;
+  if(!CURRENT_USER){
+    renderAuthForm();
+  } else {
+    renderDashboard();
+  }
+}
+
+function renderAuthForm(errorMsg){
+  const t = T1[LANG];
+  document.getElementById('profile-content').innerHTML = `
+    ${errorMsg ? `<div class="auth-error">${errorMsg}</div>` : ''}
+    <div class="field">
+      <label>${t.email}</label>
+      <input type="email" id="auth-email" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>${t.password}</label>
+      <input type="password" id="auth-password" autocomplete="current-password">
+    </div>
+    <button class="primary-btn" id="auth-submit-btn" onclick="submitAuth()">${AUTH_MODE === 'login' ? t.entrar : t.crearCuenta}</button>
+    <p style="text-align:center;margin-top:14px;">
+      <button class="link-btn" onclick="toggleAuthMode()">${AUTH_MODE === 'login' ? t.noTengoCuenta : t.yaTengoCuenta}</button>
+    </p>
+  `;
+}
+
+function toggleAuthMode(){
+  AUTH_MODE = AUTH_MODE === 'login' ? 'signup' : 'login';
+  renderAuthForm();
+}
+
+async function submitAuth(){
+  const t = T1[LANG];
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const btn = document.getElementById('auth-submit-btn');
+  if(!email || !password){ renderAuthForm(LANG==='ca' ? 'Omple el correu i la contrasenya.' : 'Rellena el correo y la contraseña.'); return; }
+  btn.disabled = true;
+  btn.textContent = AUTH_MODE === 'login' ? t.entrando : t.creando;
+  const { error } = AUTH_MODE === 'login'
+    ? await sb.auth.signInWithPassword({ email, password })
+    : await sb.auth.signUp({ email, password });
+  if(error){
+    renderAuthForm(error.message);
+    return;
+  }
+  // onAuthStateChange se encarga de refrescar la pantalla
+}
+
+async function cerrarSesion(){
+  await sb.auth.signOut();
+  renderAuthForm();
+}
+
+async function renderDashboard(){
+  const t = T1[LANG];
+  document.getElementById('profile-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
+  const { data: tramites } = await sb.from('tramites').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const { data: documentos } = await sb.from('documentos').select('*').eq('usuario_id', CURRENT_USER.id).order('subido_en', { ascending:false });
+
+  const nombre = (perfil && perfil.nombre_completo) ? perfil.nombre_completo : CURRENT_USER.email;
+  const inicial = nombre.trim().charAt(0).toUpperCase();
+  const municipio = (perfil && perfil.municipio) ? perfil.municipio : 'Tarragona';
+
+  const tramitesHtml = (tramites && tramites.length)
+    ? tramites.map(tr => {
+        const chipClass = tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
+        const chipLabel = tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
+        return `<div class="list-row"><span>${tr.nombre_servicio}</span><span class="chip ${chipClass}">${chipLabel}</span></div>`;
+      }).join('')
+    : `<div class="empty-note">${t.sinTramites}</div>`;
+
+  const documentosHtml = (documentos && documentos.length)
+    ? documentos.map(d => `<div class="list-row"><span>${d.nombre_archivo}</span><span style="color:var(--ink-soft);font-size:12px;">✓</span></div>`).join('')
+    : `<div class="empty-note">${t.sinDocumentos}</div>`;
+
+  document.getElementById('profile-content').innerHTML = `
+    <div class="profile-head">
+      <div class="avatar">${inicial}</div>
+      <div>
+        <strong>${nombre}</strong>
+        <span>${municipio}${!perfil || !perfil.nombre_completo ? ' · ' + t.perfilIncompleto : ''}</span>
+      </div>
+    </div>
+    <button class="primary-btn" style="margin-bottom:20px;" onclick="renderPerfilForm(${perfil ? 'true' : 'false'})">${t.completarDatos}</button>
+
+    <div class="section-label">${t.misTramites}</div>
+    ${tramitesHtml}
+
+    <div class="section-label" style="margin-top:18px;">${t.misDocumentos}</div>
+    ${documentosHtml}
+    <div class="doc-upload-row">
+      <input type="file" id="doc-file-input">
+      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento()">${t.subirDocumento}</button>
+    </div>
+
+    <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
+  `;
+
+  window.__perfilActual = perfil || null;
+}
+
+function renderPerfilForm(){
+  const t = T1[LANG];
+  const p = window.__perfilActual || {};
+  document.getElementById('profile-content').innerHTML = `
+    <p class="subtle">${t.bienvenida}</p>
+    <div class="field">
+      <label>${t.nombreCompleto}</label>
+      <input type="text" id="pf-nombre" value="${p.nombre_completo || ''}">
+    </div>
+    <div class="field">
+      <label>${t.telefono}</label>
+      <input type="text" id="pf-telefono" value="${p.telefono || ''}">
+    </div>
+    <div class="field">
+      <label>${t.municipio}</label>
+      <input type="text" id="pf-municipio" value="${p.municipio || 'Tarragona'}">
+    </div>
+    <div class="field">
+      <label>${t.convivencia}</label>
+      <input type="text" id="pf-convivencia" value="${p.convivencia || ''}">
+    </div>
+    <div class="field">
+      <label>${t.laboral}</label>
+      <input type="text" id="pf-laboral" value="${p.situacion_laboral || ''}">
+    </div>
+    <div class="field">
+      <label>${t.discapacidad}</label>
+      <select id="pf-discapacidad">
+        <option value="">—</option>
+        <option value="true" ${p.discapacidad_reconocida===true?'selected':''}>${t.si}</option>
+        <option value="false" ${p.discapacidad_reconocida===false?'selected':''}>${t.no}</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>${t.dependencia}</label>
+      <select id="pf-dependencia">
+        <option value="">—</option>
+        <option value="true" ${p.dependencia_reconocida===true?'selected':''}>${t.si}</option>
+        <option value="false" ${p.dependencia_reconocida===false?'selected':''}>${t.no}</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>${t.ingresos}</label>
+      <input type="text" id="pf-ingresos" value="${p.nivel_ingresos || ''}" placeholder="${t.prefiero}">
+    </div>
+    <button class="primary-btn" id="pf-save-btn" onclick="guardarPerfil()">${t.guardarDatos}</button>
+  `;
+}
+
+async function guardarPerfil(){
+  const t = T1[LANG];
+  const btn = document.getElementById('pf-save-btn');
+  btn.disabled = true;
+
+  const val = id => document.getElementById(id).value;
+  const boolVal = id => { const v = val(id); return v === '' ? null : v === 'true'; };
+
+  const payload = {
+    id: CURRENT_USER.id,
+    nombre_completo: val('pf-nombre') || null,
+    telefono: val('pf-telefono') || null,
+    municipio: val('pf-municipio') || null,
+    convivencia: val('pf-convivencia') || null,
+    situacion_laboral: val('pf-laboral') || null,
+    discapacidad_reconocida: boolVal('pf-discapacidad'),
+    dependencia_reconocida: boolVal('pf-dependencia'),
+    nivel_ingresos: val('pf-ingresos') || null,
+    actualizado_en: new Date().toISOString()
+  };
+
+  const { error } = await sb.from('perfiles').upsert(payload);
+  if(error){
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    btn.disabled = false;
+    return;
+  }
+  renderDashboard();
+}
+
+async function subirDocumento(){
+  const input = document.getElementById('doc-file-input');
+  if(!input.files.length) return;
+  const file = input.files[0];
+  const path = `${CURRENT_USER.id}/${Date.now()}_${file.name}`;
+
+  const { error: uploadError } = await sb.storage.from('documentos').upload(path, file);
+  if(uploadError){
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${uploadError.message}</div>`);
+    return;
+  }
+  await sb.from('documentos').insert({
+    usuario_id: CURRENT_USER.id,
+    nombre_archivo: file.name,
+    ruta_storage: path
+  });
+  renderDashboard();
+}
+
+// Enganchar "Mi espacio" en la navbar para que cargue la sesión al entrar
+const _origShowScreen = showScreen;
+showScreen = function(name){
+  _origShowScreen(name);
+  if(name === 'profile') renderProfileScreen();
+};
+
+initAuth();
 </script>
 </body>
 </html>
