@@ -20,8 +20,9 @@ app/        → Código real de la PWA — se va completando en paralelo a docs/
 - [x] Primer lote de 4 fichas de servicio, con datos verificados (`docs/fichas-servicio.md` y `app/content/servicios.json`)
 - [x] Prototipo navegable de interfaz — Inicio, Catálogo, Ficha de servicio, Mi espacio (`design/prototype.html`)
 - [x] Primera versión de código real: catálogo dinámico leyendo desde `servicios.json` (`app/index.html`)
-- [ ] Confirmar con el Ajuntament de Tarragona los enlaces oficiales de SAD y Teleassistència (marcados como `pendiente_confirmar_logos` en el JSON)
-- [ ] Traducir cada ficha al catalán completo (el JSON ya tiene el campo `ca`, vacío)
+- [x] Confirmar con el Ajuntament de Tarragona los enlaces oficiales de SAD y Teleassistència (IMSS, cis.tarragona.cat)
+- [x] Traducir cada ficha al catalán completo (el JSON ya tiene el campo `ca`, vacío)
+- [x] Taxonomía de 8 áreas (en primera persona: "Mi vivienda", "Mi economía"...) recibida de Logos, con navegación en dos niveles área → necesidad → servicio, cross-tagging entre áreas y opción "No sé exactamente qué necesito" (`app/content/taxonomia.json`)
 - [ ] Validar con Logos las 5-8 situaciones de vida prioritarias del MVP
 - [ ] Decidir stack técnico definitivo (`app/index.html` es HTML/CSS/JS plano a propósito, para no comprometer esa decisión todavía)
 - [ ] Módulo 1 (perfil, historial, documentos) — diseño ya existe en el prototipo, falta programarlo

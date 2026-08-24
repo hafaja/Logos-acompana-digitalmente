@@ -54,6 +54,12 @@
   .lang-toggle{display:inline-flex;border:1.5px solid var(--teal);border-radius:999px;overflow:hidden;}
   .lang-toggle button{font-family:var(--font-body);font-weight:700;font-size:12px;padding:5px 12px;border:none;background:transparent;color:var(--teal-dark);cursor:pointer;}
   .lang-toggle button.active{background:var(--teal);color:#fff;}
+  .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
+  .life-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .life-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;}
+  .life-card .emoji{font-size:22px;display:block;margin-bottom:6px;}
+  .life-card span{font-size:12.5px;font-weight:700;color:var(--ink);}
+  .next-tag{font-size:10px;font-weight:700;color:#8a8f8b;background:#EEF2EF;border-radius:999px;padding:2px 8px;}
 </style>
 </head>
 <body>
@@ -68,29 +74,36 @@
       </div>
     </div>
     <div class="content">
-      <h2 class="screen-title">Hola</h2>
-      <p class="subtle">Cuéntanos qué necesitas, con tus palabras. (Buscador y orientación por IA: pendiente de construir — Fase 2 del plan.)</p>
+      <h2 class="screen-title" id="home-title">¿Qué necesitas?</h2>
+      <p class="subtle" id="home-sub">Toca el área que más se acerque a tu situación.</p>
       <div class="trust-banner">
         <div>
-          <strong>Aquí encuentras lo que necesitas</strong>
-          <span>De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
+          <strong id="trust-title">Aquí encuentras lo que necesitas</strong>
+          <span id="trust-body">De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
         </div>
       </div>
-      <button onclick="showScreen('catalog')" style="width:100%;background:var(--teal);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;">Ver el catálogo de servicios</button>
+      <div class="life-grid" id="ambitos-grid"></div>
+      <div class="service-row" id="no-se-row" onclick="CURRENT_AMBITO=null;showProximamente(null)" style="margin-top:14px;background:var(--teal-dark);border:none;">
+        <div class="icon" style="background:rgba(255,255,255,.15);">🔎</div>
+        <div class="txt" style="flex:1;">
+          <strong style="color:#fff;" id="no-se-title">No sé exactamente qué necesito</strong>
+          <span style="color:rgba(255,255,255,.75);" id="no-se-sub">Cuéntanos tu situación y te ayudamos a encontrarlo</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="screen" id="screen-catalog">
-    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+  <div class="screen" id="screen-necesidades">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')" id="back-to-home">← Inicio</button></div>
     <div class="content">
-      <h2 class="screen-title">Catálogo de servicios</h2>
-      <p class="subtle">Contenido real de Fase 0 — <span id="count-label"></span> fichas cargadas desde servicios.json.</p>
-      <div id="catalog-list"></div>
+      <h2 class="screen-title" id="ambito-title"></h2>
+      <p class="subtle" id="ambito-sub"></p>
+      <div id="necesidades-list"></div>
     </div>
   </div>
 
   <div class="screen" id="screen-detail">
-    <div class="topbar"><button class="back-btn" onclick="showScreen('catalog')">← Volver</button></div>
+    <div class="topbar"><button class="back-btn" id="back-from-detail">← Volver</button></div>
     <div class="content" id="detail-content"></div>
   </div>
 
@@ -101,24 +114,28 @@
 
   <div class="navbar">
     <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
-    <button data-target="catalog" onclick="showScreen('catalog')">Catálogo</button>
     <button data-target="profile" onclick="showScreen('profile')">Mi espacio</button>
   </div>
 </div>
 
 <script>
 let SERVICIOS = [];
+let TAXONOMIA = [];
 let LANG = 'es';
+let CURRENT_AMBITO = null;
 
-async function loadServicios(){
+async function loadData(){
   try{
-    const res = await fetch('content/servicios.json');
-    const data = await res.json();
-    SERVICIOS = data.servicios;
-    renderCatalog();
+    const [resServ, resTax] = await Promise.all([
+      fetch('content/servicios.json'),
+      fetch('content/taxonomia.json')
+    ]);
+    SERVICIOS = (await resServ.json()).servicios;
+    TAXONOMIA = (await resTax.json()).ambitos;
+    renderAmbitos();
   }catch(err){
-    document.getElementById('catalog-list').innerHTML =
-      '<div class="placeholder">No se pudo cargar servicios.json. Si abriste este archivo con doble clic, sírvelo con un servidor local (ej. <code>python3 -m http.server</code>) — los navegadores bloquean fetch() sobre file://.</div>';
+    document.getElementById('ambitos-grid').innerHTML =
+      '<div class="placeholder">No se pudieron cargar los datos. Si abriste este archivo con doble clic, sírvelo con un servidor local (ej. <code>python3 -m http.server</code>) — los navegadores bloquean fetch() sobre file://.</div>';
   }
 }
 
@@ -126,24 +143,90 @@ function setLang(lang){
   LANG = lang;
   document.getElementById('btn-es').classList.toggle('active', lang==='es');
   document.getElementById('btn-ca').classList.toggle('active', lang==='ca');
-  renderCatalog();
-  if(document.getElementById('screen-detail').classList.contains('active')){
-    // no-op: el detalle se re-renderiza solo si se vuelve a abrir; mantenemos simple para esta primera versión
-  }
+  const T = lang === 'ca'
+    ? { homeTitle:'Què necessites?', homeSub:'Toca l\'àrea que més s\'acosti a la teva situació.', trustTitle:'Aquí trobaràs el que necessites', trustBody:'De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada.', backHome:'← Inici', noSeTitle:'No sé exactament què necessito', noSeSub:'Explica\'ns la teva situació i t\'ajudem a trobar-ho' }
+    : { homeTitle:'¿Qué necesitas?', homeSub:'Toca el área que más se acerque a tu situación.', trustTitle:'Aquí encuentras lo que necesitas', trustBody:'De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.', backHome:'← Inicio', noSeTitle:'No sé exactamente qué necesito', noSeSub:'Cuéntanos tu situación y te ayudamos a encontrarlo' };
+  document.getElementById('home-title').textContent = T.homeTitle;
+  document.getElementById('home-sub').textContent = T.homeSub;
+  document.getElementById('trust-title').textContent = T.trustTitle;
+  document.getElementById('trust-body').textContent = T.trustBody;
+  document.getElementById('back-to-home').innerHTML = T.backHome;
+  document.getElementById('no-se-title').textContent = T.noSeTitle;
+  document.getElementById('no-se-sub').textContent = T.noSeSub;
+  renderAmbitos();
+  if(CURRENT_AMBITO) showNecesidades(CURRENT_AMBITO, true);
 }
 
-function renderCatalog(){
-  document.getElementById('count-label').textContent = SERVICIOS.length;
-  const list = document.getElementById('catalog-list');
-  list.innerHTML = SERVICIOS.map(s => `
-    <div class="service-row" onclick="showDetail('${s.id}')">
-      <div class="icon">📋</div>
-      <div class="txt">
-        <strong>${s.nombre[LANG]}</strong>
-        <span>${s.organismo}</span>
-      </div>
+function renderAmbitos(){
+  const grid = document.getElementById('ambitos-grid');
+  grid.innerHTML = TAXONOMIA.map(a => `
+    <div class="life-card" onclick="showNecesidades('${a.id}')">
+      <span class="emoji">${a.icono}</span>
+      <span>${a.nombre[LANG]}</span>
     </div>
   `).join('');
+}
+
+function showNecesidades(ambitoId, silent){
+  CURRENT_AMBITO = ambitoId;
+  const a = TAXONOMIA.find(x => x.id === ambitoId);
+  if(!a) return;
+  document.getElementById('ambito-title').textContent = a.icono + ' ' + a.nombre[LANG];
+  document.getElementById('ambito-sub').textContent = LANG === 'ca'
+    ? 'Selecciona el que et correspongui.'
+    : 'Selecciona lo que te corresponda.';
+  const list = document.getElementById('necesidades-list');
+
+  list.innerHTML = a.necesidades.map(n => {
+    const ids = n.servicios_ids || [];
+    if(ids.length === 0){
+      const tag = `<span class="next-tag">${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>`;
+      return `
+        <div class="service-row" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
+          <div class="icon">🕓</div>
+          <div class="txt" style="flex:1;"><strong>${n.nombre[LANG]}</strong></div>
+          ${tag}
+        </div>`;
+    }
+    if(ids.length === 1){
+      return `
+        <div class="service-row" onclick="showDetail('${ids[0]}')">
+          <div class="icon">📋</div>
+          <div class="txt" style="flex:1;"><strong>${n.nombre[LANG]}</strong></div>
+        </div>`;
+    }
+    // varios servicios reales para la misma necesidad: se listan por su nombre propio, no se elige uno solo
+    const subRows = ids.map(sid => {
+      const s = SERVICIOS.find(x => x.id === sid);
+      if(!s) return '';
+      return `
+        <div class="service-row" style="margin-left:14px;" onclick="showDetail('${sid}')">
+          <div class="icon">📋</div>
+          <div class="txt" style="flex:1;"><strong>${s.nombre[LANG]}</strong><span>${s.municipio || 'Generalitat de Catalunya'}</span></div>
+        </div>`;
+    }).join('');
+    return `<div class="section-label" style="margin-top:10px;">${n.nombre[LANG]}</div>${subRows}`;
+  }).join('');
+
+  if(!silent) showScreen('necesidades');
+}
+
+function showProximamente(nombre){
+  const esBusqueda = nombre === null;
+  const t = LANG === 'ca'
+    ? esBusqueda
+      ? { title: 'No sé exactament què necessito', body: "Aquesta orientació automàtica encara no existeix a l'app (és el Mòdul 3 del pla, pendent de construir). Mentrestant, explica'ns la teva situació directament a Logos i t'orientem nosaltres.", cta: 'Explicar la meva situació a Logos' }
+      : { title: nombre, body: "Encara no tenim aquesta fitxa preparada al catàleg. Mentre l'anem completant, pots contactar directament amb Logos i t'ajudem igualment.", cta: 'Contactar amb Logos' }
+    : esBusqueda
+      ? { title: 'No sé exactamente qué necesito', body: 'Esta orientación automática todavía no existe en la app (es el Módulo 3 del plan, pendiente de construir). Mientras tanto, cuéntanos tu situación directamente a Logos y te orientamos nosotros.', cta: 'Contar mi situación a Logos' }
+      : { title: nombre, body: 'Todavía no tenemos esta ficha preparada en el catálogo. Mientras la vamos completando, puedes contactar directamente con Logos y te ayudamos igualmente.', cta: 'Contactar con Logos' };
+  document.getElementById('detail-content').innerHTML = `
+    <h2 class="screen-title">${t.title}</h2>
+    <span class="pending-stamp">🕓 ${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>
+    <div class="detail-block" style="margin-top:14px;"><p>${t.body}</p></div>
+    <button style="width:100%;background:var(--ochre);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;">${t.cta}</button>
+  `;
+  showScreen('detail');
 }
 
 function showDetail(id){
@@ -192,12 +275,16 @@ function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.querySelectorAll('.navbar button').forEach(b=>b.classList.remove('active'));
-  const target = name === 'detail' ? 'catalog' : name;
+  const target = (name === 'detail' || name === 'necesidades') ? 'home' : name;
   const btn = document.querySelector('.navbar button[data-target="'+target+'"]');
   if(btn) btn.classList.add('active');
 }
 
-loadServicios();
+document.getElementById('back-from-detail').addEventListener('click', () => {
+  showScreen(CURRENT_AMBITO ? 'necesidades' : 'home');
+});
+
+loadData();
 </script>
 </body>
 </html>
