@@ -68,13 +68,14 @@
         "Informe social y/o de salud",
         "Resolución de dependencia, si se dispone"
       ],
-      "organismo": "Serveis Socials Bàsics — Ajuntament de Tarragona",
-      "enlace_oficial": null,
+      "organismo": "Institut Municipal de Serveis Socials (IMSS) — Ajuntament de Tarragona",
+      "enlace_oficial": "https://cis.tarragona.cat/cataleg/procediments/show/servei-dajuda-a-domicili_1234",
       "coste": "puede tener copago según ingresos",
-      "como_se_solicita": "Entrevista con trabajador/a social de referencia",
+      "como_se_solicita": "El acceso es a través del Centre de Serveis Socials de la zona de residencia de la persona: se tramita la solicitud a partir de la valoración del centro y la firma del Pacte de Prestació de Servei. Presencial en las OMAC (Oficines Municipals d'Atenció Ciutadana).",
+      "contacto": "IMSS, Pl. Prim 6, 43003 Tarragona · Tel. 977 550 086 · imsst@tarragona.cat",
       "relacionado_logos": true,
-      "estado_enlace": "pendiente_confirmar_logos",
-      "ultima_verificacion": null
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-24"
     },
     {
       "id": "teleassistencia",
@@ -90,13 +91,14 @@
         "Impreso de solicitud",
         "Informe médico del médico de cabecera (vigencia máxima 6 meses)"
       ],
-      "organismo": "Serveis Socials Bàsics — Ajuntament de Tarragona",
-      "enlace_oficial": null,
+      "organismo": "Institut Municipal de Serveis Socials (IMSS) — Ajuntament de Tarragona",
+      "enlace_oficial": "https://cis.tarragona.cat/cataleg/procediments/show/teleassistencia_1237",
       "coste": "por confirmar",
-      "como_se_solicita": "Presencial en Serveis Socials o OAC del ayuntamiento",
+      "como_se_solicita": "Presencial en Serveis Socials o en las OMAC (Oficines Municipals d'Atenció Ciutadana)",
+      "contacto": "IMSS, Pl. Prim 6, 43003 Tarragona · Tel. 977 550 086 · imsst@tarragona.cat",
       "relacionado_logos": true,
-      "estado_enlace": "pendiente_confirmar_logos",
-      "ultima_verificacion": null
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-24"
     }
   ]
 }
