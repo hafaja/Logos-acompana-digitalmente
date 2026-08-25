@@ -62,8 +62,10 @@
   .next-tag{font-size:10px;font-weight:700;color:#8a8f8b;background:#EEF2EF;border-radius:999px;padding:2px 8px;}
   .field{margin-bottom:12px;}
   .field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:4px;}
-  .field input,.field select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--paper);}
-  .field input:focus,.field select:focus{outline:none;border-color:var(--teal);}
+  .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:var(--font-body);font-size:14px;color:var(--ink);background:var(--paper);}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal);}
+  .checkbox-row{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:13px;cursor:pointer;}
+  .checkbox-row input{margin-top:3px;flex-shrink:0;}
   .primary-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;margin-top:4px;}
   .primary-btn:disabled{opacity:.6;cursor:default;}
   .link-btn{background:none;border:none;color:var(--teal-dark);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:0;}
@@ -155,6 +157,11 @@
     <div class="content" id="panel-content">
       <div class="placeholder" id="panel-loading">Cargando…</div>
     </div>
+  </div>
+
+  <div class="screen" id="screen-atencion">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('panel');renderPanel()">← Panel Logos</button></div>
+    <div class="content" id="atencion-content"></div>
   </div>
 
   <div class="navbar">
@@ -437,6 +444,8 @@ async function renderPanel(){
   const sf = situFam.data || {};
 
   document.getElementById('panel-content').innerHTML = `
+    <button class="primary-btn" onclick="showScreen('atencion');renderAtencionForm()" style="margin-bottom:16px;">➕ Registrar nueva atención</button>
+
     <div class="panel-card" style="text-align:center;">
       <div class="panel-big-number">${totalPersonas}</div>
       <div class="subtle" style="margin:2px 0 0;">Personas atendidas en total</div>
@@ -480,6 +489,128 @@ async function renderPanel(){
 
     <button class="primary-btn" onclick="window.print()" style="margin-bottom:20px;">📄 Exportar informe (PDF)</button>
   `;
+}
+
+// --- Registrar atención (agente de Logos) ---
+
+const PRESTACIONES_OPTS = [
+  ['rgc','Renda Garantida de Ciutadania (RGC)'],
+  ['rgc_no_activable','RGC no activable (+65 anys o discapacitat +65%)'],
+  ['imv','Ingrés Mínim Vital (IMV)'],
+  ['pensiones_no_contributivas','Pensions NO contributives (jubilació, invalidesa...)'],
+  ['prestacio_contributiva_sepe','Prestació contributiva (atur, subsidi SEPE)'],
+  ['treballador_actiu','Treballador/a actiu (rep salari)'],
+  ['fix_discontinu','Fix discontinu'],
+  ['rai','RAI (subsidi violència de gènere/sexual)'],
+  ['cap','Cap']
+];
+
+const TRAMITES_BRETXA_OPTS = [
+  ['cita_previa','Cita prèvia (SEPE, Hisenda, Extrangeria, SS...)'],
+  ['sollicitud_imv','Sol·licitud IMV'],
+  ['aportar_accedir_tramits','Aportar o accedir a tràmits'],
+  ['acces_recursos_socials','Accés a recursos socials (beques, ajuts)'],
+  ['assessorament_informacio','Assessorament i informació de recursos socials'],
+  ['emprenedoria_tramit','Assessorament per accions d\'emprenedoria'],
+  ['acompanyament_ocupacional','Acompanyament ocupacional (CV, recerca feina)'],
+  ['acces_digital','Accés digital (webs, documents, notificacions)'],
+  ['dispositius_tic','Dispositius TIC (préstec/assessorament)'],
+  ['actic_examen','ACTIC / Examen']
+];
+
+const DERIVACION_OPTS = [
+  ['no_procedeix','No procedeix'],
+  ['logos','Logos'], ['omac','OMAC'], ['imsst','IMSST'],
+  ['siad','SIAD'], ['pass','PASS'], ['icat','ICAT']
+];
+
+const EMPRENDEDURIA_OPTS = [
+  ['cap','Cap'],
+  ['capitalitzacio_atur','Capitalització prestació d\'atur'],
+  ['alta_autonoms','Alta com a autònom/a'],
+  ['emprenedoria_social','Emprenedoria social i comunitària'],
+  ['microcredits','Microcrèdits / finançament ètic'],
+  ['ajuts_soc','Ajuts i subvencions SOC'],
+  ['preacceleracio','Preacceleració / acceleració'],
+  ['mentoria','Mentoria empresarial'],
+  ['formacio_gestio','Formació en gestió empresarial'],
+  ['coworking','Coworking / vivers d\'empreses'],
+  ['networking','Networking / col·laboració empresarial']
+];
+
+const COMO_CONOCIO_OPTS = [
+  ['vei_port','Veí/na del Port de Tarragona'], ['imsst','IMSST'], ['sepe','SEPE'],
+  ['usuari_logos','Usuari/a Logos'], ['terceres_persones','Terceres persones'],
+  ['pere_mata','Pere Mata'], ['actic','ACTIC'], ['siad','SIAD'], ['pass','PASS'],
+  ['xarxes_socials','Xarxes socials'], ['escola_saavedra','Escola Saavedra'],
+  ['escola_pau_delclos','Escola Pau Delclós']
+];
+
+function checkboxGroup(name, opts){
+  return opts.map(([v,l]) => `<label class="checkbox-row"><input type="checkbox" name="${name}" value="${v}">${l}</label>`).join('');
+}
+function radioGroup(name, opts){
+  return opts.map(([v,l]) => `<label class="checkbox-row"><input type="radio" name="${name}" value="${v}">${l}</label>`).join('');
+}
+
+function renderAtencionForm(){
+  document.getElementById('atencion-content').innerHTML = `
+    <h2 class="screen-title">Registrar atención</h2>
+    <p class="subtle">Rellénalo durante o después de atender a una persona. Si tiene cuenta propia en "Mi espacio", en el futuro también podrá rellenarlo ella misma.</p>
+
+    <div class="field">
+      <label>Nombre o referencia de la persona</label>
+      <input type="text" id="at-nombre" placeholder="Ej: María G., o iniciales">
+    </div>
+
+    <div class="panel-card"><h3>Prestacions econòmiques bàsiques</h3>${checkboxGroup('at-prestaciones', PRESTACIONES_OPTS)}</div>
+    <div class="panel-card"><h3>Tràmits dins de Bretxa Digital</h3>${checkboxGroup('at-tramites', TRAMITES_BRETXA_OPTS)}</div>
+    <div class="panel-card"><h3>Derivació per a l'accés a recursos socials</h3>${radioGroup('at-derivacion', DERIVACION_OPTS)}</div>
+    <div class="panel-card"><h3>Emprenedoria</h3>${checkboxGroup('at-emprendeduria', EMPRENDEDURIA_OPTS)}</div>
+    <div class="panel-card"><h3>Com ens has conegut / Qui t'ha derivat?</h3>${radioGroup('at-conocio', COMO_CONOCIO_OPTS)}</div>
+
+    <div class="field">
+      <label>Notas (opcional)</label>
+      <textarea id="at-notas" rows="3"></textarea>
+    </div>
+
+    <button class="primary-btn" id="at-save-btn" onclick="guardarAtencion()" style="margin-bottom:24px;">Guardar atención</button>
+  `;
+}
+
+async function guardarAtencion(){
+  const btn = document.getElementById('at-save-btn');
+  const nombre = document.getElementById('at-nombre').value.trim();
+  if(!nombre){
+    document.getElementById('atencion-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">Escribe un nombre o referencia para la persona.</div>`);
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Guardando…';
+
+  const getChecked = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+  const getRadio = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : null; };
+
+  const payload = {
+    nombre_referencia: nombre,
+    creado_por_email: CURRENT_USER.email,
+    prestaciones: getChecked('at-prestaciones'),
+    tramites_bretxa: getChecked('at-tramites'),
+    derivacion: getRadio('at-derivacion'),
+    emprendeduria: getChecked('at-emprendeduria'),
+    como_conocio: getRadio('at-conocio'),
+    notas: document.getElementById('at-notas').value.trim() || null
+  };
+
+  const { error } = await sb.from('atenciones').insert(payload);
+  if(error){
+    document.getElementById('atencion-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    btn.disabled = false;
+    btn.textContent = 'Guardar atención';
+    return;
+  }
+  showScreen('panel');
+  renderPanel();
 }
 
 function renderProfileScreen(){
