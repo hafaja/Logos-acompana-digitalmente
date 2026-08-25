@@ -340,7 +340,7 @@ const T1 = {
     guardarDatos:'Guardar mis datos', datosGuardados:'Datos guardados correctamente.',
     completarDatos:'Completar mis datos', misTramites:'MIS TRÁMITES', misDocumentos:'MIS DOCUMENTOS',
     sinTramites:'Todavía no tienes trámites registrados.', sinDocumentos:'Todavía no has subido documentos.',
-    subirDocumento:'Subir un documento', subiendo:'Subiendo…',
+    subirDocumento:'Subir un documento', subiendo:'Subiendo…', tomarFoto:'📷 Tomar una foto',
     cerrarSesion:'Cerrar sesión', perfilIncompleto:'Perfil incompleto',
     enCurso:'En curso', derivado:'Derivado a Logos', hecho:'Hecho'
   },
@@ -357,7 +357,7 @@ const T1 = {
     guardarDatos:'Desar les meves dades', datosGuardados:'Dades desades correctament.',
     completarDatos:'Completar les meves dades', misTramites:'ELS MEUS TRÀMITS', misDocumentos:'ELS MEUS DOCUMENTS',
     sinTramites:'Encara no tens tràmits registrats.', sinDocumentos:'Encara no has pujat documents.',
-    subirDocumento:'Pujar un document', subiendo:'Pujant…',
+    subirDocumento:'Pujar un document', subiendo:'Pujant…', tomarFoto:'📷 Fer una foto',
     cerrarSesion:'Tancar sessió', perfilIncompleto:'Perfil incomplet',
     enCurso:'En curs', derivado:'Derivat a Logos', hecho:'Fet'
   }
@@ -463,7 +463,14 @@ async function renderDashboard(){
     : `<div class="empty-note">${t.sinTramites}</div>`;
 
   const documentosHtml = (documentos && documentos.length)
-    ? documentos.map(d => `<div class="list-row"><span>${d.nombre_archivo}</span><span style="color:var(--ink-soft);font-size:12px;">✓</span></div>`).join('')
+    ? documentos.map(d => `
+        <div class="list-row">
+          <span>${d.nombre_archivo}</span>
+          <span style="display:flex;gap:12px;align-items:center;flex-shrink:0;">
+            <button class="link-btn" style="font-size:12px;" onclick="verDocumento('${d.id}')">${LANG==='ca' ? 'Veure' : 'Ver'}</button>
+            <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="borrarDocumento('${d.id}')">${LANG==='ca' ? 'Eliminar' : 'Eliminar'}</button>
+          </span>
+        </div>`).join('')
     : `<div class="empty-note">${t.sinDocumentos}</div>`;
 
   document.getElementById('profile-content').innerHTML = `
@@ -483,13 +490,39 @@ async function renderDashboard(){
     ${documentosHtml}
     <div class="doc-upload-row">
       <input type="file" id="doc-file-input">
-      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento()">${t.subirDocumento}</button>
+      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-file-input')">${t.subirDocumento}</button>
     </div>
+    <button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
+    <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
 
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
   `;
 
+  document.getElementById('doc-photo-input').addEventListener('change', () => subirDocumento('doc-photo-input'));
+
   window.__perfilActual = perfil || null;
+  window.__documentosActuales = documentos || [];
+}
+
+async function verDocumento(id){
+  const doc = (window.__documentosActuales || []).find(d => d.id === id);
+  if(!doc) return;
+  const { data, error } = await sb.storage.from('documentos').createSignedUrl(doc.ruta_storage, 60);
+  if(error){
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    return;
+  }
+  window.open(data.signedUrl, '_blank');
+}
+
+async function borrarDocumento(id){
+  const doc = (window.__documentosActuales || []).find(d => d.id === id);
+  if(!doc) return;
+  const confirmMsg = LANG === 'ca' ? 'Segur que vols eliminar aquest document?' : '¿Seguro que quieres eliminar este documento?';
+  if(!confirm(confirmMsg)) return;
+  await sb.storage.from('documentos').remove([doc.ruta_storage]);
+  await sb.from('documentos').delete().eq('id', id);
+  renderDashboard();
 }
 
 function renderPerfilForm(){
@@ -571,8 +604,8 @@ async function guardarPerfil(){
   renderDashboard();
 }
 
-async function subirDocumento(){
-  const input = document.getElementById('doc-file-input');
+async function subirDocumento(inputId){
+  const input = document.getElementById(inputId || 'doc-file-input');
   if(!input.files.length) return;
   const file = input.files[0];
   const path = `${CURRENT_USER.id}/${Date.now()}_${file.name}`;
