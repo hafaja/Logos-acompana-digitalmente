@@ -83,6 +83,19 @@
   .logout-btn{width:100%;background:none;border:1.5px solid var(--alert);color:var(--alert);border-radius:14px;padding:11px;font-family:var(--font-body);font-weight:700;font-size:13.5px;cursor:pointer;margin-top:20px;}
   .doc-upload-row{border:1.5px dashed var(--line);border-radius:12px;padding:12px;text-align:center;margin-top:8px;}
   .doc-upload-row input[type=file]{width:100%;font-size:12.5px;}
+  .panel-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .panel-card h3{margin:0 0 10px;font-size:13.5px;color:var(--teal-dark);font-family:var(--font-body);}
+  .panel-stat-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+  .panel-stat-row:last-child{border-bottom:none;}
+  .panel-big-number{font-family:var(--font-display);font-size:34px;color:var(--teal-dark);font-weight:600;line-height:1;}
+  @media print{
+    .navbar, .topbar{display:none !important;}
+    .screen{display:none !important;}
+    #screen-panel{display:block !important;}
+    #screen-panel .content{padding:0;}
+    body{background:#fff;}
+    #app{max-width:none;}
+  }
 </style>
 </head>
 <body>
@@ -137,9 +150,17 @@
     </div>
   </div>
 
+  <div class="screen" id="screen-panel">
+    <div class="topbar"><span class="brand">Panel Logos</span></div>
+    <div class="content" id="panel-content">
+      <div class="placeholder" id="panel-loading">Cargando…</div>
+    </div>
+  </div>
+
   <div class="navbar">
     <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
     <button data-target="profile" onclick="showScreen('profile')">Mi espacio</button>
+    <button data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
   </div>
 </div>
 
@@ -363,14 +384,102 @@ const T1 = {
   }
 };
 
+let IS_STAFF = false;
+
+async function checkStaff(){
+  if(!CURRENT_USER){
+    IS_STAFF = false;
+    document.getElementById('nav-panel-btn').style.display = 'none';
+    return;
+  }
+  const { data } = await sb.from('staff').select('email').eq('email', CURRENT_USER.email).maybeSingle();
+  IS_STAFF = !!data;
+  document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
+}
+
 async function initAuth(){
   const { data } = await sb.auth.getSession();
   CURRENT_USER = data.session ? data.session.user : null;
-  sb.auth.onAuthStateChange((_event, session) => {
+  await checkStaff();
+  sb.auth.onAuthStateChange(async (_event, session) => {
     CURRENT_USER = session ? session.user : null;
+    await checkStaff();
     if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
+    if(document.getElementById('screen-panel').classList.contains('active')) renderPanel();
   });
   if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
+}
+
+async function renderPanel(){
+  if(!IS_STAFF){
+    document.getElementById('panel-content').innerHTML = `<div class="placeholder">Esta sección es solo para el equipo de Logos.</div>`;
+    return;
+  }
+  document.getElementById('panel-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm] = await Promise.all([
+    sb.from('stats_total_personas').select('*').maybeSingle(),
+    sb.from('stats_por_sexo').select('*'),
+    sb.from('stats_por_nacionalidad').select('*'),
+    sb.from('stats_dependencia_discapacidad').select('*').maybeSingle(),
+    sb.from('stats_situaciones_familiares').select('*').maybeSingle(),
+    sb.from('stats_tramites_por_estado').select('*'),
+    sb.from('stats_intereses_formativos').select('*')
+  ]);
+
+  const totalPersonas = total.data ? total.data.total_personas : 0;
+
+  const filaLista = (rows, labelKey, totalKey) => (rows && rows.length)
+    ? rows.map(r => `<div class="panel-stat-row"><span>${r[labelKey] || '—'}</span><span><strong>${r[totalKey]}</strong></span></div>`).join('')
+    : `<div class="empty-note">Sin datos todavía</div>`;
+
+  const dd = depDis.data || {};
+  const sf = situFam.data || {};
+
+  document.getElementById('panel-content').innerHTML = `
+    <div class="panel-card" style="text-align:center;">
+      <div class="panel-big-number">${totalPersonas}</div>
+      <div class="subtle" style="margin:2px 0 0;">Personas atendidas en total</div>
+    </div>
+
+    <div class="panel-card">
+      <h3>Por sexo</h3>
+      ${filaLista(porSexo.data, 'sexo', 'total')}
+    </div>
+
+    <div class="panel-card">
+      <h3>Por nacionalidad</h3>
+      ${filaLista(porNacionalidad.data, 'nacionalidad', 'total')}
+    </div>
+
+    <div class="panel-card">
+      <h3>Dependencia y discapacidad</h3>
+      <div class="panel-stat-row"><span>Con dependencia reconocida</span><span><strong>${dd.con_dependencia_reconocida || 0}</strong></span></div>
+      <div class="panel-stat-row"><span>Con discapacidad reconocida</span><span><strong>${dd.con_discapacidad_reconocida || 0}</strong></span></div>
+    </div>
+
+    <div class="panel-card">
+      <h3>Situaciones familiares y vulnerabilidades</h3>
+      <div class="panel-stat-row"><span>Monoparentales</span><span><strong>${sf.monoparentales || 0}</strong></span></div>
+      <div class="panel-stat-row"><span>Familias numerosas</span><span><strong>${sf.numerosas || 0}</strong></span></div>
+      <div class="panel-stat-row"><span>Con hijos a cargo</span><span><strong>${sf.con_hijos_a_cargo || 0}</strong></span></div>
+      <div class="panel-stat-row"><span>En situación de desempleo</span><span><strong>${sf.en_desempleo || 0}</strong></span></div>
+      <div class="panel-stat-row"><span>Violencia de género</span><span><strong>${sf.violencia_genero || 0}</strong></span></div>
+      <div class="panel-stat-row"><span>Dificultades emocionales</span><span><strong>${sf.dificultades_emocionales || 0}</strong></span></div>
+    </div>
+
+    <div class="panel-card">
+      <h3>Trámites por estado</h3>
+      ${filaLista(tramEstado.data, 'estado', 'total')}
+    </div>
+
+    <div class="panel-card">
+      <h3>Intereses formativos más demandados</h3>
+      ${filaLista(interesesForm.data, 'interes', 'total')}
+    </div>
+
+    <button class="primary-btn" onclick="window.print()" style="margin-bottom:20px;">📄 Exportar informe (PDF)</button>
+  `;
 }
 
 function renderProfileScreen(){
