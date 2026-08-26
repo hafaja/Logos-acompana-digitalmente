@@ -552,6 +552,9 @@ function checkboxGroup(name, opts){
 function radioGroup(name, opts){
   return opts.map(([v,l]) => `<label class="checkbox-row"><input type="radio" name="${name}" value="${v}">${l}</label>`).join('');
 }
+function otroField(id, label){
+  return `<div class="field" style="margin-top:8px;"><label>${label || 'Otro (especifica)'}</label><input type="text" id="${id}"></div>`;
+}
 
 function renderAtencionForm(){
   document.getElementById('atencion-content').innerHTML = `
@@ -563,11 +566,17 @@ function renderAtencionForm(){
       <input type="text" id="at-nombre" placeholder="Ej: María G., o iniciales">
     </div>
 
-    <div class="panel-card"><h3>Prestacions econòmiques bàsiques</h3>${checkboxGroup('at-prestaciones', PRESTACIONES_OPTS)}</div>
-    <div class="panel-card"><h3>Tràmits dins de Bretxa Digital</h3>${checkboxGroup('at-tramites', TRAMITES_BRETXA_OPTS)}</div>
-    <div class="panel-card"><h3>Derivació per a l'accés a recursos socials</h3>${radioGroup('at-derivacion', DERIVACION_OPTS)}</div>
-    <div class="panel-card"><h3>Emprenedoria</h3>${checkboxGroup('at-emprendeduria', EMPRENDEDURIA_OPTS)}</div>
-    <div class="panel-card"><h3>Com ens has conegut / Qui t'ha derivat?</h3>${radioGroup('at-conocio', COMO_CONOCIO_OPTS)}</div>
+    <div class="panel-card"><h3>Prestacions econòmiques bàsiques</h3>${checkboxGroup('at-prestaciones', PRESTACIONES_OPTS)}${otroField('at-prestaciones-otro')}</div>
+    <div class="panel-card"><h3>Tràmits dins de Bretxa Digital</h3>${checkboxGroup('at-tramites', TRAMITES_BRETXA_OPTS)}${otroField('at-tramites-otro')}</div>
+    <div class="panel-card"><h3>Derivació per a l'accés a recursos socials</h3>${radioGroup('at-derivacion', DERIVACION_OPTS)}${otroField('at-derivacion-otro')}</div>
+    <div class="panel-card"><h3>Emprenedoria</h3>${checkboxGroup('at-emprendeduria', EMPRENDEDURIA_OPTS)}${otroField('at-emprendeduria-otro')}</div>
+    <div class="panel-card"><h3>Com ens has conegut / Qui t'ha derivat?</h3>${radioGroup('at-conocio', COMO_CONOCIO_OPTS)}${otroField('at-conocio-otro')}</div>
+
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+      <h3 style="color:#7A4A1F;">Necesidades detectadas que no están en el catálogo</h3>
+      <p class="subtle" style="margin-bottom:8px;">Si ves algo que no encaja en ninguna categoría de arriba, descríbelo aquí. Nos sirve para saber qué fichas nuevas priorizar.</p>
+      <textarea id="at-necesidades-nuevas" rows="2"></textarea>
+    </div>
 
     <div class="field">
       <label>Notas (opcional)</label>
@@ -590,15 +599,29 @@ async function guardarAtencion(){
 
   const getChecked = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
   const getRadio = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : null; };
+  const otroVal = id => document.getElementById(id).value.trim();
+
+  const prestaciones = getChecked('at-prestaciones');
+  if(otroVal('at-prestaciones-otro')) prestaciones.push(otroVal('at-prestaciones-otro'));
+
+  const tramitesBretxa = getChecked('at-tramites');
+  if(otroVal('at-tramites-otro')) tramitesBretxa.push(otroVal('at-tramites-otro'));
+
+  const emprendeduria = getChecked('at-emprendeduria');
+  if(otroVal('at-emprendeduria-otro')) emprendeduria.push(otroVal('at-emprendeduria-otro'));
+
+  const derivacion = otroVal('at-derivacion-otro') || getRadio('at-derivacion');
+  const comoConocio = otroVal('at-conocio-otro') || getRadio('at-conocio');
 
   const payload = {
     nombre_referencia: nombre,
     creado_por_email: CURRENT_USER.email,
-    prestaciones: getChecked('at-prestaciones'),
-    tramites_bretxa: getChecked('at-tramites'),
-    derivacion: getRadio('at-derivacion'),
-    emprendeduria: getChecked('at-emprendeduria'),
-    como_conocio: getRadio('at-conocio'),
+    prestaciones,
+    tramites_bretxa: tramitesBretxa,
+    derivacion,
+    emprendeduria,
+    como_conocio: comoConocio,
+    necesidades_no_catalogadas: document.getElementById('at-necesidades-nuevas').value.trim() || null,
     notas: document.getElementById('at-notas').value.trim() || null
   };
 
