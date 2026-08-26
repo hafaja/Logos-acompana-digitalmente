@@ -728,7 +728,7 @@ async function renderDashboard(){
   const documentosHtml = (documentos && documentos.length)
     ? documentos.map(d => `
         <div class="list-row">
-          <span>${d.nombre_archivo}</span>
+          <span>${d.nombre_archivo}${d.tipo_documento==='consentimiento' ? ` <span class="chip hecho" style="margin-left:6px;">${LANG==='ca' ? 'Consentiment' : 'Consentimiento'}</span>` : ''}</span>
           <span style="display:flex;gap:12px;align-items:center;flex-shrink:0;">
             <button class="link-btn" style="font-size:12px;" onclick="verDocumento('${d.id}')">${LANG==='ca' ? 'Veure' : 'Ver'}</button>
             <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="borrarDocumento('${d.id}')">${LANG==='ca' ? 'Eliminar' : 'Eliminar'}</button>
@@ -757,6 +757,12 @@ async function renderDashboard(){
     </div>
     <button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
     <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
+
+    <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:14px;">
+      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Has firmat el document de consentiment en paper? Puja\'l aquí.' : '¿Has firmado el documento de consentimiento en papel? Súbelo aquí.'}</p>
+      <input type="file" id="doc-consentimiento-input" accept="image/*,application/pdf">
+      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-consentimiento-input','consentimiento')">${LANG==='ca' ? 'Pujar consentiment firmat' : 'Subir consentimiento firmado'}</button>
+    </div>
 
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
   `;
@@ -992,7 +998,7 @@ async function guardarPerfil(){
   renderDashboard();
 }
 
-async function subirDocumento(inputId){
+async function subirDocumento(inputId, tipoDocumento){
   const input = document.getElementById(inputId || 'doc-file-input');
   if(!input.files.length) return;
   const file = input.files[0];
@@ -1006,7 +1012,8 @@ async function subirDocumento(inputId){
   await sb.from('documentos').insert({
     usuario_id: CURRENT_USER.id,
     nombre_archivo: file.name,
-    ruta_storage: path
+    ruta_storage: path,
+    tipo_documento: tipoDocumento || null
   });
   renderDashboard();
 }
