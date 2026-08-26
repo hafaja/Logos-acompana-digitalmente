@@ -494,108 +494,130 @@ async function renderPanel(){
 // --- Registrar atención (agente de Logos) ---
 
 const PRESTACIONES_OPTS = [
-  ['rgc','Renda Garantida de Ciutadania (RGC)'],
-  ['rgc_no_activable','RGC no activable (+65 anys o discapacitat +65%)'],
-  ['imv','Ingrés Mínim Vital (IMV)'],
-  ['pensiones_no_contributivas','Pensions NO contributives (jubilació, invalidesa...)'],
-  ['prestacio_contributiva_sepe','Prestació contributiva (atur, subsidi SEPE)'],
-  ['treballador_actiu','Treballador/a actiu (rep salari)'],
-  ['fix_discontinu','Fix discontinu'],
-  ['rai','RAI (subsidi violència de gènere/sexual)'],
-  ['cap','Cap']
+  ['rgc', {es:'Renta Garantizada de Ciudadanía (RGC)', ca:'Renda Garantida de Ciutadania (RGC)'}],
+  ['rgc_no_activable', {es:'RGC no activable (+65 años o discapacidad +65%)', ca:'RGC no activable (+65 anys o discapacitat +65%)'}],
+  ['imv', {es:'Ingreso Mínimo Vital (IMV)', ca:'Ingrés Mínim Vital (IMV)'}],
+  ['pensiones_no_contributivas', {es:'Pensiones NO contributivas (jubilación, invalidez...)', ca:'Pensions NO contributives (jubilació, invalidesa...)'}],
+  ['prestacio_contributiva_sepe', {es:'Prestación contributiva (paro, subsidio SEPE)', ca:'Prestació contributiva (atur, subsidi SEPE)'}],
+  ['treballador_actiu', {es:'Trabajador/a activo (recibe salario)', ca:'Treballador/a actiu (rep salari)'}],
+  ['fix_discontinu', {es:'Fijo discontinuo', ca:'Fix discontinu'}],
+  ['rai', {es:'RAI (subsidio violencia de género/sexual)', ca:'RAI (subsidi violència de gènere/sexual)'}],
+  ['cap', {es:'Ninguna', ca:'Cap'}]
 ];
 
 const TRAMITES_BRETXA_OPTS = [
-  ['cita_previa','Cita prèvia (SEPE, Hisenda, Extrangeria, SS...)'],
-  ['sollicitud_imv','Sol·licitud IMV'],
-  ['aportar_accedir_tramits','Aportar o accedir a tràmits'],
-  ['acces_recursos_socials','Accés a recursos socials (beques, ajuts)'],
-  ['assessorament_informacio','Assessorament i informació de recursos socials'],
-  ['emprenedoria_tramit','Assessorament per accions d\'emprenedoria'],
-  ['acompanyament_ocupacional','Acompanyament ocupacional (CV, recerca feina)'],
-  ['acces_digital','Accés digital (webs, documents, notificacions)'],
-  ['dispositius_tic','Dispositius TIC (préstec/assessorament)'],
-  ['actic_examen','ACTIC / Examen']
+  ['cita_previa', {es:'Cita previa (SEPE, Hacienda, Extranjería, SS...)', ca:'Cita prèvia (SEPE, Hisenda, Extrangeria, SS...)'}],
+  ['sollicitud_imv', {es:'Solicitud IMV', ca:'Sol·licitud IMV'}],
+  ['aportar_accedir_tramits', {es:'Aportar o acceder a trámites', ca:'Aportar o accedir a tràmits'}],
+  ['acces_recursos_socials', {es:'Acceso a recursos sociales (becas, ayudas)', ca:'Accés a recursos socials (beques, ajuts)'}],
+  ['assessorament_informacio', {es:'Asesoramiento e información de recursos sociales', ca:'Assessorament i informació de recursos socials'}],
+  ['emprenedoria_tramit', {es:'Asesoramiento para acciones de emprendeduría', ca:'Assessorament per accions d\'emprenedoria'}],
+  ['acompanyament_ocupacional', {es:'Acompañamiento ocupacional (CV, búsqueda de empleo)', ca:'Acompanyament ocupacional (CV, recerca feina)'}],
+  ['acces_digital', {es:'Acceso digital (webs, documentos, notificaciones)', ca:'Accés digital (webs, documents, notificacions)'}],
+  ['dispositius_tic', {es:'Dispositivos TIC (préstamo/asesoramiento)', ca:'Dispositius TIC (préstec/assessorament)'}],
+  ['actic_examen', {es:'ACTIC / Examen', ca:'ACTIC / Examen'}]
 ];
 
 const DERIVACION_OPTS = [
-  ['no_procedeix','No procedeix'],
-  ['logos','Logos'], ['omac','OMAC'], ['imsst','IMSST'],
-  ['siad','SIAD'], ['pass','PASS'], ['icat','ICAT']
+  ['no_procedeix', {es:'No procede', ca:'No procedeix'}],
+  ['logos', {es:'Logos', ca:'Logos'}],
+  ['omac', {es:'OMAC', ca:'OMAC'}],
+  ['imsst', {es:'IMSST', ca:'IMSST'}],
+  ['siad', {es:'SIAD', ca:'SIAD'}],
+  ['pass', {es:'PASS', ca:'PASS'}],
+  ['icat', {es:'ICAT', ca:'ICAT'}]
 ];
 
 const EMPRENDEDURIA_OPTS = [
-  ['cap','Cap'],
-  ['capitalitzacio_atur','Capitalització prestació d\'atur'],
-  ['alta_autonoms','Alta com a autònom/a'],
-  ['emprenedoria_social','Emprenedoria social i comunitària'],
-  ['microcredits','Microcrèdits / finançament ètic'],
-  ['ajuts_soc','Ajuts i subvencions SOC'],
-  ['preacceleracio','Preacceleració / acceleració'],
-  ['mentoria','Mentoria empresarial'],
-  ['formacio_gestio','Formació en gestió empresarial'],
-  ['coworking','Coworking / vivers d\'empreses'],
-  ['networking','Networking / col·laboració empresarial']
+  ['cap', {es:'Ninguna', ca:'Cap'}],
+  ['capitalitzacio_atur', {es:'Capitalización prestación de paro', ca:'Capitalització prestació d\'atur'}],
+  ['alta_autonoms', {es:'Alta como autónomo/a', ca:'Alta com a autònom/a'}],
+  ['emprenedoria_social', {es:'Emprendeduría social y comunitaria', ca:'Emprenedoria social i comunitària'}],
+  ['compatibilitzacio_atur_emprenedoria', {es:'Compatibilización prestación de paro con actividad emprendedora', ca:'Compatibilització prestació d\'atur amb activitat emprenedora'}],
+  ['constitucio_cooperatives', {es:'Constitución de cooperativas o sociedades laborales', ca:'Constitució de cooperatives o societats laborals'}],
+  ['microcredits', {es:'Microcréditos / financiación ética', ca:'Microcrèdits / finançament ètic'}],
+  ['ajuts_soc', {es:'Ayudas y subvenciones SOC', ca:'Ajuts i subvencions SOC'}],
+  ['preacceleracio', {es:'Preaceleración / aceleración', ca:'Preacceleració / acceleració'}],
+  ['mentoria', {es:'Mentoría empresarial', ca:'Mentoria empresarial'}],
+  ['assessorament_pla_empresa', {es:'Asesoramiento en el plan de empresa y modelo de negocio', ca:'Assessorament en el pla d\'empresa i model de negoci'}],
+  ['formacio_gestio', {es:'Formación en gestión empresarial', ca:'Formació en gestió empresarial'}],
+  ['coworking', {es:'Coworking / viveros de empresas', ca:'Coworking / vivers d\'empreses'}],
+  ['networking', {es:'Networking / colaboración empresarial', ca:'Networking / col·laboració empresarial'}]
 ];
 
 const COMO_CONOCIO_OPTS = [
-  ['vei_port','Veí/na del Port de Tarragona'], ['imsst','IMSST'], ['sepe','SEPE'],
-  ['usuari_logos','Usuari/a Logos'], ['terceres_persones','Terceres persones'],
-  ['pere_mata','Pere Mata'], ['actic','ACTIC'], ['siad','SIAD'], ['pass','PASS'],
-  ['xarxes_socials','Xarxes socials'], ['escola_saavedra','Escola Saavedra'],
-  ['escola_pau_delclos','Escola Pau Delclós']
+  ['vei_port', {es:'Vecino/a del Port de Tarragona', ca:'Veí/na del Port de Tarragona'}],
+  ['imsst', {es:'IMSST', ca:'IMSST'}],
+  ['sepe', {es:'SEPE', ca:'SEPE'}],
+  ['usuari_logos', {es:'Usuario/a Logos', ca:'Usuari/a Logos'}],
+  ['terceres_persones', {es:'Terceras personas', ca:'Terceres persones'}],
+  ['pere_mata', {es:'Pere Mata', ca:'Pere Mata'}],
+  ['actic', {es:'ACTIC', ca:'ACTIC'}],
+  ['siad', {es:'SIAD', ca:'SIAD'}],
+  ['pass', {es:'PASS', ca:'PASS'}],
+  ['xarxes_socials', {es:'Redes sociales', ca:'Xarxes socials'}],
+  ['escola_saavedra', {es:'Escuela Saavedra', ca:'Escola Saavedra'}],
+  ['escola_pau_delclos', {es:'Escuela Pau Delclós', ca:'Escola Pau Delclós'}]
 ];
 
 function checkboxGroup(name, opts){
-  return opts.map(([v,l]) => `<label class="checkbox-row"><input type="checkbox" name="${name}" value="${v}">${l}</label>`).join('');
+  return opts.map(([v,l]) => `<label class="checkbox-row"><input type="checkbox" name="${name}" value="${v}">${l[LANG]}</label>`).join('');
 }
 function radioGroup(name, opts){
-  return opts.map(([v,l]) => `<label class="checkbox-row"><input type="radio" name="${name}" value="${v}">${l}</label>`).join('');
+  return opts.map(([v,l]) => `<label class="checkbox-row"><input type="radio" name="${name}" value="${v}">${l[LANG]}</label>`).join('');
 }
 function otroField(id, label){
-  return `<div class="field" style="margin-top:8px;"><label>${label || 'Otro (especifica)'}</label><input type="text" id="${id}"></div>`;
+  const def = LANG === 'ca' ? 'Altre (especifica)' : 'Otro (especifica)';
+  return `<div class="field" style="margin-top:8px;"><label>${label || def}</label><input type="text" id="${id}"></div>`;
 }
 
 function renderAtencionForm(){
+  const esCA = LANG === 'ca';
   document.getElementById('atencion-content').innerHTML = `
-    <h2 class="screen-title">Registrar atención</h2>
-    <p class="subtle">Rellénalo durante o después de atender a una persona. Si tiene cuenta propia en "Mi espacio", en el futuro también podrá rellenarlo ella misma.</p>
+    <h2 class="screen-title">${esCA ? 'Registrar atenció' : 'Registrar atención'}</h2>
+    <p class="subtle">${esCA
+      ? 'Omple-ho durant o després d\'atendre a una persona. Si té compte propi a "El meu espai", en el futur també podrà omplir-ho ella mateixa.'
+      : 'Rellénalo durante o después de atender a una persona. Si tiene cuenta propia en "Mi espacio", en el futuro también podrá rellenarlo ella misma.'}</p>
 
     <div class="field">
-      <label>Nombre o referencia de la persona</label>
-      <input type="text" id="at-nombre" placeholder="Ej: María G., o iniciales">
+      <label>${esCA ? 'Nom o referència de la persona' : 'Nombre o referencia de la persona'}</label>
+      <input type="text" id="at-nombre" placeholder="${esCA ? 'Ex: Maria G., o inicials' : 'Ej: María G., o iniciales'}">
     </div>
 
-    <div class="panel-card"><h3>Prestacions econòmiques bàsiques</h3>${checkboxGroup('at-prestaciones', PRESTACIONES_OPTS)}${otroField('at-prestaciones-otro')}</div>
-    <div class="panel-card"><h3>Tràmits dins de Bretxa Digital</h3>${checkboxGroup('at-tramites', TRAMITES_BRETXA_OPTS)}${otroField('at-tramites-otro')}</div>
-    <div class="panel-card"><h3>Derivació per a l'accés a recursos socials</h3>${radioGroup('at-derivacion', DERIVACION_OPTS)}${otroField('at-derivacion-otro')}</div>
-    <div class="panel-card"><h3>Emprenedoria</h3>${checkboxGroup('at-emprendeduria', EMPRENDEDURIA_OPTS)}${otroField('at-emprendeduria-otro')}</div>
-    <div class="panel-card"><h3>Com ens has conegut / Qui t'ha derivat?</h3>${radioGroup('at-conocio', COMO_CONOCIO_OPTS)}${otroField('at-conocio-otro')}</div>
+    <div class="panel-card"><h3>${esCA ? 'Prestacions econòmiques bàsiques' : 'Prestaciones económicas básicas'}</h3>${checkboxGroup('at-prestaciones', PRESTACIONES_OPTS)}${otroField('at-prestaciones-otro')}</div>
+    <div class="panel-card"><h3>${esCA ? 'Tràmits dins de Bretxa Digital' : 'Trámites dentro de Bretxa Digital'}</h3>${checkboxGroup('at-tramites', TRAMITES_BRETXA_OPTS)}${otroField('at-tramites-otro')}</div>
+    <div class="panel-card"><h3>${esCA ? 'Derivació per a l\'accés a recursos socials' : 'Derivación para el acceso a recursos sociales'}</h3>${radioGroup('at-derivacion', DERIVACION_OPTS)}${otroField('at-derivacion-otro')}</div>
+    <div class="panel-card"><h3>${esCA ? 'Emprenedoria' : 'Emprendeduría'}</h3>${checkboxGroup('at-emprendeduria', EMPRENDEDURIA_OPTS)}${otroField('at-emprendeduria-otro')}</div>
+    <div class="panel-card"><h3>${esCA ? 'Com ens has conegut / Qui t\'ha derivat?' : '¿Cómo nos has conocido / Quién te ha derivado?'}</h3>${radioGroup('at-conocio', COMO_CONOCIO_OPTS)}${otroField('at-conocio-otro')}</div>
 
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
-      <h3 style="color:#7A4A1F;">Necesidades detectadas que no están en el catálogo</h3>
-      <p class="subtle" style="margin-bottom:8px;">Si ves algo que no encaja en ninguna categoría de arriba, descríbelo aquí. Nos sirve para saber qué fichas nuevas priorizar.</p>
+      <h3 style="color:#7A4A1F;">${esCA ? 'Necessitats detectades que no són al catàleg' : 'Necesidades detectadas que no están en el catálogo'}</h3>
+      <p class="subtle" style="margin-bottom:8px;">${esCA
+        ? 'Si veus alguna cosa que no encaixa en cap categoria de dalt, descriu-ho aquí. Ens serveix per saber quines fitxes noves prioritzar.'
+        : 'Si ves algo que no encaja en ninguna categoría de arriba, descríbelo aquí. Nos sirve para saber qué fichas nuevas priorizar.'}</p>
       <textarea id="at-necesidades-nuevas" rows="2"></textarea>
     </div>
 
     <div class="field">
-      <label>Notas (opcional)</label>
+      <label>${esCA ? 'Notes (opcional)' : 'Notas (opcional)'}</label>
       <textarea id="at-notas" rows="3"></textarea>
     </div>
 
-    <button class="primary-btn" id="at-save-btn" onclick="guardarAtencion()" style="margin-bottom:24px;">Guardar atención</button>
+    <button class="primary-btn" id="at-save-btn" onclick="guardarAtencion()" style="margin-bottom:24px;">${esCA ? 'Desar atenció' : 'Guardar atención'}</button>
   `;
 }
 
 async function guardarAtencion(){
+  const esCA = LANG === 'ca';
   const btn = document.getElementById('at-save-btn');
   const nombre = document.getElementById('at-nombre').value.trim();
   if(!nombre){
-    document.getElementById('atencion-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">Escribe un nombre o referencia para la persona.</div>`);
+    const msg = esCA ? 'Escriu un nom o referència per a la persona.' : 'Escribe un nombre o referencia para la persona.';
+    document.getElementById('atencion-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${msg}</div>`);
     return;
   }
   btn.disabled = true;
-  btn.textContent = 'Guardando…';
+  btn.textContent = esCA ? 'Desant…' : 'Guardando…';
 
   const getChecked = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
   const getRadio = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : null; };
@@ -629,7 +651,7 @@ async function guardarAtencion(){
   if(error){
     document.getElementById('atencion-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
     btn.disabled = false;
-    btn.textContent = 'Guardar atención';
+    btn.textContent = esCA ? 'Desar atenció' : 'Guardar atención';
     return;
   }
   showScreen('panel');
