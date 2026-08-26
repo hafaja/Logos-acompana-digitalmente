@@ -791,6 +791,11 @@ async function borrarDocumento(id){
 function renderPerfilForm(){
   const t = T1[LANG];
   const p = window.__perfilActual || {};
+  const esCA = LANG === 'ca';
+
+  const interesesActuales = p.intereses_formativos || [];
+  const interesChecked = v => interesesActuales.includes(v) ? 'checked' : '';
+
   document.getElementById('profile-content').innerHTML = `
     <p class="subtle">${t.bienvenida}</p>
     <div class="field">
@@ -808,6 +813,16 @@ function renderPerfilForm(){
     <div class="field">
       <label>${t.convivencia}</label>
       <input type="text" id="pf-convivencia" value="${p.convivencia || ''}">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Sexe' : 'Sexo'}</label>
+      <select id="pf-sexo">
+        <option value="">—</option>
+        <option value="mujer" ${p.sexo==='mujer'?'selected':''}>${esCA ? 'Dona' : 'Mujer'}</option>
+        <option value="hombre" ${p.sexo==='hombre'?'selected':''}>${esCA ? 'Home' : 'Hombre'}</option>
+        <option value="otro" ${p.sexo==='otro'?'selected':''}>${esCA ? 'Altre' : 'Otro'}</option>
+        <option value="prefiero_no_decir" ${p.sexo==='prefiero_no_decir'?'selected':''}>${esCA ? 'Prefereixo no dir-ho' : 'Prefiero no decirlo'}</option>
+      </select>
     </div>
     <div class="field">
       <label>${t.laboral}</label>
@@ -833,6 +848,90 @@ function renderPerfilForm(){
       <label>${t.ingresos}</label>
       <input type="text" id="pf-ingresos" value="${p.nivel_ingresos || ''}" placeholder="${t.prefiero}">
     </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? 'Formació i experiència' : 'Formación y experiencia'}</h3>
+      <div class="field">
+        <label>${esCA ? 'Nivell d\'estudis' : 'Nivel de estudios'}</label>
+        <select id="pf-nivel-estudios">
+          <option value="">—</option>
+          <option value="sin_estudios" ${p.nivel_estudios==='sin_estudios'?'selected':''}>${esCA ? 'Sense estudis' : 'Sin estudios'}</option>
+          <option value="primaria" ${p.nivel_estudios==='primaria'?'selected':''}>${esCA ? 'Primària' : 'Primaria'}</option>
+          <option value="eso" ${p.nivel_estudios==='eso'?'selected':''}>ESO</option>
+          <option value="bachillerato_fp" ${p.nivel_estudios==='bachillerato_fp'?'selected':''}>${esCA ? 'Batxillerat / FP' : 'Bachillerato / FP'}</option>
+          <option value="universitarios" ${p.nivel_estudios==='universitarios'?'selected':''}>${esCA ? 'Universitaris' : 'Universitarios'}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>${esCA ? 'Titulacions o cursos' : 'Titulaciones o cursos'}</label>
+        <input type="text" id="pf-titulaciones" value="${p.titulaciones_cursos || ''}">
+      </div>
+      <div class="field">
+        <label>${esCA ? 'Experiència laboral prèvia' : 'Experiencia laboral previa'}</label>
+        <input type="text" id="pf-experiencia" value="${p.experiencia_laboral || ''}" placeholder="${esCA ? 'Sectors on has treballat' : 'Sectores en los que has trabajado'}">
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? 'Interès per fer tallers de' : 'Interés en hacer talleres de'}</h3>
+      <label class="checkbox-row"><input type="checkbox" id="pf-int-feina" ${interesChecked('recerca_feina')}>${esCA ? 'Recerca de feina' : 'Búsqueda de empleo'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-int-catala" ${interesChecked('catala')}>${esCA ? 'Català' : 'Catalán'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-int-castella" ${interesChecked('castella')}>${esCA ? 'Castellà' : 'Castellano'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-int-tic" ${interesChecked('tic')}>TIC</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-int-salud" ${interesChecked('vida_saludable')}>${esCA ? 'Vida saludable' : 'Vida saludable'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-int-manual" ${interesChecked('manualitats')}>${esCA ? 'Manualitats' : 'Manualidades'}</label>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? 'La teva llar' : 'Tu hogar'}</h3>
+      <label class="checkbox-row"><input type="checkbox" id="pf-monoparental" ${p.familia_monoparental?'checked':''}>${esCA ? 'Família monoparental' : 'Familia monoparental'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-numerosa" ${p.familia_numerosa?'checked':''}>${esCA ? 'Família nombrosa' : 'Familia numerosa'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-hijos" ${p.hijos_a_cargo?'checked':''}>${esCA ? 'Fills a càrrec' : 'Hijos a cargo'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-dependientes" ${p.dependientes_a_cargo?'checked':''}>${esCA ? 'Dependents a càrrec' : 'Dependientes a cargo'}</label>
+      <label class="checkbox-row"><input type="checkbox" id="pf-desempleo" ${p.situacion_desempleo?'checked':''}>${esCA ? 'Situació de desocupació' : 'Situación de desempleo'}</label>
+    </div>
+
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+      <h3 style="color:#7A4A1F;">${esCA ? 'Dades sensibles (opcional)' : 'Datos sensibles (opcional)'}</h3>
+      <p class="subtle" style="margin-bottom:8px;">${esCA
+        ? 'Aquests camps són especialment protegits. Marca la casella si vols que Logos els guardi.'
+        : 'Estos campos están especialmente protegidos. Marca la casilla si quieres que Logos los guarde.'}</p>
+      <label class="checkbox-row">
+        <input type="checkbox" id="pf-consentimiento" ${p.consentimiento_firmado?'checked':''} onchange="document.getElementById('pf-sensibles').style.display=this.checked?'block':'none'">
+        ${esCA ? 'Dono el meu consentiment perquè Logos guardi aquestes dades' : 'Doy mi consentimiento para que Logos guarde estos datos'}
+      </label>
+      <div id="pf-sensibles" style="display:${p.consentimiento_firmado ? 'block':'none'};margin-top:10px;">
+        <div class="field">
+          <label>${esCA ? 'Nacionalitat' : 'Nacionalidad'}</label>
+          <input type="text" id="pf-nacionalidad" value="${p.nacionalidad || ''}">
+        </div>
+        <div class="field">
+          <label>${esCA ? 'Situació de regularització' : 'Situación de regularización'}</label>
+          <select id="pf-regularizacion">
+            <option value="">—</option>
+            <option value="regularizada" ${p.situacion_regularizacion==='regularizada'?'selected':''}>${esCA ? 'Regularitzada' : 'Regularizada'}</option>
+            <option value="en_tramite" ${p.situacion_regularizacion==='en_tramite'?'selected':''}>${esCA ? 'En tràmit' : 'En trámite'}</option>
+            <option value="irregular" ${p.situacion_regularizacion==='irregular'?'selected':''}>${esCA ? 'Situació irregular' : 'Situación irregular'}</option>
+            <option value="prefiero_no_decir" ${p.situacion_regularizacion==='prefiero_no_decir'?'selected':''}>${esCA ? 'Prefereixo no respondre' : 'Prefiero no responder'}</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>${esCA ? 'Situació residencial' : 'Situación residencial'}</label>
+          <select id="pf-ethos">
+            <option value="">—</option>
+            <option value="sin_techo" ${p.tipologia_ethos==='sin_techo'?'selected':''}>${esCA ? 'Sense sostre' : 'Sin techo'}</option>
+            <option value="sin_vivienda" ${p.tipologia_ethos==='sin_vivienda'?'selected':''}>${esCA ? 'Sense vivenda' : 'Sin vivienda'}</option>
+            <option value="vivienda_insegura" ${p.tipologia_ethos==='vivienda_insegura'?'selected':''}>${esCA ? 'Vivenda insegura' : 'Vivienda insegura'}</option>
+            <option value="vivienda_inadecuada" ${p.tipologia_ethos==='vivienda_inadecuada'?'selected':''}>${esCA ? 'Vivenda inadequada' : 'Vivienda inadecuada'}</option>
+            <option value="no_aplica" ${p.tipologia_ethos==='no_aplica'?'selected':''}>${esCA ? 'No aplica' : 'No aplica'}</option>
+          </select>
+        </div>
+        <label class="checkbox-row"><input type="checkbox" id="pf-violencia" ${p.violencia_genero?'checked':''}>${esCA ? 'Violència de gènere' : 'Violencia de género'}</label>
+        <label class="checkbox-row"><input type="checkbox" id="pf-emocionales" ${p.dificultades_emocionales?'checked':''}>${esCA ? 'Dificultats emocionals o psicològiques' : 'Dificultades emocionales o psicológicas'}</label>
+        <label class="checkbox-row"><input type="checkbox" id="pf-menores" ${p.menores_en_riesgo?'checked':''}>${esCA ? 'Infants o adolescents en situació de risc' : 'Menores en situación de riesgo'}</label>
+      </div>
+    </div>
+
     <button class="primary-btn" id="pf-save-btn" onclick="guardarPerfil()">${t.guardarDatos}</button>
   `;
 }
@@ -844,6 +943,13 @@ async function guardarPerfil(){
 
   const val = id => document.getElementById(id).value;
   const boolVal = id => { const v = val(id); return v === '' ? null : v === 'true'; };
+  const chk = id => document.getElementById(id).checked;
+
+  const consentimiento = chk('pf-consentimiento');
+  const interesesFormativos = [
+    ['pf-int-feina','recerca_feina'], ['pf-int-catala','catala'], ['pf-int-castella','castella'],
+    ['pf-int-tic','tic'], ['pf-int-salud','vida_saludable'], ['pf-int-manual','manualitats']
+  ].filter(([id]) => chk(id)).map(([,v]) => v);
 
   const payload = {
     id: CURRENT_USER.id,
@@ -851,10 +957,29 @@ async function guardarPerfil(){
     telefono: val('pf-telefono') || null,
     municipio: val('pf-municipio') || null,
     convivencia: val('pf-convivencia') || null,
+    sexo: val('pf-sexo') || null,
     situacion_laboral: val('pf-laboral') || null,
     discapacidad_reconocida: boolVal('pf-discapacidad'),
     dependencia_reconocida: boolVal('pf-dependencia'),
     nivel_ingresos: val('pf-ingresos') || null,
+    nivel_estudios: val('pf-nivel-estudios') || null,
+    titulaciones_cursos: val('pf-titulaciones') || null,
+    experiencia_laboral: val('pf-experiencia') || null,
+    intereses_formativos: interesesFormativos,
+    familia_monoparental: chk('pf-monoparental'),
+    familia_numerosa: chk('pf-numerosa'),
+    hijos_a_cargo: chk('pf-hijos'),
+    dependientes_a_cargo: chk('pf-dependientes'),
+    situacion_desempleo: chk('pf-desempleo'),
+    consentimiento_firmado: consentimiento,
+    consentimiento_fecha: consentimiento ? new Date().toISOString().slice(0,10) : null,
+    // Datos sensibles: solo se guardan si hay consentimiento explícito
+    nacionalidad: consentimiento ? (val('pf-nacionalidad') || null) : null,
+    situacion_regularizacion: consentimiento ? (val('pf-regularizacion') || null) : null,
+    tipologia_ethos: consentimiento ? (val('pf-ethos') || null) : null,
+    violencia_genero: consentimiento ? chk('pf-violencia') : null,
+    dificultades_emocionales: consentimiento ? chk('pf-emocionales') : null,
+    menores_en_riesgo: consentimiento ? chk('pf-menores') : null,
     actualizado_en: new Date().toISOString()
   };
 
