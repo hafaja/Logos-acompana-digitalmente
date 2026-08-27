@@ -1,6 +1,6 @@
 {
-  "version": "0.4",
-  "nota": "Fase 0 ampliada: incluye fichas de prestaciones SEPE/SOC/INSS con enlaces oficiales verificados a partir de documento de Logos (agosto 2026). Varias fichas de INSS comparten página oficial general; pendiente confirmar con Logos si existen enlaces más específicos.",
+  "version": "0.5",
+  "nota": "Fase 0 ampliada: incluye fichas de prestaciones SEPE/SOC/INSS con enlaces oficiales verificados a partir de documento de Logos (agosto 2026). Varias fichas de INSS comparten página oficial general; pendiente confirmar con Logos si existen enlaces más específicos. Añadida cobertura completa del área 'Mi inclusión y mi comunidad' con 11 portales oficiales de la Generalitat (agosto 2026).",
   "servicios": [
     {
       "id": "dependencia-reconeixement",
@@ -1676,6 +1676,512 @@
         "ca": "Segons requisits i normativa."
       },
       "nota": "Comparte página oficial con viudedad y orfandad; confirmar con Logos."
+    },
+    {
+      "id": "gencat-inclusio-social",
+      "nombre": {
+        "es": "Inclusión social",
+        "ca": "Inclusió social"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Portal de servicios sociales, inclusión, autonomía, dependencia y recursos sociales de la Generalitat.",
+        "ca": "Portal de serveis socials, inclusió, autonomia, dependència i recursos socials de la Generalitat."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://dretssocials.gencat.cat/ca/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-migracio-integracio",
+      "nombre": {
+        "es": "Migración e integración",
+        "ca": "Migració i integració"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Información sobre acogida, migración, integración y recursos para personas migrantes.",
+        "ca": "Informació sobre acollida, migració, integració i recursos per a persones migrades."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://igualtat.gencat.cat/ca/ambits-dactuacio/migracions/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-participacio-ciutadana",
+      "nombre": {
+        "es": "Participación ciudadana",
+        "ca": "Participació ciutadana"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Procesos participativos, consultas públicas y espacios de participación ciudadana de la Generalitat.",
+        "ca": "Processos participatius, consultes públiques i espais de participació ciutadana de la Generalitat."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://participa.gencat.cat/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-associacionisme",
+      "nombre": {
+        "es": "Asociacionismo",
+        "ca": "Associacionisme"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Información sobre asociaciones, entidades, constitución de asociaciones y recursos para entidades.",
+        "ca": "Informació sobre associacions, entitats, constitució d'associacions i recursos per a entitats."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://web.gencat.cat/ca/ciutadania/associacionisme-participacio",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-voluntariat",
+      "nombre": {
+        "es": "Voluntariado",
+        "ca": "Voluntariat"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Oportunidades de voluntariado, entidades, formación y recursos para personas voluntarias.",
+        "ca": "Oportunitats de voluntariat, entitats, formació i recursos per a persones voluntàries."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://voluntariat.gencat.cat/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-cultura",
+      "nombre": {
+        "es": "Cultura",
+        "ca": "Cultura"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Actividades, patrimonio, museos, bibliotecas y recursos culturales de Catalunya.",
+        "ca": "Activitats, patrimoni, museus, biblioteques i recursos culturals de Catalunya."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://cultura.gencat.cat/ca/inici/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-equipaments-civics-oci",
+      "nombre": {
+        "es": "Ocio: espacios cívicos y comunitarios",
+        "ca": "Oci: equipaments cívics i comunitaris"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Casales cívicos, espacios comunitarios y actividades sociales, culturales y de ocio (más de 150 equipamientos).",
+        "ca": "Casals cívics, espais comunitaris i activitats socials, culturals i d'oci (més de 150 equipaments)."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://dretssocials.gencat.cat/ca/serveis/equipaments_civics_i_activitats",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-esport",
+      "nombre": {
+        "es": "Deporte",
+        "ca": "Esport"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Actividad física, deporte, federaciones y recursos deportivos de la Generalitat.",
+        "ca": "Activitat física, esport, federacions i recursos esportius de la Generalitat."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://esport.gencat.cat/ca/inici/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-accessibilitat",
+      "nombre": {
+        "es": "Accesibilidad",
+        "ca": "Accessibilitat"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Información sobre accesibilidad y derechos de las personas con discapacidad.",
+        "ca": "Informació sobre accessibilitat i drets de les persones amb discapacitat."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://dretssocials.gencat.cat/ca/ambits_tematics/accessibilitat/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-mapa-recursos-comunitaris",
+      "nombre": {
+        "es": "Mapa de recursos comunitarios",
+        "ca": "Mapa de recursos comunitaris"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Mapa territorial de recursos comunitarios, equipamientos, servicios, Puntos Òmnia, voluntariado y más.",
+        "ca": "Mapa territorial de recursos comunitaris, equipaments, serveis, Punts Òmnia, voluntariat i més."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://dretssocials.gencat.cat/ca/ambits_tematics/accio_comunitaria_i_voluntariat/accio_comunitaria/recursosinclusius/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-serveis-socials-exclusio",
+      "nombre": {
+        "es": "Servicios sociales ante situaciones de exclusión",
+        "ca": "Serveis socials davant situacions d'exclusió"
+      },
+      "ambito": "comunidad",
+      "para_quien": {
+        "es": "Cualquier persona interesada, sin requisitos previos.",
+        "ca": "Qualsevol persona interessada, sense requisits previs."
+      },
+      "para_que_sirve": {
+        "es": "Recursos de servicios sociales y atención a situaciones de vulnerabilidad y exclusión.",
+        "ca": "Recursos de serveis socials i atenció a situacions de vulnerabilitat i exclusió."
+      },
+      "requisitos": {
+        "es": [
+          "Abierto a cualquier persona interesada"
+        ],
+        "ca": [
+          "Obert a qualsevol persona interessada"
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación; es un portal de información y recursos"
+        ],
+        "ca": [
+          "No cal documentació; és un portal d'informació i recursos"
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://dretssocials.gencat.cat/ca/ambits_tematics/serveis_socials/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Consulta libre del portal; algunos recursos concretos pueden requerir inscripción específica.",
+        "ca": "Consulta lliure del portal; alguns recursos concrets poden requerir inscripció específica."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "version": "0.4",
+  "version": "0.5",
   "nota": "Taxonomía oficial de Logos (8 áreas, en primera persona). Un mismo servicio puede aparecer en varias necesidades de varias áreas — esto es intencional (separa cómo navega la persona de cómo se organiza la Administración). servicios_ids vacío = 'Próximamente'.",
   "ambitos": [
     {
@@ -708,7 +708,9 @@
             "es": "Inclusión social",
             "ca": "Inclusió social"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-inclusio-social"
+          ]
         },
         {
           "id": "migracion-integracion",
@@ -716,7 +718,9 @@
             "es": "Migración e integración",
             "ca": "Migració i integració"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-migracio-integracio"
+          ]
         },
         {
           "id": "participacion-ciudadana",
@@ -724,7 +728,9 @@
             "es": "Participación ciudadana",
             "ca": "Participació ciutadana"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-participacio-ciutadana"
+          ]
         },
         {
           "id": "asociacionismo",
@@ -732,7 +738,9 @@
             "es": "Asociacionismo",
             "ca": "Associacionisme"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-associacionisme"
+          ]
         },
         {
           "id": "voluntariado",
@@ -740,7 +748,9 @@
             "es": "Voluntariado",
             "ca": "Voluntariat"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-voluntariat"
+          ]
         },
         {
           "id": "cultura",
@@ -748,7 +758,9 @@
             "es": "Cultura",
             "ca": "Cultura"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-cultura"
+          ]
         },
         {
           "id": "ocio",
@@ -756,7 +768,9 @@
             "es": "Ocio",
             "ca": "Oci"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-equipaments-civics-oci"
+          ]
         },
         {
           "id": "deporte",
@@ -764,7 +778,9 @@
             "es": "Deporte",
             "ca": "Esport"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-esport"
+          ]
         },
         {
           "id": "accesibilidad-comunidad",
@@ -772,7 +788,9 @@
             "es": "Accesibilidad",
             "ca": "Accessibilitat"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-accessibilitat"
+          ]
         },
         {
           "id": "recursos-comunitarios",
@@ -780,7 +798,9 @@
             "es": "Recursos comunitarios",
             "ca": "Recursos comunitaris"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-mapa-recursos-comunitaris"
+          ]
         },
         {
           "id": "exclusion",
@@ -788,7 +808,9 @@
             "es": "Situaciones de exclusión",
             "ca": "Situacions d'exclusió"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "gencat-serveis-socials-exclusio"
+          ]
         }
       ]
     }
