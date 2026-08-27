@@ -286,8 +286,8 @@ function showDetail(id){
   const s = SERVICIOS.find(x => x.id === id);
   if(!s) return;
   const t = LANG === 'ca'
-    ? { sirve:'Per a què serveix', req:'Requisits', doc:'Documentació', coste:'Cost', link:'Anar a la font oficial', pending:"Aquest enllaç encara no està confirmat. Contacta amb Logos per tramitar aquest servei mentrestant.", warnT:"Aquest enllaç és l'únic oficial", warn:"No comparteixis dades bancàries amb ningú que et contacti oferint-te aquest tràmit per telèfon, WhatsApp o a domicili.", verif:'Verificat per Logos', pendStamp:"Enllaç pendent de confirmar" }
-    : { sirve:'Para qué sirve', req:'Requisitos', doc:'Documentación', coste:'Coste', link:'Ir a la fuente oficial', pending:"Este enlace todavía no está confirmado. Contacta con Logos para tramitar este servicio mientras tanto.", warnT:'Este enlace es el único oficial', warn:'No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.', verif:'Verificado por Logos', pendStamp:'Enlace pendiente de confirmar' };
+    ? { sirve:'Per a què serveix', req:'Requisits', doc:'Documentació', coste:'Cost', cuantia:'Import', link:'Anar a la font oficial', pending:"Aquest enllaç encara no està confirmat. Contacta amb Logos per tramitar aquest servei mentrestant.", warnT:"Aquest enllaç és l'únic oficial", warn:"No comparteixis dades bancàries amb ningú que et contacti oferint-te aquest tràmit per telèfon, WhatsApp o a domicili.", verif:'Verificat per Logos', pendStamp:"Enllaç pendent de confirmar" }
+    : { sirve:'Para qué sirve', req:'Requisitos', doc:'Documentación', coste:'Coste', cuantia:'Importe', link:'Ir a la fuente oficial', pending:"Este enlace todavía no está confirmado. Contacta con Logos para tramitar este servicio mientras tanto.", warnT:'Este enlace es el único oficial', warn:'No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.', verif:'Verificado por Logos', pendStamp:'Enlace pendiente de confirmar' };
 
   const stamp = s.estado_enlace === 'verificado'
     ? `<span class="verified-stamp">✓ ${t.verif} · ${s.ultima_verificacion}</span>`
@@ -306,6 +306,7 @@ function showDetail(id){
     <div class="detail-block" style="margin-top:14px;">
       <h4>${t.sirve}</h4><p>${s.para_que_sirve[LANG]}</p>
     </div>
+    ${s.cuantia ? `<div class="detail-block"><h4>${t.cuantia}</h4><p>${s.cuantia[LANG]}</p></div>` : ''}
     <div class="detail-block">
       <h4>${t.req}</h4><ul>${s.requisitos[LANG].map(r=>`<li>${r}</li>`).join('')}</ul>
     </div>
