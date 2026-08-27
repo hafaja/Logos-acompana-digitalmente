@@ -1,6 +1,6 @@
 {
   "version": "0.5",
-  "nota": "Fase 0 ampliada: incluye fichas de prestaciones SEPE/SOC/INSS con enlaces oficiales verificados a partir de documento de Logos (agosto 2026). Varias fichas de INSS comparten página oficial general; pendiente confirmar con Logos si existen enlaces más específicos. Añadida cobertura completa del área 'Mi inclusión y mi comunidad' con 11 portales oficiales de la Generalitat (agosto 2026).",
+  "nota": "Fase 0 ampliada: incluye fichas de prestaciones SEPE/SOC/INSS con enlaces oficiales verificados a partir de documento de Logos (agosto 2026). Varias fichas de INSS comparten página oficial general; pendiente confirmar con Logos si existen enlaces más específicos. Añadida cobertura completa del área 'Mi inclusión y mi comunidad' con 11 portales oficiales de la Generalitat (agosto 2026). Las 11 fichas del área comunidad tienen enlace verificado pero requisitos/documentación genéricos, pendientes de completar.",
   "servicios": [
     {
       "id": "dependencia-reconeixement",
@@ -1721,7 +1721,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-migracio-integracio",
@@ -1767,7 +1768,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-participacio-ciutadana",
@@ -1813,7 +1815,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-associacionisme",
@@ -1859,7 +1862,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-voluntariat",
@@ -1905,7 +1909,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-cultura",
@@ -1951,7 +1956,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-equipaments-civics-oci",
@@ -1997,7 +2003,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-esport",
@@ -2043,7 +2050,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-accessibilitat",
@@ -2089,7 +2097,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-mapa-recursos-comunitaris",
@@ -2135,7 +2144,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     },
     {
       "id": "gencat-serveis-socials-exclusio",
@@ -2181,7 +2191,8 @@
       "relacionado_logos": true,
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-27",
-      "municipio": null
+      "municipio": null,
+      "nota": "Ficha de portal general. Enlace verificado, pero requisitos y documentación son genéricos: pendiente completar con datos específicos por recurso concreto."
     }
   ]
 }
