@@ -1,10 +1,13 @@
 {
-  "version": "0.3",
-  "nota": "Contenido de Fase 0. Las cuatro fichas tienen enlace oficial verificado, traducción completa CA/ES y campo municipio.",
+  "version": "0.4",
+  "nota": "Fase 0 ampliada: incluye fichas de prestaciones SEPE/SOC/INSS con enlaces oficiales verificados a partir de documento de Logos (agosto 2026). Varias fichas de INSS comparten página oficial general; pendiente confirmar con Logos si existen enlaces más específicos.",
   "servicios": [
     {
       "id": "dependencia-reconeixement",
-      "nombre": { "es": "Reconocimiento de la situación de dependencia", "ca": "Reconeixement de la situació de dependència" },
+      "nombre": {
+        "es": "Reconocimiento de la situación de dependencia",
+        "ca": "Reconeixement de la situació de dependència"
+      },
       "ambito": "dependencia",
       "para_quien": {
         "es": "Cualquier persona, sin límite de edad, que haya perdido autonomía física, mental, intelectual o sensorial y necesite ayuda de otra persona.",
@@ -15,16 +18,35 @@
         "ca": "És el pas previ obligatori per accedir als ajuts de dependència (SAD, teleassistència, prestació al cuidador, residència)."
       },
       "requisitos": {
-        "es": ["Residir en territorio español, 5 años en total (2 inmediatamente anteriores a la solicitud)", "Sin límite de edad para solicitar la valoración"],
-        "ca": ["Residir al territori espanyol, 5 anys en total (2 immediatament anteriors a la sol·licitud)", "Sense límit d'edat per sol·licitar la valoració"]
+        "es": [
+          "Residir en territorio español, 5 años en total (2 inmediatamente anteriores a la solicitud)",
+          "Sin límite de edad para solicitar la valoración"
+        ],
+        "ca": [
+          "Residir al territori espanyol, 5 anys en total (2 immediatament anteriors a la sol·licitud)",
+          "Sense límit d'edat per sol·licitar la valoració"
+        ]
       },
       "documentacion": {
-        "es": ["Formulario específico de reconocimiento/revisión de dependencia", "DNI/NIE original y fotocopia", "Informe médico", "Declaración responsable de la situación económica"],
-        "ca": ["Formulari específic de reconeixement/revisió de dependència", "DNI/NIE original i fotocòpia", "Informe mèdic", "Declaració responsable de la situació econòmica"]
+        "es": [
+          "Formulario específico de reconocimiento/revisión de dependencia",
+          "DNI/NIE original y fotocopia",
+          "Informe médico",
+          "Declaración responsable de la situación económica"
+        ],
+        "ca": [
+          "Formulari específic de reconeixement/revisió de dependència",
+          "DNI/NIE original i fotocòpia",
+          "Informe mèdic",
+          "Declaració responsable de la situació econòmica"
+        ]
       },
       "organismo": "Departament de Drets Socials i Inclusió — Generalitat de Catalunya",
       "enlace_oficial": "https://tramits.gencat.cat/ca/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia",
-      "coste": { "es": "gratuito", "ca": "gratuït" },
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
       "como_se_solicita": {
         "es": "Online (idCAT / certificado digital) o presencial en oficinas de Benestar Social i Família",
         "ca": "En línia (idCAT / certificat digital) o presencialment a les oficines de Benestar Social i Família"
@@ -36,7 +58,10 @@
     },
     {
       "id": "discapacitat-certificat",
-      "nombre": { "es": "Certificado de discapacidad", "ca": "Reconeixement o revisió de la situació de discapacitat" },
+      "nombre": {
+        "es": "Certificado de discapacidad",
+        "ca": "Reconeixement o revisió de la situació de discapacitat"
+      },
       "ambito": "discapacidad",
       "para_quien": {
         "es": "Personas que quieren que se reconozca oficialmente su grado de discapacidad.",
@@ -47,16 +72,29 @@
         "ca": "Dona accés a drets, serveis, programes i prestacions que compensen els desavantatges derivats de la discapacitat."
       },
       "requisitos": {
-        "es": ["Determinados por la valoración del Centre d'Atenció a la Discapacitat (CAD)"],
-        "ca": ["Determinats per la valoració del Centre d'Atenció a la Discapacitat (CAD)"]
+        "es": [
+          "Determinados por la valoración del Centre d'Atenció a la Discapacitat (CAD)"
+        ],
+        "ca": [
+          "Determinats per la valoració del Centre d'Atenció a la Discapacitat (CAD)"
+        ]
       },
       "documentacion": {
-        "es": ["DNI/NIE de la persona solicitante o representante legal", "Informes médicos que acrediten la condición"],
-        "ca": ["DNI/NIE de la persona sol·licitant o representant legal", "Informes mèdics que acreditin la condició"]
+        "es": [
+          "DNI/NIE de la persona solicitante o representante legal",
+          "Informes médicos que acrediten la condición"
+        ],
+        "ca": [
+          "DNI/NIE de la persona sol·licitant o representant legal",
+          "Informes mèdics que acreditin la condició"
+        ]
       },
       "organismo": "Generalitat de Catalunya — Centre d'Atenció a la Discapacitat (CAD)",
       "enlace_oficial": "https://web.gencat.cat/ca/tramits/tramits-temes/Reconeixement-o-revisio-de",
-      "coste": { "es": "gratuito", "ca": "gratuït" },
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
       "como_se_solicita": {
         "es": "Online o presencial en el CAD del territorio",
         "ca": "En línia o presencialment al CAD del territori"
@@ -68,7 +106,10 @@
     },
     {
       "id": "sad-atencio-domiciliaria",
-      "nombre": { "es": "Servicio de Atención Domiciliaria (SAD)", "ca": "Servei d'Atenció Domiciliària (SAD)" },
+      "nombre": {
+        "es": "Servicio de Atención Domiciliaria (SAD)",
+        "ca": "Servei d'Atenció Domiciliària (SAD)"
+      },
       "ambito": "personas-mayores",
       "para_quien": {
         "es": "Personas mayores o con dependencia/discapacidad reconocida que necesitan apoyo en su domicilio.",
@@ -79,16 +120,37 @@
         "ca": "Permet continuar vivint a casa amb seguretat, amb visites d'un professional segons les hores assignades."
       },
       "requisitos": {
-        "es": ["Estar empadronado en el municipio", "Tener dependencia reconocida o valoración positiva de trabajador/a social", "No disponer de suficiente apoyo familiar"],
-        "ca": ["Estar empadronat/da al municipi", "Tenir dependència reconeguda o valoració positiva de treballador/a social", "No disposar de suport familiar suficient"]
+        "es": [
+          "Estar empadronado en el municipio",
+          "Tener dependencia reconocida o valoración positiva de trabajador/a social",
+          "No disponer de suficiente apoyo familiar"
+        ],
+        "ca": [
+          "Estar empadronat/da al municipi",
+          "Tenir dependència reconeguda o valoració positiva de treballador/a social",
+          "No disposar de suport familiar suficient"
+        ]
       },
       "documentacion": {
-        "es": ["DNI de todos los miembros de la unidad de convivencia", "Justificante de pensión(es), si procede", "Informe social y/o de salud", "Resolución de dependencia, si se dispone"],
-        "ca": ["DNI de tots els membres de la unitat de convivència", "Justificant de pensió(ns), si escau", "Informe social i/o de salut", "Resolució de dependència, si se'n disposa"]
+        "es": [
+          "DNI de todos los miembros de la unidad de convivencia",
+          "Justificante de pensión(es), si procede",
+          "Informe social y/o de salud",
+          "Resolución de dependencia, si se dispone"
+        ],
+        "ca": [
+          "DNI de tots els membres de la unitat de convivència",
+          "Justificant de pensió(ns), si escau",
+          "Informe social i/o de salut",
+          "Resolució de dependència, si se'n disposa"
+        ]
       },
       "organismo": "Institut Municipal de Serveis Socials (IMSS) — Ajuntament de Tarragona",
       "enlace_oficial": "https://cis.tarragona.cat/cataleg/procediments/show/servei-dajuda-a-domicili_1234",
-      "coste": { "es": "puede tener copago según ingresos", "ca": "pot tenir copagament segons ingressos" },
+      "coste": {
+        "es": "puede tener copago según ingresos",
+        "ca": "pot tenir copagament segons ingressos"
+      },
       "como_se_solicita": {
         "es": "El acceso es a través del Centre de Serveis Socials de la zona de residencia de la persona: se tramita la solicitud a partir de la valoración del centro y la firma del Pacte de Prestació de Servei. Presencial en las OMAC (Oficines Municipals d'Atenció Ciutadana).",
         "ca": "L'accés es fa a través del Centre de Serveis Socials de la zona de residència de la persona: es tramita la sol·licitud a partir de la valoració del centre i la signatura del Pacte de Prestació de Servei. Presencialment a les OMAC (Oficines Municipals d'Atenció Ciutadana)."
@@ -101,7 +163,10 @@
     },
     {
       "id": "teleassistencia",
-      "nombre": { "es": "Teleasistencia", "ca": "Teleassistència" },
+      "nombre": {
+        "es": "Teleasistencia",
+        "ca": "Teleassistència"
+      },
       "ambito": "personas-mayores",
       "para_quien": {
         "es": "Mayores de 65 años que viven solos sin red de apoyo, personas con dependencia reconocida, o menores de 75 con discapacidad que supere ciertos baremos.",
@@ -112,16 +177,29 @@
         "ca": "Dispositiu connectat 24 hores a un centre d'atenció per demanar ajuda davant d'una emergència."
       },
       "requisitos": {
-        "es": ["Cumplir alguno de los perfiles anteriores, valorado por trabajador/a social"],
-        "ca": ["Complir algun dels perfils anteriors, valorat per treballador/a social"]
+        "es": [
+          "Cumplir alguno de los perfiles anteriores, valorado por trabajador/a social"
+        ],
+        "ca": [
+          "Complir algun dels perfils anteriors, valorat per treballador/a social"
+        ]
       },
       "documentacion": {
-        "es": ["Impreso de solicitud", "Informe médico del médico de cabecera (vigencia máxima 6 meses)"],
-        "ca": ["Imprès de sol·licitud", "Informe mèdic del metge de capçalera (vigència màxima 6 mesos)"]
+        "es": [
+          "Impreso de solicitud",
+          "Informe médico del médico de cabecera (vigencia máxima 6 meses)"
+        ],
+        "ca": [
+          "Imprès de sol·licitud",
+          "Informe mèdic del metge de capçalera (vigència màxima 6 mesos)"
+        ]
       },
       "organismo": "Institut Municipal de Serveis Socials (IMSS) — Ajuntament de Tarragona",
       "enlace_oficial": "https://cis.tarragona.cat/cataleg/procediments/show/teleassistencia_1237",
-      "coste": { "es": "por confirmar", "ca": "per confirmar" },
+      "coste": {
+        "es": "por confirmar",
+        "ca": "per confirmar"
+      },
       "como_se_solicita": {
         "es": "Presencial en Serveis Socials o en las OMAC (Oficines Municipals d'Atenció Ciutadana)",
         "ca": "Presencialment a Serveis Socials o a les OMAC (Oficines Municipals d'Atenció Ciutadana)"
@@ -131,6 +209,1473 @@
       "estado_enlace": "verificado",
       "ultima_verificacion": "2026-08-24",
       "municipio": "Tarragona"
+    },
+    {
+      "id": "sepe-prestacion-contributiva-paro",
+      "nombre": {
+        "es": "Prestación contributiva por desempleo",
+        "ca": "Prestació contributiva per desocupació"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas que pierden el empleo de forma involuntaria y tienen al menos 360 días cotizados en los 6 años anteriores.",
+        "ca": "Persones que perden la feina de manera involuntària i tenen com a mínim 360 dies cotitzats en els 6 anys anteriors."
+      },
+      "para_que_sirve": {
+        "es": "Ofrece una prestación económica mensual mientras se busca nuevo empleo, calculada según la base reguladora, con mínimos y máximos según cargas familiares.",
+        "ca": "Ofereix una prestació econòmica mensual mentre es busca nova feina, calculada segons la base reguladora, amb mínims i màxims segons càrregues familiars."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que pierden el empleo de forma involuntaria y tienen al menos 360 días cotizados en los 6 años anteriores."
+        ],
+        "ca": [
+          "Persones que perden la feina de manera involuntària i tenen com a mínim 360 dies cotitzats en els 6 anys anteriors."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo.html",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "sepe-subsidio-cotizacion-insuficiente",
+      "nombre": {
+        "es": "Subsidio por cotización insuficiente",
+        "ca": "Subsidi per cotització insuficient"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas desempleadas que han cotizado pero no alcanzan 360 días, si cumplen los requisitos.",
+        "ca": "Persones desocupades que han cotitzat però no arriben a 360 dies, si compleixen els requisits."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio económico para quien no reúne suficiente cotización para la prestación contributiva.",
+        "ca": "Subsidi econòmic per a qui no reuneix prou cotització per a la prestació contributiva."
+      },
+      "requisitos": {
+        "es": [
+          "Personas desempleadas que han cotizado pero no alcanzan 360 días, si cumplen los requisitos."
+        ],
+        "ca": [
+          "Persones desocupades que han cotitzat però no arriben a 360 dies, si compleixen els requisits."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-cotizaciones-insuficientes-he-trabajado-menos-de-un-anyo",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "570 €/mes los primeros 180 días; 540 €/mes del día 181 al 360; 480 €/mes desde el día 361, cuando corresponda.",
+        "ca": "570 €/mes els primers 180 dies; 540 €/mes del dia 181 al 360; 480 €/mes des del dia 361, quan correspongui."
+      }
+    },
+    {
+      "id": "sepe-subsidio-agotamiento-prestacion",
+      "nombre": {
+        "es": "Subsidio por agotamiento de la prestación contributiva",
+        "ca": "Subsidi per esgotament de la prestació contributiva"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas que han agotado el paro y cumplen requisitos de rentas y/o responsabilidades familiares.",
+        "ca": "Persones que han esgotat l'atur i compleixen requisits de rendes i/o responsabilitats familiars."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio para quien ha agotado la prestación contributiva y sigue sin empleo.",
+        "ca": "Subsidi per a qui ha esgotat la prestació contributiva i continua sense feina."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que han agotado el paro y cumplen requisitos de rentas y/o responsabilidades familiares."
+        ],
+        "ca": [
+          "Persones que han esgotat l'atur i compleixen requisits de rendes i/o responsabilitats familiars."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-agotamiento-prestacion-contributiva",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Escala general de subsidios: 570 € / 540 € / 480 €, según periodo.",
+        "ca": "Escala general de subsidis: 570 € / 540 € / 480 €, segons el període."
+      }
+    },
+    {
+      "id": "sepe-subsidio-mayores-52",
+      "nombre": {
+        "es": "Subsidio para mayores de 52 años",
+        "ca": "Subsidi per a persones més grans de 52 anys"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas desempleadas de 52 años o más que cumplen los requisitos específicos de cotización y rentas.",
+        "ca": "Persones desocupades de 52 anys o més que compleixen els requisits específics de cotització i rendes."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio mensual que además cotiza por jubilación en los términos legalmente establecidos.",
+        "ca": "Subsidi mensual que a més cotitza per jubilació en els termes legalment establerts."
+      },
+      "requisitos": {
+        "es": [
+          "Personas desempleadas de 52 años o más que cumplen los requisitos específicos de cotización y rentas."
+        ],
+        "ca": [
+          "Persones desocupades de 52 anys o més que compleixen els requisits específics de cotització i rendes."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/tengo-mas-de-52.html",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "480 €/mes. El SEPE cotiza por jubilación en los términos legalmente establecidos.",
+        "ca": "480 €/mes. El SEPE cotitza per jubilació en els termes legalment establerts."
+      }
+    },
+    {
+      "id": "sepe-subsidio-emigrantes-retornados",
+      "nombre": {
+        "es": "Subsidio para emigrantes retornados",
+        "ca": "Subsidi per a emigrants retornats"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas españolas que regresan tras trabajar en determinados países y cumplen requisitos.",
+        "ca": "Persones espanyoles que retornen després de treballar en determinats països i compleixen requisits."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio para personas trabajadoras emigrantes que retornan a España.",
+        "ca": "Subsidi per a persones treballadores emigrants que retornen a Espanya."
+      },
+      "requisitos": {
+        "es": [
+          "Personas españolas que regresan tras trabajar en determinados países y cumplen requisitos."
+        ],
+        "ca": [
+          "Persones espanyoles que retornen després de treballar en determinats països i compleixen requisits."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-de-emigrante-retornado",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Escala general de subsidios.",
+        "ca": "Escala general de subsidis."
+      }
+    },
+    {
+      "id": "sepe-subsidio-violencia",
+      "nombre": {
+        "es": "Subsidio para víctimas de violencia de género o sexual",
+        "ca": "Subsidi per a víctimes de violència de gènere o sexual"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Víctimas de violencia de género, sexual u otros supuestos protegidos legalmente.",
+        "ca": "Víctimes de violència de gènere, sexual o altres supòsits protegits legalment."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio específico por desocupación para víctimas de violencia de género o sexual.",
+        "ca": "Subsidi específic per desocupació per a víctimes de violència de gènere o sexual."
+      },
+      "requisitos": {
+        "es": [
+          "Víctimas de violencia de género, sexual u otros supuestos protegidos legalmente."
+        ],
+        "ca": [
+          "Víctimes de violència de gènere, sexual o altres supòsits protegits legalment."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/victimas-violencia-genero-o-sexual",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Escala general de subsidios.",
+        "ca": "Escala general de subsidis."
+      }
+    },
+    {
+      "id": "sepe-complemento-apoyo-empleo",
+      "nombre": {
+        "es": "Complemento de Apoyo al Empleo (CAE)",
+        "ca": "Complement de Suport a l'Ocupació (CAE)"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas que quieren compatibilizar, en determinados supuestos, una prestación o subsidio con un trabajo.",
+        "ca": "Persones que volen compatibilitzar, en determinats supòsits, una prestació o subsidi amb una feina."
+      },
+      "para_que_sirve": {
+        "es": "Permite compatibilizar el cobro de una prestación o subsidio con la incorporación a un puesto de trabajo.",
+        "ca": "Permet compatibilitzar el cobrament d'una prestació o subsidi amb la incorporació a un lloc de treball."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que quieren compatibilizar, en determinados supuestos, una prestación o subsidio con un trabajo."
+        ],
+        "ca": [
+          "Persones que volen compatibilitzar, en determinats supòsits, una prestació o subsidi amb una feina."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/complemento-de-apoyo-empleo",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Importe variable según la situación laboral y el periodo de prestación.",
+        "ca": "Import variable segons la situació laboral i el període de prestació."
+      }
+    },
+    {
+      "id": "sepe-capitalizacion-paro",
+      "nombre": {
+        "es": "Capitalización o pago único del paro",
+        "ca": "Capitalització o pagament únic de l'atur"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas que quieren iniciar actividad autónoma o incorporarse a determinadas entidades de economía social.",
+        "ca": "Persones que volen iniciar activitat autònoma o incorporar-se a determinades entitats d'economia social."
+      },
+      "para_que_sirve": {
+        "es": "Permite cobrar de una sola vez, total o parcialmente, la prestación contributiva pendiente para invertirla en un proyecto de autoempleo.",
+        "ca": "Permet cobrar d'una sola vegada, totalment o parcialment, la prestació contributiva pendent per invertir-la en un projecte d'autoocupació."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que quieren iniciar actividad autónoma o incorporarse a determinadas entidades de economía social."
+        ],
+        "ca": [
+          "Persones que volen iniciar activitat autònoma o incorporar-se a determinades entitats d'economia social."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servicio Público de Empleo Estatal (SEPE)",
+      "enlace_oficial": "https://www.sepe.es/HomeSepe/autonomos/capitaliza-tu-prestacion",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Depende de la prestación contributiva pendiente.",
+        "ca": "Depèn de la prestació contributiva pendent."
+      }
+    },
+    {
+      "id": "soc-inscripcion-demandante-empleo",
+      "nombre": {
+        "es": "Inscripción como demandante de empleo",
+        "ca": "Inscripció com a demandant d'ocupació"
+      },
+      "ambito": "trabajo",
+      "para_quien": {
+        "es": "Cualquier persona que busca trabajo y quiere darse de alta o renovar su demanda de ocupación.",
+        "ca": "Qualsevol persona que busca feina i vol donar-se d'alta o renovar la seva demanda d'ocupació."
+      },
+      "para_que_sirve": {
+        "es": "Alta o renovación de la demanda de empleo; da acceso a ofertas, orientación, cursos y programas del SOC.",
+        "ca": "Alta o renovació de la demanda d'ocupació; dona accés a ofertes, orientació, cursos i programes del SOC."
+      },
+      "requisitos": {
+        "es": [
+          "Cualquier persona que busca trabajo y quiere darse de alta o renovar su demanda de ocupación."
+        ],
+        "ca": [
+          "Qualsevol persona que busca feina i vol donar-se d'alta o renovar la seva demanda d'ocupació."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servei d'Ocupació de Catalunya (SOC) / Generalitat de Catalunya",
+      "enlace_oficial": "https://serveiocupacio.gencat.cat/es/tramits/tramits-persones/inscriu-te-com-a-demandant-docupacio/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-rgc-activable",
+      "nombre": {
+        "es": "Renda Garantida de Ciutadania (RGC)",
+        "ca": "Renda Garantida de Ciutadania (RGC)"
+      },
+      "ambito": "economia",
+      "para_quien": {
+        "es": "Personas o unidades familiares con recursos insuficientes que cumplen los requisitos de la prestación y están en disposición de activarse laboralmente.",
+        "ca": "Persones o unitats familiars amb recursos insuficients que compleixen els requisits de la prestació i estan en disposició d'activar-se laboralment."
+      },
+      "para_que_sirve": {
+        "es": "Prestación económica periódica para garantizar los mínimos de subsistencia a personas o familias sin recursos suficientes.",
+        "ca": "Prestació econòmica periòdica per garantir els mínims de subsistència a persones o famílies sense recursos suficients."
+      },
+      "requisitos": {
+        "es": [
+          "Personas o unidades familiares con recursos insuficientes que cumplen los requisitos de la prestación y están en disposición de activarse laboralmente."
+        ],
+        "ca": [
+          "Persones o unitats familiars amb recursos insuficients que compleixen els requisits de la prestació i estan en disposició d'activar-se laboralment."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://tramits.gencat.cat/es/tramits/tramits-temes/rgc-i-complement-activables",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "gencat-rgc-no-activable",
+      "nombre": {
+        "es": "Complemento de pensiones, prestaciones y otras ayudas estatales (RGC no activable)",
+        "ca": "Complement de pensions, prestacions i altres ajuts estatals (RGC no activable)"
+      },
+      "ambito": "economia",
+      "para_quien": {
+        "es": "Personas que reciben determinadas prestaciones estatales y pueden tener derecho a complemento hasta el umbral de la RGC.",
+        "ca": "Persones que reben determinades prestacions estatals i poden tenir dret a complement fins al llindar de la RGC."
+      },
+      "para_que_sirve": {
+        "es": "Complementa determinadas pensiones o prestaciones estatales hasta el umbral de renta garantizada, sin exigir disponibilidad para activarse laboralmente.",
+        "ca": "Complementa determinades pensions o prestacions estatals fins al llindar de renda garantida, sense exigir disponibilitat per activar-se laboralment."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que reciben determinadas prestaciones estatales y pueden tener derecho a complemento hasta el umbral de la RGC."
+        ],
+        "ca": [
+          "Persones que reben determinades prestacions estatals i poden tenir dret a complement fins al llindar de la RGC."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Generalitat de Catalunya",
+      "enlace_oficial": "https://tramits.gencat.cat/es/tramits/tramits-temes/rgc-i-complement-no-activables",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "soc-bonificacion-transporte-atur",
+      "nombre": {
+        "es": "Bonificación de transporte público para personas desempleadas (T-Mes bonificada)",
+        "ca": "Bonificació de transport públic per a persones en situació d'atur (T-Mes bonificada)"
+      },
+      "ambito": "empleo",
+      "para_quien": {
+        "es": "Personas en situación de desempleo que perciben un subsidio o ayuda inferior al SMI, o que cumplen requisitos de inscripción y búsqueda activa de empleo.",
+        "ca": "Persones en situació d'atur que perceben un subsidi o ajut inferior a l'SMI, o que compleixen requisits d'inscripció i cerca activa de feina."
+      },
+      "para_que_sirve": {
+        "es": "Da acceso a la T-Mes bonificada (6,50 €, según requisitos vigentes del SOC) en el área del Camp de Tarragona.",
+        "ca": "Dona accés a la T-Mes bonificada (6,50 €, segons requisits vigents del SOC) a l'àrea del Camp de Tarragona."
+      },
+      "requisitos": {
+        "es": [
+          "Personas en situación de desempleo que perciben un subsidio o ayuda inferior al SMI, o que cumplen requisitos de inscripción y búsqueda activa de empleo."
+        ],
+        "ca": [
+          "Persones en situació d'atur que perceben un subsidi o ajut inferior a l'SMI, o que compleixen requisits d'inscripció i cerca activa de feina."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servei d'Ocupació de Catalunya (SOC) / Generalitat de Catalunya",
+      "enlace_oficial": "https://serveiocupacio.gencat.cat/es/persones/estic-atur/prestacions-subsidis/ajuts-transport-public-persones-situacio-atur/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "soc-formacion-empleo",
+      "nombre": {
+        "es": "Formación profesional para el empleo",
+        "ca": "Formació professional per a l'ocupació"
+      },
+      "ambito": "formacion",
+      "para_quien": {
+        "es": "Personas desempleadas u ocupadas que quieran mejorar su cualificación o acceder a certificados profesionales.",
+        "ca": "Persones desocupades o ocupades que vulguin millorar la seva qualificació o accedir a certificats professionals."
+      },
+      "para_que_sirve": {
+        "es": "Buscador de cursos de formación profesional para el empleo del SOC.",
+        "ca": "Cercador de cursos de formació professional per a l'ocupació del SOC."
+      },
+      "requisitos": {
+        "es": [
+          "Personas desempleadas u ocupadas que quieran mejorar su cualificación o acceder a certificados profesionales."
+        ],
+        "ca": [
+          "Persones desocupades o ocupades que vulguin millorar la seva qualificació o accedir a certificats professionals."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servei d'Ocupació de Catalunya (SOC) / Generalitat de Catalunya",
+      "enlace_oficial": "https://serveiocupacio.gencat.cat/es/persones/vull-formar-me/cercadors-formacio-especialitats/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "soc-becas-formacion",
+      "nombre": {
+        "es": "Becas y ayudas vinculadas a formación",
+        "ca": "Beques i ajuts vinculats a formació"
+      },
+      "ambito": "formacion",
+      "para_quien": {
+        "es": "Personas participantes en determinadas acciones formativas del SOC que pueden necesitar ayuda de transporte, manutención, alojamiento, conciliación o discapacidad.",
+        "ca": "Persones participants en determinades accions formatives del SOC que puguin necessitar ajut de transport, manutenció, allotjament, conciliació o discapacitat."
+      },
+      "para_que_sirve": {
+        "es": "Ayudas económicas complementarias para poder asistir a una acción formativa del SOC.",
+        "ca": "Ajuts econòmics complementaris per poder assistir a una acció formativa del SOC."
+      },
+      "requisitos": {
+        "es": [
+          "Personas participantes en determinadas acciones formativas del SOC que pueden necesitar ayuda de transporte, manutención, alojamiento, conciliación o discapacidad."
+        ],
+        "ca": [
+          "Persones participants en determinades accions formatives del SOC que puguin necessitar ajut de transport, manutenció, allotjament, conciliació o discapacitat."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servei d'Ocupació de Catalunya (SOC) / Generalitat de Catalunya",
+      "enlace_oficial": "https://serveiocupacio.gencat.cat/es/persones/vull-formar-me/beques-ajuts/ajuts-per-a-lassistencia-a-una-accio-formativa-del-soc-/index.html",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "soc-programas-orientacion-insercion",
+      "nombre": {
+        "es": "Programas de orientación e inserción laboral",
+        "ca": "Programes d'orientació i inserció laboral"
+      },
+      "ambito": "trabajo",
+      "para_quien": {
+        "es": "Personas que buscan acompañamiento, formación y contratación, dirigidos a diferentes colectivos.",
+        "ca": "Persones que busquen acompanyament, formació i contractació, dirigits a diferents col·lectius."
+      },
+      "para_que_sirve": {
+        "es": "Catálogo de programas de orientación, formación y contratación del SOC.",
+        "ca": "Catàleg de programes d'orientació, formació i contractació del SOC."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que buscan acompañamiento, formación y contratación, dirigidos a diferentes colectivos."
+        ],
+        "ca": [
+          "Persones que busquen acompanyament, formació i contractació, dirigits a diferents col·lectius."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Servei d'Ocupació de Catalunya (SOC) / Generalitat de Catalunya",
+      "enlace_oficial": "https://serveiocupacio.gencat.cat/es/soc/cataleg-programes/",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "inss-imv",
+      "nombre": {
+        "es": "Ingreso Mínimo Vital (IMV)",
+        "ca": "Ingrés Mínim Vital (IMV)"
+      },
+      "ambito": "economia",
+      "para_quien": {
+        "es": "Personas solas o unidades de convivencia en situación de vulnerabilidad económica.",
+        "ca": "Persones soles o unitats de convivència en situació de vulnerabilitat econòmica."
+      },
+      "para_que_sirve": {
+        "es": "Prestación estatal dirigida a garantizar un nivel mínimo de renta a personas o familias en situación de vulnerabilidad.",
+        "ca": "Prestació estatal dirigida a garantir un nivell mínim de renda a persones o famílies en situació de vulnerabilitat."
+      },
+      "requisitos": {
+        "es": [
+          "Personas solas o unidades de convivencia en situación de vulnerabilidad económica."
+        ],
+        "ca": [
+          "Persones soles o unitats de convivència en situació de vulnerabilitat econòmica."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/65850d68-8d06-4645-bde7-05374ee42ac7?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "La cuantía se determina según la renta garantizada aplicable y los ingresos computables.",
+        "ca": "La quantia es determina segons la renda garantida aplicable i els ingressos computables."
+      },
+      "nota": "Este enlace es una página general de la Seguridad Social sobre prestaciones familiares; confirmar con Logos si hay un enlace más específico."
+    },
+    {
+      "id": "inss-capi",
+      "nombre": {
+        "es": "Complemento de Ayuda para la Infancia (CAPI)",
+        "ca": "Complement d'Ajuda per a la Infància (CAPI)"
+      },
+      "ambito": "economia",
+      "para_quien": {
+        "es": "Unidades de convivencia con menores a cargo que cumplen los requisitos económicos, vinculado al Ingreso Mínimo Vital.",
+        "ca": "Unitats de convivència amb menors a càrrec que compleixen els requisits econòmics, vinculat a l'Ingrés Mínim Vital."
+      },
+      "para_que_sirve": {
+        "es": "Complemento económico para unidades familiares con menores que perciben el IMV.",
+        "ca": "Complement econòmic per a unitats familiars amb menors que perceben l'IMV."
+      },
+      "requisitos": {
+        "es": [
+          "Unidades de convivencia con menores a cargo que cumplen los requisitos económicos, vinculado al Ingreso Mínimo Vital."
+        ],
+        "ca": [
+          "Unitats de convivència amb menors a càrrec que compleixen els requisits econòmics, vinculat a l'Ingrés Mínim Vital."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/65850d68-8d06-4645-bde7-05374ee42ac7?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Importe según edad del menor y requisitos vigentes.",
+        "ca": "Import segons edat del menor i requisits vigents."
+      },
+      "nota": "Comparte página oficial con el IMV; confirmar con Logos si existe un enlace más específico."
+    },
+    {
+      "id": "inss-nacimiento-cuidado-menor",
+      "nombre": {
+        "es": "Nacimiento y cuidado de menor",
+        "ca": "Naixement i cura de menor"
+      },
+      "ambito": "familia",
+      "para_quien": {
+        "es": "Personas trabajadoras por cuenta ajena o propia en supuestos de nacimiento, adopción, guarda o acogimiento.",
+        "ca": "Persones treballadores per compte d'altri o pròpia en supòsits de naixement, adopció, guarda o acolliment."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio para personas trabajadoras durante el periodo de descanso por nacimiento, adopción, guarda o acogimiento.",
+        "ca": "Subsidi per a persones treballadores durant el període de descans per naixement, adopció, guarda o acolliment."
+      },
+      "requisitos": {
+        "es": [
+          "Personas trabajadoras por cuenta ajena o propia en supuestos de nacimiento, adopción, guarda o acogimiento."
+        ],
+        "ca": [
+          "Persones treballadores per compte d'altri o pròpia en supòsits de naixement, adopció, guarda o acolliment."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/6b96a085-4dc0-47af-b2cb-97e00716791e?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Con carácter general, subsidio equivalente al 100 % de la base reguladora correspondiente.",
+        "ca": "Amb caràcter general, subsidi equivalent al 100 % de la base reguladora corresponent."
+      }
+    },
+    {
+      "id": "inss-pago-unico-nacimiento-protegido",
+      "nombre": {
+        "es": "Pago único por nacimiento o adopción en familias numerosas, monoparentales o con progenitor con discapacidad",
+        "ca": "Pagament únic per naixement o adopció en famílies nombroses, monoparentals o amb progenitor amb discapacitat"
+      },
+      "ambito": "familia",
+      "para_quien": {
+        "es": "Familias numerosas, monoparentales o con progenitor con discapacidad, cuando se cumplen los requisitos.",
+        "ca": "Famílies nombroses, monoparentals o amb progenitor amb discapacitat, quan es compleixen els requisits."
+      },
+      "para_que_sirve": {
+        "es": "Ayuda económica de pago único ante el nacimiento o adopción en familias en estas situaciones.",
+        "ca": "Ajut econòmic de pagament únic davant el naixement o adopció en famílies en aquestes situacions."
+      },
+      "requisitos": {
+        "es": [
+          "Familias numerosas, monoparentales o con progenitor con discapacidad, cuando se cumplen los requisitos."
+        ],
+        "ca": [
+          "Famílies nombroses, monoparentals o amb progenitor amb discapacitat, quan es compleixen els requisits."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10967?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Pago único según normativa vigente.",
+        "ca": "Pagament únic segons normativa vigent."
+      }
+    },
+    {
+      "id": "inss-nacimiento-multiple",
+      "nombre": {
+        "es": "Nacimiento o adopción múltiples",
+        "ca": "Naixement o adopció múltiples"
+      },
+      "ambito": "familia",
+      "para_quien": {
+        "es": "Familias con nacimiento o adopción simultánea de dos o más menores.",
+        "ca": "Famílies amb naixement o adopció simultània de dos o més menors."
+      },
+      "para_que_sirve": {
+        "es": "Ayuda económica de pago único para familias con nacimiento o adopción múltiple.",
+        "ca": "Ajut econòmic de pagament únic per a famílies amb naixement o adopció múltiple."
+      },
+      "requisitos": {
+        "es": [
+          "Familias con nacimiento o adopción simultánea de dos o más menores."
+        ],
+        "ca": [
+          "Famílies amb naixement o adopció simultània de dos o més menors."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10967?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Pago único según número de menores y normativa vigente.",
+        "ca": "Pagament únic segons nombre de menors i normativa vigent."
+      },
+      "nota": "Comparte página oficial con el pago único por nacimiento protegido; confirmar con Logos."
+    },
+    {
+      "id": "inss-hijo-cargo-discapacidad",
+      "nombre": {
+        "es": "Prestación por hijo o hija a cargo con discapacidad",
+        "ca": "Prestació per fill o filla a càrrec amb discapacitat"
+      },
+      "ambito": "familia",
+      "para_quien": {
+        "es": "Determinadas familias con hijos o menores a cargo con discapacidad.",
+        "ca": "Determinades famílies amb fills o menors a càrrec amb discapacitat."
+      },
+      "para_que_sirve": {
+        "es": "Prestación económica periódica para familias con hijos o hijas a cargo con discapacidad.",
+        "ca": "Prestació econòmica periòdica per a famílies amb fills o filles a càrrec amb discapacitat."
+      },
+      "requisitos": {
+        "es": [
+          "Determinadas familias con hijos o menores a cargo con discapacidad."
+        ],
+        "ca": [
+          "Determinades famílies amb fills o menors a càrrec amb discapacitat."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10967?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Cuantía según grado de discapacidad y situación.",
+        "ca": "Quantia segons grau de discapacitat i situació."
+      },
+      "nota": "Comparte página oficial con las dos prestaciones anteriores; confirmar con Logos."
+    },
+    {
+      "id": "inss-incapacidad-temporal",
+      "nombre": {
+        "es": "Incapacidad temporal",
+        "ca": "Incapacitat temporal"
+      },
+      "ambito": "salud",
+      "para_quien": {
+        "es": "Personas trabajadoras temporalmente imposibilitadas para trabajar por enfermedad o accidente.",
+        "ca": "Persones treballadores temporalment impossibilitades per treballar per malaltia o accident."
+      },
+      "para_que_sirve": {
+        "es": "Prestación económica que sustituye el salario mientras dura la baja médica.",
+        "ca": "Prestació econòmica que substitueix el salari mentre dura la baixa mèdica."
+      },
+      "requisitos": {
+        "es": [
+          "Personas trabajadoras temporalmente imposibilitadas para trabajar por enfermedad o accidente."
+        ],
+        "ca": [
+          "Persones treballadores temporalment impossibilitades per treballar per malaltia o accident."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS) / mutua",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10952?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Porcentaje de la base reguladora según contingencia y periodo.",
+        "ca": "Percentatge de la base reguladora segons contingència i període."
+      }
+    },
+    {
+      "id": "inss-incapacidad-permanente",
+      "nombre": {
+        "es": "Incapacidad permanente",
+        "ca": "Incapacitat permanent"
+      },
+      "ambito": "salud",
+      "para_quien": {
+        "es": "Personas con reducciones anatómicas o funcionales graves que disminuyen o anulan su capacidad laboral.",
+        "ca": "Persones amb reduccions anatòmiques o funcionals greus que disminueixen o anul·len la seva capacitat laboral."
+      },
+      "para_que_sirve": {
+        "es": "Pensión para personas cuya capacidad laboral queda reducida o anulada de forma permanente.",
+        "ca": "Pensió per a persones la capacitat laboral de les quals queda reduïda o anul·lada de forma permanent."
+      },
+      "requisitos": {
+        "es": [
+          "Personas con reducciones anatómicas o funcionales graves que disminuyen o anulan su capacidad laboral."
+        ],
+        "ca": [
+          "Persones amb reduccions anatòmiques o funcionals greus que disminueixen o anul·len la seva capacitat laboral."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10960?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Depende del grado reconocido y de la base reguladora.",
+        "ca": "Depèn del grau reconegut i de la base reguladora."
+      }
+    },
+    {
+      "id": "inss-riesgo-embarazo",
+      "nombre": {
+        "es": "Riesgo durante el embarazo",
+        "ca": "Risc durant l'embaràs"
+      },
+      "ambito": "salud",
+      "para_quien": {
+        "es": "Trabajadoras embarazadas cuando el puesto de trabajo supone un riesgo y no es posible la adaptación o el cambio de puesto.",
+        "ca": "Treballadores embarassades quan el lloc de treball suposa un risc i no és possible l'adaptació o el canvi de lloc."
+      },
+      "para_que_sirve": {
+        "es": "Prestación económica cuando el embarazo hace incompatible el puesto de trabajo habitual.",
+        "ca": "Prestació econòmica quan l'embaràs fa incompatible el lloc de treball habitual."
+      },
+      "requisitos": {
+        "es": [
+          "Trabajadoras embarazadas cuando el puesto de trabajo supone un riesgo y no es posible la adaptación o el cambio de puesto."
+        ],
+        "ca": [
+          "Treballadores embarassades quan el lloc de treball suposa un risc i no és possible l'adaptació o el canvi de lloc."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS) / mutua",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10956?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "inss-riesgo-lactancia",
+      "nombre": {
+        "es": "Riesgo durante la lactancia natural",
+        "ca": "Risc durant la lactància natural"
+      },
+      "ambito": "salud",
+      "para_quien": {
+        "es": "Trabajadoras en periodo de lactancia natural cuando el puesto de trabajo supone un riesgo y no es posible la adaptación o el cambio de puesto.",
+        "ca": "Treballadores en període de lactància natural quan el lloc de treball suposa un risc i no és possible l'adaptació o el canvi de lloc."
+      },
+      "para_que_sirve": {
+        "es": "Prestación económica cuando la lactancia natural hace incompatible el puesto de trabajo habitual.",
+        "ca": "Prestació econòmica quan la lactància natural fa incompatible el lloc de treball habitual."
+      },
+      "requisitos": {
+        "es": [
+          "Trabajadoras en periodo de lactancia natural cuando el puesto de trabajo supone un riesgo y no es posible la adaptación o el cambio de puesto."
+        ],
+        "ca": [
+          "Treballadores en període de lactància natural quan el lloc de treball suposa un risc i no és possible l'adaptació o el canvi de lloc."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS) / mutua",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/51288?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null
+    },
+    {
+      "id": "inss-cume",
+      "nombre": {
+        "es": "Cuidado de menores con cáncer u otra enfermedad grave (CUME)",
+        "ca": "Cura de menors amb càncer o una altra malaltia greu (CUME)"
+      },
+      "ambito": "familia",
+      "para_quien": {
+        "es": "Progenitores, adoptantes o acogedores que reducen su jornada laboral para el cuidado directo de un/a menor afectado/a por cáncer u otra enfermedad grave.",
+        "ca": "Progenitors, adoptants o acollidors que redueixen la seva jornada laboral per a la cura directa d'un/a menor afectat/da per càncer o una altra malaltia greu."
+      },
+      "para_que_sirve": {
+        "es": "Subsidio vinculado a la reducción de jornada para el cuidado de un menor con enfermedad grave.",
+        "ca": "Subsidi vinculat a la reducció de jornada per a la cura d'un menor amb malaltia greu."
+      },
+      "requisitos": {
+        "es": [
+          "Progenitores, adoptantes o acogedores que reducen su jornada laboral para el cuidado directo de un/a menor afectado/a por cáncer u otra enfermedad grave."
+        ],
+        "ca": [
+          "Progenitors, adoptants o acollidors que redueixen la seva jornada laboral per a la cura directa d'un/a menor afectat/da per càncer o una altra malaltia greu."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS) / mutua",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/1941?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Subsidio vinculado a la reducción de jornada y la base reguladora.",
+        "ca": "Subsidi vinculat a la reducció de jornada i la base reguladora."
+      }
+    },
+    {
+      "id": "inss-jubilacion",
+      "nombre": {
+        "es": "Jubilación",
+        "ca": "Jubilació"
+      },
+      "ambito": "trabajo",
+      "para_quien": {
+        "es": "Personas que alcanzan la edad y los años de cotización requeridos.",
+        "ca": "Persones que assoleixen l'edat i els anys de cotització requerits."
+      },
+      "para_que_sirve": {
+        "es": "Pensión vitalicia para personas que cesan su actividad laboral al alcanzar la edad de jubilación.",
+        "ca": "Pensió vitalícia per a persones que cessen la seva activitat laboral en assolir l'edat de jubilació."
+      },
+      "requisitos": {
+        "es": [
+          "Personas que alcanzan la edad y los años de cotización requeridos."
+        ],
+        "ca": [
+          "Persones que assoleixen l'edat i els anys de cotització requerits."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10963?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Pensión según bases reguladoras y años cotizados.",
+        "ca": "Pensió segons bases reguladores i anys cotitzats."
+      }
+    },
+    {
+      "id": "inss-viudedad",
+      "nombre": {
+        "es": "Viudedad",
+        "ca": "Viduïtat"
+      },
+      "ambito": "economia",
+      "para_quien": {
+        "es": "Cónyuge, pareja de hecho u otros supuestos legalmente protegidos, tras el fallecimiento de la persona causante.",
+        "ca": "Cònjuge, parella de fet o altres supòsits legalment protegits, després de la defunció de la persona causant."
+      },
+      "para_que_sirve": {
+        "es": "Pensión para el cónyuge o pareja de hecho superviviente tras el fallecimiento de la persona causante.",
+        "ca": "Pensió per al cònjuge o parella de fet supervivent després de la defunció de la persona causant."
+      },
+      "requisitos": {
+        "es": [
+          "Cónyuge, pareja de hecho u otros supuestos legalmente protegidos, tras el fallecimiento de la persona causante."
+        ],
+        "ca": [
+          "Cònjuge, parella de fet o altres supòsits legalment protegits, després de la defunció de la persona causant."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10964?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Pensión según base reguladora y situación.",
+        "ca": "Pensió segons base reguladora i situació."
+      },
+      "nota": "Comparte página oficial con orfandad y prestaciones en favor de familiares; confirmar con Logos."
+    },
+    {
+      "id": "inss-orfandad",
+      "nombre": {
+        "es": "Orfandad",
+        "ca": "Orfandat"
+      },
+      "ambito": "familia",
+      "para_quien": {
+        "es": "Hijos e hijas de la persona fallecida que cumplen los requisitos establecidos.",
+        "ca": "Fills i filles de la persona difunta que compleixen els requisits establerts."
+      },
+      "para_que_sirve": {
+        "es": "Pensión para hijos e hijas tras el fallecimiento de un progenitor.",
+        "ca": "Pensió per a fills i filles després de la defunció d'un progenitor."
+      },
+      "requisitos": {
+        "es": [
+          "Hijos e hijas de la persona fallecida que cumplen los requisitos establecidos."
+        ],
+        "ca": [
+          "Fills i filles de la persona difunta que compleixen els requisits establerts."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10964?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Pensión según base reguladora y circunstancias.",
+        "ca": "Pensió segons base reguladora i circumstàncies."
+      },
+      "nota": "Comparte página oficial con viudedad y prestaciones en favor de familiares; confirmar con Logos."
+    },
+    {
+      "id": "inss-prestaciones-favor-familiares",
+      "nombre": {
+        "es": "Prestaciones en favor de familiares",
+        "ca": "Prestacions en favor de familiars"
+      },
+      "ambito": "economia",
+      "para_quien": {
+        "es": "Determinados familiares que dependían económicamente de la persona fallecida.",
+        "ca": "Determinats familiars que depenien econòmicament de la persona difunta."
+      },
+      "para_que_sirve": {
+        "es": "Prestación para familiares que dependían económicamente de la persona fallecida y no tienen derecho a otra pensión.",
+        "ca": "Prestació per a familiars que depenien econòmicament de la persona difunta i no tenen dret a una altra pensió."
+      },
+      "requisitos": {
+        "es": [
+          "Determinados familiares que dependían económicamente de la persona fallecida."
+        ],
+        "ca": [
+          "Determinats familiars que depenien econòmicament de la persona difunta."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Consultar la documentación exacta en el trámite oficial."
+        ],
+        "ca": [
+          "Consultar la documentació exacta al tràmit oficial."
+        ]
+      },
+      "organismo": "Instituto Nacional de la Seguridad Social (INSS)",
+      "enlace_oficial": "https://www.seg-social.es/wps/portal/wss/internet/Trabajadores/PrestacionesPensionesTrabajadores/10964?changeLanguage=es",
+      "coste": {
+        "es": "gratuito",
+        "ca": "gratuït"
+      },
+      "como_se_solicita": {
+        "es": "Trámite online en la sede electrónica del organismo correspondiente, o presencial con cita previa.",
+        "ca": "Tràmit en línia a la seu electrònica de l'organisme corresponent, o presencialment amb cita prèvia."
+      },
+      "relacionado_logos": true,
+      "estado_enlace": "pendiente",
+      "ultima_verificacion": "2026-08-27",
+      "municipio": null,
+      "cuantia": {
+        "es": "Según requisitos y normativa.",
+        "ca": "Segons requisits i normativa."
+      },
+      "nota": "Comparte página oficial con viudedad y orfandad; confirmar con Logos."
     }
   ]
 }
