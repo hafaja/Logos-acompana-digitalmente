@@ -66,6 +66,11 @@
   .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal);}
   .checkbox-row{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:13px;cursor:pointer;}
   .checkbox-row input{margin-top:3px;flex-shrink:0;}
+  .rating-row{margin-top:6px;}
+  .rating-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
+  .rating-scale{display:flex;justify-content:space-between;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:8px 4px;}
+  .rating-opt{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer;flex:1;}
+  .rating-opt input{margin:0;}
   .primary-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;margin-top:4px;}
   .primary-btn:disabled{opacity:.6;cursor:default;}
   .link-btn{background:none;border:none;color:var(--teal-dark);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:0;}
@@ -162,6 +167,16 @@
   <div class="screen" id="screen-atencion">
     <div class="topbar"><button class="back-btn" onclick="showScreen('panel');renderPanel()">← Panel Logos</button></div>
     <div class="content" id="atencion-content"></div>
+  </div>
+
+  <div class="screen" id="screen-consentimiento">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">←</button></div>
+    <div class="content" id="consentimiento-content"></div>
+  </div>
+
+  <div class="screen" id="screen-encuesta">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">←</button></div>
+    <div class="content" id="encuesta-content"></div>
   </div>
 
   <div class="navbar">
@@ -367,7 +382,7 @@ const T1 = {
     discapacidad:'Discapacidad reconocida', dependencia:'Dependencia reconocida',
     ingresos:'Nivel de ingresos aproximado', si:'Sí', no:'No', prefiero:'Prefiero no decirlo',
     guardarDatos:'Guardar mis datos', datosGuardados:'Datos guardados correctamente.',
-    completarDatos:'Completar mis datos', misTramites:'MIS TRÁMITES', misDocumentos:'MIS DOCUMENTOS',
+    completarDatos:'Llenar mis datos', misTramites:'MIS TRÁMITES', misDocumentos:'MIS DOCUMENTOS',
     sinTramites:'Todavía no tienes trámites registrados.', sinDocumentos:'Todavía no has subido documentos.',
     subirDocumento:'Subir un documento', subiendo:'Subiendo…', tomarFoto:'📷 Tomar una foto',
     cerrarSesion:'Cerrar sesión', perfilIncompleto:'Perfil incompleto',
@@ -384,7 +399,7 @@ const T1 = {
     discapacidad:'Discapacitat reconeguda', dependencia:'Dependència reconeguda',
     ingresos:'Nivell d\'ingressos aproximat', si:'Sí', no:'No', prefiero:'Prefereixo no dir-ho',
     guardarDatos:'Desar les meves dades', datosGuardados:'Dades desades correctament.',
-    completarDatos:'Completar les meves dades', misTramites:'ELS MEUS TRÀMITS', misDocumentos:'ELS MEUS DOCUMENTS',
+    completarDatos:'Omplir les meves dades', misTramites:'ELS MEUS TRÀMITS', misDocumentos:'ELS MEUS DOCUMENTS',
     sinTramites:'Encara no tens tràmits registrats.', sinDocumentos:'Encara no has pujat documents.',
     subirDocumento:'Pujar un document', subiendo:'Pujant…', tomarFoto:'📷 Fer una foto',
     cerrarSesion:'Tancar sessió', perfilIncompleto:'Perfil incomplet',
@@ -418,6 +433,11 @@ async function initAuth(){
   if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
 }
 
+async function marcarNotificacionLeida(id){
+  await sb.from('notificaciones').update({ leida: true }).eq('id', id);
+  renderPanel();
+}
+
 async function renderPanel(){
   if(!IS_STAFF){
     document.getElementById('panel-content').innerHTML = `<div class="placeholder">Esta sección es solo para el equipo de Logos.</div>`;
@@ -425,14 +445,16 @@ async function renderPanel(){
   }
   document.getElementById('panel-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm] = await Promise.all([
+  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion] = await Promise.all([
     sb.from('stats_total_personas').select('*').maybeSingle(),
     sb.from('stats_por_sexo').select('*'),
     sb.from('stats_por_nacionalidad').select('*'),
     sb.from('stats_dependencia_discapacidad').select('*').maybeSingle(),
     sb.from('stats_situaciones_familiares').select('*').maybeSingle(),
     sb.from('stats_tramites_por_estado').select('*'),
-    sb.from('stats_intereses_formativos').select('*')
+    sb.from('stats_intereses_formativos').select('*'),
+    sb.from('notificaciones').select('*').eq('leida', false).order('creado_en', { ascending:false }),
+    sb.from('stats_satisfaccion').select('*').maybeSingle()
   ]);
 
   const totalPersonas = total.data ? total.data.total_personas : 0;
@@ -443,9 +465,23 @@ async function renderPanel(){
 
   const dd = depDis.data || {};
   const sf = situFam.data || {};
+  const sat = satisfaccion.data || {};
+
+  const notifsHtml = (notifs.data && notifs.data.length)
+    ? notifs.data.map(n => `
+        <div class="panel-stat-row" style="align-items:flex-start;">
+          <span>${n.mensaje}<br><span class="subtle" style="font-size:11px;">${new Date(n.creado_en).toLocaleString('es-ES')}</span></span>
+          <button class="link-btn" style="font-size:12px;flex-shrink:0;" onclick="marcarNotificacionLeida('${n.id}')">Marcar leída</button>
+        </div>`).join('')
+    : `<div class="empty-note">No hay alertas nuevas</div>`;
 
   document.getElementById('panel-content').innerHTML = `
     <button class="primary-btn" onclick="showScreen('atencion');renderAtencionForm()" style="margin-bottom:16px;">➕ Registrar nueva atención</button>
+
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+      <h3 style="color:#7A4A1F;">🔔 Alertas nuevas</h3>
+      ${notifsHtml}
+    </div>
 
     <div class="panel-card" style="text-align:center;">
       <div class="panel-big-number">${totalPersonas}</div>
@@ -476,6 +512,17 @@ async function renderPanel(){
       <div class="panel-stat-row"><span>En situación de desempleo</span><span><strong>${sf.en_desempleo || 0}</strong></span></div>
       <div class="panel-stat-row"><span>Violencia de género</span><span><strong>${sf.violencia_genero || 0}</strong></span></div>
       <div class="panel-stat-row"><span>Dificultades emocionales</span><span><strong>${sf.dificultades_emocionales || 0}</strong></span></div>
+    </div>
+
+    <div class="panel-card">
+      <h3>Satisfacción</h3>
+      <div class="panel-stat-row"><span>Media global</span><span><strong>${sat.media_global || '—'} / 5</strong></span></div>
+      <div class="panel-stat-row"><span>Experiencia global</span><span><strong>${sat.media_experiencia || '—'} / 5</strong></span></div>
+      <div class="panel-stat-row"><span>Calidad de servicios</span><span><strong>${sat.media_calidad || '—'} / 5</strong></span></div>
+      <div class="panel-stat-row"><span>Profesionalidad y atención</span><span><strong>${sat.media_profesionalidad || '—'} / 5</strong></span></div>
+      <div class="panel-stat-row"><span>Tiempo de respuesta</span><span><strong>${sat.media_tiempo_respuesta || '—'} / 5</strong></span></div>
+      <div class="panel-stat-row"><span>Resolución de la necesidad</span><span><strong>${sat.media_resolucion || '—'} / 5</strong></span></div>
+      <div class="panel-stat-row"><span>Respuestas recibidas</span><span><strong>${sat.total_respuestas || 0}</strong></span></div>
     </div>
 
     <div class="panel-card">
@@ -767,7 +814,7 @@ async function renderDashboard(){
         <span>${municipio}${!perfil || !perfil.nombre_completo ? ' · ' + t.perfilIncompleto : ''}</span>
       </div>
     </div>
-    <button class="primary-btn" style="margin-bottom:20px;" onclick="renderPerfilForm(${perfil ? 'true' : 'false'})">${t.completarDatos}</button>
+    <button class="primary-btn" style="margin-bottom:20px;" onclick="abrirDatos()">${t.completarDatos}</button>
 
     <div class="section-label">${t.misTramites}</div>
     ${tramitesHtml}
@@ -786,6 +833,8 @@ async function renderDashboard(){
       <input type="file" id="doc-consentimiento-input" accept="image/*,application/pdf">
       <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-consentimiento-input','consentimiento')">${LANG==='ca' ? 'Pujar consentiment firmat' : 'Subir consentimiento firmado'}</button>
     </div>
+
+    <button class="primary-btn" style="background:var(--teal);margin-top:18px;" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? '📋 Enquesta de satisfacció' : '📋 Encuesta de satisfacción'}</button>
 
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
   `;
@@ -815,6 +864,219 @@ async function borrarDocumento(id){
   await sb.storage.from('documentos').remove([doc.ruta_storage]);
   await sb.from('documentos').delete().eq('id', id);
   renderDashboard();
+}
+
+function abrirDatos(){
+  const p = window.__perfilActual;
+  if(!p || !p.consentimiento_firmado){
+    showScreen('consentimiento');
+    renderConsentimientoScreen();
+  } else {
+    showScreen('profile');
+    renderPerfilForm();
+  }
+}
+
+function renderConsentimientoScreen(){
+  const esCA = LANG === 'ca';
+  document.getElementById('consentimiento-content').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'Document de consentiment per al tractament de dades personals' : 'Documento de consentimiento para el tratamiento de datos personales'}</h2>
+
+    <div class="panel-card">
+      <h3>${esCA ? '1. Responsable del tractament' : '1. Responsable del tratamiento'}</h3>
+      <p style="margin:0;">Associació Logos Projectes Socials<br>
+      NIF: G55725436<br>
+      ${esCA ? 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona' : 'Calle de la Pau del Protectorat, 14, 43004 Tarragona'}<br>
+      ${esCA ? 'Correu electrònic' : 'Correo electrónico'}: info@logostgn.cat</p>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? '2. Finalitat del tractament' : '2. Finalidad del tratamiento'}</h3>
+      <p style="margin:0 0 6px;">${esCA ? 'Les dades personals facilitades seran tractades per:' : 'Los datos personales facilitados serán tratados para:'}</p>
+      <ul style="margin:0;padding-left:18px;">
+        <li>${esCA ? 'La gestió administrativa, operativa i funcional de la participació en programes i serveis.' : 'La gestión administrativa, operativa y funcional de la participación en programas y servicios.'}</li>
+        <li>${esCA ? 'El compliment d\'obligacions legals derivades de subvencions i convenis.' : 'El cumplimiento de obligaciones legales derivadas de subvenciones y convenios.'}</li>
+        <li>${esCA ? 'Comunicacions informatives relacionades amb els serveis de l\'entitat.' : 'Comunicaciones informativas relacionadas con los servicios de la entidad.'}</li>
+        <li>${esCA ? 'Elaboració d\'estadístiques i memòries amb dades anonimitzades.' : 'Elaboración de estadísticas y memorias con datos anonimizados.'}</li>
+        <li>${esCA ? 'Justificació de les subvencions rebudes.' : 'Justificación de las subvenciones recibidas.'}</li>
+        <li>${esCA ? 'Conservació de les dades durant els terminis legals establerts.' : 'Conservación de los datos durante los plazos legales establecidos.'}</li>
+      </ul>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? '3. Legitimació' : '3. Legitimación'}</h3>
+      <p style="margin:0 0 6px;">${esCA
+        ? 'El tractament es basa en la Llei orgànica 3/2018 (LOPDGDD) i el Reglament (UE) 2016/679 (RGPD):'
+        : 'El tratamiento se basa en la Ley orgánica 3/2018 (LOPDGDD) y el Reglamento (UE) 2016/679 (RGPD):'}</p>
+      <ul style="margin:0;padding-left:18px;">
+        <li>${esCA ? 'El consentiment exprés de la persona interessada (Art. 6.1.a RGPD).' : 'El consentimiento expreso de la persona interesada (Art. 6.1.a RGPD).'}</li>
+        <li>${esCA ? 'El compliment d\'obligacions legals (Art. 6.1.c RGPD).' : 'El cumplimiento de obligaciones legales (Art. 6.1.c RGPD).'}</li>
+        <li>${esCA ? 'El compliment d\'una missió d\'interès públic vinculada als programes socials (Art. 6.1.e RGPD).' : 'El cumplimiento de una misión de interés público vinculada a los programas sociales (Art. 6.1.e RGPD).'}</li>
+        <li>${esCA ? 'Per a dades especialment sensibles, el tractament es realitza conforme a l\'Art. 9.2 del RGPD.' : 'Para datos especialmente sensibles, el tratamiento se realiza conforme al Art. 9.2 del RGPD.'}</li>
+      </ul>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? '4. Destinataris' : '4. Destinatarios'}</h3>
+      <p style="margin:0 0 6px;">${esCA ? 'Les dades no seran cedides a tercers excepte:' : 'Los datos no serán cedidos a terceros excepto:'}</p>
+      <ul style="margin:0;padding-left:18px;">
+        <li>${esCA
+          ? 'Administracions públiques que ho requereixin per obligació legal. En el projecte "Mirada Endavant", les dades imprescindibles seran comunicades al Departament de Drets Socials i Inclusió de la Generalitat de Catalunya per a la justificació de la subvenció (Ordre DSO/283/2023).'
+          : 'Administraciones públicas que lo requieran por obligación legal. En el proyecto "Mirada Endavant", los datos imprescindibles serán comunicados al Departamento de Derechos Sociales e Inclusión de la Generalitat de Catalunya para la justificación de la subvención (Orden DSO/283/2023).'}</li>
+        <li>${esCA ? 'Entitats col·laboradores o finançadores quan sigui necessari.' : 'Entidades colaboradoras o financiadoras cuando sea necesario.'}</li>
+        <li>${esCA ? 'Proveïdors amb contracte d\'encarregat del tractament (Art. 28 RGPD).' : 'Proveedores con contrato de encargado del tratamiento (Art. 28 RGPD).'}</li>
+      </ul>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? '5. Drets de la persona interessada' : '5. Derechos de la persona interesada'}</h3>
+      <p style="margin:0;">${esCA
+        ? 'Pots exercir els drets d\'accés, rectificació, supressió, oposició, limitació i portabilitat escrivint a info@logostgn.cat amb un document identificatiu adjunt. En cas de desacord, pots presentar una reclamació a l\'Agència Espanyola de Protecció de Dades (www.aepd.es).'
+        : 'Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a info@logostgn.cat con un documento identificativo adjunto. En caso de desacuerdo, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es).'}</p>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? '6. Conservació de les dades' : '6. Conservación de los datos'}</h3>
+      <p style="margin:0;">${esCA
+        ? 'Les dades es conservaran mentre existeixi relació amb l\'entitat i durant els terminis legals exigits. Posteriorment, es suprimiran o anonimitzaran.'
+        : 'Los datos se conservarán mientras exista relación con la entidad y durante los plazos legales exigidos. Posteriormente, se suprimirán o anonimizarán.'}</p>
+    </div>
+
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+      <h3 style="color:#7A4A1F;">${esCA ? 'Clàusula sobre responsabilitat en tràmits' : 'Cláusula sobre responsabilidad en trámites'}</h3>
+      <p style="margin:0;">${esCA
+        ? "L'Associació Logos Projectes Socials presta un servei d'acompanyament, suport i orientació en la realització de tràmits administratius i gestions digitals. L'entitat <strong>no és responsable del resultat final dels tràmits</strong>, ni de la seva resolució, terminis de resposta, incidències tècniques o eventual denegació, ja que aquests depenen exclusivament dels organismes i administracions competents."
+        : "La Associació Logos Projectes Socials presta un servicio de acompañamiento, apoyo y orientación en la realización de trámites administrativos y gestiones digitales. La entidad <strong>no es responsable del resultado final de los trámites</strong>, ni de su resolución, plazos de respuesta, incidencias técnicas o eventual denegación, ya que estos dependen exclusivamente de los organismos y administraciones competentes."}</p>
+    </div>
+
+    <div class="panel-card">
+      <h3>${esCA ? 'Consentiment de la persona interessada' : 'Consentimiento de la persona interesada'}</h3>
+      <label class="checkbox-row"><input type="checkbox" id="cons-tractament">
+        ${esCA ? "AUTORITZO el tractament de les meves dades personals segons la normativa vigent (RGPD i LOPDGDD)." : "AUTORIZO el tratamiento de mis datos personales según la normativa vigente (RGPD y LOPDGDD)."}
+        <span style="color:var(--alert);">*</span>
+      </label>
+      <label class="checkbox-row"><input type="checkbox" id="cons-cesion">
+        ${esCA ? "AUTORITZO la cessió de les meves dades als organismes públics que així ho requereixin legalment." : "AUTORIZO la cesión de mis datos a los organismos públicos que así lo requieran legalmente."}
+      </label>
+      <label class="checkbox-row"><input type="checkbox" id="cons-contacto">
+        ${esCA ? "AUTORITZO el contacte per vies electròniques o telefòniques." : "AUTORIZO el contacto por vías electrónicas o telefónicas."}
+      </label>
+      <label class="checkbox-row"><input type="checkbox" id="cons-imagen">
+        ${esCA ? "AUTORITZO l'ús de la meva imatge i/o veu en activitats de Logos amb finalitats informatives, educatives i de difusió." : "AUTORIZO el uso de mi imagen y/o voz en actividades de Logos con finalidades informativas, educativas y de difusión."}
+      </label>
+      <p class="subtle" style="margin-top:8px;">${esCA ? '* Obligatori per continuar.' : '* Obligatorio para continuar.'}</p>
+    </div>
+
+    <button class="primary-btn" id="consent-btn" onclick="firmarConsentimientoGeneral()">${esCA ? 'Declaro haver llegit i entès tota la informació i continuo' : 'Declaro haber leído y entendido toda la información y continúo'}</button>
+  `;
+}
+
+async function firmarConsentimientoGeneral(){
+  const esCA = LANG === 'ca';
+  if(!document.getElementById('cons-tractament').checked){
+    document.getElementById('consentimiento-content').insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${esCA ? 'Cal marcar l\'autorització de tractament de dades per continuar.' : 'Debes marcar la autorización de tratamiento de datos para continuar.'}</div>`);
+    return;
+  }
+  const btn = document.getElementById('consent-btn');
+  btn.disabled = true;
+  const payload = {
+    id: CURRENT_USER.id,
+    consentimiento_firmado: true,
+    consentimiento_fecha: new Date().toISOString().slice(0,10),
+    consentimiento_cesion_organismos: document.getElementById('cons-cesion').checked,
+    consentimiento_contacto: document.getElementById('cons-contacto').checked,
+    consentimiento_imagen_voz: document.getElementById('cons-imagen').checked
+  };
+  const { error } = await sb.from('perfiles').upsert(payload);
+  if(error){
+    document.getElementById('consentimiento-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    btn.disabled = false;
+    return;
+  }
+  const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
+  window.__perfilActual = perfil;
+  showScreen('profile');
+  renderPerfilForm();
+}
+
+function renderEncuestaForm(){
+  const esCA = LANG === 'ca';
+
+  const escala = (id) => `
+    <div class="rating-row" data-name="${id}">
+      <div class="rating-labels"><span>${esCA ? 'Molt insatisfet/da' : 'Muy insatisfecho/a'}</span><span>${esCA ? 'Molt satisfet/da' : 'Muy satisfecho/a'}</span></div>
+      <div class="rating-scale">
+        ${[1,2,3,4,5].map(n => `<label class="rating-opt"><input type="radio" name="${id}" value="${n}"><span>${n}</span></label>`).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('encuesta-content').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'Enquesta de satisfacció' : 'Encuesta de satisfacción'}</h2>
+    <p class="subtle">${esCA
+      ? 'El teu feedback és molt important per a nosaltres. Aquesta enquesta ens ajudarà a millorar els nostres serveis i a oferir-te una millor experiència. Les teves respostes seran anònimes i tractades amb la màxima confidencialitat.'
+      : 'Tu feedback es muy importante para nosotros. Esta encuesta nos ayudará a mejorar nuestros servicios y a ofrecerte una mejor experiencia. Tus respuestas serán anónimas y tratadas con la máxima confidencialidad.'}</p>
+
+    <div class="field">
+      <label>${esCA ? 'Com valoraries la teva experiència global amb la nostra associació?' : '¿Cómo valorarías tu experiencia global con nuestra asociación?'}</label>
+      ${escala('enc-experiencia')}
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Quina qualitat consideres que tenen els nostres serveis?' : '¿Qué calidad consideras que tienen nuestros servicios?'}</label>
+      ${escala('enc-calidad')}
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Com valoraries la professionalitat i atenció dels nostres tècnics?' : '¿Cómo valorarías la profesionalidad y atención de nuestros técnicos?'}</label>
+      ${escala('enc-profesionalidad')}
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Com valoraries el temps de resposta a la vostra sol·licitud?' : '¿Cómo valorarías el tiempo de respuesta a tu solicitud?'}</label>
+      ${escala('enc-tiempo')}
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Com valoraries la resolució de la teva necessitat?' : '¿Cómo valorarías la resolución de tu necesidad?'}</label>
+      ${escala('enc-resolucion')}
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Tens alguna altra suggerència o comentari per millorar els nostres serveis?' : '¿Tienes alguna otra sugerencia o comentario para mejorar nuestros servicios?'}</label>
+      <textarea id="enc-comentario" rows="3"></textarea>
+    </div>
+    <button class="primary-btn" id="enc-save-btn" onclick="guardarEncuesta()">${esCA ? 'Enviar' : 'Enviar'}</button>
+  `;
+}
+
+async function guardarEncuesta(){
+  const esCA = LANG === 'ca';
+  const btn = document.getElementById('enc-save-btn');
+
+  const getRating = (name) => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? parseInt(el.value, 10) : null;
+  };
+
+  const payload = {
+    rating_experiencia: getRating('enc-experiencia'),
+    rating_calidad: getRating('enc-calidad'),
+    rating_profesionalidad: getRating('enc-profesionalidad'),
+    rating_tiempo_respuesta: getRating('enc-tiempo'),
+    rating_resolucion: getRating('enc-resolucion'),
+    comentario: document.getElementById('enc-comentario').value.trim() || null
+  };
+
+  if(Object.values(payload).slice(0,5).some(v => v === null)){
+    document.getElementById('encuesta-content').insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${esCA ? 'Respon totes les preguntes de valoració, si us plau.' : 'Responde todas las preguntas de valoración, por favor.'}</div>`);
+    return;
+  }
+
+  btn.disabled = true;
+  const { error } = await sb.from('encuestas_satisfaccion').insert(payload);
+  if(error){
+    document.getElementById('encuesta-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    btn.disabled = false;
+    return;
+  }
+  document.getElementById('encuesta-content').innerHTML = `<div class="placeholder">${esCA ? 'Gràcies per la teva opinió!' : '¡Gracias por tu opinión!'}</div>`;
 }
 
 function renderPerfilForm(){
@@ -926,10 +1188,10 @@ function renderPerfilForm(){
         ? 'Aquests camps són especialment protegits. Marca la casella si vols que Logos els guardi.'
         : 'Estos campos están especialmente protegidos. Marca la casilla si quieres que Logos los guarde.'}</p>
       <label class="checkbox-row">
-        <input type="checkbox" id="pf-consentimiento" ${p.consentimiento_firmado?'checked':''} onchange="document.getElementById('pf-sensibles').style.display=this.checked?'block':'none'">
+        <input type="checkbox" id="pf-consentimiento" ${p.consentimiento_datos_sensibles?'checked':''} onchange="document.getElementById('pf-sensibles').style.display=this.checked?'block':'none'">
         ${esCA ? 'Dono el meu consentiment perquè Logos guardi aquestes dades' : 'Doy mi consentimiento para que Logos guarde estos datos'}
       </label>
-      <div id="pf-sensibles" style="display:${p.consentimiento_firmado ? 'block':'none'};margin-top:10px;">
+      <div id="pf-sensibles" style="display:${p.consentimiento_datos_sensibles ? 'block':'none'};margin-top:10px;">
         <div class="field">
           <label>${esCA ? 'Nacionalitat' : 'Nacionalidad'}</label>
           <input type="text" id="pf-nacionalidad" value="${p.nacionalidad || ''}">
@@ -1000,8 +1262,7 @@ async function guardarPerfil(){
     hijos_a_cargo: chk('pf-hijos'),
     dependientes_a_cargo: chk('pf-dependientes'),
     situacion_desempleo: chk('pf-desempleo'),
-    consentimiento_firmado: consentimiento,
-    consentimiento_fecha: consentimiento ? new Date().toISOString().slice(0,10) : null,
+    consentimiento_datos_sensibles: consentimiento,
     // Datos sensibles: solo se guardan si hay consentimiento explícito
     nacionalidad: consentimiento ? (val('pf-nacionalidad') || null) : null,
     situacion_regularizacion: consentimiento ? (val('pf-regularizacion') || null) : null,
@@ -1018,6 +1279,17 @@ async function guardarPerfil(){
     btn.disabled = false;
     return;
   }
+
+  // Aviso automático a Logos de que se han guardado/actualizado datos
+  try {
+    const nombreAviso = payload.nombre_completo || CURRENT_USER.email;
+    await sb.from('notificaciones').insert({
+      usuario_id: CURRENT_USER.id,
+      tipo: 'perfil_completado',
+      mensaje: `${nombreAviso} ha completado o actualizado sus datos en "Mi espacio".`
+    });
+  } catch(e) { /* no bloquear el guardado si falla la notificación */ }
+
   renderDashboard();
 }
 
