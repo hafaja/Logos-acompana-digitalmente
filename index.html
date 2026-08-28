@@ -117,6 +117,7 @@
       </div>
     </div>
     <div class="content">
+      <div id="home-miespacio-panel"></div>
       <h2 class="screen-title" id="home-title">¿Qué necesitas?</h2>
       <p class="subtle" id="home-sub">Toca el área que más se acerque a tu situación.</p>
       <div class="trust-banner">
@@ -415,6 +416,41 @@ async function checkStaff(){
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
 }
 
+async function renderMiEspacioResumen(){
+  const el = document.getElementById('home-miespacio-panel');
+  if(!el) return;
+  if(!CURRENT_USER){ el.innerHTML = ''; return; }
+  const t = T1[LANG];
+
+  if(IS_STAFF && !ACCESO_COMPLETO){
+    el.innerHTML = `
+      <div class="panel-card" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>${LANG==='ca' ? 'Sessió de personal Logos' : 'Sesión de personal Logos'}</span>
+        <button class="link-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
+      </div>`;
+    return;
+  }
+
+  if(!ACCESO_COMPLETO){ el.innerHTML = ''; return; }
+
+  const p = window.__perfilActual || {};
+  const nombre = p.nombre_completo || CURRENT_USER.email;
+  const inicial = nombre.trim().charAt(0).toUpperCase();
+
+  el.innerHTML = `
+    <div class="panel-card">
+      <div class="profile-head" style="margin-bottom:10px;">
+        <div class="avatar">${inicial}</div>
+        <div><strong>${nombre}</strong><span>${p.municipio || 'Tarragona'}</span></div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <button class="link-btn" onclick="showScreen('profile')">${LANG==='ca' ? 'El meu espai complet' : 'Mi espacio completo'}</button>
+        <button class="link-btn" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? 'Enquesta' : 'Encuesta'}</button>
+        <button class="link-btn" style="color:var(--alert);" onclick="cerrarSesion()">${t.cerrarSesion}</button>
+      </div>
+    </div>`;
+}
+
 async function initAuth(){
   const { data } = await sb.auth.getSession();
   CURRENT_USER = data.session ? data.session.user : null;
@@ -424,11 +460,13 @@ async function initAuth(){
     await checkStaff();
     if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
     if(document.getElementById('screen-panel').classList.contains('active')) renderPanel();
+    renderMiEspacioResumen();
   });
   await renderProfileScreen();
   if(!ACCESO_COMPLETO && !IS_STAFF){
     showScreen('profile');
   }
+  renderMiEspacioResumen();
 }
 
 async function marcarNotificacionLeida(id){
@@ -788,6 +826,9 @@ async function submitAuth(){
 
 async function cerrarSesion(){
   await sb.auth.signOut();
+  ACCESO_COMPLETO = false;
+  window.__perfilActual = null;
+  document.getElementById('home-miespacio-panel').innerHTML = '';
   renderAuthForm();
 }
 
@@ -1288,6 +1329,7 @@ async function guardarPerfil(){
     });
   } catch(e) { /* no bloquear el guardado si falla la notificación */ }
 
+  window.__perfilActual = payload;
   ACCESO_COMPLETO = true;
   showScreen('home');
 }
@@ -1322,6 +1364,7 @@ showScreen = function(name){
   }
   _origShowScreen(name);
   if(name === 'profile') renderProfileScreen();
+  if(name === 'home') renderMiEspacioResumen();
 };
 
 initAuth();
