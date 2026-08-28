@@ -98,8 +98,8 @@
   @media print{
     .navbar, .topbar{display:none !important;}
     .screen{display:none !important;}
-    #screen-panel{display:block !important;}
-    #screen-panel .content{padding:0;}
+    .screen.active{display:block !important;}
+    .screen.active .content{padding:0;}
     body{background:#fff;}
     #app{max-width:none;}
   }
@@ -117,21 +117,23 @@
       </div>
     </div>
     <div class="content">
-      <div id="home-miespacio-panel"></div>
-      <h2 class="screen-title" id="home-title">¿Qué necesitas?</h2>
-      <p class="subtle" id="home-sub">Toca el área que más se acerque a tu situación.</p>
-      <div class="trust-banner">
-        <div>
-          <strong id="trust-title">Aquí encuentras lo que necesitas</strong>
-          <span id="trust-body">De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
+      <div id="entrada-panel"></div>
+      <div id="catalogo-panel" style="display:none;">
+        <h2 class="screen-title" id="home-title">¿Qué necesitas?</h2>
+        <p class="subtle" id="home-sub">Toca el área que más se acerque a tu situación.</p>
+        <div class="trust-banner">
+          <div>
+            <strong id="trust-title">Aquí encuentras lo que necesitas</strong>
+            <span id="trust-body">De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
+          </div>
         </div>
-      </div>
-      <div class="life-grid" id="ambitos-grid"></div>
-      <div class="service-row" id="no-se-row" onclick="CURRENT_AMBITO=null;showProximamente(null)" style="margin-top:14px;background:var(--teal-dark);border:none;">
-        <div class="icon" style="background:rgba(255,255,255,.15);">🔎</div>
-        <div class="txt" style="flex:1;">
-          <strong style="color:#fff;" id="no-se-title">No sé exactamente qué necesito</strong>
-          <span style="color:rgba(255,255,255,.75);" id="no-se-sub">Cuéntanos tu situación y te ayudamos a encontrarlo</span>
+        <div class="life-grid" id="ambitos-grid"></div>
+        <div class="service-row" id="no-se-row" onclick="CURRENT_AMBITO=null;showProximamente(null)" style="margin-top:14px;background:var(--teal-dark);border:none;">
+          <div class="icon" style="background:rgba(255,255,255,.15);">🔎</div>
+          <div class="txt" style="flex:1;">
+            <strong style="color:#fff;" id="no-se-title">No sé exactamente qué necesito</strong>
+            <span style="color:rgba(255,255,255,.75);" id="no-se-sub">Cuéntanos tu situación y te ayudamos a encontrarlo</span>
+          </div>
         </div>
       </div>
     </div>
@@ -152,7 +154,7 @@
   </div>
 
   <div class="screen" id="screen-profile">
-    <div class="topbar"><span class="brand" id="profile-brand">Mi espacio</span></div>
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button><span class="brand" id="profile-brand">Mi espacio</span></div>
     <div class="content" id="profile-content">
       <div class="placeholder" id="profile-loading">Cargando…</div>
     </div>
@@ -171,13 +173,22 @@
   </div>
 
   <div class="screen" id="screen-encuesta">
-    <div class="topbar"><button class="back-btn" onclick="showScreen('profile')">←</button></div>
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">←</button></div>
     <div class="content" id="encuesta-content"></div>
+  </div>
+
+  <div class="screen" id="screen-cita">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">← Mi espacio</button></div>
+    <div class="content" id="cita-content"></div>
+  </div>
+
+  <div class="screen" id="screen-cv">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">← Mi espacio</button></div>
+    <div class="content" id="cv-content"></div>
   </div>
 
   <div class="navbar">
     <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
-    <button data-target="profile" onclick="showScreen('profile')">Mi espacio</button>
     <button data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
   </div>
 </div>
@@ -340,7 +351,8 @@ function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.querySelectorAll('.navbar button').forEach(b=>b.classList.remove('active'));
-  const target = (name === 'detail' || name === 'necesidades') ? 'home' : name;
+  const homeGroup = ['detail','necesidades','profile','encuesta','atencion','cita','cv'];
+  const target = homeGroup.includes(name) ? 'home' : name;
   const btn = document.querySelector('.navbar button[data-target="'+target+'"]');
   if(btn) btn.classList.add('active');
 }
@@ -416,26 +428,58 @@ async function checkStaff(){
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
 }
 
-async function renderMiEspacioResumen(){
-  const el = document.getElementById('home-miespacio-panel');
+async function renderEntradaPanel(){
+  const el = document.getElementById('entrada-panel');
+  const catalogo = document.getElementById('catalogo-panel');
   if(!el) return;
-  if(!CURRENT_USER){ el.innerHTML = ''; return; }
-  const t = T1[LANG];
 
-  if(IS_STAFF && !ACCESO_COMPLETO){
+  if(!CURRENT_USER){
+    catalogo.style.display = 'none';
+    renderAuthStep();
+    return;
+  }
+
+  el.innerHTML = `<div class="placeholder">Cargando…</div>`;
+  const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
+  window.__perfilActual = perfil || null;
+
+  if(IS_STAFF){
+    ACCESO_COMPLETO = true;
+    catalogo.style.display = 'block';
     el.innerHTML = `
       <div class="panel-card" style="display:flex;justify-content:space-between;align-items:center;">
         <span>${LANG==='ca' ? 'Sessió de personal Logos' : 'Sesión de personal Logos'}</span>
-        <button class="link-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
+        <button class="link-btn" onclick="cerrarSesion()">${T1[LANG].cerrarSesion}</button>
       </div>`;
     return;
   }
 
-  if(!ACCESO_COMPLETO){ el.innerHTML = ''; return; }
+  if(!perfil || !perfil.consentimiento_firmado){
+    ACCESO_COMPLETO = false;
+    catalogo.style.display = 'none';
+    renderConsentStep();
+    return;
+  }
+  if(!perfil.nombre_completo){
+    ACCESO_COMPLETO = false;
+    catalogo.style.display = 'none';
+    renderDatosStep();
+    return;
+  }
+  ACCESO_COMPLETO = true;
+  renderResumenStep();
+}
 
+function renderResumenStep(mostrarCatalogoYa){
+  const el = document.getElementById('entrada-panel');
+  const catalogo = document.getElementById('catalogo-panel');
+  const t = T1[LANG];
+  const esCA = LANG === 'ca';
   const p = window.__perfilActual || {};
   const nombre = p.nombre_completo || CURRENT_USER.email;
   const inicial = nombre.trim().charAt(0).toUpperCase();
+
+  catalogo.style.display = mostrarCatalogoYa ? 'block' : 'none';
 
   el.innerHTML = `
     <div class="panel-card">
@@ -443,12 +487,25 @@ async function renderMiEspacioResumen(){
         <div class="avatar">${inicial}</div>
         <div><strong>${nombre}</strong><span>${p.municipio || 'Tarragona'}</span></div>
       </div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <button class="link-btn" onclick="showScreen('profile')">${LANG==='ca' ? 'El meu espai complet' : 'Mi espacio completo'}</button>
-        <button class="link-btn" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? 'Enquesta' : 'Encuesta'}</button>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:${mostrarCatalogoYa ? '0' : '4px'};">
+        <button class="link-btn" onclick="renderDatosStep()">${esCA ? 'Editar dades' : 'Editar datos'}</button>
+        <button class="link-btn" onclick="showScreen('profile');renderDashboard()">${esCA ? 'El meu espai complet' : 'Mi espacio completo'}</button>
+        <button class="link-btn" onclick="showScreen('encuesta');renderEncuestaForm()">${esCA ? 'Enquesta' : 'Encuesta'}</button>
         <button class="link-btn" style="color:var(--alert);" onclick="cerrarSesion()">${t.cerrarSesion}</button>
       </div>
-    </div>`;
+    </div>
+    ${!mostrarCatalogoYa ? `
+    <button class="primary-btn" onclick="revelarCatalogo()">
+      ${esCA ? 'Veure les meves necessitats →' : 'Ver mis necesidades →'}
+    </button>` : ''}
+  `;
+}
+
+function revelarCatalogo(){
+  const catalogo = document.getElementById('catalogo-panel');
+  catalogo.style.display = 'block';
+  renderResumenStep(true);
+  catalogo.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 async function initAuth(){
@@ -458,15 +515,11 @@ async function initAuth(){
   sb.auth.onAuthStateChange(async (_event, session) => {
     CURRENT_USER = session ? session.user : null;
     await checkStaff();
-    if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
+    if(document.getElementById('screen-profile').classList.contains('active')) renderDashboard();
     if(document.getElementById('screen-panel').classList.contains('active')) renderPanel();
-    renderMiEspacioResumen();
+    renderEntradaPanel();
   });
-  await renderProfileScreen();
-  if(!ACCESO_COMPLETO && !IS_STAFF){
-    showScreen('profile');
-  }
-  renderMiEspacioResumen();
+  await renderEntradaPanel();
 }
 
 async function marcarNotificacionLeida(id){
@@ -744,34 +797,14 @@ async function guardarAtencion(){
 
 let ACCESO_COMPLETO = false;
 
-async function renderProfileScreen(){
-  document.getElementById('profile-brand').textContent = T1[LANG].miEspacio;
-  if(!CURRENT_USER){
-    ACCESO_COMPLETO = false;
-    renderAuthForm();
-    return;
-  }
-  document.getElementById('profile-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
-  const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
-  window.__perfilActual = perfil || null;
-
-  if(!perfil || !perfil.consentimiento_firmado){
-    ACCESO_COMPLETO = false;
-    renderConsentimientoScreen();
-    return;
-  }
-  if(!perfil.nombre_completo){
-    ACCESO_COMPLETO = false;
-    renderPerfilForm();
-    return;
-  }
-  ACCESO_COMPLETO = true;
-  renderDashboard();
-}
-
-function renderAuthForm(errorMsg){
+function renderAuthStep(errorMsg){
   const t = T1[LANG];
-  document.getElementById('profile-content').innerHTML = `
+  const esCA = LANG === 'ca';
+  document.getElementById('entrada-panel').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'Qui sóc jo?' : '¿Quién soy yo?'}</h2>
+    <p class="subtle">${esCA
+      ? 'Entra o crea el teu compte per començar. Ho farem pas a pas: primer entrar, després el consentiment i finalment les teves dades.'
+      : 'Entra o crea tu cuenta para empezar. Lo haremos paso a paso: primero entrar, después el consentimiento y por último tus datos.'}</p>
     ${errorMsg ? `<div class="auth-error">${errorMsg}</div>` : ''}
     <div class="field">
       <label>${t.email}</label>
@@ -790,7 +823,7 @@ function renderAuthForm(errorMsg){
 
 function toggleAuthMode(){
   AUTH_MODE = AUTH_MODE === 'login' ? 'signup' : 'login';
-  renderAuthForm();
+  renderAuthStep();
 }
 
 async function submitAuth(){
@@ -798,28 +831,28 @@ async function submitAuth(){
   const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value;
   const btn = document.getElementById('auth-submit-btn');
-  if(!email || !password){ renderAuthForm(LANG==='ca' ? 'Omple el correu i la contrasenya.' : 'Rellena el correo y la contraseña.'); return; }
+  if(!email || !password){ renderAuthStep(LANG==='ca' ? 'Omple el correu i la contrasenya.' : 'Rellena el correo y la contraseña.'); return; }
   btn.disabled = true;
   btn.textContent = AUTH_MODE === 'login' ? t.entrando : t.creando;
 
   if(AUTH_MODE === 'login'){
     const { error } = await sb.auth.signInWithPassword({ email, password });
-    if(error) renderAuthForm(error.message);
-    // si no hay error, onAuthStateChange refresca la pantalla sola
+    if(error) renderAuthStep(error.message);
+    // si no hay error, onAuthStateChange refresca el panel sola
     return;
   }
 
   // registro
   const { data, error } = await sb.auth.signUp({ email, password });
-  if(error){ renderAuthForm(error.message); return; }
+  if(error){ renderAuthStep(error.message); return; }
   if(!data.session){
     // Supabase exige confirmar el correo antes de crear la sesión: no se queda "cargando" sin más
     const msg = LANG === 'ca'
       ? 'Hem enviat un correu de confirmació a ' + email + '. Obre\'l i toca l\'enllaç per activar el compte, i després torna aquí i entra.'
       : 'Hemos enviado un correo de confirmación a ' + email + '. Ábrelo y toca el enlace para activar la cuenta, y luego vuelve aquí y entra.';
     AUTH_MODE = 'login';
-    renderAuthForm();
-    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-ok">${msg}</div>`);
+    renderAuthStep();
+    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin', `<div class="auth-ok">${msg}</div>`);
   }
   // si data.session sí existe (confirmación de correo desactivada), onAuthStateChange refresca sola
 }
@@ -828,8 +861,9 @@ async function cerrarSesion(){
   await sb.auth.signOut();
   ACCESO_COMPLETO = false;
   window.__perfilActual = null;
-  document.getElementById('home-miespacio-panel').innerHTML = '';
-  renderAuthForm();
+  document.getElementById('catalogo-panel').style.display = 'none';
+  showScreen('home');
+  renderAuthStep();
 }
 
 async function renderDashboard(){
@@ -839,6 +873,7 @@ async function renderDashboard(){
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
   const { data: tramites } = await sb.from('tramites').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
   const { data: documentos } = await sb.from('documentos').select('*').eq('usuario_id', CURRENT_USER.id).order('subido_en', { ascending:false });
+  const { data: citas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').order('fecha', { ascending:true });
 
   const nombre = (perfil && perfil.nombre_completo) ? perfil.nombre_completo : CURRENT_USER.email;
   const inicial = nombre.trim().charAt(0).toUpperCase();
@@ -863,6 +898,15 @@ async function renderDashboard(){
         </div>`).join('')
     : `<div class="empty-note">${t.sinDocumentos}</div>`;
 
+  const fmtFecha = f => new Date(f + 'T00:00:00').toLocaleDateString(LANG==='ca' ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
+  const citasHtml = (citas && citas.length)
+    ? citas.map(c => `
+        <div class="list-row">
+          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}</span>
+          <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="cancelarCita('${c.id}')">${LANG==='ca' ? 'Cancel·lar' : 'Cancelar'}</button>
+        </div>`).join('')
+    : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
+
   document.getElementById('profile-content').innerHTML = `
     <div class="profile-head">
       <div class="avatar">${inicial}</div>
@@ -871,9 +915,13 @@ async function renderDashboard(){
         <span>${municipio}${!perfil || !perfil.nombre_completo ? ' · ' + t.perfilIncompleto : ''}</span>
       </div>
     </div>
-    <button class="primary-btn" style="margin-bottom:20px;" onclick="renderPerfilForm()">${t.completarDatos}</button>
+    <button class="primary-btn" style="margin-bottom:20px;" onclick="showScreen('home');renderDatosStep()">${t.completarDatos}</button>
 
-    <div class="section-label">${t.misTramites}</div>
+    <div class="section-label">${LANG==='ca' ? 'LES MEVES CITES' : 'MIS CITAS'}</div>
+    ${citasHtml}
+    <button class="primary-btn" style="background:var(--ochre);margin-top:8px;margin-bottom:4px;" onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button>
+
+    <div class="section-label" style="margin-top:18px;">${t.misTramites}</div>
     ${tramitesHtml}
 
     <div class="section-label" style="margin-top:18px;">${t.misDocumentos}</div>
@@ -885,7 +933,9 @@ async function renderDashboard(){
     <button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
     <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
 
-    <button class="primary-btn" style="background:var(--teal);margin-top:18px;" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? '📋 Enquesta de satisfacció' : '📋 Encuesta de satisfacción'}</button>
+    <button class="primary-btn" style="background:var(--teal-dark);margin-top:18px;" onclick="showScreen('cv');renderCVScreen()">${LANG==='ca' ? '📄 Generar el meu currículum' : '📄 Generar mi currículum'}</button>
+
+    <button class="primary-btn" style="background:var(--teal);margin-top:10px;" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? '📋 Enquesta de satisfacció' : '📋 Encuesta de satisfacción'}</button>
 
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
   `;
@@ -894,6 +944,165 @@ async function renderDashboard(){
 
   window.__perfilActual = perfil || null;
   window.__documentosActuales = documentos || [];
+}
+
+async function cancelarCita(id){
+  const msg = LANG === 'ca' ? 'Segur que vols cancel·lar aquesta cita?' : '¿Seguro que quieres cancelar esta cita?';
+  if(!confirm(msg)) return;
+  await sb.from('citas').update({ estado: 'cancelada' }).eq('id', id);
+  renderDashboard();
+}
+
+// --- Pedir cita ---
+
+async function renderCitaForm(){
+  const esCA = LANG === 'ca';
+  document.getElementById('cita-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const { data: horario } = await sb.from('horario_atencion').select('*').eq('id', 1).maybeSingle();
+  if(!horario){
+    document.getElementById('cita-content').innerHTML = `<div class="auth-error">${esCA ? 'No s\'ha pogut carregar l\'horari.' : 'No se ha podido cargar el horario.'}</div>`;
+    return;
+  }
+  window.__horarioAtencion = horario;
+
+  const dias = [];
+  const hoy = new Date();
+  for(let i=1; dias.length < 10 && i < 40; i++){
+    const d = new Date(hoy);
+    d.setDate(hoy.getDate() + i);
+    const isoWeekday = d.getDay() === 0 ? 7 : d.getDay();
+    if(horario.dias_semana.includes(isoWeekday)){
+      dias.push(d);
+    }
+  }
+
+  const diasHtml = dias.map(d => {
+    const iso = d.toISOString().slice(0,10);
+    const label = d.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
+    return `<button class="life-card" style="padding:10px 6px;" onclick="seleccionarDiaCita('${iso}')"><span style="font-size:12.5px;font-weight:700;">${label}</span></button>`;
+  }).join('');
+
+  document.getElementById('cita-content').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
+    <p class="subtle">${esCA ? 'Tria un dia per veure les hores disponibles.' : 'Elige un día para ver las horas disponibles.'}</p>
+    <div class="life-grid">${diasHtml}</div>
+    <div id="cita-horas" style="margin-top:16px;"></div>
+  `;
+}
+
+async function seleccionarDiaCita(fechaIso){
+  const esCA = LANG === 'ca';
+  const horario = window.__horarioAtencion;
+  const cont = document.getElementById('cita-horas');
+  cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const { data: ocupacion } = await sb.rpc('citas_disponibilidad', { p_fecha: fechaIso });
+  const ocupadasPorHora = {};
+  (ocupacion || []).forEach(o => { ocupadasPorHora[o.hora.slice(0,5)] = o.ocupadas; });
+
+  const slots = [];
+  const [hIni, mIni] = horario.hora_inicio.split(':').map(Number);
+  const [hFin, mFin] = horario.hora_fin.split(':').map(Number);
+  let cursor = hIni * 60 + mIni;
+  const fin = hFin * 60 + mFin;
+  while(cursor < fin){
+    const h = String(Math.floor(cursor/60)).padStart(2,'0');
+    const m = String(cursor%60).padStart(2,'0');
+    slots.push(`${h}:${m}`);
+    cursor += horario.duracion_cita_minutos;
+  }
+
+  const slotsHtml = slots.map(s => {
+    const ocupadas = ocupadasPorHora[s] || 0;
+    const lleno = ocupadas >= horario.tecnicos_simultaneos;
+    return `<button class="service-row" style="justify-content:center;${lleno ? 'opacity:.45;cursor:default;' : 'cursor:pointer;'}" ${lleno ? 'disabled' : `onclick="reservarCita('${fechaIso}','${s}')"`}>
+      <strong>${s}</strong>${lleno ? ` <span style="font-size:11px;">(${esCA ? 'complet' : 'completo'})</span>` : ''}
+    </button>`;
+  }).join('');
+
+  cont.innerHTML = `
+    <div class="section-label">${esCA ? 'Hores disponibles' : 'Horas disponibles'}</div>
+    ${slotsHtml}
+  `;
+}
+
+async function reservarCita(fecha, hora){
+  const esCA = LANG === 'ca';
+  const { error } = await sb.from('citas').insert({
+    usuario_id: CURRENT_USER.id,
+    fecha,
+    hora
+  });
+  if(error){
+    document.getElementById('cita-horas').insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar. Tria una altra.' : 'Esta hora se acaba de ocupar. Elige otra.') : error.message}</div>`);
+    seleccionarDiaCita(fecha);
+    return;
+  }
+  showScreen('profile');
+  renderDashboard();
+}
+
+// --- Generar CV ---
+
+function renderCVScreen(){
+  const esCA = LANG === 'ca';
+  const p = window.__perfilActual || {};
+
+  const nivelEstudiosTexto = {
+    sin_estudios: esCA ? 'Sense estudis' : 'Sin estudios',
+    primaria: esCA ? 'Primària' : 'Primaria',
+    eso: 'ESO',
+    bachillerato_fp: esCA ? 'Batxillerat / FP' : 'Bachillerato / FP',
+    universitarios: esCA ? 'Universitaris' : 'Universitarios'
+  }[p.nivel_estudios] || '';
+
+  const interesesTexto = {
+    recerca_feina: esCA ? 'Recerca de feina' : 'Búsqueda de empleo',
+    catala: esCA ? 'Català' : 'Catalán',
+    castella: esCA ? 'Castellà' : 'Castellano',
+    tic: 'TIC',
+    vida_saludable: 'Vida saludable',
+    manualitats: esCA ? 'Manualitats' : 'Manualidades'
+  };
+  const intereses = (p.intereses_formativos || []).map(i => interesesTexto[i] || i).join(', ');
+
+  document.getElementById('cv-content').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'El meu currículum' : 'Mi currículum'}</h2>
+    <p class="subtle">${esCA
+      ? 'Generat a partir de les dades que ja tens a "Les meves dades". Revisa-ho i exporta-ho en PDF.'
+      : 'Generado a partir de los datos que ya tienes en "Mis datos". Revísalo y expórtalo en PDF.'}</p>
+
+    <div class="detail-block" id="cv-documento">
+      <h2 style="font-family:var(--font-display);font-size:24px;margin:0 0 4px;">${p.nombre_completo || CURRENT_USER.email}</h2>
+      <p style="margin:0 0 14px;color:var(--ink-soft);font-size:13px;">
+        ${[p.telefono, p.municipio].filter(Boolean).join(' · ')}
+      </p>
+
+      ${nivelEstudiosTexto || p.titulaciones_cursos ? `
+      <h4>${esCA ? 'Formació' : 'Formación'}</h4>
+      <p>${[nivelEstudiosTexto, p.titulaciones_cursos].filter(Boolean).join(' — ')}</p>` : ''}
+
+      ${p.experiencia_laboral ? `
+      <h4>${esCA ? 'Experiència laboral' : 'Experiencia laboral'}</h4>
+      <p>${p.experiencia_laboral}</p>` : ''}
+
+      ${intereses ? `
+      <h4>${esCA ? 'Interès per formar-se en' : 'Interés en formarse en'}</h4>
+      <p>${intereses}</p>` : ''}
+
+      ${p.situacion_laboral ? `
+      <h4>${esCA ? 'Situació laboral actual' : 'Situación laboral actual'}</h4>
+      <p>${p.situacion_laboral}</p>` : ''}
+    </div>
+
+    ${!nivelEstudiosTexto && !p.experiencia_laboral && !intereses ? `
+    <div class="warning-block"><div><strong>${esCA ? 'Falten dades' : 'Faltan datos'}</strong>
+    <span>${esCA ? 'Completa formació, experiència o interessos a "Les meves dades" per tenir un currículum més complet.' : 'Completa formación, experiencia o intereses en "Mis datos" para tener un currículum más completo.'}</span></div></div>` : ''}
+
+    <button class="primary-btn" onclick="window.print()" style="margin-top:16px;margin-bottom:20px;">📄 ${esCA ? 'Exportar a PDF' : 'Exportar a PDF'}</button>
+  `;
 }
 
 async function verDocumento(id){
@@ -917,9 +1126,9 @@ async function borrarDocumento(id){
   renderDashboard();
 }
 
-function renderConsentimientoScreen(){
+function renderConsentStep(){
   const esCA = LANG === 'ca';
-  document.getElementById('profile-content').innerHTML = `
+  document.getElementById('entrada-panel').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Document de consentiment per al tractament de dades personals' : 'Documento de consentimiento para el tratamiento de datos personales'}</h2>
 
     <div class="panel-card">
@@ -1014,7 +1223,7 @@ function renderConsentimientoScreen(){
 async function firmarConsentimientoGeneral(){
   const esCA = LANG === 'ca';
   if(!document.getElementById('cons-tractament').checked){
-    document.getElementById('profile-content').insertAdjacentHTML('afterbegin',
+    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin',
       `<div class="auth-error">${esCA ? 'Cal marcar l\'autorització de tractament de dades per continuar.' : 'Debes marcar la autorización de tratamiento de datos para continuar.'}</div>`);
     return;
   }
@@ -1030,13 +1239,13 @@ async function firmarConsentimientoGeneral(){
   };
   const { error } = await sb.from('perfiles').upsert(payload);
   if(error){
-    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
     btn.disabled = false;
     return;
   }
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
   window.__perfilActual = perfil;
-  renderPerfilForm();
+  renderDatosStep();
 }
 
 function renderEncuestaForm(){
@@ -1118,7 +1327,7 @@ async function guardarEncuesta(){
   document.getElementById('encuesta-content').innerHTML = `<div class="placeholder">${esCA ? 'Gràcies per la teva opinió!' : '¡Gracias por tu opinión!'}</div>`;
 }
 
-function renderPerfilForm(){
+function renderDatosStep(){
   const t = T1[LANG];
   const p = window.__perfilActual || {};
   const esCA = LANG === 'ca';
@@ -1126,7 +1335,8 @@ function renderPerfilForm(){
   const interesesActuales = p.intereses_formativos || [];
   const interesChecked = v => interesesActuales.includes(v) ? 'checked' : '';
 
-  document.getElementById('profile-content').innerHTML = `
+  document.getElementById('entrada-panel').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'Les meves dades' : 'Mis datos'}</h2>
     <p class="subtle">${t.bienvenida}</p>
     <div class="field">
       <label>${t.nombreCompleto}</label>
@@ -1314,7 +1524,7 @@ async function guardarPerfil(){
 
   const { error } = await sb.from('perfiles').upsert(payload);
   if(error){
-    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
     btn.disabled = false;
     return;
   }
@@ -1331,7 +1541,7 @@ async function guardarPerfil(){
 
   window.__perfilActual = payload;
   ACCESO_COMPLETO = true;
-  showScreen('home');
+  renderResumenStep();
 }
 
 async function subirDocumento(inputId, tipoDocumento){
@@ -1353,19 +1563,6 @@ async function subirDocumento(inputId, tipoDocumento){
   });
   renderDashboard();
 }
-
-// Enganchar "Mi espacio" en la navbar para que cargue la sesión al entrar,
-// y bloquear cualquier otra pantalla mientras no se haya firmado el
-// consentimiento y completado los datos (acceso obligatorio primero).
-const _origShowScreen = showScreen;
-showScreen = function(name){
-  if(name !== 'profile' && !ACCESO_COMPLETO && !IS_STAFF){
-    name = 'profile';
-  }
-  _origShowScreen(name);
-  if(name === 'profile') renderProfileScreen();
-  if(name === 'home') renderMiEspacioResumen();
-};
 
 initAuth();
 </script>
