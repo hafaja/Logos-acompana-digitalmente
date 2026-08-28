@@ -169,13 +169,8 @@
     <div class="content" id="atencion-content"></div>
   </div>
 
-  <div class="screen" id="screen-consentimiento">
-    <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">←</button></div>
-    <div class="content" id="consentimiento-content"></div>
-  </div>
-
   <div class="screen" id="screen-encuesta">
-    <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">←</button></div>
+    <div class="topbar"><button class="back-btn" onclick="showScreen('profile')">←</button></div>
     <div class="content" id="encuesta-content"></div>
   </div>
 
@@ -430,7 +425,10 @@ async function initAuth(){
     if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
     if(document.getElementById('screen-panel').classList.contains('active')) renderPanel();
   });
-  if(document.getElementById('screen-profile').classList.contains('active')) renderProfileScreen();
+  await renderProfileScreen();
+  if(!ACCESO_COMPLETO && !IS_STAFF){
+    showScreen('profile');
+  }
 }
 
 async function marcarNotificacionLeida(id){
@@ -706,13 +704,31 @@ async function guardarAtencion(){
   renderPanel();
 }
 
-function renderProfileScreen(){
+let ACCESO_COMPLETO = false;
+
+async function renderProfileScreen(){
   document.getElementById('profile-brand').textContent = T1[LANG].miEspacio;
   if(!CURRENT_USER){
+    ACCESO_COMPLETO = false;
     renderAuthForm();
-  } else {
-    renderDashboard();
+    return;
   }
+  document.getElementById('profile-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
+  const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
+  window.__perfilActual = perfil || null;
+
+  if(!perfil || !perfil.consentimiento_firmado){
+    ACCESO_COMPLETO = false;
+    renderConsentimientoScreen();
+    return;
+  }
+  if(!perfil.nombre_completo){
+    ACCESO_COMPLETO = false;
+    renderPerfilForm();
+    return;
+  }
+  ACCESO_COMPLETO = true;
+  renderDashboard();
 }
 
 function renderAuthForm(errorMsg){
@@ -814,7 +830,7 @@ async function renderDashboard(){
         <span>${municipio}${!perfil || !perfil.nombre_completo ? ' · ' + t.perfilIncompleto : ''}</span>
       </div>
     </div>
-    <button class="primary-btn" style="margin-bottom:20px;" onclick="abrirDatos()">${t.completarDatos}</button>
+    <button class="primary-btn" style="margin-bottom:20px;" onclick="renderPerfilForm()">${t.completarDatos}</button>
 
     <div class="section-label">${t.misTramites}</div>
     ${tramitesHtml}
@@ -827,12 +843,6 @@ async function renderDashboard(){
     </div>
     <button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
     <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
-
-    <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:14px;">
-      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Has firmat el document de consentiment en paper? Puja\'l aquí.' : '¿Has firmado el documento de consentimiento en papel? Súbelo aquí.'}</p>
-      <input type="file" id="doc-consentimiento-input" accept="image/*,application/pdf">
-      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-consentimiento-input','consentimiento')">${LANG==='ca' ? 'Pujar consentiment firmat' : 'Subir consentimiento firmado'}</button>
-    </div>
 
     <button class="primary-btn" style="background:var(--teal);margin-top:18px;" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? '📋 Enquesta de satisfacció' : '📋 Encuesta de satisfacción'}</button>
 
@@ -866,20 +876,9 @@ async function borrarDocumento(id){
   renderDashboard();
 }
 
-function abrirDatos(){
-  const p = window.__perfilActual;
-  if(!p || !p.consentimiento_firmado){
-    showScreen('consentimiento');
-    renderConsentimientoScreen();
-  } else {
-    showScreen('profile');
-    renderPerfilForm();
-  }
-}
-
 function renderConsentimientoScreen(){
   const esCA = LANG === 'ca';
-  document.getElementById('consentimiento-content').innerHTML = `
+  document.getElementById('profile-content').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Document de consentiment per al tractament de dades personals' : 'Documento de consentimiento para el tratamiento de datos personales'}</h2>
 
     <div class="panel-card">
@@ -974,7 +973,7 @@ function renderConsentimientoScreen(){
 async function firmarConsentimientoGeneral(){
   const esCA = LANG === 'ca';
   if(!document.getElementById('cons-tractament').checked){
-    document.getElementById('consentimiento-content').insertAdjacentHTML('afterbegin',
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin',
       `<div class="auth-error">${esCA ? 'Cal marcar l\'autorització de tractament de dades per continuar.' : 'Debes marcar la autorización de tratamiento de datos para continuar.'}</div>`);
     return;
   }
@@ -990,13 +989,12 @@ async function firmarConsentimientoGeneral(){
   };
   const { error } = await sb.from('perfiles').upsert(payload);
   if(error){
-    document.getElementById('consentimiento-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
     btn.disabled = false;
     return;
   }
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
   window.__perfilActual = perfil;
-  showScreen('profile');
   renderPerfilForm();
 }
 
@@ -1290,7 +1288,8 @@ async function guardarPerfil(){
     });
   } catch(e) { /* no bloquear el guardado si falla la notificación */ }
 
-  renderDashboard();
+  ACCESO_COMPLETO = true;
+  showScreen('home');
 }
 
 async function subirDocumento(inputId, tipoDocumento){
@@ -1313,9 +1312,14 @@ async function subirDocumento(inputId, tipoDocumento){
   renderDashboard();
 }
 
-// Enganchar "Mi espacio" en la navbar para que cargue la sesión al entrar
+// Enganchar "Mi espacio" en la navbar para que cargue la sesión al entrar,
+// y bloquear cualquier otra pantalla mientras no se haya firmado el
+// consentimiento y completado los datos (acceso obligatorio primero).
 const _origShowScreen = showScreen;
 showScreen = function(name){
+  if(name !== 'profile' && !ACCESO_COMPLETO && !IS_STAFF){
+    name = 'profile';
+  }
   _origShowScreen(name);
   if(name === 'profile') renderProfileScreen();
 };
