@@ -172,6 +172,16 @@
     <div class="content" id="atencion-content"></div>
   </div>
 
+  <div class="screen" id="screen-persona">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('panel');renderPanel()">← Panel Logos</button></div>
+    <div class="content" id="persona-content"></div>
+  </div>
+
+  <div class="screen" id="screen-admin">
+    <div class="topbar"><span class="brand">Administrador</span></div>
+    <div class="content" id="admin-content"></div>
+  </div>
+
   <div class="screen" id="screen-encuesta">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">←</button></div>
     <div class="content" id="encuesta-content"></div>
@@ -190,6 +200,7 @@
   <div class="navbar">
     <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
     <button data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
+    <button data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
   </div>
 </div>
 
@@ -351,8 +362,9 @@ function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.querySelectorAll('.navbar button').forEach(b=>b.classList.remove('active'));
-  const homeGroup = ['detail','necesidades','profile','encuesta','atencion','cita','cv'];
-  const target = homeGroup.includes(name) ? 'home' : name;
+  const homeGroup = ['detail','necesidades','profile','encuesta','cita','cv'];
+  const panelGroup = ['atencion','persona'];
+  const target = homeGroup.includes(name) ? 'home' : (panelGroup.includes(name) ? 'panel' : name);
   const btn = document.querySelector('.navbar button[data-target="'+target+'"]');
   if(btn) btn.classList.add('active');
 }
@@ -416,16 +428,21 @@ const T1 = {
 };
 
 let IS_STAFF = false;
+let IS_ADMIN = false;
 
 async function checkStaff(){
   if(!CURRENT_USER){
     IS_STAFF = false;
+    IS_ADMIN = false;
     document.getElementById('nav-panel-btn').style.display = 'none';
+    document.getElementById('nav-admin-btn').style.display = 'none';
     return;
   }
-  const { data } = await sb.from('staff').select('email').eq('email', CURRENT_USER.email).maybeSingle();
+  const { data } = await sb.from('staff').select('email, es_admin').eq('email', CURRENT_USER.email).maybeSingle();
   IS_STAFF = !!data;
+  IS_ADMIN = !!(data && data.es_admin);
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
+  document.getElementById('nav-admin-btn').style.display = IS_ADMIN ? '' : 'none';
 }
 
 async function renderEntradaPanel(){
@@ -439,7 +456,7 @@ async function renderEntradaPanel(){
     return;
   }
 
-  el.innerHTML = `<div class="placeholder">Cargando…</div>`;
+  el.innerHTML = `<div class="placeholder">${LANG==='ca' ? 'Carregant…' : 'Cargando…'}</div>`;
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
   window.__perfilActual = perfil || null;
 
@@ -527,6 +544,117 @@ async function marcarNotificacionLeida(id){
   renderPanel();
 }
 
+async function verPersonaStaff(usuarioId){
+  const cont = document.getElementById('persona-content');
+  showScreen('persona');
+  cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const [perfilRes, docsRes, tramitesRes, atencionesRes] = await Promise.all([
+    sb.from('perfiles').select('*').eq('id', usuarioId).maybeSingle(),
+    sb.from('documentos').select('*').eq('usuario_id', usuarioId).order('subido_en', { ascending:false }),
+    sb.from('tramites').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
+    sb.from('atenciones').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false })
+  ]);
+
+  const p = perfilRes.data;
+  if(!p){
+    cont.innerHTML = `<div class="empty-note">No se encontró el perfil de esta persona.</div>`;
+    return;
+  }
+
+  const campo = (label, valor) => valor ? `<div class="panel-stat-row"><span>${label}</span><span><strong>${valor}</strong></span></div>` : '';
+  const campoBool = (label, valor) => valor === true ? `<div class="panel-stat-row"><span>${label}</span><span><strong>Sí</strong></span></div>` : '';
+
+  const docsHtml = (docsRes.data && docsRes.data.length)
+    ? docsRes.data.map(d => `<div class="panel-stat-row"><span>${d.nombre_archivo}</span></div>`).join('')
+    : `<div class="empty-note">Sin documentos</div>`;
+
+  const tramitesHtml = (tramitesRes.data && tramitesRes.data.length)
+    ? tramitesRes.data.map(tr => `<div class="panel-stat-row"><span>${tr.nombre_servicio}</span><span class="chip ${tr.estado==='hecho'?'hecho':(tr.estado==='derivado_logos'?'derivado':'en-curso')}">${tr.estado}</span></div>`).join('')
+    : `<div class="empty-note">Sin trámites</div>`;
+
+  const atencionesHtml = (atencionesRes.data && atencionesRes.data.length)
+    ? atencionesRes.data.map(a => `
+        <div class="panel-card">
+          <div class="panel-stat-row"><span>Técnico</span><span><strong>${a.creado_por_email}</strong></span></div>
+          <div class="panel-stat-row"><span>Fecha</span><span><strong>${new Date(a.creado_en).toLocaleString('es-ES')}</strong></span></div>
+          ${a.prestaciones && a.prestaciones.length ? `<div class="panel-stat-row"><span>Prestaciones</span><span>${a.prestaciones.join(', ')}</span></div>` : ''}
+          ${a.tramites_bretxa && a.tramites_bretxa.length ? `<div class="panel-stat-row"><span>Trámites</span><span>${a.tramites_bretxa.join(', ')}</span></div>` : ''}
+          ${a.derivacion ? `<div class="panel-stat-row"><span>Derivación</span><span>${a.derivacion}</span></div>` : ''}
+          ${a.notas ? `<div class="panel-stat-row"><span>Notas</span><span>${a.notas}</span></div>` : ''}
+        </div>`).join('')
+    : `<div class="empty-note">Nadie ha registrado todavía una atención a esta persona.</div>`;
+
+  cont.innerHTML = `
+    <h2 class="screen-title">${p.nombre_completo || 'Sin nombre'}</h2>
+    <div class="panel-card">
+      ${campo('Teléfono', p.telefono)}
+      ${campo('Municipio', p.municipio)}
+      ${campo('Con quién vive', p.convivencia)}
+      ${campo('Sexo', p.sexo)}
+      ${campo('Situación laboral', p.situacion_laboral)}
+      ${campo('Nivel de estudios', p.nivel_estudios)}
+      ${campo('Titulaciones/cursos', p.titulaciones_cursos)}
+      ${campo('Experiencia laboral', p.experiencia_laboral)}
+      ${campo('Nivel de ingresos', p.nivel_ingresos)}
+      ${campoBool('Discapacidad reconocida', p.discapacidad_reconocida)}
+      ${campoBool('Dependencia reconocida', p.dependencia_reconocida)}
+      ${campoBool('Familia monoparental', p.familia_monoparental)}
+      ${campoBool('Familia numerosa', p.familia_numerosa)}
+      ${campoBool('Hijos a cargo', p.hijos_a_cargo)}
+      ${campoBool('En desempleo', p.situacion_desempleo)}
+    </div>
+
+    <div class="panel-card">
+      <h3>Documentos</h3>
+      ${docsHtml}
+    </div>
+
+    <div class="panel-card">
+      <h3>Trámites</h3>
+      ${tramitesHtml}
+    </div>
+
+    <div class="section-label" style="margin-top:14px;">Quién ha atendido a esta persona</div>
+    ${atencionesHtml}
+  `;
+}
+
+async function renderAdminPanel(){
+  const cont = document.getElementById('admin-content');
+  if(!IS_ADMIN){
+    cont.innerHTML = `<div class="placeholder">Esta sección es solo para el responsable de Logos.</div>`;
+    return;
+  }
+  cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const { data: atenciones } = await sb.from('atenciones').select('*').order('creado_en', { ascending:false }).limit(200);
+
+  const filasHtml = (atenciones && atenciones.length)
+    ? atenciones.map(a => {
+        const servicios = [
+          ...(a.prestaciones || []),
+          ...(a.tramites_bretxa || []),
+          ...(a.emprendeduria || []),
+          a.derivacion
+        ].filter(Boolean).join(', ') || '—';
+        return `
+          <div class="panel-card">
+            <div class="panel-stat-row"><span>Técnico</span><span><strong>${a.creado_por_email}</strong></span></div>
+            <div class="panel-stat-row"><span>Persona</span><span><strong>${a.nombre_referencia}${a.usuario_id ? ' <span class="chip hecho">con cuenta</span>' : ''}</strong></span></div>
+            <div class="panel-stat-row"><span>Fecha</span><span>${new Date(a.creado_en).toLocaleString('es-ES')}</span></div>
+            <div class="panel-stat-row"><span>Servicios</span><span>${servicios}</span></div>
+            ${a.usuario_id ? `<button class="link-btn" style="font-size:12px;" onclick="verPersonaStaff('${a.usuario_id}')">👤 Ver información completa</button>` : ''}
+          </div>`;
+      }).join('')
+    : `<div class="empty-note">Todavía no hay atenciones registradas.</div>`;
+
+  cont.innerHTML = `
+    <p class="subtle">Registro completo de qué técnico ha atendido a quién y con qué servicios (últimas 200 atenciones).</p>
+    ${filasHtml}
+  `;
+}
+
 async function renderPanel(){
   if(!IS_STAFF){
     document.getElementById('panel-content').innerHTML = `<div class="placeholder">Esta sección es solo para el equipo de Logos.</div>`;
@@ -558,9 +686,12 @@ async function renderPanel(){
 
   const notifsHtml = (notifs.data && notifs.data.length)
     ? notifs.data.map(n => `
-        <div class="panel-stat-row" style="align-items:flex-start;">
+        <div class="panel-stat-row" style="align-items:flex-start;flex-direction:column;gap:8px;">
           <span>${n.mensaje}<br><span class="subtle" style="font-size:11px;">${new Date(n.creado_en).toLocaleString('es-ES')}</span></span>
-          <button class="link-btn" style="font-size:12px;flex-shrink:0;" onclick="marcarNotificacionLeida('${n.id}')">Marcar leída</button>
+          <span style="display:flex;gap:14px;">
+            ${n.usuario_id ? `<button class="link-btn" style="font-size:12px;" onclick="verPersonaStaff('${n.usuario_id}')">👤 Ver información</button>` : ''}
+            <button class="link-btn" style="font-size:12px;" onclick="marcarNotificacionLeida('${n.id}')">Marcar leída</button>
+          </span>
         </div>`).join('')
     : `<div class="empty-note">No hay alertas nuevas</div>`;
 
@@ -710,11 +841,22 @@ function otroField(id, label){
 
 function renderAtencionForm(){
   const esCA = LANG === 'ca';
+  window.__atencionUsuarioVinculado = null;
   document.getElementById('atencion-content').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Registrar atenció' : 'Registrar atención'}</h2>
     <p class="subtle">${esCA
       ? 'Omple-ho durant o després d\'atendre a una persona. Si té compte propi a "El meu espai", en el futur també podrà omplir-ho ella mateixa.'
       : 'Rellénalo durante o después de atender a una persona. Si tiene cuenta propia en "Mi espacio", en el futuro también podrá rellenarlo ella misma.'}</p>
+
+    <div class="field">
+      <label>${esCA ? 'Buscar la persona per compte (opcional)' : 'Buscar la persona por cuenta (opcional)'}</label>
+      <input type="text" id="at-buscar-usuario" placeholder="${esCA ? 'Escriu el nom per buscar el seu compte' : 'Escribe el nombre para buscar su cuenta'}" oninput="buscarUsuarioAtencion(this.value)">
+      <div id="at-resultados-busqueda"></div>
+      <div id="at-usuario-vinculado" style="display:none;margin-top:8px;" class="chip hecho">
+        <span id="at-usuario-vinculado-texto"></span>
+        <button class="link-btn" style="margin-left:8px;font-size:11px;" onclick="desvincularUsuarioAtencion()">${esCA ? 'Treure' : 'Quitar'}</button>
+      </div>
+    </div>
 
     <div class="field">
       <label>${esCA ? 'Nom o referència de la persona' : 'Nombre o referencia de la persona'}</label>
@@ -742,6 +884,43 @@ function renderAtencionForm(){
 
     <button class="primary-btn" id="at-save-btn" onclick="guardarAtencion()" style="margin-bottom:24px;">${esCA ? 'Desar atenció' : 'Guardar atención'}</button>
   `;
+}
+
+let __busquedaAtencionTimeout = null;
+function buscarUsuarioAtencion(texto){
+  clearTimeout(__busquedaAtencionTimeout);
+  const cont = document.getElementById('at-resultados-busqueda');
+  if(!texto || texto.trim().length < 2){ cont.innerHTML = ''; return; }
+  __busquedaAtencionTimeout = setTimeout(async () => {
+    const esCA = LANG === 'ca';
+    const { data, error } = await sb.from('perfiles')
+      .select('id, nombre_completo, municipio')
+      .ilike('nombre_completo', `%${texto.trim()}%`)
+      .limit(5);
+    if(error || !data || !data.length){
+      cont.innerHTML = `<div class="empty-note">${esCA ? 'Cap resultat.' : 'Sin resultados.'}</div>`;
+      return;
+    }
+    cont.innerHTML = data.map(p => `
+      <div class="list-row" style="cursor:pointer;" onclick="vincularUsuarioAtencion('${p.id}', ${JSON.stringify(p.nombre_completo || '')})">
+        <span>${p.nombre_completo}</span><span class="subtle">${p.municipio || ''}</span>
+      </div>`).join('');
+  }, 300);
+}
+
+function vincularUsuarioAtencion(usuarioId, nombre){
+  window.__atencionUsuarioVinculado = usuarioId;
+  document.getElementById('at-nombre').value = nombre;
+  document.getElementById('at-buscar-usuario').value = '';
+  document.getElementById('at-resultados-busqueda').innerHTML = '';
+  const chip = document.getElementById('at-usuario-vinculado');
+  chip.style.display = 'inline-flex';
+  document.getElementById('at-usuario-vinculado-texto').textContent = (LANG==='ca' ? 'Vinculat a: ' : 'Vinculado a: ') + nombre;
+}
+
+function desvincularUsuarioAtencion(){
+  window.__atencionUsuarioVinculado = null;
+  document.getElementById('at-usuario-vinculado').style.display = 'none';
 }
 
 async function guardarAtencion(){
@@ -774,6 +953,7 @@ async function guardarAtencion(){
 
   const payload = {
     nombre_referencia: nombre,
+    usuario_id: window.__atencionUsuarioVinculado || null,
     creado_por_email: CURRENT_USER.email,
     prestaciones,
     tramites_bretxa: tramitesBretxa,
@@ -868,7 +1048,7 @@ async function cerrarSesion(){
 
 async function renderDashboard(){
   const t = T1[LANG];
-  document.getElementById('profile-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
+  document.getElementById('profile-content').innerHTML = `<div class="placeholder">${LANG==='ca' ? 'Carregant…' : 'Cargando…'}</div>`;
 
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
   const { data: tramites } = await sb.from('tramites').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
@@ -957,7 +1137,7 @@ async function cancelarCita(id){
 
 async function renderCitaForm(){
   const esCA = LANG === 'ca';
-  document.getElementById('cita-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
+  document.getElementById('cita-content').innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
 
   const { data: horario } = await sb.from('horario_atencion').select('*').eq('id', 1).maybeSingle();
   if(!horario){
@@ -995,7 +1175,7 @@ async function seleccionarDiaCita(fechaIso){
   const esCA = LANG === 'ca';
   const horario = window.__horarioAtencion;
   const cont = document.getElementById('cita-horas');
-  cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
+  cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
 
   const { data: ocupacion } = await sb.rpc('citas_disponibilidad', { p_fecha: fechaIso });
   const ocupadasPorHora = {};
