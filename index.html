@@ -608,6 +608,32 @@ async function responderConsulta(id){
   renderPanel();
 }
 
+async function verDocumentoStaff(rutaStorage){
+  const { data, error } = await sb.storage.from('documentos').createSignedUrl(rutaStorage, 60);
+  if(error){ alert(error.message); return; }
+  window.open(data.signedUrl, '_blank');
+}
+
+async function subirDocumentoStaff(){
+  const usuarioId = window.__usuarioIdVisto;
+  const input = document.getElementById('staff-doc-input');
+  if(!input.files.length) return;
+  const file = input.files[0];
+  const esCV = document.getElementById('staff-doc-es-cv').checked;
+  const path = `${usuarioId}/${Date.now()}_${file.name}`;
+
+  const { error: uploadError } = await sb.storage.from('documentos').upload(path, file);
+  if(uploadError){ alert(uploadError.message); return; }
+
+  await sb.from('documentos').insert({
+    usuario_id: usuarioId,
+    nombre_archivo: file.name,
+    ruta_storage: path,
+    tipo_documento: esCV ? 'curriculum' : null
+  });
+  verPersonaStaff(usuarioId);
+}
+
 async function verPersonaStaff(usuarioId){
   const cont = document.getElementById('persona-content');
   showScreen('persona');
@@ -626,11 +652,17 @@ async function verPersonaStaff(usuarioId){
     return;
   }
 
+  window.__usuarioIdVisto = usuarioId;
+
   const campo = (label, valor) => valor ? `<div class="panel-stat-row"><span>${label}</span><span><strong>${valor}</strong></span></div>` : '';
   const campoBool = (label, valor) => valor === true ? `<div class="panel-stat-row"><span>${label}</span><span><strong>Sí</strong></span></div>` : '';
 
   const docsHtml = (docsRes.data && docsRes.data.length)
-    ? docsRes.data.map(d => `<div class="panel-stat-row"><span>${d.nombre_archivo}</span></div>`).join('')
+    ? docsRes.data.map(d => `
+        <div class="panel-stat-row">
+          <span>${d.nombre_archivo}${d.tipo_documento==='curriculum' ? ' <span class="chip en-curso">CV</span>' : ''}${d.tipo_documento==='consentimiento' ? ' <span class="chip hecho">Consentimiento</span>' : ''}</span>
+          <button class="link-btn" style="font-size:12px;" onclick="verDocumentoStaff('${d.ruta_storage}')">Ver</button>
+        </div>`).join('')
     : `<div class="empty-note">Sin documentos</div>`;
 
   const tramitesHtml = (tramitesRes.data && tramitesRes.data.length)
@@ -672,6 +704,11 @@ async function verPersonaStaff(usuarioId){
     <div class="panel-card">
       <h3>Documentos</h3>
       ${docsHtml}
+      <div class="doc-upload-row" style="margin-top:10px;">
+        <input type="file" id="staff-doc-input">
+        <label class="checkbox-row" style="justify-content:center;"><input type="checkbox" id="staff-doc-es-cv"> Es un currículum</label>
+        <button class="link-btn" style="margin-top:8px;" onclick="subirDocumentoStaff()">Subir documento a esta persona</button>
+      </div>
     </div>
 
     <div class="panel-card">
@@ -1153,7 +1190,7 @@ async function renderDashboard(){
   const documentosHtml = (documentos && documentos.length)
     ? documentos.map(d => `
         <div class="list-row">
-          <span>${d.nombre_archivo}${d.tipo_documento==='consentimiento' ? ` <span class="chip hecho" style="margin-left:6px;">${LANG==='ca' ? 'Consentiment' : 'Consentimiento'}</span>` : ''}</span>
+          <span>${d.nombre_archivo}${d.tipo_documento==='consentimiento' ? ` <span class="chip hecho" style="margin-left:6px;">${LANG==='ca' ? 'Consentiment' : 'Consentimiento'}</span>` : ''}${d.tipo_documento==='curriculum' ? ` <span class="chip en-curso" style="margin-left:6px;">CV</span>` : ''}</span>
           <span style="display:flex;gap:12px;align-items:center;flex-shrink:0;">
             <button class="link-btn" style="font-size:12px;" onclick="verDocumento('${d.id}')">${LANG==='ca' ? 'Veure' : 'Ver'}</button>
             <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="borrarDocumento('${d.id}')">${LANG==='ca' ? 'Eliminar' : 'Eliminar'}</button>
@@ -1209,6 +1246,12 @@ async function renderDashboard(){
     <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
 
     <button class="primary-btn" style="background:var(--teal-dark);margin-top:18px;" onclick="showScreen('cv');renderCVScreen()">${LANG==='ca' ? '📄 Generar el meu currículum' : '📄 Generar mi currículum'}</button>
+
+    <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:10px;">
+      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Ja tens un currículum fet? Puja\'l aquí.' : '¿Ya tienes un currículum hecho? Súbelo aquí.'}</p>
+      <input type="file" id="doc-cv-input" accept="application/pdf,image/*,.doc,.docx">
+      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-cv-input','curriculum')">${LANG==='ca' ? 'Pujar currículum' : 'Subir currículum'}</button>
+    </div>
 
     <button class="primary-btn" style="background:var(--teal);margin-top:10px;" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? '📋 Enquesta de satisfacció' : '📋 Encuesta de satisfacción'}</button>
 
@@ -1376,7 +1419,14 @@ function renderCVScreen(){
     <div class="warning-block"><div><strong>${esCA ? 'Falten dades' : 'Faltan datos'}</strong>
     <span>${esCA ? 'Completa formació, experiència o interessos a "Les meves dades" per tenir un currículum més complet.' : 'Completa formación, experiencia o intereses en "Mis datos" para tener un currículum más completo.'}</span></div></div>` : ''}
 
-    <button class="primary-btn" onclick="window.print()" style="margin-top:16px;margin-bottom:20px;">📄 ${esCA ? 'Exportar a PDF' : 'Exportar a PDF'}</button>
+    <button class="primary-btn" onclick="window.print()" style="margin-top:16px;">📄 ${esCA ? 'Exportar a PDF' : 'Exportar a PDF'}</button>
+
+    <div class="detail-block" style="margin-top:14px;">
+      <p style="margin:0;">${esCA
+        ? 'Aquest currículum és un primer esborrany senzill. Si ja en tens un de fet, o vols que un tècnic de Logos t\'ajudi a millorar-lo, pots pujar-lo directament a "El meu espai".'
+        : 'Este currículum es un primer borrador sencillo. Si ya tienes uno hecho, o quieres que un técnico de Logos te ayude a mejorarlo, puedes subirlo directamente en "Mi espacio".'}</p>
+    </div>
+
   `;
 }
 
