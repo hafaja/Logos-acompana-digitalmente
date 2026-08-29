@@ -11,8 +11,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#EEF2EF; --paper:#FFFFFF; --ink:#12312B; --ink-soft:#4C5C57; --line:#D7DED9;
-    --teal:#0F6E5C; --teal-dark:#0A4F42; --ochre:#C97D3B; --ochre-soft:#F3E3D3;
+    --bg:#F5F3EC; --paper:#FFFFFF; --ink:#16233F; --ink-soft:#545F78; --line:#E1DFD3;
+    --teal:#16233F; --teal-dark:#0B1526; --ochre:#C99A2E; --ochre-soft:#FAF0D6;
     --alert:#A8431F; --alert-soft:#FBE7DE;
     --font-display:'Fraunces',serif; --font-body:'Atkinson Hyperlegible',sans-serif;
   }
@@ -29,10 +29,10 @@
   .trust-banner strong{font-size:13px;display:block;margin-bottom:2px;color:#7A4A1F;}
   .trust-banner span{font-size:12.5px;color:#7A4A1F;line-height:1.4;}
   .service-row{display:flex;gap:12px;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer;}
-  .service-row .icon{width:38px;height:38px;border-radius:10px;background:#E4EFEC;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+  .service-row .icon{width:38px;height:38px;border-radius:10px;background:#E6E9F1;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
   .service-row .txt strong{display:block;font-size:14.5px;}
   .service-row .txt span{font-size:12px;color:var(--ink-soft);}
-  .verified-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--teal-dark);background:#E4EFEC;border:1px solid var(--teal);border-radius:999px;padding:3px 9px;}
+  .verified-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--teal-dark);background:#E6E9F1;border:1px solid var(--teal);border-radius:999px;padding:3px 9px;}
   .pending-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#7A4A1F;background:var(--ochre-soft);border:1px solid var(--ochre);border-radius:999px;padding:3px 9px;}
   .detail-block{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
   .detail-block h4{margin:0 0 8px;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft);}
@@ -56,7 +56,8 @@
   .lang-toggle button.active{background:var(--teal);color:#fff;}
   .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
   .life-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .life-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;}
+  .life-card{background:var(--paper);border:1.5px solid var(--line);border-top:3px solid var(--ochre);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .15s, box-shadow .15s;}
+  .life-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,35,63,.08);}
   .life-card .emoji{font-size:22px;display:block;margin-bottom:6px;}
   .life-card span{font-size:12.5px;font-weight:700;color:var(--ink);}
   .next-tag{font-size:10px;font-weight:700;color:#8a8f8b;background:#EEF2EF;border-radius:999px;padding:2px 8px;}
@@ -75,7 +76,7 @@
   .primary-btn:disabled{opacity:.6;cursor:default;}
   .link-btn{background:none;border:none;color:var(--teal-dark);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:0;}
   .auth-error{background:var(--alert-soft);border:1.5px solid var(--alert);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--alert);margin-bottom:12px;}
-  .auth-ok{background:#E4EFEC;border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--teal-dark);margin-bottom:12px;}
+  .auth-ok{background:#E6E9F1;border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--teal-dark);margin-bottom:12px;}
   .profile-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
   .avatar{width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:19px;flex-shrink:0;}
   .profile-head strong{display:block;font-size:15.5px;}
@@ -84,7 +85,7 @@
   .list-row:last-child{border-bottom:none;}
   .chip{font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 9px;}
   .chip.en-curso{background:var(--ochre-soft);color:#7A4A1F;}
-  .chip.derivado{background:#E4EFEC;color:var(--teal-dark);}
+  .chip.derivado{background:#E6E9F1;color:var(--teal-dark);}
   .chip.hecho{background:#DDEFD9;color:#2F6B27;}
   .empty-note{font-size:12.5px;color:var(--ink-soft);padding:8px 2px;}
   .logout-btn{width:100%;background:none;border:1.5px solid var(--alert);color:var(--alert);border-radius:14px;padding:11px;font-family:var(--font-body);font-weight:700;font-size:13.5px;cursor:pointer;margin-top:20px;}
@@ -298,14 +299,13 @@ function showNecesidades(ambitoId, silent){
 }
 
 function showProximamente(nombre){
-  const esBusqueda = nombre === null;
+  if(nombre === null){
+    renderOrientacionForm();
+    return;
+  }
   const t = LANG === 'ca'
-    ? esBusqueda
-      ? { title: 'No sé exactament què necessito', body: "Aquesta orientació automàtica encara no existeix a l'app (és el Mòdul 3 del pla, pendent de construir). Mentrestant, explica'ns la teva situació directament a Logos i t'orientem nosaltres.", cta: 'Explicar la meva situació a Logos' }
-      : { title: nombre, body: "Encara no tenim aquesta fitxa preparada al catàleg. Mentre l'anem completant, pots contactar directament amb Logos i t'ajudem igualment.", cta: 'Contactar amb Logos' }
-    : esBusqueda
-      ? { title: 'No sé exactamente qué necesito', body: 'Esta orientación automática todavía no existe en la app (es el Módulo 3 del plan, pendiente de construir). Mientras tanto, cuéntanos tu situación directamente a Logos y te orientamos nosotros.', cta: 'Contar mi situación a Logos' }
-      : { title: nombre, body: 'Todavía no tenemos esta ficha preparada en el catálogo. Mientras la vamos completando, puedes contactar directamente con Logos y te ayudamos igualmente.', cta: 'Contactar con Logos' };
+    ? { title: nombre, body: "Encara no tenim aquesta fitxa preparada al catàleg. Mentre l'anem completant, pots contactar directament amb Logos i t'ajudem igualment.", cta: 'Contactar amb Logos' }
+    : { title: nombre, body: 'Todavía no tenemos esta ficha preparada en el catálogo. Mientras la vamos completando, puedes contactar directamente con Logos y te ayudamos igualmente.', cta: 'Contactar con Logos' };
   document.getElementById('detail-content').innerHTML = `
     <h2 class="screen-title">${t.title}</h2>
     <span class="pending-stamp">🕓 ${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>
@@ -313,6 +313,58 @@ function showProximamente(nombre){
     <button style="width:100%;background:var(--ochre);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;">${t.cta}</button>
   `;
   showScreen('detail');
+}
+
+function renderOrientacionForm(){
+  const esCA = LANG === 'ca';
+  document.getElementById('detail-content').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'No sé exactament què necessito' : 'No sé exactamente qué necesito'}</h2>
+    <p class="subtle">${esCA
+      ? 'Explica amb les teves paraules què et passa o què necessites. No cal que sàpigues el nom del tràmit — un tècnic de Logos llegirà el que escriguis i et respondrà amb una orientació.'
+      : 'Explica con tus palabras qué te pasa o qué necesitas. No hace falta que sepas el nombre del trámite — un técnico de Logos leerá lo que escribas y te responderá con una orientación.'}</p>
+    <div class="field">
+      <textarea id="orient-texto" rows="6" placeholder="${esCA ? 'Per exemple: la meva mare té dificultats per caminar i no sé si té dret a alguna ajuda...' : 'Por ejemplo: mi madre tiene dificultades para caminar y no sé si tiene derecho a alguna ayuda...'}"></textarea>
+    </div>
+    <button class="primary-btn" id="orient-save-btn" onclick="guardarConsultaOrientacion()">${esCA ? 'Enviar a Logos' : 'Enviar a Logos'}</button>
+  `;
+  showScreen('detail');
+}
+
+async function guardarConsultaOrientacion(){
+  const esCA = LANG === 'ca';
+  const btn = document.getElementById('orient-save-btn');
+  const texto = document.getElementById('orient-texto').value.trim();
+  if(!texto){
+    document.getElementById('detail-content').insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${esCA ? 'Escriu la teva situació abans d\'enviar.' : 'Escribe tu situación antes de enviar.'}</div>`);
+    return;
+  }
+  btn.disabled = true;
+
+  const { error } = await sb.from('consultas_orientacion').insert({
+    usuario_id: CURRENT_USER.id,
+    texto_consulta: texto
+  });
+  if(error){
+    document.getElementById('detail-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    btn.disabled = false;
+    return;
+  }
+
+  try {
+    const p = window.__perfilActual || {};
+    await sb.from('notificaciones').insert({
+      usuario_id: CURRENT_USER.id,
+      tipo: 'consulta_orientacion',
+      mensaje: `${p.nombre_completo || CURRENT_USER.email} no sabe qué necesita y ha pedido orientación.`
+    });
+  } catch(e) { /* no bloquear si falla la notificación */ }
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="placeholder">${esCA
+      ? "Hem rebut la teva consulta. Un tècnic de Logos et respondrà aviat — podràs veure la resposta a \"El meu espai complet\"."
+      : 'Hemos recibido tu consulta. Un técnico de Logos te responderá pronto — podrás ver la respuesta en "Mi espacio completo".'}</div>
+  `;
 }
 
 function showDetail(id){
@@ -544,6 +596,18 @@ async function marcarNotificacionLeida(id){
   renderPanel();
 }
 
+async function responderConsulta(id){
+  const texto = document.getElementById(`resp-${id}`).value.trim();
+  if(!texto){ alert('Escribe una respuesta antes de enviar.'); return; }
+  await sb.from('consultas_orientacion').update({
+    respuesta: texto,
+    estado: 'respondida',
+    respondido_por_email: CURRENT_USER.email,
+    respondido_en: new Date().toISOString()
+  }).eq('id', id);
+  renderPanel();
+}
+
 async function verPersonaStaff(usuarioId){
   const cont = document.getElementById('persona-content');
   showScreen('persona');
@@ -662,7 +726,7 @@ async function renderPanel(){
   }
   document.getElementById('panel-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion] = await Promise.all([
+  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion, consultasPend] = await Promise.all([
     sb.from('stats_total_personas').select('*').maybeSingle(),
     sb.from('stats_por_sexo').select('*'),
     sb.from('stats_por_nacionalidad').select('*'),
@@ -671,7 +735,8 @@ async function renderPanel(){
     sb.from('stats_tramites_por_estado').select('*'),
     sb.from('stats_intereses_formativos').select('*'),
     sb.from('notificaciones').select('*').eq('leida', false).order('creado_en', { ascending:false }),
-    sb.from('stats_satisfaccion').select('*').maybeSingle()
+    sb.from('stats_satisfaccion').select('*').maybeSingle(),
+    sb.from('consultas_orientacion').select('*').eq('estado', 'pendiente').order('creado_en', { ascending:true })
   ]);
 
   const totalPersonas = total.data ? total.data.total_personas : 0;
@@ -683,6 +748,18 @@ async function renderPanel(){
   const dd = depDis.data || {};
   const sf = situFam.data || {};
   const sat = satisfaccion.data || {};
+
+  const consultasHtml = (consultasPend.data && consultasPend.data.length)
+    ? consultasPend.data.map(c => `
+        <div class="panel-card">
+          <p style="margin:0 0 8px;font-size:13.5px;"><em>${c.texto_consulta}</em></p>
+          <textarea id="resp-${c.id}" rows="2" placeholder="Escribe tu orientación..." style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-family:var(--font-body);font-size:13.5px;margin-bottom:8px;"></textarea>
+          <div style="display:flex;gap:14px;">
+            <button class="link-btn" style="font-size:12px;" onclick="responderConsulta('${c.id}')">Enviar respuesta</button>
+            ${c.usuario_id ? `<button class="link-btn" style="font-size:12px;" onclick="verPersonaStaff('${c.usuario_id}')">👤 Ver información</button>` : ''}
+          </div>
+        </div>`).join('')
+    : `<div class="empty-note">No hay consultas pendientes</div>`;
 
   const notifsHtml = (notifs.data && notifs.data.length)
     ? notifs.data.map(n => `
@@ -701,6 +778,11 @@ async function renderPanel(){
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
       <h3 style="color:#7A4A1F;">🔔 Alertas nuevas</h3>
       ${notifsHtml}
+    </div>
+
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+      <h3 style="color:#7A4A1F;">🔎 Consultas de orientación pendientes</h3>
+      ${consultasHtml}
     </div>
 
     <div class="panel-card" style="text-align:center;">
@@ -1054,6 +1136,7 @@ async function renderDashboard(){
   const { data: tramites } = await sb.from('tramites').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
   const { data: documentos } = await sb.from('documentos').select('*').eq('usuario_id', CURRENT_USER.id).order('subido_en', { ascending:false });
   const { data: citas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').order('fecha', { ascending:true });
+  const { data: consultas } = await sb.from('consultas_orientacion').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
 
   const nombre = (perfil && perfil.nombre_completo) ? perfil.nombre_completo : CURRENT_USER.email;
   const inicial = nombre.trim().charAt(0).toUpperCase();
@@ -1087,6 +1170,16 @@ async function renderDashboard(){
         </div>`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
 
+  const consultasHtml = (consultas && consultas.length)
+    ? consultas.map(c => `
+        <div class="panel-card">
+          <p style="margin:0 0 8px;font-size:13px;"><em>${c.texto_consulta}</em></p>
+          ${c.estado === 'respondida'
+            ? `<div class="panel-stat-row" style="align-items:flex-start;"><span style="font-weight:700;">${LANG==='ca' ? 'Resposta de Logos' : 'Respuesta de Logos'}</span></div><p style="margin:4px 0 0;font-size:13.5px;">${c.respuesta}</p>`
+            : `<span class="pending-stamp">🕓 ${LANG==='ca' ? 'Pendent de resposta' : 'Pendiente de respuesta'}</span>`}
+        </div>`).join('')
+    : '';
+
   document.getElementById('profile-content').innerHTML = `
     <div class="profile-head">
       <div class="avatar">${inicial}</div>
@@ -1096,6 +1189,8 @@ async function renderDashboard(){
       </div>
     </div>
     <button class="primary-btn" style="margin-bottom:20px;" onclick="showScreen('home');renderDatosStep()">${t.completarDatos}</button>
+
+    ${consultasHtml ? `<div class="section-label">${LANG==='ca' ? 'LA MEVA CONSULTA D\'ORIENTACIÓ' : 'MI CONSULTA DE ORIENTACIÓN'}</div>${consultasHtml}` : ''}
 
     <div class="section-label">${LANG==='ca' ? 'LES MEVES CITES' : 'MIS CITAS'}</div>
     ${citasHtml}
