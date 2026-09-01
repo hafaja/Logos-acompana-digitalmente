@@ -684,7 +684,14 @@ async function verPersonaStaff(usuarioId){
     : `<div class="empty-note">Sin documentos</div>`;
 
   const tramitesHtml = (tramitesRes.data && tramitesRes.data.length)
-    ? tramitesRes.data.map(tr => `<div class="panel-stat-row"><span>${tr.nombre_servicio}</span><span class="chip ${tr.estado==='hecho'?'hecho':(tr.estado==='derivado_logos'?'derivado':'en-curso')}">${tr.estado}</span></div>`).join('')
+    ? tramitesRes.data.map(tr => `
+        <div class="panel-stat-row" style="align-items:flex-start;">
+          <span>${tr.nombre_servicio}<br><span class="subtle" style="font-size:11px;margin:0;">Inicio: ${tr.fecha_inicio ? new Date(tr.fecha_inicio).toLocaleDateString('es-ES') : '—'}${tr.fecha_fin ? ' · Fin: ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}</span></span>
+          <span style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+            <span class="chip ${tr.estado==='hecho'?'hecho':(tr.estado==='derivado_logos'?'derivado':'en-curso')}">${tr.estado}</span>
+            ${tr.estado !== 'hecho' ? `<button class="link-btn" style="font-size:11px;" onclick="marcarTramiteHecho('${tr.id}')">Marcar hecho</button>` : ''}
+          </span>
+        </div>`).join('')
     : `<div class="empty-note">Sin trámites</div>`;
 
   const atencionesHtml = (atencionesRes.data && atencionesRes.data.length)
@@ -702,16 +709,25 @@ async function verPersonaStaff(usuarioId){
   cont.innerHTML = `
     <h2 class="screen-title">${p.nombre_completo || 'Sin nombre'}</h2>
     <div class="panel-card">
+      ${campo('DNI/NIE', p.dni_nie)}
+      ${campo('Fecha de nacimiento', p.fecha_nacimiento)}
       ${campo('Teléfono', p.telefono)}
+      ${campo('Calle', p.calle)}
       ${campo('Municipio', p.municipio)}
+      ${campo('Código postal', p.codigo_postal)}
+      ${campo('Provincia', p.provincia)}
       ${campo('Con quién vive', p.convivencia)}
+      ${campo('Personas en el hogar', p.personas_hogar)}
+      ${campo('Número de hijos', p.numero_hijos)}
       ${campo('Sexo', p.sexo)}
+      ${campo('Nacionalidad', p.nacionalidad)}
       ${campo('Situación laboral', p.situacion_laboral)}
       ${campo('Nivel de estudios', p.nivel_estudios)}
       ${campo('Titulaciones/cursos', p.titulaciones_cursos)}
       ${campo('Experiencia laboral', p.experiencia_laboral)}
       ${campo('Nivel de ingresos', p.nivel_ingresos)}
       ${campoBool('Discapacidad reconocida', p.discapacidad_reconocida)}
+      ${campo('% Discapacidad', p.porcentaje_discapacidad)}
       ${campoBool('Dependencia reconocida', p.dependencia_reconocida)}
       ${campoBool('Familia monoparental', p.familia_monoparental)}
       ${campoBool('Familia numerosa', p.familia_numerosa)}
@@ -732,11 +748,44 @@ async function verPersonaStaff(usuarioId){
     <div class="panel-card">
       <h3>Trámites</h3>
       ${tramitesHtml}
+      <div class="doc-upload-row" style="margin-top:10px;">
+        <div class="field" style="margin-bottom:8px;">
+          <input type="text" id="nuevo-tramite-nombre" placeholder="Nombre del trámite">
+        </div>
+        <div class="field" style="margin-bottom:8px;">
+          <label style="text-align:left;">Fecha de inicio</label>
+          <input type="date" id="nuevo-tramite-fecha" value="${new Date().toISOString().slice(0,10)}">
+        </div>
+        <button class="link-btn" onclick="crearTramite()">➕ Abrir trámite</button>
+      </div>
     </div>
 
     <div class="section-label" style="margin-top:14px;">Quién ha atendido a esta persona</div>
     ${atencionesHtml}
   `;
+}
+
+async function crearTramite(){
+  const nombre = document.getElementById('nuevo-tramite-nombre').value.trim();
+  const fecha = document.getElementById('nuevo-tramite-fecha').value;
+  if(!nombre){ alert('Escribe el nombre del trámite.'); return; }
+  const { error } = await sb.from('tramites').insert({
+    usuario_id: window.__usuarioIdVisto,
+    nombre_servicio: nombre,
+    estado: 'en_curso',
+    fecha_inicio: fecha || new Date().toISOString().slice(0,10)
+  });
+  if(error){ alert(error.message); return; }
+  verPersonaStaff(window.__usuarioIdVisto);
+}
+
+async function marcarTramiteHecho(tramiteId){
+  const { error } = await sb.from('tramites').update({
+    estado: 'hecho',
+    fecha_fin: new Date().toISOString().slice(0,10)
+  }).eq('id', tramiteId);
+  if(error){ alert(error.message); return; }
+  verPersonaStaff(window.__usuarioIdVisto);
 }
 
 async function renderAdminPanel(){
@@ -1231,7 +1280,8 @@ async function renderDashboard(){
     ? tramites.map(tr => {
         const chipClass = tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
         const chipLabel = tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
-        return `<div class="list-row"><span>${tr.nombre_servicio}</span><span class="chip ${chipClass}">${chipLabel}</span></div>`;
+        const fechas = tr.fecha_inicio ? `${new Date(tr.fecha_inicio).toLocaleDateString('es-ES')}${tr.fecha_fin ? ' – ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}` : '';
+        return `<div class="list-row"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}</span><span class="chip ${chipClass}">${chipLabel}</span></div>`;
       }).join('')
     : `<div class="empty-note">${t.sinTramites}</div>`;
 
@@ -1721,12 +1771,36 @@ function renderDatosStep(){
       <input type="text" id="pf-telefono" value="${p.telefono || ''}">
     </div>
     <div class="field">
+      <label>${esCA ? 'Data de naixement' : 'Fecha de nacimiento'}</label>
+      <input type="date" id="pf-nacimiento" value="${p.fecha_nacimiento || ''}">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Carrer' : 'Calle'}</label>
+      <input type="text" id="pf-calle" value="${p.calle || ''}">
+    </div>
+    <div class="field">
       <label>${t.municipio}</label>
       <input type="text" id="pf-municipio" value="${p.municipio || 'Tarragona'}">
     </div>
     <div class="field">
+      <label>${esCA ? 'Codi postal' : 'Código postal'}</label>
+      <input type="text" id="pf-cp" value="${p.codigo_postal || ''}">
+    </div>
+    <div class="field">
+      <label>Provincia</label>
+      <input type="text" id="pf-provincia" value="${p.provincia || 'Tarragona'}">
+    </div>
+    <div class="field">
       <label>${t.convivencia}</label>
       <input type="text" id="pf-convivencia" value="${p.convivencia || ''}">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Persones a la llar' : 'Personas en el hogar'}</label>
+      <input type="number" id="pf-personas-hogar" min="1" value="${p.personas_hogar || ''}">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Nombre de fills' : 'Número de hijos'}</label>
+      <input type="number" id="pf-num-hijos" min="0" value="${p.numero_hijos || ''}">
     </div>
     <div class="field">
       <label>${esCA ? 'Sexe' : 'Sexo'}</label>
@@ -1749,6 +1823,10 @@ function renderDatosStep(){
         <option value="true" ${p.discapacidad_reconocida===true?'selected':''}>${t.si}</option>
         <option value="false" ${p.discapacidad_reconocida===false?'selected':''}>${t.no}</option>
       </select>
+    </div>
+    <div class="field">
+      <label>${esCA ? '% de discapacitat' : '% de discapacidad'}</label>
+      <input type="number" id="pf-pct-discapacidad" min="0" max="100" value="${p.porcentaje_discapacidad || ''}">
     </div>
     <div class="field">
       <label>${t.dependencia}</label>
@@ -1816,6 +1894,10 @@ function renderDatosStep(){
       </label>
       <div id="pf-sensibles" style="display:${p.consentimiento_datos_sensibles ? 'block':'none'};margin-top:10px;">
         <div class="field">
+          <label>DNI/NIE</label>
+          <input type="text" id="pf-dni" value="${p.dni_nie || ''}">
+        </div>
+        <div class="field">
           <label>${esCA ? 'Nacionalitat' : 'Nacionalidad'}</label>
           <input type="text" id="pf-nacionalidad" value="${p.nacionalidad || ''}">
         </div>
@@ -1869,11 +1951,18 @@ async function guardarPerfil(){
     id: CURRENT_USER.id,
     nombre_completo: val('pf-nombre') || null,
     telefono: val('pf-telefono') || null,
+    fecha_nacimiento: val('pf-nacimiento') || null,
+    calle: val('pf-calle') || null,
     municipio: val('pf-municipio') || null,
+    codigo_postal: val('pf-cp') || null,
+    provincia: val('pf-provincia') || null,
     convivencia: val('pf-convivencia') || null,
+    personas_hogar: val('pf-personas-hogar') ? parseInt(val('pf-personas-hogar'), 10) : null,
+    numero_hijos: val('pf-num-hijos') ? parseInt(val('pf-num-hijos'), 10) : null,
     sexo: val('pf-sexo') || null,
     situacion_laboral: val('pf-laboral') || null,
     discapacidad_reconocida: boolVal('pf-discapacidad'),
+    porcentaje_discapacidad: val('pf-pct-discapacidad') ? parseInt(val('pf-pct-discapacidad'), 10) : null,
     dependencia_reconocida: boolVal('pf-dependencia'),
     nivel_ingresos: val('pf-ingresos') || null,
     nivel_estudios: val('pf-nivel-estudios') || null,
@@ -1887,6 +1976,7 @@ async function guardarPerfil(){
     situacion_desempleo: chk('pf-desempleo'),
     consentimiento_datos_sensibles: consentimiento,
     // Datos sensibles: solo se guardan si hay consentimiento explícito
+    dni_nie: consentimiento ? (val('pf-dni') || null) : null,
     nacionalidad: consentimiento ? (val('pf-nacionalidad') || null) : null,
     situacion_regularizacion: consentimiento ? (val('pf-regularizacion') || null) : null,
     tipologia_ethos: consentimiento ? (val('pf-ethos') || null) : null,
