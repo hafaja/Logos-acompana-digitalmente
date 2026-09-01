@@ -91,6 +91,15 @@
   .chip.en-curso{background:var(--ochre-soft);color:#7A4A1F;}
   .chip.derivado{background:#E6E9F1;color:var(--teal-dark);}
   .chip.hecho{background:#DDEFD9;color:#2F6B27;}
+  .resultado-btn{flex:1;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 6px;font-family:var(--font-body);font-weight:700;font-size:12px;cursor:pointer;color:var(--ink-soft);}
+  .resultado-btn.sel-good{background:var(--good);color:#fff;border-color:var(--good);}
+  .resultado-btn.sel-gold{background:var(--ochre);color:#fff;border-color:var(--ochre);}
+  .resultado-btn.sel-alert{background:var(--alert);color:#fff;border-color:var(--alert);}
+  .persona-tabs{display:flex;gap:4px;overflow-x:auto;margin:16px 0 12px;border-bottom:1.5px solid var(--line);}
+  .ptab-btn{background:none;border:none;padding:9px 14px;font-family:var(--font-body);font-weight:700;font-size:12.5px;color:var(--ink-soft);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;}
+  .ptab-btn.active{color:var(--teal);border-bottom-color:var(--ochre);}
+  .ptab-content{display:none;}
+  .ptab-content.active{display:block;}
   .empty-note{font-size:12.5px;color:var(--ink-soft);padding:8px 2px;}
   .logout-btn{width:100%;background:none;border:1.5px solid var(--alert);color:var(--alert);border-radius:14px;padding:11px;font-family:var(--font-body);font-weight:700;font-size:13.5px;cursor:pointer;margin-top:20px;}
   .doc-upload-row{border:1.5px dashed var(--line);border-radius:12px;padding:12px;text-align:center;margin-top:8px;}
@@ -657,13 +666,14 @@ async function verPersonaStaff(usuarioId){
   showScreen('persona');
   cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [perfilRes, docsRes, tramitesRes, atencionesRes, actuacionesRes, staffListRes] = await Promise.all([
+  const [perfilRes, docsRes, tramitesRes, atencionesRes, actuacionesRes, staffListRes, citasRes] = await Promise.all([
     sb.from('perfiles').select('*').eq('id', usuarioId).maybeSingle(),
     sb.from('documentos').select('*').eq('usuario_id', usuarioId).order('subido_en', { ascending:false }),
     sb.from('tramites').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
     sb.from('atenciones').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
     sb.from('actuaciones').select('*').eq('usuario_id', usuarioId).order('fecha', { ascending:false }),
-    sb.from('staff').select('email').eq('activo', true).order('email', { ascending:true })
+    sb.from('staff').select('email').eq('activo', true).order('email', { ascending:true }),
+    sb.from('citas').select('*').eq('usuario_id', usuarioId).order('fecha', { ascending:false })
   ]);
 
   const p = perfilRes.data;
@@ -716,11 +726,19 @@ async function verPersonaStaff(usuarioId){
           ${ac.categoria ? `<div class="panel-stat-row"><span>Proyecto/trámite/formación</span><span>${ac.categoria}</span></div>` : ''}
           ${ac.objetivo ? `<div class="panel-stat-row"><span>Objetivo</span><span>${ac.objetivo}</span></div>` : ''}
           ${ac.descripcion ? `<div class="panel-stat-row"><span>Actuación realizada</span><span>${ac.descripcion}</span></div>` : ''}
-          ${ac.resultado ? `<div class="panel-stat-row"><span>Resultado</span><span>${ac.resultado}</span></div>` : ''}
+          ${ac.resultado ? `<div class="panel-stat-row"><span>Resultado</span><span class="chip ${ac.resultado==='conseguido'?'hecho':(ac.resultado==='no_conseguido'?'':'en-curso')}" style="${ac.resultado==='no_conseguido'?'background:var(--alert-soft);color:var(--alert);':''}">${ac.resultado==='conseguido'?'Conseguido':(ac.resultado==='en_tramite'?'En trámite':'No conseguido')}</span></div>` : ''}
           ${ac.proximo_paso ? `<div class="panel-stat-row"><span>Próximo paso</span><span>${ac.proximo_paso}</span></div>` : ''}
           ${ac.fecha_proxima_revision ? `<div class="panel-stat-row"><span>Próxima revisión</span><span><strong>${new Date(ac.fecha_proxima_revision).toLocaleDateString('es-ES')}</strong></span></div>` : ''}
         </div>`).join('')
     : `<div class="empty-note">Todavía no hay actuaciones registradas.</div>`;
+
+  const citasHtml = (citasRes.data && citasRes.data.length)
+    ? citasRes.data.map(c => `
+        <div class="panel-stat-row">
+          <span>${new Date(c.fecha).toLocaleDateString('es-ES')} · ${c.hora || ''}${c.motivo ? `<br><span class="subtle" style="font-size:11px;margin:0;">${c.motivo}</span>` : ''}</span>
+          <span class="chip ${c.estado==='confirmada'?'hecho':(c.estado==='cancelada'?'':'en-curso')}" style="${c.estado==='cancelada'?'background:#EEE;color:#888;':''}">${c.estado}</span>
+        </div>`).join('')
+    : `<div class="empty-note">Sin citas registradas</div>`;
 
   const staffOptions = (staffListRes.data || []).map(s => `<option value="${s.email}" ${p.tecnico_responsable_email===s.email?'selected':''}>${s.email}</option>`).join('');
 
@@ -766,49 +784,73 @@ async function verPersonaStaff(usuarioId){
       ${campoBool('En desempleo', p.situacion_desempleo)}
     </div>
 
-    <div class="panel-card">
-      <h3>Actuaciones — seguimiento de caso</h3>
-      ${actuacionesHtml}
-      <div class="doc-upload-row" style="margin-top:10px;text-align:left;">
-        <div class="field"><label>Fecha</label><input type="date" id="act-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
-        <div class="field"><label>Proyecto / trámite / formación</label><input type="text" id="act-categoria" placeholder="Ej: Acompañamiento administrativo"></div>
-        <div class="field"><label>Objetivo</label><input type="text" id="act-objetivo" placeholder="Ej: Facilitar el acceso a un trámite"></div>
-        <div class="field"><label>Actuación realizada</label><textarea id="act-descripcion" rows="2" placeholder="Qué se ha hecho en esta atención"></textarea></div>
-        <div class="field"><label>Resultado</label><input type="text" id="act-resultado" placeholder="Ej: Conseguido"></div>
-        <div class="field"><label>Próximo paso</label><input type="text" id="act-proximo-paso" placeholder="Ej: Presentar solicitud"></div>
-        <div class="field"><label>Fecha próxima revisión</label><input type="date" id="act-fecha-revision"></div>
-        <button class="primary-btn" onclick="crearActuacion()">➕ Registrar actuación</button>
-      </div>
+    <div class="persona-tabs">
+      <button class="ptab-btn active" data-tab="actuaciones" onclick="mostrarTabPersona('actuaciones')">Actuaciones</button>
+      <button class="ptab-btn" data-tab="tramites" onclick="mostrarTabPersona('tramites')">Trámites</button>
+      <button class="ptab-btn" data-tab="documentos" onclick="mostrarTabPersona('documentos')">Documentos</button>
+      <button class="ptab-btn" data-tab="citas" onclick="mostrarTabPersona('citas')">Citas</button>
+      <button class="ptab-btn" data-tab="quienatendio" onclick="mostrarTabPersona('quienatendio')">Quién ha atendido</button>
     </div>
 
-    <div class="panel-card">
-      <h3>Documentos</h3>
-      ${docsHtml}
-      <div class="doc-upload-row" style="margin-top:10px;">
-        <input type="file" id="staff-doc-input">
-        <label class="checkbox-row" style="justify-content:center;"><input type="checkbox" id="staff-doc-es-cv"> Es un currículum</label>
-        <button class="link-btn" style="margin-top:8px;" onclick="subirDocumentoStaff()">Subir documento a esta persona</button>
-      </div>
-    </div>
-
-    <div class="panel-card">
-      <h3>Trámites</h3>
-      ${tramitesHtml}
-      <div class="doc-upload-row" style="margin-top:10px;">
-        <div class="field" style="margin-bottom:8px;">
-          <input type="text" id="nuevo-tramite-nombre" placeholder="Nombre del trámite">
+    <div class="ptab-content active" id="ptab-actuaciones">
+      <div class="panel-card">
+        ${actuacionesHtml}
+        <div class="doc-upload-row" style="margin-top:10px;text-align:left;">
+          <div class="field"><label>Fecha</label><input type="date" id="act-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
+          <div class="field"><label>Proyecto / trámite / formación</label><input type="text" id="act-categoria" placeholder="Ej: Acompañamiento administrativo"></div>
+          <div class="field"><label>Objetivo</label><input type="text" id="act-objetivo" placeholder="Ej: Facilitar el acceso a un trámite"></div>
+          <div class="field"><label>Actuación realizada</label><textarea id="act-descripcion" rows="2" placeholder="Qué se ha hecho en esta atención"></textarea></div>
+          <div class="field">
+            <label>Resultado</label>
+            <div style="display:flex;gap:6px;">
+              <button type="button" class="resultado-btn" data-val="conseguido" onclick="seleccionarResultado(this)">Conseguido</button>
+              <button type="button" class="resultado-btn" data-val="en_tramite" onclick="seleccionarResultado(this)">En trámite</button>
+              <button type="button" class="resultado-btn" data-val="no_conseguido" onclick="seleccionarResultado(this)">No conseguido</button>
+            </div>
+            <input type="hidden" id="act-resultado" value="">
+          </div>
+          <div class="field"><label>Próximo paso</label><input type="text" id="act-proximo-paso" placeholder="Ej: Presentar solicitud"></div>
+          <div class="field"><label>Fecha próxima revisión</label><input type="date" id="act-fecha-revision"></div>
+          <button class="primary-btn" onclick="crearActuacion()">➕ Registrar actuación</button>
         </div>
-        <div class="field" style="margin-bottom:8px;">
-          <label style="text-align:left;">Fecha de inicio</label>
-          <input type="date" id="nuevo-tramite-fecha" value="${new Date().toISOString().slice(0,10)}">
-        </div>
-        <button class="link-btn" onclick="crearTramite()">➕ Abrir trámite</button>
       </div>
     </div>
 
-    <div class="section-label" style="margin-top:14px;">Quién ha atendido a esta persona</div>
-    ${atencionesHtml}
+    <div class="ptab-content" id="ptab-tramites">
+      <div class="panel-card">
+        ${tramitesHtml}
+        <div class="doc-upload-row" style="margin-top:10px;">
+          <div class="field" style="margin-bottom:8px;"><input type="text" id="nuevo-tramite-nombre" placeholder="Nombre del trámite"></div>
+          <div class="field" style="margin-bottom:8px;"><label style="text-align:left;">Fecha de inicio</label><input type="date" id="nuevo-tramite-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
+          <button class="link-btn" onclick="crearTramite()">➕ Abrir trámite</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ptab-content" id="ptab-documentos">
+      <div class="panel-card">
+        ${docsHtml}
+        <div class="doc-upload-row" style="margin-top:10px;">
+          <input type="file" id="staff-doc-input">
+          <label class="checkbox-row" style="justify-content:center;"><input type="checkbox" id="staff-doc-es-cv"> Es un currículum</label>
+          <button class="link-btn" style="margin-top:8px;" onclick="subirDocumentoStaff()">Subir documento a esta persona</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ptab-content" id="ptab-citas">
+      <div class="panel-card">${citasHtml}</div>
+    </div>
+
+    <div class="ptab-content" id="ptab-quienatendio">
+      ${atencionesHtml}
+    </div>
   `;
+}
+
+function mostrarTabPersona(nombre){
+  document.querySelectorAll('.ptab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === nombre));
+  document.querySelectorAll('.ptab-content').forEach(c => c.classList.toggle('active', c.id === 'ptab-'+nombre));
 }
 
 async function asignarTecnicoResponsable(){
@@ -816,6 +858,14 @@ async function asignarTecnicoResponsable(){
   const { error } = await sb.from('perfiles').update({ tecnico_responsable_email: email || null }).eq('id', window.__usuarioIdVisto);
   if(error){ alert(error.message); return; }
   verPersonaStaff(window.__usuarioIdVisto);
+}
+
+function seleccionarResultado(btn){
+  const grupo = btn.parentElement;
+  grupo.querySelectorAll('.resultado-btn').forEach(b => b.classList.remove('sel-good','sel-gold','sel-alert'));
+  const clases = { conseguido:'sel-good', en_tramite:'sel-gold', no_conseguido:'sel-alert' };
+  btn.classList.add(clases[btn.dataset.val]);
+  document.getElementById('act-resultado').value = btn.dataset.val;
 }
 
 async function crearActuacion(){
