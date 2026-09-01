@@ -657,11 +657,13 @@ async function verPersonaStaff(usuarioId){
   showScreen('persona');
   cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [perfilRes, docsRes, tramitesRes, atencionesRes] = await Promise.all([
+  const [perfilRes, docsRes, tramitesRes, atencionesRes, actuacionesRes, staffListRes] = await Promise.all([
     sb.from('perfiles').select('*').eq('id', usuarioId).maybeSingle(),
     sb.from('documentos').select('*').eq('usuario_id', usuarioId).order('subido_en', { ascending:false }),
     sb.from('tramites').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
-    sb.from('atenciones').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false })
+    sb.from('atenciones').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
+    sb.from('actuaciones').select('*').eq('usuario_id', usuarioId).order('fecha', { ascending:false }),
+    sb.from('staff').select('email').eq('activo', true).order('email', { ascending:true })
   ]);
 
   const p = perfilRes.data;
@@ -706,9 +708,37 @@ async function verPersonaStaff(usuarioId){
         </div>`).join('')
     : `<div class="empty-note">Nadie ha registrado todavía una atención a esta persona.</div>`;
 
+  const actuacionesHtml = (actuacionesRes.data && actuacionesRes.data.length)
+    ? actuacionesRes.data.map(ac => `
+        <div class="panel-card">
+          <div class="panel-stat-row"><span>Fecha</span><span><strong>${new Date(ac.fecha).toLocaleDateString('es-ES')}</strong></span></div>
+          <div class="panel-stat-row"><span>Técnico</span><span><strong>${ac.tecnico_email}</strong></span></div>
+          ${ac.categoria ? `<div class="panel-stat-row"><span>Proyecto/trámite/formación</span><span>${ac.categoria}</span></div>` : ''}
+          ${ac.objetivo ? `<div class="panel-stat-row"><span>Objetivo</span><span>${ac.objetivo}</span></div>` : ''}
+          ${ac.descripcion ? `<div class="panel-stat-row"><span>Actuación realizada</span><span>${ac.descripcion}</span></div>` : ''}
+          ${ac.resultado ? `<div class="panel-stat-row"><span>Resultado</span><span>${ac.resultado}</span></div>` : ''}
+          ${ac.proximo_paso ? `<div class="panel-stat-row"><span>Próximo paso</span><span>${ac.proximo_paso}</span></div>` : ''}
+          ${ac.fecha_proxima_revision ? `<div class="panel-stat-row"><span>Próxima revisión</span><span><strong>${new Date(ac.fecha_proxima_revision).toLocaleDateString('es-ES')}</strong></span></div>` : ''}
+        </div>`).join('')
+    : `<div class="empty-note">Todavía no hay actuaciones registradas.</div>`;
+
+  const staffOptions = (staffListRes.data || []).map(s => `<option value="${s.email}" ${p.tecnico_responsable_email===s.email?'selected':''}>${s.email}</option>`).join('');
+
   cont.innerHTML = `
     <h2 class="screen-title">${p.nombre_completo || 'Sin nombre'}</h2>
     <div class="panel-card">
+      ${campo('Correo', p.email)}
+      ${campo('Fecha de alta', p.creado_en ? new Date(p.creado_en).toLocaleDateString('es-ES') : '')}
+      <div class="panel-stat-row" style="align-items:center;">
+        <span>Técnico responsable</span>
+        <span style="display:flex;gap:8px;align-items:center;">
+          <select id="tecnico-responsable-select" style="border:1.5px solid var(--line);border-radius:8px;padding:4px 6px;font-family:var(--font-body);font-size:12.5px;">
+            <option value="">— sin asignar —</option>
+            ${staffOptions}
+          </select>
+          <button class="link-btn" style="font-size:12px;" onclick="asignarTecnicoResponsable()">Guardar</button>
+        </span>
+      </div>
       ${campo('DNI/NIE', p.dni_nie)}
       ${campo('Fecha de nacimiento', p.fecha_nacimiento)}
       ${campo('Teléfono', p.telefono)}
@@ -721,6 +751,7 @@ async function verPersonaStaff(usuarioId){
       ${campo('Número de hijos', p.numero_hijos)}
       ${campo('Sexo', p.sexo)}
       ${campo('Nacionalidad', p.nacionalidad)}
+      ${campo('Situación de regularización', p.situacion_regularizacion)}
       ${campo('Situación laboral', p.situacion_laboral)}
       ${campo('Nivel de estudios', p.nivel_estudios)}
       ${campo('Titulaciones/cursos', p.titulaciones_cursos)}
@@ -733,6 +764,21 @@ async function verPersonaStaff(usuarioId){
       ${campoBool('Familia numerosa', p.familia_numerosa)}
       ${campoBool('Hijos a cargo', p.hijos_a_cargo)}
       ${campoBool('En desempleo', p.situacion_desempleo)}
+    </div>
+
+    <div class="panel-card">
+      <h3>Actuaciones — seguimiento de caso</h3>
+      ${actuacionesHtml}
+      <div class="doc-upload-row" style="margin-top:10px;text-align:left;">
+        <div class="field"><label>Fecha</label><input type="date" id="act-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
+        <div class="field"><label>Proyecto / trámite / formación</label><input type="text" id="act-categoria" placeholder="Ej: Acompañamiento administrativo"></div>
+        <div class="field"><label>Objetivo</label><input type="text" id="act-objetivo" placeholder="Ej: Facilitar el acceso a un trámite"></div>
+        <div class="field"><label>Actuación realizada</label><textarea id="act-descripcion" rows="2" placeholder="Qué se ha hecho en esta atención"></textarea></div>
+        <div class="field"><label>Resultado</label><input type="text" id="act-resultado" placeholder="Ej: Conseguido"></div>
+        <div class="field"><label>Próximo paso</label><input type="text" id="act-proximo-paso" placeholder="Ej: Presentar solicitud"></div>
+        <div class="field"><label>Fecha próxima revisión</label><input type="date" id="act-fecha-revision"></div>
+        <button class="primary-btn" onclick="crearActuacion()">➕ Registrar actuación</button>
+      </div>
     </div>
 
     <div class="panel-card">
@@ -763,6 +809,30 @@ async function verPersonaStaff(usuarioId){
     <div class="section-label" style="margin-top:14px;">Quién ha atendido a esta persona</div>
     ${atencionesHtml}
   `;
+}
+
+async function asignarTecnicoResponsable(){
+  const email = document.getElementById('tecnico-responsable-select').value;
+  const { error } = await sb.from('perfiles').update({ tecnico_responsable_email: email || null }).eq('id', window.__usuarioIdVisto);
+  if(error){ alert(error.message); return; }
+  verPersonaStaff(window.__usuarioIdVisto);
+}
+
+async function crearActuacion(){
+  const val = id => document.getElementById(id).value.trim();
+  const { error } = await sb.from('actuaciones').insert({
+    usuario_id: window.__usuarioIdVisto,
+    tecnico_email: CURRENT_USER.email,
+    fecha: val('act-fecha') || new Date().toISOString().slice(0,10),
+    categoria: val('act-categoria') || null,
+    objetivo: val('act-objetivo') || null,
+    descripcion: val('act-descripcion') || null,
+    resultado: val('act-resultado') || null,
+    proximo_paso: val('act-proximo-paso') || null,
+    fecha_proxima_revision: val('act-fecha-revision') || null
+  });
+  if(error){ alert(error.message); return; }
+  verPersonaStaff(window.__usuarioIdVisto);
 }
 
 async function crearTramite(){
@@ -1949,6 +2019,7 @@ async function guardarPerfil(){
 
   const payload = {
     id: CURRENT_USER.id,
+    email: CURRENT_USER.email,
     nombre_completo: val('pf-nombre') || null,
     telefono: val('pf-telefono') || null,
     fecha_nacimiento: val('pf-nacimiento') || null,
