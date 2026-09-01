@@ -661,6 +661,47 @@ async function subirDocumentoStaff(){
   verPersonaStaff(usuarioId);
 }
 
+const PROYECTOS_LOGOS = [
+  'Agrolabora21', 'MAIS', 'Programa de suport a les dones (rural/urbà)', 'JOB CLUB A3',
+  'Futur en Xarxa', 'Construïm Futur', 'Autonomia Digital Activa', 'Oportunidad y Cambio',
+  'Suport digital als Serveis Socials Bàsics', 'LOGOS Social Up-Digital', 'Mirada Endavant',
+  'Projecte Arrels: Reconnexió Familiar', "Comunitats contra l'Aïllament",
+  "Creació d'empreses d'inserció laboral i CET", 'Temps, cures i equitat',
+  'Català per a Tots: Integrant Veus, Teixint Futurs', 'Cuidem en igualtat'
+];
+const FORMACIONES_LOGOS = [
+  'Formació TIC — Programa 30+', 'Formació TIC — Comunitats Gitanes de Tarragona'
+];
+
+function renderActuacionCard(ac){
+  return `<div class="panel-card">
+    <div class="panel-stat-row"><span>Fecha</span><span><strong>${new Date(ac.fecha).toLocaleDateString('es-ES')}</strong></span></div>
+    <div class="panel-stat-row"><span>Técnico</span><span><strong>${ac.tecnico_email}</strong></span></div>
+    ${ac.categoria ? `<div class="panel-stat-row"><span>Proyecto/trámite/formación</span><span>${ac.categoria}</span></div>` : ''}
+    ${ac.objetivo ? `<div class="panel-stat-row"><span>Objetivo</span><span>${ac.objetivo}</span></div>` : ''}
+    ${ac.descripcion ? `<div class="panel-stat-row"><span>Actuación realizada</span><span>${ac.descripcion}</span></div>` : ''}
+    ${ac.resultado ? `<div class="panel-stat-row"><span>Resultado</span><span class="chip ${ac.resultado==='conseguido'?'hecho':(ac.resultado==='no_conseguido'?'':'en-curso')}" style="${ac.resultado==='no_conseguido'?'background:var(--alert-soft);color:var(--alert);':''}">${ac.resultado==='conseguido'?'Conseguido':(ac.resultado==='en_tramite'?'En trámite':'No conseguido')}</span></div>` : ''}
+    ${ac.derivado_a ? `<div class="panel-stat-row"><span>Derivado a</span><span><strong>${ac.derivado_a}</strong></span></div>` : ''}
+    ${ac.proximo_paso ? `<div class="panel-stat-row"><span>Próximo paso</span><span>${ac.proximo_paso}</span></div>` : ''}
+    ${ac.fecha_proxima_revision ? `<div class="panel-stat-row"><span>Próxima revisión</span><span><strong>${new Date(ac.fecha_proxima_revision).toLocaleDateString('es-ES')}</strong></span></div>` : ''}
+  </div>`;
+}
+
+function construirHistorial(actuaciones, tramites, documentos, citas){
+  const eventos = [];
+  (actuaciones||[]).forEach(a => eventos.push({fecha:a.fecha, tipo:'🗒️ Actuación', desc:a.descripcion || a.categoria || 'Actuación registrada'}));
+  (tramites||[]).forEach(t => {
+    eventos.push({fecha:t.fecha_inicio || t.creado_en, tipo:'📋 Trámite abierto', desc:t.nombre_servicio});
+    if(t.fecha_fin) eventos.push({fecha:t.fecha_fin, tipo:'✅ Trámite cerrado', desc:t.nombre_servicio});
+  });
+  (documentos||[]).forEach(d => eventos.push({fecha:d.subido_en, tipo:'📎 Documento subido', desc:d.nombre_archivo}));
+  (citas||[]).forEach(c => eventos.push({fecha:c.fecha, tipo:'📅 Cita', desc:c.motivo || c.estado}));
+  eventos.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+  return eventos.length
+    ? eventos.map(e => `<div class="panel-stat-row"><span>${e.tipo}<br><span class="subtle" style="font-size:11px;margin:0;">${e.desc || ''}</span></span><span class="subtle" style="margin:0;font-size:11px;white-space:nowrap;">${e.fecha ? new Date(e.fecha).toLocaleDateString('es-ES') : ''}</span></div>`).join('')
+    : `<div class="empty-note">Sin actividad registrada todavía.</div>`;
+}
+
 async function verPersonaStaff(usuarioId){
   const cont = document.getElementById('persona-content');
   showScreen('persona');
@@ -718,19 +759,21 @@ async function verPersonaStaff(usuarioId){
         </div>`).join('')
     : `<div class="empty-note">Nadie ha registrado todavía una atención a esta persona.</div>`;
 
-  const actuacionesHtml = (actuacionesRes.data && actuacionesRes.data.length)
-    ? actuacionesRes.data.map(ac => `
-        <div class="panel-card">
-          <div class="panel-stat-row"><span>Fecha</span><span><strong>${new Date(ac.fecha).toLocaleDateString('es-ES')}</strong></span></div>
-          <div class="panel-stat-row"><span>Técnico</span><span><strong>${ac.tecnico_email}</strong></span></div>
-          ${ac.categoria ? `<div class="panel-stat-row"><span>Proyecto/trámite/formación</span><span>${ac.categoria}</span></div>` : ''}
-          ${ac.objetivo ? `<div class="panel-stat-row"><span>Objetivo</span><span>${ac.objetivo}</span></div>` : ''}
-          ${ac.descripcion ? `<div class="panel-stat-row"><span>Actuación realizada</span><span>${ac.descripcion}</span></div>` : ''}
-          ${ac.resultado ? `<div class="panel-stat-row"><span>Resultado</span><span class="chip ${ac.resultado==='conseguido'?'hecho':(ac.resultado==='no_conseguido'?'':'en-curso')}" style="${ac.resultado==='no_conseguido'?'background:var(--alert-soft);color:var(--alert);':''}">${ac.resultado==='conseguido'?'Conseguido':(ac.resultado==='en_tramite'?'En trámite':'No conseguido')}</span></div>` : ''}
-          ${ac.proximo_paso ? `<div class="panel-stat-row"><span>Próximo paso</span><span>${ac.proximo_paso}</span></div>` : ''}
-          ${ac.fecha_proxima_revision ? `<div class="panel-stat-row"><span>Próxima revisión</span><span><strong>${new Date(ac.fecha_proxima_revision).toLocaleDateString('es-ES')}</strong></span></div>` : ''}
-        </div>`).join('')
+  const actuacionesLista = actuacionesRes.data || [];
+  const actuacionesHtml = actuacionesLista.length
+    ? actuacionesLista.map(renderActuacionCard).join('')
     : `<div class="empty-note">Todavía no hay actuaciones registradas.</div>`;
+
+  const proyectosLista = actuacionesLista.filter(ac => PROYECTOS_LOGOS.includes(ac.categoria));
+  const proyectosHtml = proyectosLista.length ? proyectosLista.map(renderActuacionCard).join('') : `<div class="empty-note">Sin actuaciones vinculadas a proyectos todavía.</div>`;
+
+  const formacionesLista = actuacionesLista.filter(ac => FORMACIONES_LOGOS.includes(ac.categoria));
+  const formacionesHtml = formacionesLista.length ? formacionesLista.map(renderActuacionCard).join('') : `<div class="empty-note">Sin actuaciones vinculadas a formaciones todavía.</div>`;
+
+  const derivacionesLista = actuacionesLista.filter(ac => ac.derivado_a);
+  const derivacionesHtml = derivacionesLista.length ? derivacionesLista.map(renderActuacionCard).join('') : `<div class="empty-note">Sin derivaciones registradas.</div>`;
+
+  const historialHtml = construirHistorial(actuacionesLista, tramitesRes.data, docsRes.data, citasRes.data);
 
   const citasHtml = (citasRes.data && citasRes.data.length)
     ? citasRes.data.map(c => `
@@ -785,11 +828,23 @@ async function verPersonaStaff(usuarioId){
     </div>
 
     <div class="persona-tabs">
-      <button class="ptab-btn active" data-tab="actuaciones" onclick="mostrarTabPersona('actuaciones')">Actuaciones</button>
+      <button class="ptab-btn" data-tab="proyectos" onclick="mostrarTabPersona('proyectos')">Proyectos</button>
+      <button class="ptab-btn" data-tab="formaciones" onclick="mostrarTabPersona('formaciones')">Formaciones</button>
       <button class="ptab-btn" data-tab="tramites" onclick="mostrarTabPersona('tramites')">Trámites</button>
+      <button class="ptab-btn active" data-tab="actuaciones" onclick="mostrarTabPersona('actuaciones')">Actuaciones</button>
       <button class="ptab-btn" data-tab="documentos" onclick="mostrarTabPersona('documentos')">Documentos</button>
       <button class="ptab-btn" data-tab="citas" onclick="mostrarTabPersona('citas')">Citas</button>
+      <button class="ptab-btn" data-tab="derivaciones" onclick="mostrarTabPersona('derivaciones')">Derivaciones</button>
+      <button class="ptab-btn" data-tab="historial" onclick="mostrarTabPersona('historial')">Historial</button>
       <button class="ptab-btn" data-tab="quienatendio" onclick="mostrarTabPersona('quienatendio')">Quién ha atendido</button>
+    </div>
+
+    <div class="ptab-content" id="ptab-proyectos">
+      <div class="panel-card"><h3>Actuaciones vinculadas a proyectos</h3>${proyectosHtml}</div>
+    </div>
+
+    <div class="ptab-content" id="ptab-formaciones">
+      <div class="panel-card"><h3>Actuaciones vinculadas a formaciones</h3>${formacionesHtml}</div>
     </div>
 
     <div class="ptab-content active" id="ptab-actuaciones">
@@ -797,7 +852,17 @@ async function verPersonaStaff(usuarioId){
         ${actuacionesHtml}
         <div class="doc-upload-row" style="margin-top:10px;text-align:left;">
           <div class="field"><label>Fecha</label><input type="date" id="act-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
-          <div class="field"><label>Proyecto / trámite / formación</label><input type="text" id="act-categoria" placeholder="Ej: Acompañamiento administrativo"></div>
+          <div class="field">
+            <label>Proyecto / trámite / formación</label>
+            <select id="act-categoria" onchange="document.getElementById('act-categoria-otro').style.display = this.value==='__otro__' ? 'block' : 'none';">
+              <option value="">—</option>
+              <optgroup label="Proyectos">${PROYECTOS_LOGOS.map(p => `<option value="${p}">${p}</option>`).join('')}</optgroup>
+              <optgroup label="Formaciones">${FORMACIONES_LOGOS.map(f => `<option value="${f}">${f}</option>`).join('')}</optgroup>
+              <option value="Trámite administrativo">Trámite administrativo</option>
+              <option value="__otro__">Otro (especificar)</option>
+            </select>
+            <input type="text" id="act-categoria-otro" placeholder="Especifica" style="display:none;margin-top:6px;">
+          </div>
           <div class="field"><label>Objetivo</label><input type="text" id="act-objetivo" placeholder="Ej: Facilitar el acceso a un trámite"></div>
           <div class="field"><label>Actuación realizada</label><textarea id="act-descripcion" rows="2" placeholder="Qué se ha hecho en esta atención"></textarea></div>
           <div class="field">
@@ -808,6 +873,18 @@ async function verPersonaStaff(usuarioId){
               <button type="button" class="resultado-btn" data-val="no_conseguido" onclick="seleccionarResultado(this)">No conseguido</button>
             </div>
             <input type="hidden" id="act-resultado" value="">
+          </div>
+          <div class="field">
+            <label>Derivado a (opcional)</label>
+            <select id="act-derivado-a">
+              <option value="">No procede</option>
+              <option value="Logos">Logos</option>
+              <option value="OMAC">OMAC</option>
+              <option value="IMSST">IMSST</option>
+              <option value="SIAD">SIAD</option>
+              <option value="PASS">PASS</option>
+              <option value="ICAT">ICAT</option>
+            </select>
           </div>
           <div class="field"><label>Próximo paso</label><input type="text" id="act-proximo-paso" placeholder="Ej: Presentar solicitud"></div>
           <div class="field"><label>Fecha próxima revisión</label><input type="date" id="act-fecha-revision"></div>
@@ -842,6 +919,14 @@ async function verPersonaStaff(usuarioId){
       <div class="panel-card">${citasHtml}</div>
     </div>
 
+    <div class="ptab-content" id="ptab-derivaciones">
+      <div class="panel-card"><h3>Derivaciones registradas</h3>${derivacionesHtml}</div>
+    </div>
+
+    <div class="ptab-content" id="ptab-historial">
+      <div class="panel-card">${historialHtml}</div>
+    </div>
+
     <div class="ptab-content" id="ptab-quienatendio">
       ${atencionesHtml}
     </div>
@@ -870,14 +955,17 @@ function seleccionarResultado(btn){
 
 async function crearActuacion(){
   const val = id => document.getElementById(id).value.trim();
+  const categoriaVal = val('act-categoria');
+  const categoriaFinal = categoriaVal === '__otro__' ? (val('act-categoria-otro') || null) : (categoriaVal || null);
   const { error } = await sb.from('actuaciones').insert({
     usuario_id: window.__usuarioIdVisto,
     tecnico_email: CURRENT_USER.email,
     fecha: val('act-fecha') || new Date().toISOString().slice(0,10),
-    categoria: val('act-categoria') || null,
+    categoria: categoriaFinal,
     objetivo: val('act-objetivo') || null,
     descripcion: val('act-descripcion') || null,
     resultado: val('act-resultado') || null,
+    derivado_a: val('act-derivado-a') || null,
     proximo_paso: val('act-proximo-paso') || null,
     fecha_proxima_revision: val('act-fecha-revision') || null
   });
