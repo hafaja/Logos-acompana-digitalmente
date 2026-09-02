@@ -1004,7 +1004,12 @@ async function renderAdminPanel(){
   }
   cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const { data: atenciones } = await sb.from('atenciones').select('*').order('creado_en', { ascending:false }).limit(200);
+  const [atencionesRes, revisionesRes, perfilesRes] = await Promise.all([
+    sb.from('atenciones').select('*').order('creado_en', { ascending:false }).limit(200),
+    sb.from('actuaciones').select('*').not('fecha_proxima_revision', 'is', null).order('fecha_proxima_revision', { ascending:true }).limit(100),
+    sb.from('perfiles').select('id, nombre_completo, dni_nie, telefono, calle').not('nombre_completo', 'is', null)
+  ]);
+  const atenciones = atencionesRes.data;
 
   const filasHtml = (atenciones && atenciones.length)
     ? atenciones.map(a => {
@@ -1025,7 +1030,47 @@ async function renderAdminPanel(){
       }).join('')
     : `<div class="empty-note">Todavía no hay atenciones registradas.</div>`;
 
+  const nombresPersona = {};
+  (perfilesRes.data || []).forEach(p => { nombresPersona[p.id] = p.nombre_completo; });
+
+  const hoyAdmin = new Date(); hoyAdmin.setHours(0,0,0,0);
+  const revisionesHtml = (revisionesRes.data && revisionesRes.data.length)
+    ? revisionesRes.data.map(r => {
+        const vencida = new Date(r.fecha_proxima_revision) < hoyAdmin;
+        return `<div class="panel-stat-row">
+          <span>${nombresPersona[r.usuario_id] || 'Persona sin nombre'}<br><span class="subtle" style="font-size:11px;margin:0;">${r.tecnico_email}${r.categoria ? ' · ' + r.categoria : ''}</span></span>
+          <span style="display:flex;align-items:center;gap:8px;">
+            <span class="chip ${vencida ? '' : 'en-curso'}" style="${vencida ? 'background:var(--alert-soft);color:var(--alert);' : ''}">${new Date(r.fecha_proxima_revision).toLocaleDateString('es-ES')}${vencida ? ' · vencida' : ''}</span>
+            ${r.usuario_id ? `<button class="link-btn" style="font-size:11px;" onclick="verPersonaStaff('${r.usuario_id}')">Ver</button>` : ''}
+          </span>
+        </div>`;
+      }).join('')
+    : `<div class="empty-note">No hay revisiones pendientes de nadie.</div>`;
+
+  const camposClave = [['dni_nie','DNI/NIE'], ['telefono','Teléfono'], ['calle','Dirección']];
+  const perfilesIncompletos = (perfilesRes.data || []).filter(p => camposClave.some(([campo]) => !p[campo]));
+  const incompletosHtml = perfilesIncompletos.length
+    ? perfilesIncompletos.slice(0, 30).map(p => {
+        const faltan = camposClave.filter(([campo]) => !p[campo]).map(([,label]) => label);
+        return `<div class="panel-stat-row">
+          <span>${p.nombre_completo}<br><span class="subtle" style="font-size:11px;margin:0;">Falta: ${faltan.join(', ')}</span></span>
+          <button class="link-btn" style="font-size:11px;" onclick="verPersonaStaff('${p.id}')">Ver</button>
+        </div>`;
+      }).join('')
+    : `<div class="empty-note">Todo el mundo tiene sus datos básicos completos 🙌</div>`;
+
   cont.innerHTML = `
+    <div class="panel-card">
+      <h3>🔔 Próximas revisiones pendientes</h3>
+      <p class="subtle" style="margin:0 0 10px;">De todos los técnicos, ordenadas por fecha. Las vencidas aparecen en rojo.</p>
+      ${revisionesHtml}
+    </div>
+    <div class="panel-card">
+      <h3>📋 Perfiles con datos incompletos</h3>
+      <p class="subtle" style="margin:0 0 10px;">${perfilesIncompletos.length} de ${(perfilesRes.data||[]).length} personas les falta DNI/NIE, teléfono o dirección.${perfilesIncompletos.length > 30 ? ' Mostrando las primeras 30.' : ''}</p>
+      ${incompletosHtml}
+    </div>
+
     <p class="subtle">Registro completo de qué técnico ha atendido a quién y con qué servicios (últimas 200 atenciones).</p>
     ${filasHtml}
   `;
