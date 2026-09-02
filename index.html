@@ -480,7 +480,7 @@ const T1 = {
     convivencia:'Con quién vives', laboral:'Situación laboral',
     discapacidad:'Discapacidad reconocida', dependencia:'Dependencia reconocida',
     ingresos:'Nivel de ingresos aproximado', si:'Sí', no:'No', prefiero:'Prefiero no decirlo',
-    guardarDatos:'Guardar mis datos', datosGuardados:'Datos guardados correctamente.',
+    guardarDatos:'Guardar mis datos →', datosGuardados:'Datos guardados correctamente.',
     completarDatos:'Llenar mis datos', misTramites:'MIS TRÁMITES', misDocumentos:'MIS DOCUMENTOS',
     sinTramites:'Todavía no tienes trámites registrados.', sinDocumentos:'Todavía no has subido documentos.',
     subirDocumento:'Subir un documento', subiendo:'Subiendo…', tomarFoto:'📷 Tomar una foto',
@@ -497,7 +497,7 @@ const T1 = {
     convivencia:'Amb qui vius', laboral:'Situació laboral',
     discapacidad:'Discapacitat reconeguda', dependencia:'Dependència reconeguda',
     ingresos:'Nivell d\'ingressos aproximat', si:'Sí', no:'No', prefiero:'Prefereixo no dir-ho',
-    guardarDatos:'Desar les meves dades', datosGuardados:'Dades desades correctament.',
+    guardarDatos:'Desar les meves dades →', datosGuardados:'Dades desades correctament.',
     completarDatos:'Omplir les meves dades', misTramites:'ELS MEUS TRÀMITS', misDocumentos:'ELS MEUS DOCUMENTS',
     sinTramites:'Encara no tens tràmits registrats.', sinDocumentos:'Encara no has pujat documents.',
     subirDocumento:'Pujar un document', subiendo:'Pujant…', tomarFoto:'📷 Fer una foto',
@@ -1118,7 +1118,7 @@ async function renderPanel(){
   }
   document.getElementById('panel-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion, consultasPend, prestaciones, tramitesBretxa, derivacion, emprendeduria, comoConocio] = await Promise.all([
+  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion, consultasPend, prestaciones, tramitesBretxa, derivacion, emprendeduria, comoConocio, actuacionesStats] = await Promise.all([
     sb.from('stats_total_personas').select('*').maybeSingle(),
     sb.from('stats_por_sexo').select('*'),
     sb.from('stats_por_nacionalidad').select('*'),
@@ -1133,7 +1133,8 @@ async function renderPanel(){
     sb.from('stats_tramites_bretxa').select('*'),
     sb.from('stats_derivacion').select('*'),
     sb.from('stats_emprendeduria').select('*'),
-    sb.from('stats_como_conocio').select('*')
+    sb.from('stats_como_conocio').select('*'),
+    sb.from('actuaciones').select('resultado, categoria, derivado_a')
   ]);
 
   const totalPersonas = total.data ? total.data.total_personas : 0;
@@ -1145,6 +1146,27 @@ async function renderPanel(){
   const dd = depDis.data || {};
   const sf = situFam.data || {};
   const sat = satisfaccion.data || {};
+
+  // Estadísticas de ACTUACIONES (aparte de las de atenciones, de arriba)
+  const listaActStats = actuacionesStats.data || [];
+  const totalActStats = listaActStats.length;
+  const resultadoCount = { conseguido:0, en_tramite:0, no_conseguido:0 };
+  listaActStats.forEach(a => { if(a.resultado && resultadoCount.hasOwnProperty(a.resultado)) resultadoCount[a.resultado]++; });
+  const resultadosHtml = totalActStats
+    ? `<div class="panel-stat-row"><span>🟢 Conseguido</span><span><strong>${resultadoCount.conseguido}</strong></span></div>
+       <div class="panel-stat-row"><span>🟡 En trámite</span><span><strong>${resultadoCount.en_tramite}</strong></span></div>
+       <div class="panel-stat-row"><span>🔴 No conseguido</span><span><strong>${resultadoCount.no_conseguido}</strong></span></div>`
+    : `<div class="empty-note">Sin actuaciones todavía</div>`;
+
+  const categoriaCount = {};
+  listaActStats.forEach(a => { if(a.categoria) categoriaCount[a.categoria] = (categoriaCount[a.categoria]||0)+1; });
+  const categoriaOrdenada = Object.entries(categoriaCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const categoriaHtml = categoriaOrdenada.length ? categoriaOrdenada.map(([c,v]) => `<div class="panel-stat-row"><span>${c}</span><span><strong>${v}</strong></span></div>`).join('') : `<div class="empty-note">Sin datos todavía</div>`;
+
+  const derivadoCount = {};
+  listaActStats.forEach(a => { if(a.derivado_a) derivadoCount[a.derivado_a] = (derivadoCount[a.derivado_a]||0)+1; });
+  const derivadoOrdenada = Object.entries(derivadoCount).sort((a,b)=>b[1]-a[1]);
+  const derivadoHtml = derivadoOrdenada.length ? derivadoOrdenada.map(([d,v]) => `<div class="panel-stat-row"><span>${d}</span><span><strong>${v}</strong></span></div>`).join('') : `<div class="empty-note">Sin derivaciones todavía</div>`;
 
   const consultasHtml = (consultasPend.data && consultasPend.data.length)
     ? consultasPend.data.map(c => `
@@ -1257,6 +1279,22 @@ async function renderPanel(){
     <div class="panel-card">
       <h3>Cómo conoció Logos</h3>
       ${filaLista(comoConocio.data, 'como_conocio', 'total')}
+    </div>
+
+    <div class="panel-card">
+      <h3>Resultados de las actuaciones</h3>
+      <p class="subtle" style="margin:0 0 8px;">${totalActStats} actuaciones registradas en total.</p>
+      ${resultadosHtml}
+    </div>
+
+    <div class="panel-card">
+      <h3>Actuaciones por proyecto/formación/categoría</h3>
+      ${categoriaHtml}
+    </div>
+
+    <div class="panel-card">
+      <h3>Derivaciones (de actuaciones)</h3>
+      ${derivadoHtml}
     </div>
 
     <button class="primary-btn" onclick="window.print()" style="margin-bottom:20px;">📄 Exportar informe (PDF)</button>
@@ -2217,6 +2255,7 @@ function renderDatosStep(){
     </div>
 
     <button class="primary-btn" id="pf-save-btn" onclick="guardarPerfil()">${t.guardarDatos}</button>
+    ${p.nombre_completo ? `<p style="text-align:center;margin-top:12px;"><button class="link-btn" onclick="renderResumenStep()">${esCA ? '← Tornar sense desar canvis' : '← Volver sin guardar cambios'}</button></p>` : ''}
   `;
 }
 
