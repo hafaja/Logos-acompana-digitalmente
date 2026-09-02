@@ -1004,10 +1004,11 @@ async function renderAdminPanel(){
   }
   cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [atencionesRes, revisionesRes, perfilesRes] = await Promise.all([
+  const [atencionesRes, revisionesRes, perfilesRes, actuacionesLigeroRes] = await Promise.all([
     sb.from('atenciones').select('*').order('creado_en', { ascending:false }).limit(200),
     sb.from('actuaciones').select('*').not('fecha_proxima_revision', 'is', null).order('fecha_proxima_revision', { ascending:true }).limit(100),
-    sb.from('perfiles').select('id, nombre_completo, dni_nie, telefono, calle').not('nombre_completo', 'is', null)
+    sb.from('perfiles').select('id, nombre_completo, dni_nie, telefono, calle').not('nombre_completo', 'is', null),
+    sb.from('actuaciones').select('usuario_id, fecha')
   ]);
   const atenciones = atencionesRes.data;
 
@@ -1059,6 +1060,26 @@ async function renderAdminPanel(){
       }).join('')
     : `<div class="empty-note">Todo el mundo tiene sus datos básicos completos 🙌</div>`;
 
+  const nombresPersonaAdmin = {};
+  (perfilesRes.data || []).forEach(p => { nombresPersonaAdmin[p.id] = p.nombre_completo; });
+  const porPersona = {};
+  (actuacionesLigeroRes.data || []).forEach(a => {
+    if(!a.usuario_id) return;
+    if(!porPersona[a.usuario_id]) porPersona[a.usuario_id] = { count: 0, ultima: a.fecha };
+    porPersona[a.usuario_id].count++;
+    if(new Date(a.fecha) > new Date(porPersona[a.usuario_id].ultima)) porPersona[a.usuario_id].ultima = a.fecha;
+  });
+  const historialPersonas = Object.entries(porPersona)
+    .map(([id, info]) => ({ id, ...info, nombre: nombresPersonaAdmin[id] || 'Persona sin nombre' }))
+    .sort((a,b) => new Date(b.ultima) - new Date(a.ultima));
+  const historialPersonasHtml = historialPersonas.length
+    ? historialPersonas.map(p => `
+        <div class="panel-stat-row">
+          <span>${p.nombre}<br><span class="subtle" style="font-size:11px;margin:0;">${p.count} actuación${p.count===1?'':'es'} · última: ${new Date(p.ultima).toLocaleDateString('es-ES')}</span></span>
+          <button class="link-btn" style="font-size:12px;" onclick="verPersonaStaff('${p.id}')">Ver su espacio →</button>
+        </div>`).join('')
+    : `<div class="empty-note">Todavía no hay personas con actuaciones registradas.</div>`;
+
   cont.innerHTML = `
     <div class="panel-card">
       <h3>🔔 Próximas revisiones pendientes</h3>
@@ -1069,6 +1090,11 @@ async function renderAdminPanel(){
       <h3>📋 Perfiles con datos incompletos</h3>
       <p class="subtle" style="margin:0 0 10px;">${perfilesIncompletos.length} de ${(perfilesRes.data||[]).length} personas les falta DNI/NIE, teléfono o dirección.${perfilesIncompletos.length > 30 ? ' Mostrando las primeras 30.' : ''}</p>
       ${incompletosHtml}
+    </div>
+    <div class="panel-card">
+      <h3>👥 Historial de personas</h3>
+      <p class="subtle" style="margin:0 0 10px;">Todas las personas con al menos una actuación registrada, ordenadas por la más reciente.</p>
+      ${historialPersonasHtml}
     </div>
 
     <p class="subtle">Registro completo de qué técnico ha atendido a quién y con qué servicios (últimas 200 atenciones).</p>
