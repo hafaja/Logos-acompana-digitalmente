@@ -231,6 +231,11 @@
     <div class="content" id="atencion-content"></div>
   </div>
 
+  <div class="screen" id="screen-buscarpersona">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('panel');renderPanel()">← Panel Logos</button></div>
+    <div class="content" id="buscarpersona-content"></div>
+  </div>
+
   <div class="screen" id="screen-persona">
     <div class="topbar"><button class="back-btn" onclick="showScreen('panel');renderPanel()">← Panel Logos</button></div>
     <div class="content" id="persona-content"></div>
@@ -1230,7 +1235,8 @@ async function renderPanel(){
     : `<div class="empty-note">No hay alertas nuevas</div>`;
 
   document.getElementById('panel-content').innerHTML = `
-    <button class="primary-btn" onclick="showScreen('atencion');renderAtencionForm()" style="margin-bottom:16px;">➕ Registrar nueva atención</button>
+    <button class="primary-btn" onclick="showScreen('atencion');renderAtencionForm()" style="margin-bottom:10px;">➕ Registrar nueva atención</button>
+    <button class="primary-btn" style="background:var(--ochre);margin-bottom:16px;" onclick="showScreen('buscarpersona');renderBuscarPersonaActuacion()">➕ Registrar nueva actuación</button>
 
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
       <h3 style="color:#7A4A1F;">🔔 Alertas nuevas</h3>
@@ -1467,6 +1473,33 @@ function renderAtencionForm(){
 }
 
 let __busquedaAtencionTimeout = null;
+function renderBuscarPersonaActuacion(){
+  document.getElementById('buscarpersona-content').innerHTML = `
+    <h2 class="screen-title">Registrar actuación</h2>
+    <p class="subtle">Busca a la persona. Se abrirá su ficha, directamente en la pestaña "Actuaciones", lista para rellenar.</p>
+    <div class="field">
+      <label>Buscar por nombre</label>
+      <input type="text" id="bp-buscar" placeholder="Escribe el nombre para buscar" oninput="buscarPersonaActuacion(this.value)" autofocus>
+    </div>
+    <div id="bp-resultados"></div>
+  `;
+}
+
+let __busquedaPersonaActuacionTimeout = null;
+function buscarPersonaActuacion(texto){
+  clearTimeout(__busquedaPersonaActuacionTimeout);
+  const cont = document.getElementById('bp-resultados');
+  if(!texto || texto.trim().length < 2){ cont.innerHTML = ''; return; }
+  __busquedaPersonaActuacionTimeout = setTimeout(async () => {
+    const { data, error } = await sb.from('perfiles').select('id, nombre_completo, municipio').ilike('nombre_completo', `%${texto.trim()}%`).limit(8);
+    if(error || !data || !data.length){ cont.innerHTML = `<div class="empty-note">Sin resultados. Recuerda: la persona debe tener ya una cuenta creada en Logos Acompanya.</div>`; return; }
+    cont.innerHTML = data.map(p => `
+      <div class="list-row" style="cursor:pointer;" onclick="verPersonaStaff('${p.id}')">
+        <span>${p.nombre_completo}</span><span class="subtle" style="margin:0;">${p.municipio || ''}</span>
+      </div>`).join('');
+  }, 300);
+}
+
 function buscarUsuarioAtencion(texto){
   clearTimeout(__busquedaAtencionTimeout);
   const cont = document.getElementById('at-resultados-busqueda');
