@@ -1473,13 +1473,41 @@ function renderAtencionForm(){
 }
 
 let __busquedaAtencionTimeout = null;
-function renderBuscarPersonaActuacion(){
-  document.getElementById('buscarpersona-content').innerHTML = `
+async function renderBuscarPersonaActuacion(){
+  const cont = document.getElementById('buscarpersona-content');
+  cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
+
+  const [actRecientes, atRecientes] = await Promise.all([
+    sb.from('actuaciones').select('usuario_id, fecha').order('fecha', { ascending:false }).limit(30),
+    sb.from('atenciones').select('usuario_id, creado_en').not('usuario_id', 'is', null).order('creado_en', { ascending:false }).limit(30)
+  ]);
+
+  const idsRecientes = [...new Set([
+    ...(actRecientes.data || []).map(a => a.usuario_id),
+    ...(atRecientes.data || []).map(a => a.usuario_id)
+  ])].slice(0, 12);
+
+  let nombresRecientes = {};
+  if(idsRecientes.length){
+    const { data: perfilesRecientes } = await sb.from('perfiles').select('id, nombre_completo').in('id', idsRecientes);
+    (perfilesRecientes || []).forEach(p => { nombresRecientes[p.id] = p.nombre_completo; });
+  }
+
+  const recientesHtml = idsRecientes.length
+    ? idsRecientes.map(id => `<button class="link-btn" style="display:block;width:100%;text-align:left;margin-bottom:6px;" onclick="verPersonaStaff('${id}')">👤 ${nombresRecientes[id] || 'Persona sin nombre'}</button>`).join('')
+    : `<div class="empty-note">Todavía no hay actividad reciente.</div>`;
+
+  cont.innerHTML = `
     <h2 class="screen-title">Registrar actuación</h2>
-    <p class="subtle">Busca a la persona. Se abrirá su ficha, directamente en la pestaña "Actuaciones", lista para rellenar.</p>
+    <p class="subtle">Solo para personas que ya tienen cuenta creada en Logos Acompanya. Si es su primer contacto y todavía no tiene cuenta, usa "Registrar nueva atención" en su lugar.</p>
+    <div class="panel-card">
+      <h3>Acceso rápido — personas recientes</h3>
+      <p class="subtle" style="margin:0 0 10px;">Un clic te lleva directo a su ficha, pestaña "Actuaciones".</p>
+      ${recientesHtml}
+    </div>
+    <p class="subtle" style="margin-top:16px;">¿No está en la lista? Búscala por nombre:</p>
     <div class="field">
-      <label>Buscar por nombre</label>
-      <input type="text" id="bp-buscar" placeholder="Escribe el nombre para buscar" oninput="buscarPersonaActuacion(this.value)" autofocus>
+      <input type="text" id="bp-buscar" placeholder="Escribe el nombre para buscar" oninput="buscarPersonaActuacion(this.value)">
     </div>
     <div id="bp-resultados"></div>
   `;
@@ -1492,7 +1520,7 @@ function buscarPersonaActuacion(texto){
   if(!texto || texto.trim().length < 2){ cont.innerHTML = ''; return; }
   __busquedaPersonaActuacionTimeout = setTimeout(async () => {
     const { data, error } = await sb.from('perfiles').select('id, nombre_completo, municipio').ilike('nombre_completo', `%${texto.trim()}%`).limit(8);
-    if(error || !data || !data.length){ cont.innerHTML = `<div class="empty-note">Sin resultados. Recuerda: la persona debe tener ya una cuenta creada en Logos Acompanya.</div>`; return; }
+    if(error || !data || !data.length){ cont.innerHTML = `<div class="empty-note">No encontramos a nadie con ese nombre.<br><br>Para registrar una actuación, la persona debe tener ya una cuenta creada en Logos Acompanya (con sus datos básicos rellenados). Si es la primera vez que la atiendes y todavía no tiene cuenta, usa primero <strong>"Registrar nueva atención"</strong> — y anímala a crear su cuenta en Logos Acompanya cuando pueda.</div>`; return; }
     cont.innerHTML = data.map(p => `
       <div class="list-row" style="cursor:pointer;" onclick="verPersonaStaff('${p.id}')">
         <span>${p.nombre_completo}</span><span class="subtle" style="margin:0;">${p.municipio || ''}</span>
