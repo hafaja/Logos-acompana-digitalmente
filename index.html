@@ -676,7 +676,7 @@ const FORMACIONES_LOGOS = [
 function renderActuacionCard(ac){
   return `<div class="panel-card">
     <div class="panel-stat-row"><span>Fecha</span><span><strong>${new Date(ac.fecha).toLocaleDateString('es-ES')}</strong></span></div>
-    <div class="panel-stat-row"><span>Técnico</span><span><strong>${ac.tecnico_email}</strong></span></div>
+    <div class="panel-stat-row"><span>Técnico</span><span><strong>${nombreTecnico(ac.tecnico_email)}</strong></span></div>
     ${ac.categoria ? `<div class="panel-stat-row"><span>Proyecto/trámite/formación</span><span>${ac.categoria}</span></div>` : ''}
     ${ac.objetivo ? `<div class="panel-stat-row"><span>Objetivo</span><span>${ac.objetivo}</span></div>` : ''}
     ${ac.descripcion ? `<div class="panel-stat-row"><span>Actuación realizada</span><span>${ac.descripcion}</span></div>` : ''}
@@ -702,6 +702,11 @@ function construirHistorial(actuaciones, tramites, documentos, citas){
     : `<div class="empty-note">Sin actividad registrada todavía.</div>`;
 }
 
+let __mapaNombresTecnicos = {};
+function nombreTecnico(email){
+  return __mapaNombresTecnicos[email] || email;
+}
+
 async function verPersonaStaff(usuarioId){
   const cont = document.getElementById('persona-content');
   showScreen('persona');
@@ -713,9 +718,11 @@ async function verPersonaStaff(usuarioId){
     sb.from('tramites').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
     sb.from('atenciones').select('*').eq('usuario_id', usuarioId).order('creado_en', { ascending:false }),
     sb.from('actuaciones').select('*').eq('usuario_id', usuarioId).order('fecha', { ascending:false }),
-    sb.from('staff').select('email').eq('activo', true).order('email', { ascending:true }),
+    sb.from('staff').select('email, nombre, activo').order('email', { ascending:true }),
     sb.from('citas').select('*').eq('usuario_id', usuarioId).order('fecha', { ascending:false })
   ]);
+
+  (staffListRes.data || []).forEach(s => { if(s.nombre) __mapaNombresTecnicos[s.email] = s.nombre; });
 
   const p = perfilRes.data;
   if(!p){
@@ -750,7 +757,7 @@ async function verPersonaStaff(usuarioId){
   const atencionesHtml = (atencionesRes.data && atencionesRes.data.length)
     ? atencionesRes.data.map(a => `
         <div class="panel-card">
-          <div class="panel-stat-row"><span>Técnico</span><span><strong>${a.creado_por_email}</strong></span></div>
+          <div class="panel-stat-row"><span>Técnico</span><span><strong>${nombreTecnico(a.creado_por_email)}</strong></span></div>
           <div class="panel-stat-row"><span>Fecha</span><span><strong>${new Date(a.creado_en).toLocaleString('es-ES')}</strong></span></div>
           ${a.prestaciones && a.prestaciones.length ? `<div class="panel-stat-row"><span>Prestaciones</span><span>${a.prestaciones.join(', ')}</span></div>` : ''}
           ${a.tramites_bretxa && a.tramites_bretxa.length ? `<div class="panel-stat-row"><span>Trámites</span><span>${a.tramites_bretxa.join(', ')}</span></div>` : ''}
@@ -783,7 +790,7 @@ async function verPersonaStaff(usuarioId){
         </div>`).join('')
     : `<div class="empty-note">Sin citas registradas</div>`;
 
-  const staffOptions = (staffListRes.data || []).map(s => `<option value="${s.email}" ${p.tecnico_responsable_email===s.email?'selected':''}>${s.email}</option>`).join('');
+  const staffOptions = (staffListRes.data || []).filter(s => s.activo !== false).map(s => `<option value="${s.email}" ${p.tecnico_responsable_email===s.email?'selected':''}>${s.nombre || s.email}</option>`).join('');
 
   cont.innerHTML = `
     <h2 class="screen-title">${p.nombre_completo || 'Sin nombre'}</h2>
@@ -1004,12 +1011,14 @@ async function renderAdminPanel(){
   }
   cont.innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [atencionesRes, revisionesRes, perfilesRes, actuacionesLigeroRes] = await Promise.all([
+  const [atencionesRes, revisionesRes, perfilesRes, actuacionesLigeroRes, staffNombresRes] = await Promise.all([
     sb.from('atenciones').select('*').order('creado_en', { ascending:false }).limit(200),
     sb.from('actuaciones').select('*').not('fecha_proxima_revision', 'is', null).order('fecha_proxima_revision', { ascending:true }).limit(100),
     sb.from('perfiles').select('id, nombre_completo, dni_nie, telefono, calle').not('nombre_completo', 'is', null),
-    sb.from('actuaciones').select('usuario_id, fecha')
+    sb.from('actuaciones').select('usuario_id, fecha'),
+    sb.from('staff').select('email, nombre')
   ]);
+  (staffNombresRes.data || []).forEach(s => { if(s.nombre) __mapaNombresTecnicos[s.email] = s.nombre; });
   const atenciones = atencionesRes.data;
 
   const filasHtml = (atenciones && atenciones.length)
@@ -1022,7 +1031,7 @@ async function renderAdminPanel(){
         ].filter(Boolean).join(', ') || '—';
         return `
           <div class="panel-card">
-            <div class="panel-stat-row"><span>Técnico</span><span><strong>${a.creado_por_email}</strong></span></div>
+            <div class="panel-stat-row"><span>Técnico</span><span><strong>${nombreTecnico(a.creado_por_email)}</strong></span></div>
             <div class="panel-stat-row"><span>Persona</span><span><strong>${a.nombre_referencia}${a.usuario_id ? ' <span class="chip hecho">con cuenta</span>' : ''}</strong></span></div>
             <div class="panel-stat-row"><span>Fecha</span><span>${new Date(a.creado_en).toLocaleString('es-ES')}</span></div>
             <div class="panel-stat-row"><span>Servicios</span><span>${servicios}</span></div>
@@ -1039,7 +1048,7 @@ async function renderAdminPanel(){
     ? revisionesRes.data.map(r => {
         const vencida = new Date(r.fecha_proxima_revision) < hoyAdmin;
         return `<div class="panel-stat-row">
-          <span>${nombresPersona[r.usuario_id] || 'Persona sin nombre'}<br><span class="subtle" style="font-size:11px;margin:0;">${r.tecnico_email}${r.categoria ? ' · ' + r.categoria : ''}</span></span>
+          <span>${nombresPersona[r.usuario_id] || 'Persona sin nombre'}<br><span class="subtle" style="font-size:11px;margin:0;">${nombreTecnico(r.tecnico_email)}${r.categoria ? ' · ' + r.categoria : ''}</span></span>
           <span style="display:flex;align-items:center;gap:8px;">
             <span class="chip ${vencida ? '' : 'en-curso'}" style="${vencida ? 'background:var(--alert-soft);color:var(--alert);' : ''}">${new Date(r.fecha_proxima_revision).toLocaleDateString('es-ES')}${vencida ? ' · vencida' : ''}</span>
             ${r.usuario_id ? `<button class="link-btn" style="font-size:11px;" onclick="verPersonaStaff('${r.usuario_id}')">Ver</button>` : ''}
