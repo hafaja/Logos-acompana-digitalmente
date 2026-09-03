@@ -1161,7 +1161,7 @@ async function renderPanel(){
   }
   document.getElementById('panel-content').innerHTML = `<div class="placeholder">Cargando…</div>`;
 
-  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion, consultasPend, prestaciones, tramitesBretxa, derivacion, emprendeduria, comoConocio, actuacionesStats] = await Promise.all([
+  const [total, porSexo, porNacionalidad, depDis, situFam, tramEstado, interesesForm, notifs, satisfaccion, consultasPend, prestaciones, tramitesBretxa, derivacion, emprendeduria, comoConocio, actTotal, actResultado, actCategoria, actDerivado] = await Promise.all([
     sb.from('stats_total_personas').select('*').maybeSingle(),
     sb.from('stats_por_sexo').select('*'),
     sb.from('stats_por_nacionalidad').select('*'),
@@ -1177,7 +1177,10 @@ async function renderPanel(){
     sb.from('stats_derivacion').select('*'),
     sb.from('stats_emprendeduria').select('*'),
     sb.from('stats_como_conocio').select('*'),
-    sb.from('actuaciones').select('resultado, categoria, derivado_a')
+    sb.from('stats_actuaciones_total').select('*').maybeSingle(),
+    sb.from('stats_actuaciones_resultado').select('*'),
+    sb.from('stats_actuaciones_categoria').select('*'),
+    sb.from('stats_actuaciones_derivado').select('*')
   ]);
 
   const totalPersonas = total.data ? total.data.total_personas : 0;
@@ -1190,26 +1193,18 @@ async function renderPanel(){
   const sf = situFam.data || {};
   const sat = satisfaccion.data || {};
 
-  // Estadísticas de ACTUACIONES (aparte de las de atenciones, de arriba)
-  const listaActStats = actuacionesStats.data || [];
-  const totalActStats = listaActStats.length;
-  const resultadoCount = { conseguido:0, en_tramite:0, no_conseguido:0 };
-  listaActStats.forEach(a => { if(a.resultado && resultadoCount.hasOwnProperty(a.resultado)) resultadoCount[a.resultado]++; });
+  // Estadísticas de ACTUACIONES (aparte de las de atenciones, de arriba) — ahora desde vistas de BD
+  const totalActStats = actTotal.data ? actTotal.data.total_actuaciones : 0;
+  const resultadoMap = {};
+  (actResultado.data || []).forEach(r => { resultadoMap[r.resultado] = r.total; });
   const resultadosHtml = totalActStats
-    ? `<div class="panel-stat-row"><span>🟢 Conseguido</span><span><strong>${resultadoCount.conseguido}</strong></span></div>
-       <div class="panel-stat-row"><span>🟡 En trámite</span><span><strong>${resultadoCount.en_tramite}</strong></span></div>
-       <div class="panel-stat-row"><span>🔴 No conseguido</span><span><strong>${resultadoCount.no_conseguido}</strong></span></div>`
+    ? `<div class="panel-stat-row"><span>🟢 Conseguido</span><span><strong>${resultadoMap.conseguido || 0}</strong></span></div>
+       <div class="panel-stat-row"><span>🟡 En trámite</span><span><strong>${resultadoMap.en_tramite || 0}</strong></span></div>
+       <div class="panel-stat-row"><span>🔴 No conseguido</span><span><strong>${resultadoMap.no_conseguido || 0}</strong></span></div>`
     : `<div class="empty-note">Sin actuaciones todavía</div>`;
 
-  const categoriaCount = {};
-  listaActStats.forEach(a => { if(a.categoria) categoriaCount[a.categoria] = (categoriaCount[a.categoria]||0)+1; });
-  const categoriaOrdenada = Object.entries(categoriaCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const categoriaHtml = categoriaOrdenada.length ? categoriaOrdenada.map(([c,v]) => `<div class="panel-stat-row"><span>${c}</span><span><strong>${v}</strong></span></div>`).join('') : `<div class="empty-note">Sin datos todavía</div>`;
-
-  const derivadoCount = {};
-  listaActStats.forEach(a => { if(a.derivado_a) derivadoCount[a.derivado_a] = (derivadoCount[a.derivado_a]||0)+1; });
-  const derivadoOrdenada = Object.entries(derivadoCount).sort((a,b)=>b[1]-a[1]);
-  const derivadoHtml = derivadoOrdenada.length ? derivadoOrdenada.map(([d,v]) => `<div class="panel-stat-row"><span>${d}</span><span><strong>${v}</strong></span></div>`).join('') : `<div class="empty-note">Sin derivaciones todavía</div>`;
+  const categoriaHtml = filaLista(actCategoria.data, 'categoria', 'total');
+  const derivadoHtml = filaLista(actDerivado.data, 'derivado_a', 'total');
 
   const consultasHtml = (consultasPend.data && consultasPend.data.length)
     ? consultasPend.data.map(c => `
