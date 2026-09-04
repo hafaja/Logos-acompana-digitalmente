@@ -167,13 +167,23 @@
   .panel-stat-row:last-child{border-bottom:none;}
   .panel-big-number{font-family:var(--font-display);font-size:34px;color:var(--teal-dark);font-weight:600;line-height:1;}
   @media print{
-    .sidebar, .topbar{display:none !important;}
+    .sidebar, .topbar, .no-print{display:none !important;}
     .screen{display:none !important;}
     .screen.active{display:block !important;}
     .screen.active .content{padding:0;}
     body{background:#fff;}
     #app{max-width:none;}
   }
+  .certificado-hoja{max-width:640px;margin:0 auto;background:#fff;border:10px double var(--ochre);border-radius:6px;padding:50px 40px;text-align:center;}
+  .certificado-logo{height:60px;margin-bottom:18px;}
+  .certificado-eyebrow{font-family:var(--font-display);font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--ochre);margin-bottom:28px;}
+  .certificado-otorga{font-size:14px;color:var(--ink-soft);margin:0 0 10px;}
+  .certificado-nombre{font-family:var(--font-display);font-size:32px;font-weight:600;color:var(--teal-dark);margin:0 0 24px;border-bottom:2px solid var(--ochre);display:inline-block;padding-bottom:8px;}
+  .certificado-cuerpo{font-size:14px;line-height:1.7;color:var(--ink);max-width:480px;margin:0 auto 24px;}
+  .certificado-fecha{font-size:13px;color:var(--ink-soft);margin-bottom:40px;}
+  .certificado-firmas{display:flex;justify-content:space-around;gap:30px;margin-top:20px;}
+  .certificado-firma-box{flex:1;font-size:12px;color:var(--ink-soft);}
+  .certificado-linea{border-top:1.5px solid var(--ink-soft);height:50px;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -288,6 +298,11 @@
   <div class="screen" id="screen-voluntariado">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
     <div class="content" id="voluntariado-content"></div>
+  </div>
+
+  <div class="screen" id="screen-certificado">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('voluntariado')">← Escuela de Voluntariado</button></div>
+    <div class="content" id="certificado-content"></div>
   </div>
 
   </div>
@@ -1740,7 +1755,8 @@ function renderVoluntariado(){
 
     <div class="pull-quote">Escuchamos con el corazón · Comprendemos a las personas · Acompañamos con humanidad · Transformamos juntos la sociedad</div>
 
-    <button class="primary-btn" onclick="showScreen('home')" style="margin-top:16px;">← Volver al inicio</button>
+    <button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="showScreen('certificado');renderCertificadoForm()">🎓 Generar mi certificado de participación</button>
+    <button class="primary-btn" onclick="showScreen('home')">← Volver al inicio</button>
   `;
 }
 
@@ -1821,6 +1837,52 @@ function toggleApartado(id){
   const abierto = cuerpo.style.display !== 'none';
   cuerpo.style.display = abierto ? 'none' : 'block';
   flecha.textContent = abierto ? '▾' : '▴';
+}
+
+function renderCertificadoForm(){
+  const cont = document.getElementById('certificado-content');
+  cont.innerHTML = `
+    <h2 class="screen-title">Generar mi certificado</h2>
+    <p class="subtle">Escribe tu nombre completo tal como quieres que aparezca en el certificado.</p>
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="cert-nombre" placeholder="Nombre y apellidos">
+    </div>
+    <button class="primary-btn" onclick="generarCertificado()">Generar certificado →</button>
+  `;
+}
+
+function generarCertificado(){
+  const nombre = document.getElementById('cert-nombre').value.trim();
+  if(!nombre){ alert('Escribe tu nombre para generar el certificado.'); return; }
+  const logoSrc = document.querySelector('.sidebar-logo-img').src;
+  const fecha = new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
+
+  const cont = document.getElementById('certificado-content');
+  cont.innerHTML = `
+    <div class="certificado-hoja" id="certificado-imprimible">
+      <img src="${logoSrc}" alt="Logos" class="certificado-logo">
+      <div class="certificado-eyebrow">Certificado de Participación</div>
+      <p class="certificado-otorga">Se otorga el presente certificado a</p>
+      <h1 class="certificado-nombre">${nombre}</h1>
+      <p class="certificado-cuerpo">por haber completado la <strong>Escuela de Voluntariado de Atención y Acompañamiento</strong>, un programa formativo de Logos — Transformem el discurs social, dirigido a preparar al voluntariado en la ayuda a personas en situación de soledad, vulnerabilidad o dependencia.</p>
+      <p class="certificado-fecha">Tarragona, ${fecha}</p>
+      <div class="certificado-firmas">
+        <div class="certificado-firma-box">
+          <div class="certificado-linea"></div>
+          <span>Firma</span>
+        </div>
+        <div class="certificado-firma-box">
+          <div class="certificado-linea"></div>
+          <span>Sello</span>
+        </div>
+      </div>
+    </div>
+    <div class="no-print" style="text-align:center;margin-top:20px;">
+      <button class="primary-btn" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+      <button class="link-btn" style="display:block;margin:12px auto 0;" onclick="showScreen('voluntariado')">← Volver a la Escuela de Voluntariado</button>
+    </div>
+  `;
 }
 
 
