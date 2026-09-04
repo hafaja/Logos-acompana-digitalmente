@@ -184,6 +184,13 @@
   .certificado-firmas{display:flex;justify-content:space-around;gap:30px;margin-top:20px;}
   .certificado-firma-box{flex:1;font-size:12px;color:var(--ink-soft);}
   .certificado-linea{border-top:1.5px solid var(--ink-soft);height:50px;margin-bottom:6px;}
+  .cv-editable-header{width:100%;border:none;border-bottom:2px solid var(--line);font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:14px;outline:none;padding:6px 2px;background:none;color:var(--teal-dark);}
+  .cv-editable-header:focus{border-color:var(--ochre);}
+  details{background:var(--bg);border:1.5px solid var(--line);border-radius:10px;margin-bottom:10px;padding:10px 14px;}
+  details[open]{background:var(--paper);border-color:var(--ochre);}
+  details summary{font-weight:700;font-size:13.5px;cursor:pointer;color:var(--teal-dark);font-family:var(--font-body);}
+  .cv-editable-area{margin-top:10px;padding:10px;border:1px dashed var(--line);border-radius:8px;min-height:50px;outline:none;font-size:13px;line-height:1.6;}
+  .cv-editable-area:focus{border-color:var(--ochre);background:var(--ochre-soft);}
 </style>
 </head>
 <body>
@@ -2218,8 +2225,55 @@ function renderCVScreen(){
         : 'Este currículum es un primer borrador sencillo. Si ya tienes uno hecho, o quieres que un técnico de Logos te ayude a mejorarlo, puedes subirlo directamente en "Mi espacio".'}</p>
     </div>
 
+    <div class="section-label" style="margin-top:24px;">${esCA ? 'O escriu el teu propi currículum' : 'O escribe tu propio currículum'}</div>
+    <p class="subtle">${esCA ? 'Si prefereixes redactar-lo tu mateix amb més detall, fes-ho aquí. Es desa al teu compte i el pots editar quan vulguis.' : 'Si prefieres redactarlo tú mismo con más detalle, hazlo aquí. Se guarda en tu cuenta y puedes editarlo cuando quieras.'}</p>
+
+    <input type="text" class="cv-editable-header" id="cv-edit-titulo" placeholder="${esCA ? 'Títol professional / lloc que busques' : 'Título profesional / puesto que buscas'}" value="${p.cv_titulo_profesional || ''}">
+
+    <details open>
+      <summary>${esCA ? 'Perfil professional' : 'Perfil profesional'}</summary>
+      <div class="cv-editable-area" contenteditable="true" id="cv-edit-perfil">${p.cv_perfil || (esCA ? 'Escriu aquí un breu resum de la teva experiència i fortaleses...' : 'Escribe aquí un breve resumen de tu experiencia y fortalezas...')}</div>
+    </details>
+
+    <details>
+      <summary>${esCA ? 'Experiència laboral' : 'Experiencia laboral'}</summary>
+      <div class="cv-editable-area" contenteditable="true" id="cv-edit-experiencia">${p.cv_experiencia || (esCA
+        ? '<strong>Lloc — Empresa</strong> (Any - Actualitat)<br>• Assoliment o responsabilitat principal 1<br>• Assoliment o responsabilitat principal 2'
+        : '<strong>Puesto — Empresa</strong> (Año - Presente)<br>• Logro o responsabilidad principal 1<br>• Logro o responsabilidad principal 2')}</div>
+    </details>
+
+    <details>
+      <summary>${esCA ? 'Educació i formació' : 'Educación y formación'}</summary>
+      <div class="cv-editable-area" contenteditable="true" id="cv-edit-educacion">${p.cv_educacion || (esCA ? '<strong>Títol / Grau</strong> — Universitat o Institució (Any)' : '<strong>Título / Grado</strong> — Universidad o Institución (Año)')}</div>
+    </details>
+
+    <details>
+      <summary>${esCA ? 'Habilitats' : 'Habilidades'}</summary>
+      <div class="cv-editable-area" contenteditable="true" id="cv-edit-habilidades">${p.cv_habilidades || (esCA ? '• Habilitat tècnica 1<br>• Idiomes<br>• Programari / Eines' : '• Habilidad técnica 1<br>• Idiomas<br>• Software / Herramientas')}</div>
+    </details>
+
+    <button class="primary-btn" onclick="guardarCVEditable()">${esCA ? 'Desar el meu currículum' : 'Guardar mi currículum'}</button>
+    <button class="link-btn" style="display:block;margin:10px auto 0;" onclick="window.print()">📄 ${esCA ? 'Exportar aquesta versió a PDF' : 'Exportar esta versión a PDF'}</button>
+
   `;
 }
+
+async function guardarCVEditable(){
+  const esCA = LANG === 'ca';
+  const payload = {
+    id: CURRENT_USER.id,
+    cv_titulo_profesional: document.getElementById('cv-edit-titulo').value.trim() || null,
+    cv_perfil: document.getElementById('cv-edit-perfil').innerHTML.trim() || null,
+    cv_experiencia: document.getElementById('cv-edit-experiencia').innerHTML.trim() || null,
+    cv_educacion: document.getElementById('cv-edit-educacion').innerHTML.trim() || null,
+    cv_habilidades: document.getElementById('cv-edit-habilidades').innerHTML.trim() || null
+  };
+  const { error } = await sb.from('perfiles').upsert(payload);
+  if(error){ alert(error.message); return; }
+  window.__perfilActual = { ...window.__perfilActual, ...payload };
+  alert(esCA ? 'Currículum desat correctament.' : 'Currículum guardado correctamente.');
+}
+
 
 async function verDocumento(id){
   const doc = (window.__documentosActuales || []).find(d => d.id === id);
