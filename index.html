@@ -551,6 +551,8 @@ loadData();
 
 <!-- ===================== MÓDULO 1: Mi espacio (Supabase) ===================== -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 // --- Configuración de conexión ---
 // La "publishable key" está pensada para ir en el navegador: la protección real
@@ -1929,6 +1931,7 @@ function renderCertificadoForm(){
 function generarCertificado(nombreDirecto){
   const nombre = nombreDirecto || document.getElementById('cert-nombre').value.trim();
   if(!nombre){ alert('Escribe tu nombre para generar el certificado.'); return; }
+  window.__certificadoNombre = nombre;
   showScreen('certificado');
   const logoSrc = document.querySelector('.sidebar-logo-img').src;
   const fecha = new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
@@ -1954,10 +1957,43 @@ function generarCertificado(nombreDirecto){
       </div>
     </div>
     <div class="no-print" style="text-align:center;margin-top:20px;">
-      <button class="primary-btn" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+      <button class="primary-btn" id="btn-descargar-cert" onclick="descargarCertificadoPDF()">⬇️ Descargar certificado en PDF</button>
       <button class="link-btn" style="display:block;margin:12px auto 0;" onclick="showScreen('voluntariado')">← Volver a la Escuela de Voluntariado</button>
     </div>
   `;
+}
+
+async function descargarCertificadoPDF(){
+  const boton = document.getElementById('btn-descargar-cert');
+  const textoOriginal = boton.textContent;
+  boton.textContent = 'Generando PDF…';
+  boton.disabled = true;
+
+  try {
+    const elemento = document.getElementById('certificado-imprimible');
+    const canvas = await html2canvas(elemento, { scale: 2, backgroundColor: '#ffffff' });
+    const imgData = canvas.toDataURL('image/png');
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+    const anchoPagina = pdf.internal.pageSize.getWidth();
+    const altoPagina = pdf.internal.pageSize.getHeight();
+    const anchoImg = anchoPagina - 30;
+    const altoImg = (canvas.height * anchoImg) / canvas.width;
+    const x = 15;
+    const y = Math.max(15, (altoPagina - altoImg) / 2);
+
+    pdf.addImage(imgData, 'PNG', x, y, anchoImg, altoImg);
+
+    const nombreArchivo = 'certificado-' + (window.__certificadoNombre || 'voluntariado').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.pdf';
+    pdf.save(nombreArchivo);
+  } catch(e) {
+    alert('No se pudo generar el PDF: ' + e.message);
+  } finally {
+    boton.textContent = textoOriginal;
+    boton.disabled = false;
+  }
 }
 
 
