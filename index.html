@@ -2264,6 +2264,11 @@ function renderCVScreen(){
     <div class="section-label" style="margin-top:24px;">${esCA ? 'O escriu el teu propi currículum' : 'O escribe tu propio currículum'}</div>
     <p class="subtle">${esCA ? 'Si prefereixes redactar-lo tu mateix amb més detall, fes-ho aquí. Es desa al teu compte i el pots editar quan vulguis.' : 'Si prefieres redactarlo tú mismo con más detalle, hazlo aquí. Se guarda en tu cuenta y puedes editarlo cuando quieras.'}</p>
 
+    <input type="text" class="cv-editable-header" id="cv-edit-nombre" placeholder="${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'}" value="${p.cv_nombre || p.nombre_completo || ''}" style="font-size:20px;">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <input type="text" class="cv-editable-header" id="cv-edit-telefono" placeholder="${esCA ? 'Telèfon' : 'Teléfono'}" value="${p.cv_telefono || p.telefono || ''}" style="flex:1;min-width:140px;font-size:13px;font-weight:400;">
+      <input type="text" class="cv-editable-header" id="cv-edit-correo" placeholder="${esCA ? 'Correu' : 'Correo'}" value="${p.cv_correo || (CURRENT_USER && CURRENT_USER.email) || ''}" style="flex:1;min-width:180px;font-size:13px;font-weight:400;">
+    </div>
     <input type="text" class="cv-editable-header" id="cv-edit-titulo" placeholder="${esCA ? 'Títol professional / lloc que busques' : 'Título profesional / puesto que buscas'}" value="${p.cv_titulo_profesional || ''}">
 
     <details open>
@@ -2298,6 +2303,9 @@ async function guardarCVEditable(){
   const esCA = LANG === 'ca';
   const payload = {
     id: CURRENT_USER.id,
+    cv_nombre: document.getElementById('cv-edit-nombre').value.trim() || null,
+    cv_telefono: document.getElementById('cv-edit-telefono').value.trim() || null,
+    cv_correo: document.getElementById('cv-edit-correo').value.trim() || null,
     cv_titulo_profesional: document.getElementById('cv-edit-titulo').value.trim() || null,
     cv_perfil: document.getElementById('cv-edit-perfil').innerHTML.trim() || null,
     cv_experiencia: document.getElementById('cv-edit-experiencia').innerHTML.trim() || null,
