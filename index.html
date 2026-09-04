@@ -300,6 +300,11 @@
     <div class="content" id="voluntariado-content"></div>
   </div>
 
+  <div class="screen" id="screen-examen">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('voluntariado')">← Escuela de Voluntariado</button></div>
+    <div class="content" id="examen-content"></div>
+  </div>
+
   <div class="screen" id="screen-certificado">
     <div class="topbar"><button class="back-btn" onclick="showScreen('voluntariado')">← Escuela de Voluntariado</button></div>
     <div class="content" id="certificado-content"></div>
@@ -1755,7 +1760,9 @@ function renderVoluntariado(){
 
     <div class="pull-quote">Escuchamos con el corazón · Comprendemos a las personas · Acompañamos con humanidad · Transformamos juntos la sociedad</div>
 
-    <button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="showScreen('certificado');renderCertificadoForm()">🎓 Generar mi certificado de participación</button>
+    ${IS_STAFF
+      ? `<div class="empty-note" style="margin-bottom:10px;">El examen y el certificado son para el voluntariado externo, no para el personal de Logos.</div>`
+      : `<button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="showScreen('examen');renderExamenFinal()">📝 Hacer el examen final y obtener mi certificado</button>`}
     <button class="primary-btn" onclick="showScreen('home')">← Volver al inicio</button>
   `;
 }
@@ -1839,6 +1846,66 @@ function toggleApartado(id){
   flecha.textContent = abierto ? '▾' : '▴';
 }
 
+const EXAMEN_FINAL = [
+  { modulo: 1, p: "¿Qué documento es obligatorio firmar por ley para formalizar la relación entre una organización social y una persona voluntaria?", o: ["Un contrato de arrendamiento de servicios sociales.", "Un Acuerdo de Incorporación escrito.", "Una declaración jurada de fines políticos y religiosos."], r: 1 },
+  { modulo: 2, p: "Si un voluntario le dice a un usuario \"Entiendo que te sientas muy frustrado tras haber hecho toda esa fila en balde\", está aplicando la técnica de:", o: ["Clarificación.", "Reflejo emocional.", "Interrupción asertiva."], r: 1 },
+  { modulo: 3, p: "Cuando un voluntario empieza a tratar a los usuarios con frialdad, distancia excesiva o comentarios cínicos, se encuentra en la fase de burnout denominada:", o: ["Agotamiento físico motor.", "Despersonalización.", "Alta realización institucional."], r: 1 },
+  { modulo: 4, p: "¿Qué rol dentro de un equipo de voluntariado es el encargado de mitigar los roces internos y velar por el buen clima emocional del grupo?", o: ["El Implementador.", "El Cohesionador.", "El Investigador de Recursos."], r: 1 },
+  { modulo: 5, p: "Cuando un voluntario decide qué programa de televisión ve una persona mayor sin preguntarle antes, está vulnerando el principio de:", o: ["Independencia física.", "Autonomía personal.", "Responsabilidad civil institucional."], r: 1 },
+  { modulo: 6, p: "Al llegar a un bordillo con una persona en silla de ruedas, la conducta correcta del voluntario exige:", o: ["Empujar y levantar la silla de golpe sin avisar.", "Preguntar primero cómo prefiere que le ayudemos, respetando sus indicaciones.", "Abandonar la actividad por considerarla peligrosa."], r: 1 },
+  { modulo: 7, p: "Cuando nos acercamos a una persona que duerme en la calle, la postura física del voluntario debe ser:", o: ["Permanecer de pie por encima de ella.", "Agacharse o ponerse de cuclillas para situar el contacto visual a su misma altura.", "Sentarse encima de sus pertenencias."], r: 1 },
+  { modulo: 8, p: "Si un voluntario detecta indicios de maltrato hacia una persona mayor que acompaña, la acción obligatoria inmediata debe ser:", o: ["Enfrentarse directamente al familiar.", "Comunicarlo de forma confidencial y urgente al coordinador o trabajador social responsable.", "Callarse para no inmiscuirse."], r: 1 }
+];
+
+function renderExamenFinal(){
+  const cont = document.getElementById('examen-content');
+  cont.innerHTML = `
+    <h2 class="screen-title">Examen final</h2>
+    <p class="subtle">Ocho preguntas, una por cada módulo. Al aprobar (mínimo 6 de 8 correctas), tu certificado se genera automáticamente.</p>
+    <div class="field">
+      <label>Nombre completo</label>
+      <input type="text" id="exam-nombre" placeholder="Nombre y apellidos">
+    </div>
+    ${EXAMEN_FINAL.map((q, i) => `
+      <div class="panel-card" style="margin-bottom:12px;">
+        <p style="margin:0 0 10px;font-weight:700;font-size:13.5px;">${i+1}. (Módulo ${q.modulo}) ${q.p}</p>
+        ${q.o.map((op, oi) => `
+          <label class="checkbox-row" style="display:flex;gap:8px;margin-bottom:6px;">
+            <input type="radio" name="exam-q${i}" value="${oi}">
+            <span>${op}</span>
+          </label>`).join('')}
+      </div>`).join('')}
+    <div id="exam-resultado"></div>
+    <button class="primary-btn" style="background:var(--ochre);" onclick="corregirExamen()">Enviar respuestas</button>
+  `;
+}
+
+function corregirExamen(){
+  const nombre = document.getElementById('exam-nombre').value.trim();
+  if(!nombre){ alert('Escribe tu nombre antes de enviar.'); return; }
+
+  let sinResponder = 0;
+  let correctas = 0;
+  EXAMEN_FINAL.forEach((q, i) => {
+    const sel = document.querySelector(`input[name="exam-q${i}"]:checked`);
+    if(!sel){ sinResponder++; return; }
+    if(parseInt(sel.value, 10) === q.r) correctas++;
+  });
+
+  if(sinResponder > 0){
+    alert(`Te faltan ${sinResponder} pregunta(s) por responder.`);
+    return;
+  }
+
+  const resultado = document.getElementById('exam-resultado');
+  if(correctas >= 6){
+    resultado.innerHTML = `<div class="info-box info-box-gold"><p style="margin:0;"><strong>¡Aprobado!</strong> ${correctas} de 8 correctas. Generando tu certificado…</p></div>`;
+    setTimeout(() => generarCertificado(nombre), 900);
+  } else {
+    resultado.innerHTML = `<div class="warning-block"><strong>${correctas} de 8 correctas.</strong><span>Necesitas al menos 6 de 8 para aprobar. Repasa los módulos y vuelve a intentarlo cuando quieras.</span></div>`;
+  }
+}
+
 function renderCertificadoForm(){
   const cont = document.getElementById('certificado-content');
   cont.innerHTML = `
@@ -1852,9 +1919,10 @@ function renderCertificadoForm(){
   `;
 }
 
-function generarCertificado(){
-  const nombre = document.getElementById('cert-nombre').value.trim();
+function generarCertificado(nombreDirecto){
+  const nombre = nombreDirecto || document.getElementById('cert-nombre').value.trim();
   if(!nombre){ alert('Escribe tu nombre para generar el certificado.'); return; }
+  showScreen('certificado');
   const logoSrc = document.querySelector('.sidebar-logo-img').src;
   const fecha = new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' });
 
