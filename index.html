@@ -808,6 +808,14 @@ function nombreTecnico(email){
   return __mapaNombresTecnicos[email] || email;
 }
 
+function enlaceWhatsApp(telefono, nombre){
+  if(!telefono) return '';
+  let limpio = telefono.replace(/[^\d+]/g, '').replace(/^\+/, '');
+  if(limpio.length === 9) limpio = '34' + limpio; // número español sin prefijo
+  const mensaje = encodeURIComponent(`Hola${nombre ? ' ' + nombre.split(' ')[0] : ''}, te escribimos desde Logos. `);
+  return `https://wa.me/${limpio}?text=${mensaje}`;
+}
+
 async function verPersonaStaff(usuarioId){
   const cont = document.getElementById('persona-content');
   showScreen('persona');
@@ -911,6 +919,7 @@ async function verPersonaStaff(usuarioId){
       ${campo('DNI/NIE', p.dni_nie)}
       ${campo('Fecha de nacimiento', p.fecha_nacimiento)}
       ${campo('Teléfono', p.telefono)}
+      ${p.telefono ? `<div class="panel-stat-row"><span></span><a href="${enlaceWhatsApp(p.telefono, p.nombre_completo)}" target="_blank" rel="noopener" class="link-btn" style="font-size:12px;color:#25D366;">💬 Escribir por WhatsApp</a></div>` : ''}
       ${campo('Calle', p.calle)}
       ${campo('Municipio', p.municipio)}
       ${campo('Código postal', p.codigo_postal)}
@@ -1247,6 +1256,31 @@ async function renderPanel(){
     ? rows.map(r => `<div class="panel-stat-row"><span>${r[labelKey] || '—'}</span><span><strong>${r[totalKey]}</strong></span></div>`).join('')
     : `<div class="empty-note">Sin datos todavía</div>`;
 
+  const graficoCircular = (datos, colores) => {
+    const total = datos.reduce((s,d) => s + d.value, 0);
+    if(!total) return `<div class="empty-note">Sin datos todavía</div>`;
+    const radio = 48, circunferencia = 2 * Math.PI * radio;
+    let acumulado = 0;
+    const segmentos = datos.map((d, i) => {
+      const frac = d.value / total;
+      const dash = frac * circunferencia;
+      const offset = -acumulado * circunferencia;
+      acumulado += frac;
+      const color = colores[i % colores.length];
+      return `<circle cx="65" cy="65" r="${radio}" fill="none" stroke="${color}" stroke-width="20" stroke-dasharray="${dash} ${circunferencia - dash}" stroke-dashoffset="${offset}" transform="rotate(-90 65 65)"/>`;
+    }).join('');
+    const leyenda = datos.map((d, i) => `<span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink);"><span style="width:10px;height:10px;border-radius:3px;background:${colores[i % colores.length]};flex-shrink:0;"></span>${d.label} — ${d.value} (${Math.round(d.value/total*100)}%)</span>`).join('');
+    return `<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <svg width="120" height="120" viewBox="0 0 130 130" style="flex-shrink:0;">
+        <circle cx="65" cy="65" r="${radio}" fill="none" stroke="var(--line)" stroke-width="20"/>
+        ${segmentos}
+        <text x="65" y="61" text-anchor="middle" font-size="18" font-weight="700" fill="var(--teal-dark)" font-family="Georgia,serif">${total}</text>
+        <text x="65" y="76" text-anchor="middle" font-size="9" fill="var(--ink-soft)">total</text>
+      </svg>
+      <div style="display:flex;flex-direction:column;gap:8px;">${leyenda}</div>
+    </div>`;
+  };
+
   const dd = depDis.data || {};
   const sf = situFam.data || {};
   const sat = satisfaccion.data || {};
@@ -1255,11 +1289,11 @@ async function renderPanel(){
   const totalActStats = actTotal.data ? actTotal.data.total_actuaciones : 0;
   const resultadoMap = {};
   (actResultado.data || []).forEach(r => { resultadoMap[r.resultado] = r.total; });
-  const resultadosHtml = totalActStats
-    ? `<div class="panel-stat-row"><span>🟢 Conseguido</span><span><strong>${resultadoMap.conseguido || 0}</strong></span></div>
-       <div class="panel-stat-row"><span>🟡 En trámite</span><span><strong>${resultadoMap.en_tramite || 0}</strong></span></div>
-       <div class="panel-stat-row"><span>🔴 No conseguido</span><span><strong>${resultadoMap.no_conseguido || 0}</strong></span></div>`
-    : `<div class="empty-note">Sin actuaciones todavía</div>`;
+  const resultadosHtml = graficoCircular([
+    { label: 'Conseguido', value: resultadoMap.conseguido || 0 },
+    { label: 'En trámite', value: resultadoMap.en_tramite || 0 },
+    { label: 'No conseguido', value: resultadoMap.no_conseguido || 0 }
+  ].filter(d => d.value > 0), ['var(--good)', 'var(--ochre)', 'var(--alert)']);
 
   const categoriaHtml = filaLista(actCategoria.data, 'categoria', 'total');
   const derivadoHtml = filaLista(actDerivado.data, 'derivado_a', 'total');
@@ -1308,7 +1342,7 @@ async function renderPanel(){
 
     <div class="panel-card">
       <h3>Por sexo</h3>
-      ${filaLista(porSexo.data, 'sexo', 'total')}
+      ${graficoCircular((porSexo.data||[]).map(r => ({label: r.sexo || '—', value: r.total})), ['var(--teal)', 'var(--ochre)', '#888780'])}
     </div>
 
     <div class="panel-card">
@@ -1345,7 +1379,7 @@ async function renderPanel(){
 
     <div class="panel-card">
       <h3>Trámites por estado</h3>
-      ${filaLista(tramEstado.data, 'estado', 'total')}
+      ${graficoCircular((tramEstado.data||[]).map(r => ({label: r.estado || '—', value: r.total})), ['var(--ochre)', 'var(--teal)', 'var(--good)'])}
     </div>
 
     <div class="panel-card">
