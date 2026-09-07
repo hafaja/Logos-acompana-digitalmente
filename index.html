@@ -29,13 +29,18 @@
   .sidebar nav button{text-align:left;background:none;border:none;color:var(--ink-soft);font-family:var(--font-body);font-weight:700;font-size:13.5px;padding:11px 14px;border-radius:10px;cursor:pointer;transition:background .15s;}
   .sidebar nav button:hover{background:var(--bg);}
   .sidebar nav button.active{background:var(--teal);color:#fff;}
-  .sidebar-volunteer-btn{text-align:left;background:var(--ochre-soft);border:1.5px solid var(--ochre);color:#7A4A1F;font-family:var(--font-body);font-weight:700;font-size:13px;padding:10px 14px;border-radius:10px;cursor:pointer;margin-bottom:14px;}
+  .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .sidebar-public-nav button{text-align:left;background:none;border:none;color:var(--ink-soft);font-family:var(--font-body);font-weight:700;font-size:13.5px;padding:11px 14px;border-radius:10px;cursor:pointer;transition:background .15s;}
+  .sidebar-public-nav button:hover{background:var(--bg);}
+  .sidebar-public-nav button.active{background:var(--teal);color:#fff;}
   .modulo-acordeon{background:var(--paper);border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05);}
   .modulo-cabecera{width:100%;display:flex;align-items:center;gap:10px;background:none;border:none;padding:12px 14px;cursor:pointer;text-align:left;font-family:var(--font-body);}
   .modulo-icono{font-size:18px;flex-shrink:0;}
   .modulo-num{font-weight:700;font-size:12px;color:var(--ink-soft);flex-shrink:0;white-space:nowrap;}
   .modulo-titulo{flex:1;font-weight:700;font-size:13.5px;color:var(--teal-dark);}
   .modulo-flecha{color:var(--ink-soft);flex-shrink:0;}
+  .contenido-row{display:flex;align-items:center;gap:8px;padding:8px 0;font-size:13px;border-top:1px solid var(--line);}
+  .contenido-row:first-child{border-top:none;}
   .modulo-cuerpo{padding:4px 12px 14px;font-size:13.5px;color:var(--ink);line-height:1.5;}
   .apartado-acordeon{background:var(--bg);border-radius:10px;margin:6px 0;overflow:hidden;}
   .apartado-cabecera{width:100%;display:flex;align-items:center;gap:10px;background:none;border:none;padding:10px 12px;cursor:pointer;text-align:left;font-family:var(--font-body);}
@@ -201,11 +206,17 @@
     <nav>
       <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
       <button data-target="profile" onclick="showScreen('profile');renderDashboard()">Mi espacio</button>
+      <button data-target="home" onclick="showScreen('home');renderDatosStep()">Completar mis datos</button>
+      <button data-target="cv" onclick="showScreen('cv');renderCVScreen()">Mi currículum</button>
+      <button data-target="encuesta" onclick="showScreen('encuesta');renderEncuestaForm()">Encuesta de satisfacción</button>
       <button data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
       <button data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
     </nav>
-    <button class="sidebar-volunteer-btn" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🎓 Voluntariado</button>
-    <button class="sidebar-volunteer-btn" onclick="showScreen('verificarcert');renderVerificarCertificado()" id="sidebar-verificar-btn" style="background:none;border:1.5px solid var(--line);color:var(--ink-soft);">🔎 Verificar certificado</button>
+    <div class="sidebar-public-nav">
+      <button data-target="aulaciudadano" onclick="showScreen('aulaciudadano');renderAulaCiudadano()" id="sidebar-aula-btn">🎓 Aula Virtual</button>
+      <button data-target="voluntariado" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🤝 Voluntariado</button>
+      <button data-target="verificarcert" onclick="showScreen('verificarcert');renderVerificarCertificado()" id="sidebar-verificar-btn">🔎 Verificar certificado</button>
+    </div>
     <button class="sidebar-logout" onclick="cerrarSesion()" id="sidebar-logout-btn" style="display:none;">Cerrar sesión</button>
   </div>
 
@@ -321,6 +332,16 @@
   <div class="screen" id="screen-verificarcert">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
     <div class="content" id="verificarcert-content"></div>
+  </div>
+
+  <div class="screen" id="screen-aulaciudadano">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="aulaciudadano-content"></div>
+  </div>
+
+  <div class="screen" id="screen-cursodetalle">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('aulaciudadano');renderAulaCiudadano()">← Aula Virtual</button></div>
+    <div class="content" id="cursodetalle-content"></div>
   </div>
 
   </div>
@@ -534,12 +555,14 @@ function showDetail(id){
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
-  document.querySelectorAll('.sidebar nav button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sidebar nav button, .sidebar-public-nav button').forEach(b=>b.classList.remove('active'));
   const homeGroup = ['detail','necesidades','encuesta'];
   const profileGroup = ['cita','cv'];
   const panelGroup = ['atencion','persona'];
-  const target = homeGroup.includes(name) ? 'home' : (profileGroup.includes(name) ? 'profile' : (panelGroup.includes(name) ? 'panel' : name));
-  const btn = document.querySelector('.sidebar nav button[data-target="'+target+'"]');
+  const aulaGroup = ['cursodetalle'];
+  const voluntariadoGroup = ['certificado'];
+  const target = homeGroup.includes(name) ? 'home' : (profileGroup.includes(name) ? 'profile' : (panelGroup.includes(name) ? 'panel' : (aulaGroup.includes(name) ? 'aulaciudadano' : (voluntariadoGroup.includes(name) ? 'voluntariado' : name))));
+  const btn = document.querySelector('.sidebar nav button[data-target="'+target+'"], .sidebar-public-nav button[data-target="'+target+'"]');
   if(btn) btn.classList.add('active');
 }
 
@@ -689,12 +712,6 @@ function renderResumenStep(mostrarCatalogoYa){
       <div class="profile-head" style="margin-bottom:10px;">
         <div class="avatar">${inicial}</div>
         <div><strong>${nombre}</strong><span>${p.municipio || 'Tarragona'}</span></div>
-      </div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:${mostrarCatalogoYa ? '0' : '4px'};">
-        <button class="link-btn" onclick="renderDatosStep()">${esCA ? 'Editar dades' : 'Editar datos'}</button>
-        <button class="link-btn" onclick="showScreen('profile');renderDashboard()">${esCA ? 'El meu espai complet' : 'Mi espacio completo'}</button>
-        <button class="link-btn" onclick="showScreen('encuesta');renderEncuestaForm()">${esCA ? 'Enquesta' : 'Encuesta'}</button>
-        <button class="link-btn" style="color:var(--alert);" onclick="cerrarSesion()">${t.cerrarSesion}</button>
       </div>
     </div>
     ${!mostrarCatalogoYa ? `
@@ -1826,6 +1843,280 @@ async function buscarCertificado(){
   `;
 }
 
+async function renderAulaCiudadano(){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('aulaciudadano-content');
+  cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+
+  const { data: cursos } = await sb.from('cursos').select('*').in('estado', ['inscripcion','activo']).order('creado_en', { ascending:false });
+
+  let misInscripciones = [];
+  if(CURRENT_USER){
+    const { data } = await sb.from('cursos_inscripciones').select('curso_id').eq('usuario_id', CURRENT_USER.id).eq('estado', 'inscrito');
+    misInscripciones = (data || []).map(i => i.curso_id);
+  }
+
+  const iconoModalidad = { presencial:'🏫', online:'💻', mixta:'🔀' };
+  const textoEstadoCurso = {
+    inscripcion: esCA ? 'Inscripció oberta' : 'Inscripción abierta',
+    activo: esCA ? 'En curs' : 'En curso'
+  };
+
+  const cursosHtml = (cursos && cursos.length)
+    ? cursos.map(c => {
+        const yaInscrito = misInscripciones.includes(c.id);
+        return `
+        <div class="panel-card" style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <h3 style="margin:0;">${iconoModalidad[c.modalidad]||'🏫'} ${c.nombre}</h3>
+            <span class="chip ${c.estado==='activo'?'en-curso':'derivado'}">${textoEstadoCurso[c.estado]||c.estado}</span>
+          </div>
+          ${c.proyecto ? `<p class="subtle" style="margin:4px 0 8px;">${c.proyecto}</p>` : ''}
+          ${c.descripcion ? `<p style="font-size:13px;margin:0 0 8px;">${c.descripcion}</p>` : ''}
+          <div class="list-row"><span>${esCA?'Docent':'Docente'}</span><span>${c.docente_nombre || '—'}</span></div>
+          ${(c.fecha_inicio||c.fecha_final) ? `<div class="list-row"><span>${esCA?'Dates':'Fechas'}</span><span>${c.fecha_inicio ? new Date(c.fecha_inicio+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES') : '—'} – ${c.fecha_final ? new Date(c.fecha_final+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES') : '—'}</span></div>` : ''}
+          ${c.horas_totales ? `<div class="list-row"><span>${esCA?'Hores':'Horas'}</span><span>${c.horas_totales} h</span></div>` : ''}
+          ${yaInscrito
+            ? `<button class="primary-btn" style="margin-top:10px;" onclick="abrirCursoCiudadano('${c.id}')">${esCA?'📖 Continuar el curs':'📖 Continuar el curso'}</button>`
+            : `<button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="apuntarmeCurso('${c.id}')">✋ ${esCA?'Apuntar-me':'Apuntarme'}</button>`}
+        </div>`;
+      }).join('')
+    : `<div class="empty-note">${esCA ? 'Ara mateix no hi ha cursos oberts.' : 'Ahora mismo no hay cursos abiertos.'}</div>`;
+
+  cont.innerHTML = `
+    <h2 class="screen-title">🎓 Aula Virtual · Hub Logos</h2>
+    <p class="subtle">${esCA
+      ? 'Fes els cursos de Logos des de casa, amb el mòbil o l\'ordinador, quan tu vulguis.'
+      : 'Haz los cursos de Logos desde casa, con el móvil o el ordenador, cuando tú quieras.'}</p>
+    ${cursosHtml}
+  `;
+}
+
+async function apuntarmeCurso(cursoId){
+  const esCA = LANG === 'ca';
+  if(!CURRENT_USER){
+    alert(esCA ? 'Primer has de crear el teu compte o iniciar sessió.' : 'Primero tienes que crear tu cuenta o iniciar sesión.');
+    showScreen('home'); renderAuthStep();
+    return;
+  }
+  const { data: perfil } = await sb.from('perfiles').select('nombre_completo').eq('id', CURRENT_USER.id).maybeSingle();
+  const { error } = await sb.from('cursos_inscripciones').insert({
+    curso_id: cursoId, usuario_id: CURRENT_USER.id, nombre_participante: (perfil && perfil.nombre_completo) || CURRENT_USER.email
+  });
+  if(error){ alert(error.message); return; }
+  alert(esCA ? "T'has apuntat correctament!" : '¡Te has apuntado correctamente!');
+  renderAulaCiudadano();
+}
+
+async function abrirCursoCiudadano(cursoId){
+  const esCA = LANG === 'ca';
+  window.__cursoCiudadanoActual = cursoId;
+  showScreen('cursodetalle');
+  const cont = document.getElementById('cursodetalle-content');
+  cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+
+  const { data: curso } = await sb.from('cursos').select('*').eq('id', cursoId).maybeSingle();
+  const { data: modulos } = await sb.from('curso_modulos').select('*').eq('curso_id', cursoId).order('orden', { ascending:true });
+  const moduloIds = (modulos || []).map(m => m.id);
+
+  let contenidosPorModulo = {}, actividadesPorModulo = {};
+  if(moduloIds.length){
+    const [{ data: contenidos }, { data: actividades }] = await Promise.all([
+      sb.from('curso_contenidos').select('*').in('modulo_id', moduloIds).order('orden', { ascending:true }),
+      sb.from('curso_actividades').select('*').in('modulo_id', moduloIds).order('orden', { ascending:true })
+    ]);
+    (contenidos || []).forEach(c => { if(!contenidosPorModulo[c.modulo_id]) contenidosPorModulo[c.modulo_id]=[]; contenidosPorModulo[c.modulo_id].push(c); });
+    (actividades || []).forEach(a => { if(!actividadesPorModulo[a.modulo_id]) actividadesPorModulo[a.modulo_id]=[]; actividadesPorModulo[a.modulo_id].push(a); });
+  }
+
+  const contenidoIds = Object.values(contenidosPorModulo).flat().map(c => c.id);
+  const actividadIds = Object.values(actividadesPorModulo).flat().map(a => a.id);
+  let misProgresos = [], misEntregas = [];
+  if(contenidoIds.length){
+    const { data } = await sb.from('curso_progreso_contenido').select('*').eq('usuario_id', CURRENT_USER.id).in('contenido_id', contenidoIds);
+    misProgresos = data || [];
+  }
+  if(actividadIds.length){
+    const { data } = await sb.from('curso_actividad_entregas').select('*').eq('usuario_id', CURRENT_USER.id).in('actividad_id', actividadIds);
+    misEntregas = data || [];
+  }
+
+  const totalItems = contenidoIds.length + actividadIds.length;
+  const completados = misProgresos.length + misEntregas.filter(e => {
+    const act = Object.values(actividadesPorModulo).flat().find(a => a.id === e.actividad_id);
+    return act && (act.tipo === 'test' || e.estado === 'aprobado');
+  }).length;
+  const miProgreso = totalItems > 0 ? Math.round((completados/totalItems)*100) : 0;
+
+  const iconoTipo = { video:'🎬', pdf:'📄', presentacion:'📊', documento:'📎' };
+  const iconoTipoAct = { test:'📝', tarea:'📋' };
+
+  const modulosHtml = (modulos && modulos.length)
+    ? modulos.map((m, i) => {
+        const idMod = `cc-modulo-${m.id}`;
+        const contenidos = contenidosPorModulo[m.id] || [];
+        const actividades = actividadesPorModulo[m.id] || [];
+
+        const contenidosHtml = contenidos.map(c => {
+          const visto = misProgresos.some(p => p.contenido_id === c.id);
+          return `<div class="contenido-row">
+            <span>${iconoTipo[c.tipo]||'📎'}</span>
+            <span style="flex:1;">${c.titulo}</span>
+            ${c.url_externa ? `<a href="${c.url_externa}" target="_blank" rel="noopener" class="link-btn" style="font-size:12px;">${esCA?'Obrir':'Abrir'}</a>` : ''}
+            ${visto
+              ? `<span class="chip hecho" style="font-size:10px;">✅ ${esCA?'Vist':'Visto'}</span>`
+              : `<button class="link-btn" style="font-size:12px;" onclick="marcarContenidoVisto('${c.id}')">${esCA?'Marcar vist':'Marcar visto'}</button>`}
+          </div>`;
+        }).join('');
+
+        const actividadesHtml = actividades.map(a => {
+          const entrega = misEntregas.find(e => e.actividad_id === a.id);
+          let estadoHtml;
+          if(a.tipo === 'test'){
+            estadoHtml = entrega
+              ? `<span class="chip hecho" style="font-size:10px;">✅ ${entrega.puntuacion}/${entrega.total_preguntas}</span>`
+              : `<button class="link-btn" style="font-size:12px;" onclick="abrirTest('${a.id}','${(a.titulo||'').replace(/'/g,"\\'")}')">${esCA?'Fer test':'Hacer test'}</button>`;
+          } else {
+            const textoEstado = { pendiente: esCA?'Pendent de revisió':'Pendiente de revisión', aprobado: esCA?'Aprovada':'Aprobada', necesita_correccion: esCA?'Necessita correcció':'Necesita corrección' };
+            estadoHtml = entrega
+              ? `<span class="chip ${entrega.estado==='aprobado'?'hecho':'en-curso'}" style="font-size:10px;">${textoEstado[entrega.estado]}</span>`
+              : `<button class="link-btn" style="font-size:12px;" onclick="abrirTarea('${a.id}','${(a.titulo||'').replace(/'/g,"\\'")}')">${esCA?'Entregar':'Entregar'}</button>`;
+          }
+          return `<div class="contenido-row">
+            <span>${iconoTipoAct[a.tipo]||'📝'}</span>
+            <span style="flex:1;">${a.titulo}</span>
+            ${estadoHtml}
+          </div>`;
+        }).join('');
+
+        return `
+        <div class="modulo-acordeon">
+          <button class="modulo-cabecera" onclick="toggleModuloCC('${idMod}')">
+            <span class="modulo-titulo">${esCA?'Mòdul':'Módulo'} ${i+1}. ${m.titulo}</span>
+            <span class="modulo-flecha" id="${idMod}-flecha">▾</span>
+          </button>
+          <div class="modulo-cuerpo" id="${idMod}" style="display:none;">
+            ${m.descripcion ? `<p class="subtle" style="margin:0 0 10px;">${m.descripcion}</p>` : ''}
+            ${contenidosHtml}${actividadesHtml}
+            ${!contenidosHtml && !actividadesHtml ? `<div class="empty-note">${esCA?'Encara sense contingut.':'Todavía sin contenido.'}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('')
+    : `<div class="empty-note">${esCA ? 'Aquest curs encara no té mòduls.' : 'Este curso todavía no tiene módulos.'}</div>`;
+
+  cont.innerHTML = `
+    <h2 class="screen-title">${curso ? curso.nombre : ''}</h2>
+    <div class="panel-card" style="background:var(--good-soft);border-color:var(--good);margin-bottom:16px;">
+      <div class="list-row"><span><strong>${esCA?'El teu progrés':'Tu progreso'}</strong></span><span style="font-weight:700;color:var(--teal-dark);">${miProgreso}%</span></div>
+    </div>
+    ${modulosHtml}
+    <div id="test-tarea-wrap"></div>
+  `;
+}
+
+function toggleModuloCC(id){
+  const cuerpo = document.getElementById(id);
+  const flecha = document.getElementById(id + '-flecha');
+  const abierto = cuerpo.style.display !== 'none';
+  cuerpo.style.display = abierto ? 'none' : 'block';
+  flecha.textContent = abierto ? '▾' : '▴';
+}
+
+async function marcarContenidoVisto(contenidoId){
+  const { error } = await sb.from('curso_progreso_contenido').insert({ usuario_id: CURRENT_USER.id, contenido_id: contenidoId });
+  if(error && !error.message.includes('duplicate')){ alert(error.message); return; }
+  abrirCursoCiudadano(window.__cursoCiudadanoActual);
+}
+
+async function abrirTest(actividadId, tituloActividad){
+  const esCA = LANG === 'ca';
+  const wrap = document.getElementById('test-tarea-wrap');
+  wrap.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+
+  const { data: preguntas } = await sb.from('curso_actividad_preguntas').select('*').eq('actividad_id', actividadId).order('orden', { ascending:true });
+
+  if(!preguntas || !preguntas.length){
+    wrap.innerHTML = `<div class="panel-card"><div class="empty-note">${esCA ? 'Aquest test encara no té preguntes.' : 'Este test todavía no tiene preguntas.'}</div></div>`;
+    wrap.scrollIntoView({ behavior:'smooth' });
+    return;
+  }
+
+  const preguntasHtml = preguntas.map((p, i) => `
+    <div class="panel-card" style="margin-bottom:10px;">
+      <p style="font-weight:700;font-size:13.5px;margin:0 0 8px;">${i+1}. ${p.pregunta}</p>
+      ${(p.opciones||[]).map((o, oi) => `
+        <label class="checkbox-row" style="display:flex;gap:8px;margin-bottom:6px;">
+          <input type="radio" name="test-p${i}" value="${oi}">
+          <span>${o}</span>
+        </label>`).join('')}
+    </div>`).join('');
+
+  wrap.innerHTML = `
+    <div class="panel-card">
+      <h3>📝 ${tituloActividad}</h3>
+      ${preguntasHtml}
+      <button class="primary-btn" onclick="enviarTest('${actividadId}', ${preguntas.length})">${esCA?'Enviar respostes':'Enviar respuestas'}</button>
+    </div>
+  `;
+  wrap.scrollIntoView({ behavior:'smooth' });
+}
+
+async function enviarTest(actividadId, totalPreguntas){
+  const esCA = LANG === 'ca';
+  const { data: preguntas } = await sb.from('curso_actividad_preguntas').select('*').eq('actividad_id', actividadId).order('orden', { ascending:true });
+
+  const respuestas = [];
+  let sinResponder = 0;
+  preguntas.forEach((p, i) => {
+    const sel = document.querySelector(`input[name="test-p${i}"]:checked`);
+    if(!sel){ sinResponder++; respuestas.push(null); return; }
+    respuestas.push(parseInt(sel.value, 10));
+  });
+  if(sinResponder > 0){ alert(esCA ? `Et falten ${sinResponder} preguntes per respondre.` : `Te faltan ${sinResponder} preguntas por responder.`); return; }
+
+  let puntuacion = 0;
+  preguntas.forEach((p, i) => { if(respuestas[i] === p.correcta) puntuacion++; });
+
+  const { data: perfil } = await sb.from('perfiles').select('nombre_completo').eq('id', CURRENT_USER.id).maybeSingle();
+  const { error } = await sb.from('curso_actividad_entregas').insert({
+    actividad_id: actividadId, usuario_id: CURRENT_USER.id, nombre_participante: (perfil && perfil.nombre_completo) || CURRENT_USER.email,
+    respuestas_test: respuestas, puntuacion, total_preguntas: totalPreguntas, estado: 'aprobado'
+  });
+  if(error){ alert(error.message); return; }
+  alert(esCA ? `Resultat: ${puntuacion}/${totalPreguntas}` : `Resultado: ${puntuacion}/${totalPreguntas}`);
+  abrirCursoCiudadano(window.__cursoCiudadanoActual);
+}
+
+function abrirTarea(actividadId, tituloActividad){
+  const esCA = LANG === 'ca';
+  const wrap = document.getElementById('test-tarea-wrap');
+  wrap.innerHTML = `
+    <div class="panel-card">
+      <h3>📋 ${tituloActividad}</h3>
+      <div class="field"><label>${esCA?'Enllaç de la teva entrega (Drive, etc.)':'Enlace de tu entrega (Drive, etc.)'}</label><input type="text" id="tarea-url" placeholder="https://..."></div>
+      <div class="field"><textarea id="tarea-comentario" rows="2" placeholder="${esCA?'Comentari (opcional)':'Comentario (opcional)'}"></textarea></div>
+      <button class="primary-btn" onclick="enviarTarea('${actividadId}')">${esCA?'Entregar':'Entregar'}</button>
+    </div>
+  `;
+  wrap.scrollIntoView({ behavior:'smooth' });
+}
+
+async function enviarTarea(actividadId){
+  const esCA = LANG === 'ca';
+  const url = document.getElementById('tarea-url').value.trim();
+  const comentario = document.getElementById('tarea-comentario').value.trim();
+  if(!url){ alert(esCA ? 'Enganxa l\'enllaç de la teva entrega.' : 'Pega el enlace de tu entrega.'); return; }
+
+  const { data: perfil } = await sb.from('perfiles').select('nombre_completo').eq('id', CURRENT_USER.id).maybeSingle();
+  const { error } = await sb.from('curso_actividad_entregas').insert({
+    actividad_id: actividadId, usuario_id: CURRENT_USER.id, nombre_participante: (perfil && perfil.nombre_completo) || CURRENT_USER.email,
+    url_entrega: url, comentario_participante: comentario || null, estado: 'pendiente'
+  });
+  if(error){ alert(error.message); return; }
+  alert(esCA ? 'Entrega enviada. El tècnic la revisarà aviat.' : 'Entrega enviada. El técnico la revisará pronto.');
+  abrirCursoCiudadano(window.__cursoCiudadanoActual);
+}
+
 function renderVoluntariado(){
   const cont = document.getElementById('voluntariado-content');
 
@@ -2192,7 +2483,6 @@ async function renderDashboard(){
         <span>${municipio}${!perfil || !perfil.nombre_completo ? ' · ' + t.perfilIncompleto : ''}</span>
       </div>
     </div>
-    <button class="primary-btn" style="margin-bottom:20px;" onclick="showScreen('home');renderDatosStep()">${t.completarDatos}</button>
 
     ${consultasHtml ? `<div class="section-label">${LANG==='ca' ? 'LA MEVA CONSULTA D\'ORIENTACIÓ' : 'MI CONSULTA DE ORIENTACIÓN'}</div>${consultasHtml}` : ''}
 
@@ -2220,15 +2510,11 @@ async function renderDashboard(){
     <button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
     <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
 
-    <button class="primary-btn" style="background:var(--teal-dark);margin-top:18px;" onclick="showScreen('cv');renderCVScreen()">${LANG==='ca' ? '📄 Generar el meu currículum' : '📄 Generar mi currículum'}</button>
-
     <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:10px;">
       <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Ja tens un currículum fet? Puja\'l aquí.' : '¿Ya tienes un currículum hecho? Súbelo aquí.'}</p>
       <input type="file" id="doc-cv-input" accept="application/pdf,image/*,.doc,.docx">
       <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-cv-input','curriculum')">${LANG==='ca' ? 'Pujar currículum' : 'Subir currículum'}</button>
     </div>
-
-    <button class="primary-btn" style="background:var(--teal);margin-top:10px;" onclick="showScreen('encuesta');renderEncuestaForm()">${LANG==='ca' ? '📋 Enquesta de satisfacció' : '📋 Encuesta de satisfacción'}</button>
 
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
   `;
