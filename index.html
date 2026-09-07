@@ -2044,7 +2044,7 @@ async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
 
   const fechaFmt = fechaFirma ? new Date(fechaFirma).toLocaleDateString(esCA ? 'ca-ES' : 'es-ES') : '—';
   const contenedor = document.createElement('div');
-  contenedor.style.cssText = 'position:fixed;left:-9999px;top:0;width:700px;background:#fff;padding:40px;font-family:Georgia,serif;color:#16233F;';
+  contenedor.style.cssText = 'position:absolute;left:0;top:-10000px;width:700px;background:#fff;padding:40px;font-family:Georgia,serif;color:#16233F;';
   contenedor.innerHTML = `
     <div style="text-align:center;margin-bottom:24px;">
       <h1 style="font-size:20px;margin:0 0 4px;">Associació Logos — Projectes Socials</h1>
