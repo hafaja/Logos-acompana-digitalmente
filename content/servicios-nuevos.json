@@ -1,0 +1,1061 @@
+{
+  "servicios": [
+    {
+      "id": "pnc-jubilacion",
+      "nombre": {
+        "es": "Pensión no contributiva de jubilación",
+        "ca": "Pensión no contributiva de jubilación"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://imserso.es/pnc-prestaciones-subvenciones/pnc-jubilacion",
+      "para_que_sirve": {
+        "es": "Garantiza un ingreso mensual mínimo, asistencia médica gratuita y servicios sociales a las personas mayores de 65 años en situación de vulnerabilidad económica, incluso si no han cotizado nunca a la Seguridad Social.",
+        "ca": "Garantiza un ingreso mensual mínimo, asistencia médica gratuita y servicios sociales a las personas mayores de 65 años en situación de vulnerabilidad económica, incluso si no han cotizado nunca a la Seguridad Social."
+      },
+      "cuantia": {
+        "es": "La cuantía íntegra general es de 628,80 € al mes (repartidos en 14 pagas, sumando un total de 8.803,20 € al año). El importe individual puede variar según el número de beneficiarios en la misma vivienda y sus ingresos, pero nunca bajará del mínimo legal de 157,20 € mensuales. Se ofrece un plus anual de 525 € si se reside en una vivienda de alquiler.",
+        "ca": "La cuantía íntegra general es de 628,80 € al mes (repartidos en 14 pagas, sumando un total de 8.803,20 € al año). El importe individual puede variar según el número de beneficiarios en la misma vivienda y sus ingresos, pero nunca bajará del mínimo legal de 157,20 € mensuales. Se ofrece un plus anual de 525 € si se reside en una vivienda de alquiler."
+      },
+      "requisitos": {
+        "es": [
+          "Edad: tener 65 años o más.",
+          "Residencia: vivir legalmente en España y haber acumulado un total de 10 años de residencia (desde los 16 años de edad), cumpliendo obligatoriamente que 2 años sean consecutivos e inmediatamente anteriores a la fecha de la solicitud.",
+          "Carencia de rentas: tener ingresos personales anuales inferiores a 8.803,20 €. Si convives con familiares, este límite se incrementa en base al número de integrantes del hogar."
+        ],
+        "ca": [
+          "Edad: tener 65 años o más.",
+          "Residencia: vivir legalmente en España y haber acumulado un total de 10 años de residencia (desde los 16 años de edad), cumpliendo obligatoriamente que 2 años sean consecutivos e inmediatamente anteriores a la fecha de la solicitud.",
+          "Carencia de rentas: tener ingresos personales anuales inferiores a 8.803,20 €. Si convives con familiares, este límite se incrementa en base al número de integrantes del hogar."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Documento oficial de identidad (DNI o NIE).",
+          "Certificado de empadronamiento histórico oficial del municipio.",
+          "Justificantes de ingresos, rentas y bienes de toda la unidad familiar que convive en la residencia."
+        ],
+        "ca": [
+          "Documento oficial de identidad (DNI o NIE).",
+          "Certificado de empadronamiento histórico oficial del municipio.",
+          "Justificantes de ingresos, rentas y bienes de toda la unidad familiar que convive en la residencia."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "ayuda-cuidadores-no-profesionales",
+      "nombre": {
+        "es": "Prestación económica por cuidados en el entorno familiar (Convenio Especial)",
+        "ca": "Prestación económica por cuidados en el entorno familiar (Convenio Especial)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://portal.seg-social.gob.es/wps/portal/importass/importass/Colectivos/convenios+especiales/guia",
+      "para_que_sirve": {
+        "es": "Compensa económicamente a los familiares que atienden a una persona dependiente en su propio hogar. Además de la aportación monetaria, permite al cuidador cotizar gratis a la Seguridad Social (para la futura jubilación o incapacidad) mediante un convenio especial financiado por el Estado.",
+        "ca": "Compensa económicamente a los familiares que atienden a una persona dependiente en su propio hogar. Además de la aportación monetaria, permite al cuidador cotizar gratis a la Seguridad Social (para la futura jubilación o incapacidad) mediante un convenio especial financiado por el Estado."
+      },
+      "cuantia": {
+        "es": "La cuantía mensual está determinada por el grado de dependencia reconocido: Grado I (moderada) hasta 180,20 €/mes; Grado II (severa) hasta 315,90 €/mes; Grado III (gran dependencia) desde 455,40 € hasta un máximo de 660,00 €/mes, según la situación de la unidad de convivencia.",
+        "ca": "La cuantía mensual está determinada por el grado de dependencia reconocido: Grado I (moderada) hasta 180,20 €/mes; Grado II (severa) hasta 315,90 €/mes; Grado III (gran dependencia) desde 455,40 € hasta un máximo de 660,00 €/mes, según la situación de la unidad de convivencia."
+      },
+      "requisitos": {
+        "es": [
+          "Relación familiar: el cuidador debe ser cónyuge o pariente de la persona dependiente por consanguineidad o afinidad (hasta el tercer grado).",
+          "Convivencia e idoneidad: ambos deben convivir en el mismo domicilio, y el cuidador debe contar con la capacidad física y mental adecuada para asegurar la atención.",
+          "Programa Individual (PIA): la ayuda debe estar expresamente fijada y aprobada por los servicios sociales en el Programa Individual de Atención de la persona dependiente.",
+          "Para el Convenio Especial: el cuidador no puede estar dado de alta a tiempo completo en ningún régimen de la Seguridad Social ni cobrar el desempleo."
+        ],
+        "ca": [
+          "Relación familiar: el cuidador debe ser cónyuge o pariente de la persona dependiente por consanguineidad o afinidad (hasta el tercer grado).",
+          "Convivencia e idoneidad: ambos deben convivir en el mismo domicilio, y el cuidador debe contar con la capacidad física y mental adecuada para asegurar la atención.",
+          "Programa Individual (PIA): la ayuda debe estar expresamente fijada y aprobada por los servicios sociales en el Programa Individual de Atención de la persona dependiente.",
+          "Para el Convenio Especial: el cuidador no puede estar dado de alta a tiempo completo en ningún régimen de la Seguridad Social ni cobrar el desempleo."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI o NIE tanto del cuidador como de la persona dependiente.",
+          "Resolución del Grado de Dependencia y copia aprobada del PIA.",
+          "Certificado oficial de convivencia y empadronamiento conjunto.",
+          "Formulario oficial de la Seguridad Social Modelo TA.0040 (únicamente si se solicita el alta en el convenio especial de cotización)."
+        ],
+        "ca": [
+          "DNI o NIE tanto del cuidador como de la persona dependiente.",
+          "Resolución del Grado de Dependencia y copia aprobada del PIA.",
+          "Certificado oficial de convivencia y empadronamiento conjunto.",
+          "Formulario oficial de la Seguridad Social Modelo TA.0040 (únicamente si se solicita el alta en el convenio especial de cotización)."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "prestacion-crianza-ley-familias",
+      "nombre": {
+        "es": "Prestación por Crianza (Ley de Familias)",
+        "ca": "Prestación por Crianza (Ley de Familias)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.dsca.gob.es/es",
+      "para_que_sirve": {
+        "es": "Ayudar a sufragar los costes de crianza de menores extendiendo de forma universal la actual deducción por maternidad. Su objetivo es que todas las familias con niños en esta franja de edad tengan derecho a la ayuda, independientemente de la situación laboral de los progenitores.",
+        "ca": "Ayudar a sufragar los costes de crianza de menores extendiendo de forma universal la actual deducción por maternidad. Su objetivo es que todas las familias con niños en esta franja de edad tengan derecho a la ayuda, independientemente de la situación laboral de los progenitores."
+      },
+      "cuantia": {
+        "es": "100 € mensuales (1.200 € anuales) por cada hijo menor de 3 años a cargo.",
+        "ca": "100 € mensuales (1.200 € anuales) por cada hijo menor de 3 años a cargo."
+      },
+      "requisitos": {
+        "es": [
+          "Edad: tener a cargo hijos de entre 0 y 3 años.",
+          "Residencia: residir de forma legal y permanente en territorio español.",
+          "Situación laboral: se prevé la eliminación del requisito actual de estar dado de alta en la Seguridad Social, haciéndola accesible también a personas desempleadas o inactivas sin prestaciones."
+        ],
+        "ca": [
+          "Edad: tener a cargo hijos de entre 0 y 3 años.",
+          "Residencia: residir de forma legal y permanente en territorio español.",
+          "Situación laboral: se prevé la eliminación del requisito actual de estar dado de alta en la Seguridad Social, haciéndola accesible también a personas desempleadas o inactivas sin prestaciones."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE de los progenitores y, si se dispone de él, del menor.",
+          "Libro de familia actualizado o certificado literal de nacimiento digital.",
+          "Certificado de empadronamiento colectivo para justificar la convivencia."
+        ],
+        "ca": [
+          "DNI / NIE de los progenitores y, si se dispone de él, del menor.",
+          "Libro de familia actualizado o certificado literal de nacimiento digital.",
+          "Certificado de empadronamiento colectivo para justificar la convivencia."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "deduccion-maternidad-custodia",
+      "nombre": {
+        "es": "Deducción por maternidad y gastos de custodia",
+        "ca": "Deducción por maternidad y gastos de custodia"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://sede.agenciatributaria.gob.es/Sede/procedimientoini/G305.shtml",
+      "para_que_sirve": {
+        "es": "Reduce la carga fiscal en la declaración de la renta para compensar los gastos de crianza y escolarización de menores de 3 años, permitiendo también solicitar el cobro anticipado mes a mes.",
+        "ca": "Reduce la carga fiscal en la declaración de la renta para compensar los gastos de crianza y escolarización de menores de 3 años, permitiendo también solicitar el cobro anticipado mes a mes."
+      },
+      "cuantia": {
+        "es": "Por hijo menor de 3 años: hasta 1.200 € anuales (100 €/mes de forma anticipada). Incremento por gastos de custodia (guarderías): hasta 1.000 € anuales adicionales para cubrir matrícula y mensualidades de centros de educación infantil autorizados.",
+        "ca": "Por hijo menor de 3 años: hasta 1.200 € anuales (100 €/mes de forma anticipada). Incremento por gastos de custodia (guarderías): hasta 1.000 € anuales adicionales para cubrir matrícula y mensualidades de centros de educación infantil autorizados."
+      },
+      "requisitos": {
+        "es": [
+          "Madres con hijos menores de 3 años (o padres/tutores en caso de fallecimiento de la madre o custodia exclusiva).",
+          "Situación laboral: estar dadas de alta en la Seguridad Social (por cuenta ajena o autónomas) o percibir prestación contributiva o subsidio por desempleo."
+        ],
+        "ca": [
+          "Madres con hijos menores de 3 años (o padres/tutores en caso de fallecimiento de la madre o custodia exclusiva).",
+          "Situación laboral: estar dadas de alta en la Seguridad Social (por cuenta ajena o autónomas) o percibir prestación contributiva o subsidio por desempleo."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Modelo 140 (para solicitar el cobro anticipado de los 100 € mensuales).",
+          "Libro de familia o certificado de nacimiento digital del menor.",
+          "Modelo 233 (lo presenta directamente la guardería para tramitar la deducción adicional por custodia)."
+        ],
+        "ca": [
+          "Modelo 140 (para solicitar el cobro anticipado de los 100 € mensuales).",
+          "Libro de familia o certificado de nacimiento digital del menor.",
+          "Modelo 233 (lo presenta directamente la guardería para tramitar la deducción adicional por custodia)."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "ayudas-emergencia-social",
+      "nombre": {
+        "es": "Ayudas de Emergencia Social (AES)",
+        "ca": "Ayudas de Emergencia Social (AES)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.mdsocialesa2030.gob.es/",
+      "para_que_sirve": {
+        "es": "Ofrece una ayuda económica inmediata y de pago único para familias o personas solas que sufren una crisis económica puntual y no pueden cubrir necesidades básicas de subsistencia.",
+        "ca": "Ofrece una ayuda económica inmediata y de pago único para familias o personas solas que sufren una crisis económica puntual y no pueden cubrir necesidades básicas de subsistencia."
+      },
+      "cuantia": {
+        "es": "Varía según la gravedad de la situación y la normativa de cada Ayuntamiento o Comunidad Autónoma. Suele cubrir vivienda (alquiler, fianzas, deudas hipotecarias), suministros (luz, agua, gas) y básicos (alimentación, ropa, medicinas o prótesis no cubiertas por la sanidad pública).",
+        "ca": "Varía según la gravedad de la situación y la normativa de cada Ayuntamiento o Comunidad Autónoma. Suele cubrir vivienda (alquiler, fianzas, deudas hipotecarias), suministros (luz, agua, gas) y básicos (alimentación, ropa, medicinas o prótesis no cubiertas por la sanidad pública)."
+      },
+      "requisitos": {
+        "es": [
+          "Vulnerabilidad extrema: encontrarse en situación de exclusión social o riesgo inminente de padecerla.",
+          "Límite de recursos: no disponer de ingresos suficientes para afrontar el gasto de emergencia.",
+          "Informe social: contar con la valoración y propuesta favorable de un trabajador social público."
+        ],
+        "ca": [
+          "Vulnerabilidad extrema: encontrarse en situación de exclusión social o riesgo inminente de padecerla.",
+          "Límite de recursos: no disponer de ingresos suficientes para afrontar el gasto de emergencia.",
+          "Informe social: contar con la valoración y propuesta favorable de un trabajador social público."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE de todos los convivientes del hogar.",
+          "Certificado de empadronamiento histórico y colectivo.",
+          "Justificantes económicos: nóminas, certificados de desempleo o extractos bancarios.",
+          "Presupuesto o factura pendiente que origine la solicitud (ej. recibo de luz o contrato de alquiler)."
+        ],
+        "ca": [
+          "DNI / NIE de todos los convivientes del hogar.",
+          "Certificado de empadronamiento histórico y colectivo.",
+          "Justificantes económicos: nóminas, certificados de desempleo o extractos bancarios.",
+          "Presupuesto o factura pendiente que origine la solicitud (ej. recibo de luz o contrato de alquiler)."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "ley-segunda-oportunidad",
+      "nombre": {
+        "es": "Ley de Segunda Oportunidad",
+        "ca": "Ley de Segunda Oportunidad"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.poderjudicial.es/",
+      "para_que_sirve": {
+        "es": "Permite a particulares y autónomos cancelar total o parcialmente sus deudas de forma legal cuando les resulta imposible pagarlas, protegiendo su patrimonio mínimo para subsistir.",
+        "ca": "Permite a particulares y autónomos cancelar total o parcialmente sus deudas de forma legal cuando les resulta imposible pagarlas, protegiendo su patrimonio mínimo para subsistir."
+      },
+      "cuantia": {
+        "es": "No se concede un pago en dinero, sino la exoneración (eliminación) de hasta el 100% de las deudas privadas (bancos, tarjetas o proveedores) y un límite máximo de 10.000 € de condonación en deudas con Hacienda y otros 10.000 € con la Seguridad Social.",
+        "ca": "No se concede un pago en dinero, sino la exoneración (eliminación) de hasta el 100% de las deudas privadas (bancos, tarjetas o proveedores) y un límite máximo de 10.000 € de condonación en deudas con Hacienda y otros 10.000 € con la Seguridad Social."
+      },
+      "requisitos": {
+        "es": [
+          "Insolvencia demostrable: no tener bienes ni ingresos suficientes para pagar las deudas actuales.",
+          "Buena fe del deudor: no haber sido condenado por delitos socioeconómicos en los últimos 10 años y no haber recurrido a este proceso en la última década.",
+          "Colaboración: aportar toda la información requerida sobre la situación patrimonial real."
+        ],
+        "ca": [
+          "Insolvencia demostrable: no tener bienes ni ingresos suficientes para pagar las deudas actuales.",
+          "Buena fe del deudor: no haber sido condenado por delitos socioeconómicos en los últimos 10 años y no haber recurrido a este proceso en la última década.",
+          "Colaboración: aportar toda la información requerida sobre la situación patrimonial real."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Listado detallado de acreedores, cuantías pendientes y fechas de vencimiento.",
+          "Certificado de antecedentes penales.",
+          "Inventario de bienes y derechos actuales (viviendas, vehículos, cuentas corrientes).",
+          "Justificantes de ingresos (nóminas, pensiones o declaraciones de IVA/IRPF)."
+        ],
+        "ca": [
+          "Listado detallado de acreedores, cuantías pendientes y fechas de vencimiento.",
+          "Certificado de antecedentes penales.",
+          "Inventario de bienes y derechos actuales (viviendas, vehículos, cuentas corrientes).",
+          "Justificantes de ingresos (nóminas, pensiones o declaraciones de IVA/IRPF)."
+        ]
+      },
+      "coste": {
+        "es": "El trámite judicial o notarial puede conllevar costes de abogado y procurador, aunque existen opciones de justicia gratuita según el nivel de renta.",
+        "ca": "El trámite judicial o notarial puede conllevar costes de abogado y procurador, aunque existen opciones de justicia gratuita según el nivel de renta."
+      }
+    },
+    {
+      "id": "csma-ara-tescolto",
+      "nombre": {
+        "es": "Centros de Salud Mental de Adultos (CSMA) y Servicio Ara t'escolto",
+        "ca": "Centros de Salud Mental de Adultos (CSMA) y Servicio Ara t'escolto"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://catsalut.gencat.cat/ca/centres-sanitaris/cercador/",
+      "para_que_sirve": {
+        "es": "Ofrece atención médica y psicológica especializada de forma comunitaria: diagnóstico, tratamiento y seguimiento psicoterapéutico en el ámbito público (CatSalut). Para la población joven, el Ayuntamiento ofrece además el servicio \"Ara t'escolto\" de escucha activa y apoyo emocional ante crisis puntuales.",
+        "ca": "Ofrece atención médica y psicológica especializada de forma comunitaria: diagnóstico, tratamiento y seguimiento psicoterapéutico en el ámbito público (CatSalut). Para la población joven, el Ayuntamiento ofrece además el servicio \"Ara t'escolto\" de escucha activa y apoyo emocional ante crisis puntuales."
+      },
+      "requisitos": {
+        "es": [
+          "Para los CSMA (Norte y Sur): estar empadronado en Tarragona y contar con la derivación del médico de cabecera (atención primaria del CAP).",
+          "Para el Servicio Ara t'escolto: destinado específicamente a adolescentes y jóvenes residentes de Tarragona que requieran apoyo emocional inmediato."
+        ],
+        "ca": [
+          "Para los CSMA (Norte y Sur): estar empadronado en Tarragona y contar con la derivación del médico de cabecera (atención primaria del CAP).",
+          "Para el Servicio Ara t'escolto: destinado específicamente a adolescentes y jóvenes residentes de Tarragona que requieran apoyo emocional inmediato."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Tarjeta Sanitaria Individual (TSI de CatSalut).",
+          "Documento oficial de identidad (DNI / NIE).",
+          "Volante de derivación médica del CAP hacia el especialista en salud mental (para los CSMA)."
+        ],
+        "ca": [
+          "Tarjeta Sanitaria Individual (TSI de CatSalut).",
+          "Documento oficial de identidad (DNI / NIE).",
+          "Volante de derivación médica del CAP hacia el especialista en salud mental (para los CSMA)."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "src-rehabilitacion-comunitaria",
+      "nombre": {
+        "es": "Servicio de Rehabilitación Comunitaria (SRC)",
+        "ca": "Servicio de Rehabilitación Comunitaria (SRC)"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://catsalut.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Ayuda a personas con trastornos mentales graves a recuperar su autonomía personal y social. Ofrece talleres de inserción laboral, actividades de la vida diaria y soporte para integrarse de nuevo en su entorno comunitario tras crisis médicas.",
+        "ca": "Ayuda a personas con trastornos mentales graves a recuperar su autonomía personal y social. Ofrece talleres de inserción laboral, actividades de la vida diaria y soporte para integrarse de nuevo en su entorno comunitario tras crisis médicas."
+      },
+      "requisitos": {
+        "es": [
+          "Derivación médica: ser derivado previamente por un psiquiatra de los Centros de Salud Mental de Adultos (CSMA) de Tarragona.",
+          "Residencia: estar empadronado en Cataluña y disponer de tarjeta sanitaria pública activa."
+        ],
+        "ca": [
+          "Derivación médica: ser derivado previamente por un psiquiatra de los Centros de Salud Mental de Adultos (CSMA) de Tarragona.",
+          "Residencia: estar empadronado en Cataluña y disponer de tarjeta sanitaria pública activa."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Tarjeta Sanitaria Individual (TSI de CatSalut).",
+          "DNI / NIE de la persona solicitante.",
+          "Informe clínico oficial de derivación del especialista médico."
+        ],
+        "ca": [
+          "Tarjeta Sanitaria Individual (TSI de CatSalut).",
+          "DNI / NIE de la persona solicitante.",
+          "Informe clínico oficial de derivación del especialista médico."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "tarjeta-rosa-tarragona",
+      "nombre": {
+        "es": "Tarjeta Rosa (Tarjeta Dorada del Ayuntamiento de Tarragona)",
+        "ca": "Tarjeta Rosa (Tarjeta Dorada del Ayuntamiento de Tarragona)"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Ofrece descuentos y gratuidad a los ancianos en el uso del transporte público urbano (EMT de Tarragona), así como ventajas económicas en actividades culturales, deportivas y museos de la ciudad.",
+        "ca": "Ofrece descuentos y gratuidad a los ancianos en el uso del transporte público urbano (EMT de Tarragona), así como ventajas económicas en actividades culturales, deportivas y museos de la ciudad."
+      },
+      "cuantia": {
+        "es": "Permite viajar gratis o con tarifas muy reducidas en los autobuses de Tarragona. El coste de emisión y los baremos dependen de los ingresos de la persona mayor.",
+        "ca": "Permite viajar gratis o con tarifas muy reducidas en los autobuses de Tarragona. El coste de emisión y los baremos dependen de los ingresos de la persona mayor."
+      },
+      "requisitos": {
+        "es": [
+          "Edad: tener 65 años o más (o ser menor de 65 con una incapacidad permanente reconocida).",
+          "Empadronamiento: estar empadronado de forma activa en el municipio de Tarragona.",
+          "Límite económico: cumplir los baremos de ingresos anuales fijados por el Ayuntamiento para cada convocatoria."
+        ],
+        "ca": [
+          "Edad: tener 65 años o más (o ser menor de 65 con una incapacidad permanente reconocida).",
+          "Empadronamiento: estar empadronado de forma activa en el municipio de Tarragona.",
+          "Límite económico: cumplir los baremos de ingresos anuales fijados por el Ayuntamiento para cada convocatoria."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE original del solicitante.",
+          "Certificado oficial de ingresos, pensiones o declaración de la renta.",
+          "Una fotografía reciente tamaño carné."
+        ],
+        "ca": [
+          "DNI / NIE original del solicitante.",
+          "Certificado oficial de ingresos, pensiones o declaración de la renta.",
+          "Una fotografía reciente tamaño carné."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito o con tasa de emisión mínima (según el nivel de renta).",
+        "ca": "Gratuito o con tasa de emisión mínima (según el nivel de renta)."
+      }
+    },
+    {
+      "id": "centros-dia-personas-mayores",
+      "nombre": {
+        "es": "Servicios de Centro de Día para personas mayores dependientes",
+        "ca": "Servicios de Centro de Día para personas mayores dependientes"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Ofrece atención integral durante el día a personas mayores que necesitan ayuda para las actividades básicas. Garantiza manutención, fisioterapia, enfermería y actividades estimulantes, permitiendo que el anciano siga viviendo en su domicilio habitual por las noches.",
+        "ca": "Ofrece atención integral durante el día a personas mayores que necesitan ayuda para las actividades básicas. Garantiza manutención, fisioterapia, enfermería y actividades estimulantes, permitiendo que el anciano siga viviendo en su domicilio habitual por las noches."
+      },
+      "cuantia": {
+        "es": "Si la plaza es pública o concertada, el importe se calcula mediante copago: el usuario aporta un porcentaje según sus ingresos mensuales y la Generalitat financia el resto.",
+        "ca": "Si la plaza es pública o concertada, el importe se calcula mediante copago: el usuario aporta un porcentaje según sus ingresos mensuales y la Generalitat financia el resto."
+      },
+      "requisitos": {
+        "es": [
+          "Dependencia: tener reconocido oficialmente un Grado de Dependencia (I, II o III) por la Generalitat.",
+          "PIA: que el Centro de Día esté asignado como recurso idóneo en el Programa Individual de Atención (PIA) dictaminado por las trabajadoras sociales."
+        ],
+        "ca": [
+          "Dependencia: tener reconocido oficialmente un Grado de Dependencia (I, II o III) por la Generalitat.",
+          "PIA: que el Centro de Día esté asignado como recurso idóneo en el Programa Individual de Atención (PIA) dictaminado por las trabajadoras sociales."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE de la persona mayor y de su tutor legal.",
+          "Resolución oficial del Grado de Dependencia.",
+          "Declaración de la renta o justificantes de la pensión para calcular el precio del copago."
+        ],
+        "ca": [
+          "DNI / NIE de la persona mayor y de su tutor legal.",
+          "Resolución oficial del Grado de Dependencia.",
+          "Declaración de la renta o justificantes de la pensión para calcular el precio del copago."
+        ]
+      },
+      "coste": {
+        "es": "Variable (calculado de forma personalizada según los ingresos del usuario).",
+        "ca": "Variable (calculado de forma personalizada según los ingresos del usuario)."
+      }
+    },
+    {
+      "id": "residencias-tarragona",
+      "nombre": {
+        "es": "Plazas residenciales públicas y concertadas en Tarragona",
+        "ca": "Plazas residenciales públicas y concertadas en Tarragona"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Ofrece un hogar sustitutivo permanente con atención médica, psicológica, social y de hostelería las 24 horas para personas mayores que, debido a su gran dependencia, ya no pueden ser atendidas de forma segura en sus propios domicilios.",
+        "ca": "Ofrece un hogar sustitutivo permanente con atención médica, psicológica, social y de hostelería las 24 horas para personas mayores que, debido a su gran dependencia, ya no pueden ser atendidas de forma segura en sus propios domicilios."
+      },
+      "cuantia": {
+        "es": "El coste de la plaza pública se financia mediante copago. El residente aporta el 65% o hasta el 90% de sus ingresos líquidos anuales (pensiones), asegurando la ley que el usuario siempre conserve una cantidad mínima de dinero mensual para sus gastos de bolsillo.",
+        "ca": "El coste de la plaza pública se financia mediante copago. El residente aporta el 65% o hasta el 90% de sus ingresos líquidos anuales (pensiones), asegurando la ley que el usuario siempre conserve una cantidad mínima de dinero mensual para sus gastos de bolsillo."
+      },
+      "requisitos": {
+        "es": [
+          "Edad: tener 65 años o más.",
+          "Dependencia: tener reconocido obligatoriamente un Grado II (dependencia severa) o Grado III (gran dependencia).",
+          "Propuesta social: tener el Programa Individual de Atención (PIA) cerrado y aprobado con la modalidad de acogimiento residencial."
+        ],
+        "ca": [
+          "Edad: tener 65 años o más.",
+          "Dependencia: tener reconocido obligatoriamente un Grado II (dependencia severa) o Grado III (gran dependencia).",
+          "Propuesta social: tener el Programa Individual de Atención (PIA) cerrado y aprobado con la modalidad de acogimiento residencial."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Solicitud de plaza oficial cumplimentada y firmada.",
+          "DNI / NIE del solicitante y libro de familia.",
+          "Informe médico de salud actualizado de los servicios de salud (CAP).",
+          "Justificante detallado de ingresos bancarios, bienes inmuebles y pensiones de la Seguridad Social."
+        ],
+        "ca": [
+          "Solicitud de plaza oficial cumplimentada y firmada.",
+          "DNI / NIE del solicitante y libro de familia.",
+          "Informe médico de salud actualizado de los servicios de salud (CAP).",
+          "Justificante detallado de ingresos bancarios, bienes inmuebles y pensiones de la Seguridad Social."
+        ]
+      },
+      "coste": {
+        "es": "Variable (en función de los ingresos del usuario y condicionado al copago público).",
+        "ca": "Variable (en función de los ingresos del usuario y condicionado al copago público)."
+      }
+    },
+    {
+      "id": "talleres-envejecimiento-activo",
+      "nombre": {
+        "es": "Talleres de Promoción de la Salud y Envejecimiento Activo",
+        "ca": "Talleres de Promoción de la Salud y Envejecimiento Activo"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Previene el deterioro físico y cognitivo de la población mediante talleres prácticos dirigidos: prevención de caídas, estimulación de la memoria, hábitos de alimentación saludable y fomento de la actividad física moderada.",
+        "ca": "Previene el deterioro físico y cognitivo de la población mediante talleres prácticos dirigidos: prevención de caídas, estimulación de la memoria, hábitos de alimentación saludable y fomento de la actividad física moderada."
+      },
+      "cuantia": {
+        "es": "La gran mayoría de los talleres y actividades preventivas municipales son 100% gratuitos.",
+        "ca": "La gran mayoría de los talleres y actividades preventivas municipales son 100% gratuitos."
+      },
+      "requisitos": {
+        "es": [
+          "Edad: orientado preferentemente a personas de 60 años o más.",
+          "Residencia: estar empadronado en el municipio de Tarragona.",
+          "Inscripción: registrarse formalmente dentro de los plazos comunitarios de cada trimestre."
+        ],
+        "ca": [
+          "Edad: orientado preferentemente a personas de 60 años o más.",
+          "Residencia: estar empadronado en el municipio de Tarragona.",
+          "Inscripción: registrarse formalmente dentro de los plazos comunitarios de cada trimestre."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE de la persona interesada.",
+          "Tarjeta Sanitaria Individual (TSI de CatSalut), solo si la actividad está coorganizada por el CAP.",
+          "Formulario de inscripción del centro cívico u oficina municipal correspondiente."
+        ],
+        "ca": [
+          "DNI / NIE de la persona interesada.",
+          "Tarjeta Sanitaria Individual (TSI de CatSalut), solo si la actividad está coorganizada por el CAP.",
+          "Formulario de inscripción del centro cívico u oficina municipal correspondiente."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "radars-telefono-esperanza",
+      "nombre": {
+        "es": "Programa \"Radars\" Tarragona y Teléfono de la Esperanza",
+        "ca": "Programa \"Radars\" Tarragona y Teléfono de la Esperanza"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Detecta y acompaña a personas mayores que se sienten solas, activando una red vecinal y de comercios (radares) que avisan a los servicios sociales si detectan un cambio en la rutina del anciano. Además, ofrece apoyo emocional telefónico continuo a cualquier ciudadano en situación de crisis.",
+        "ca": "Detecta y acompaña a personas mayores que se sienten solas, activando una red vecinal y de comercios (radares) que avisan a los servicios sociales si detectan un cambio en la rutina del anciano. Además, ofrece apoyo emocional telefónico continuo a cualquier ciudadano en situación de crisis."
+      },
+      "cuantia": {
+        "es": "La inclusión en el programa, el seguimiento de los trabajadores sociales y el uso de los teléfonos de asistencia son 100% gratuitos.",
+        "ca": "La inclusión en el programa, el seguimiento de los trabajadores sociales y el uso de los teléfonos de asistencia son 100% gratuitos."
+      },
+      "requisitos": {
+        "es": [
+          "Para el Proyecto Radars: personas mayores de 65 años que vivan solas (o acompañadas de otra persona mayor) en los barrios donde el programa ya esté desplegado en Tarragona.",
+          "Para el apoyo emocional telefónico: dirigido a cualquier ciudadano que sufra aislamiento, angustia o soledad no deseada."
+        ],
+        "ca": [
+          "Para el Proyecto Radars: personas mayores de 65 años que vivan solas (o acompañadas de otra persona mayor) en los barrios donde el programa ya esté desplegado en Tarragona.",
+          "Para el apoyo emocional telefónico: dirigido a cualquier ciudadano que sufra aislamiento, angustia o soledad no deseada."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación obligatoria para las consultas telefónicas de urgencia.",
+          "Para el alta en el programa de seguimiento vecinal, basta con facilitar el DNI / NIE y los datos de contacto a los Servicios Sociales de Tarragona."
+        ],
+        "ca": [
+          "No se requiere documentación obligatoria para las consultas telefónicas de urgencia.",
+          "Para el alta en el programa de seguimiento vecinal, basta con facilitar el DNI / NIE y los datos de contacto a los Servicios Sociales de Tarragona."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "programas-inclusion-cohesion-social",
+      "nombre": {
+        "es": "Programas de Inclusión y Cohesión Social de Tarragona",
+        "ca": "Programas de Inclusión y Cohesión Social de Tarragona"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Promueve la igualdad de oportunidades y la autonomía de personas en riesgo de exclusión a través de itinerarios personalizados de inserción sociolaboral, capacitación y apoyo familiar.",
+        "ca": "Promueve la igualdad de oportunidades y la autonomía de personas en riesgo de exclusión a través de itinerarios personalizados de inserción sociolaboral, capacitación y apoyo familiar."
+      },
+      "cuantia": {
+        "es": "La participación en estos programas públicos es 100% gratuita.",
+        "ca": "La participación en estos programas públicos es 100% gratuita."
+      },
+      "requisitos": {
+        "es": [
+          "Residencia: estar empadronado en el municipio de Tarragona.",
+          "Situación: encontrarse en situación de vulnerabilidad o exclusión social acreditada por un informe de los Servicios Sociales Básicos."
+        ],
+        "ca": [
+          "Residencia: estar empadronado en el municipio de Tarragona.",
+          "Situación: encontrarse en situación de vulnerabilidad o exclusión social acreditada por un informe de los Servicios Sociales Básicos."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Documento de identidad (DNI o NIE).",
+          "Certificado oficial de empadronamiento.",
+          "Informe de derivación de los Servicios Sociales."
+        ],
+        "ca": [
+          "Documento de identidad (DNI o NIE).",
+          "Certificado oficial de empadronamiento.",
+          "Informe de derivación de los Servicios Sociales."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "servicio-acogida-integracion",
+      "nombre": {
+        "es": "Servicio de Acogida e Integración para Personas Inmigradas",
+        "ca": "Servicio de Acogida e Integración para Personas Inmigradas"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Ofrece orientación jurídica, acompañamiento y cursos de formación (catalán, castellano y conocimiento de la sociedad) para facilitar la integración de las personas recién llegadas y la obtención del Informe de Arraigo.",
+        "ca": "Ofrece orientación jurídica, acompañamiento y cursos de formación (catalán, castellano y conocimiento de la sociedad) para facilitar la integración de las personas recién llegadas y la obtención del Informe de Arraigo."
+      },
+      "cuantia": {
+        "es": "Tanto el asesoramiento como las formaciones oficiales son 100% gratuitos.",
+        "ca": "Tanto el asesoramiento como las formaciones oficiales son 100% gratuitos."
+      },
+      "requisitos": {
+        "es": [
+          "Perfil: personas extranjeras recién llegadas o en proceso de regularización administrativa que residan en Tarragona."
+        ],
+        "ca": [
+          "Perfil: personas extranjeras recién llegadas o en proceso de regularización administrativa que residan en Tarragona."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "NIE o Pasaporte original en vigor.",
+          "Certificado de empadronamiento actualizado en Tarragona."
+        ],
+        "ca": [
+          "NIE o Pasaporte original en vigor.",
+          "Certificado de empadronamiento actualizado en Tarragona."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "presupuestos-participativos-tarragona",
+      "nombre": {
+        "es": "Presupuestos Participativos y Canales Municipales",
+        "ca": "Presupuestos Participativos y Canales Municipales"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Permite a los ciudadanos proponer y votar proyectos públicos para mejorar los barrios de Tarragona, así como formar parte de los Consejos de Distrito.",
+        "ca": "Permite a los ciudadanos proponer y votar proyectos públicos para mejorar los barrios de Tarragona, así como formar parte de los Consejos de Distrito."
+      },
+      "cuantia": {
+        "es": "El registro y la votación en las propuestas ciudadanas son 100% gratuitos.",
+        "ca": "El registro y la votación en las propuestas ciudadanas son 100% gratuitos."
+      },
+      "requisitos": {
+        "es": [
+          "Edad: por lo general, tener 16 años o más.",
+          "Filiación: estar empadronado en el municipio de Tarragona."
+        ],
+        "ca": [
+          "Edad: por lo general, tener 16 años o más.",
+          "Filiación: estar empadronado en el municipio de Tarragona."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE para la verificación de identidad en la plataforma digital."
+        ],
+        "ca": [
+          "DNI / NIE para la verificación de identidad en la plataforma digital."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "registro-municipal-entidades",
+      "nombre": {
+        "es": "Registro Municipal de Entidades y Asociaciones de Tarragona",
+        "ca": "Registro Municipal de Entidades y Asociaciones de Tarragona"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Permite registrar formalmente a las asociaciones vecinales, culturales o sociales para que puedan acceder a locales públicos, asesoramiento y subvenciones municipales.",
+        "ca": "Permite registrar formalmente a las asociaciones vecinales, culturales o sociales para que puedan acceder a locales públicos, asesoramiento y subvenciones municipales."
+      },
+      "cuantia": {
+        "es": "La inscripción en el registro del Ayuntamiento es 100% gratuita.",
+        "ca": "La inscripción en el registro del Ayuntamiento es 100% gratuita."
+      },
+      "requisitos": {
+        "es": [
+          "Legalidad: la entidad debe estar constituida legalmente e inscrita previamente en el Registro de Asociaciones de la Generalitat de Catalunya.",
+          "Ámbito: realizar sus actividades principales en el término municipal de Tarragona."
+        ],
+        "ca": [
+          "Legalidad: la entidad debe estar constituida legalmente e inscrita previamente en el Registro de Asociaciones de la Generalitat de Catalunya.",
+          "Ámbito: realizar sus actividades principales en el término municipal de Tarragona."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Acta de constitución y Estatutos de la asociación.",
+          "Código de Identificación Fiscal (CIF).",
+          "Copia del DNI del representante legal."
+        ],
+        "ca": [
+          "Acta de constitución y Estatutos de la asociación.",
+          "Código de Identificación Fiscal (CIF).",
+          "Copia del DNI del representante legal."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "punt-voluntariat-tarragona",
+      "nombre": {
+        "es": "Punt del Voluntariat de Tarragona",
+        "ca": "Punt del Voluntariat de Tarragona"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Asesora y deriva a personas que quieren hacer voluntariado hacia entidades sociales de la ciudad que necesitan apoyo en ámbitos de salud, tercera edad o exclusión.",
+        "ca": "Asesora y deriva a personas que quieren hacer voluntariado hacia entidades sociales de la ciudad que necesitan apoyo en ámbitos de salud, tercera edad o exclusión."
+      },
+      "cuantia": {
+        "es": "El servicio de orientación y la formación para voluntarios son 100% gratuitos.",
+        "ca": "El servicio de orientación y la formación para voluntarios son 100% gratuitos."
+      },
+      "requisitos": {
+        "es": [
+          "Perfil: cualquier ciudadano con motivación y tiempo libre para colaborar de forma altruista (los menores de edad requieren autorización)."
+        ],
+        "ca": [
+          "Perfil: cualquier ciudadano con motivación y tiempo libre para colaborar de forma altruista (los menores de edad requieren autorización)."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE o pasaporte."
+        ],
+        "ca": [
+          "DNI / NIE o pasaporte."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "agenda-cultural-municipal",
+      "nombre": {
+        "es": "Agenda Cultural Municipal e Intervenciones Comunitarias",
+        "ca": "Agenda Cultural Municipal e Intervenciones Comunitarias"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Acerca el teatro, la música y las artes escénicas a la ciudadanía mediante una programación diversa en la Red de Centros Cívicos y los teatros municipales (Tarragona y Metropol).",
+        "ca": "Acerca el teatro, la música y las artes escénicas a la ciudadanía mediante una programación diversa en la Red de Centros Cívicos y los teatros municipales (Tarragona y Metropol)."
+      },
+      "cuantia": {
+        "es": "Varía según el evento. Muchas actividades en los centros cívicos son gratuitas, mientras que los teatros disponen de bonificaciones y descuentos sociales (como la Tarjeta Dorada).",
+        "ca": "Varía según el evento. Muchas actividades en los centros cívicos son gratuitas, mientras que los teatros disponen de bonificaciones y descuentos sociales (como la Tarjeta Dorada)."
+      },
+      "requisitos": {
+        "es": [
+          "Acceso: libre para toda la ciudadanía hasta completar el aforo (algunas requieren inscripción previa)."
+        ],
+        "ca": [
+          "Acceso: libre para toda la ciudadanía hasta completar el aforo (algunas requieren inscripción previa)."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se requiere documentación, salvo la tarjeta de descuento correspondiente en eventos de pago."
+        ],
+        "ca": [
+          "No se requiere documentación, salvo la tarjeta de descuento correspondiente en eventos de pago."
+        ]
+      },
+      "coste": {
+        "es": "Variable (con múltiples opciones gratuitas o reducidas).",
+        "ca": "Variable (con múltiples opciones gratuitas o reducidas)."
+      }
+    },
+    {
+      "id": "red-centros-civicos-tarragona",
+      "nombre": {
+        "es": "Red de Centros Cívicos de Tarragona",
+        "ca": "Red de Centros Cívicos de Tarragona"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Ofrece un espacio lúdico y relacional en los barrios a través de aulas de informática, salas de juegos, exposiciones y una oferta continua de cursos lúdicos trimestrales.",
+        "ca": "Ofrece un espacio lúdico y relacional en los barrios a través de aulas de informática, salas de juegos, exposiciones y una oferta continua de cursos lúdicos trimestrales."
+      },
+      "cuantia": {
+        "es": "El acceso a los centros es libre. El precio de los cursos trimestrales es muy reducido o gratuito para colectivos específicos.",
+        "ca": "El acceso a los centros es libre. El precio de los cursos trimestrales es muy reducido o gratuito para colectivos específicos."
+      },
+      "requisitos": {
+        "es": [
+          "Filiación: abierto a todos los ciudadanos y familias de Tarragona."
+        ],
+        "ca": [
+          "Filiación: abierto a todos los ciudadanos y familias de Tarragona."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE para la inscripción formal en los talleres programados."
+        ],
+        "ca": [
+          "DNI / NIE para la inscripción formal en los talleres programados."
+        ]
+      },
+      "coste": {
+        "es": "Variable (muy económico o gratuito).",
+        "ca": "Variable (muy económico o gratuito)."
+      }
+    },
+    {
+      "id": "pmet-patronat-esports",
+      "nombre": {
+        "es": "Patronat Municipal d'Esports de Tarragona (PMET)",
+        "ca": "Patronat Municipal d'Esports de Tarragona (PMET)"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/esports/",
+      "para_que_sirve": {
+        "es": "Facilita la práctica deportiva a toda la población mediante la gestión de las piscinas municipales, gimnasios comunitarios y la organización de cursos deportivos dirigidos a todas las edades.",
+        "ca": "Facilita la práctica deportiva a toda la población mediante la gestión de las piscinas municipales, gimnasios comunitarios y la organización de cursos deportivos dirigidos a todas las edades."
+      },
+      "cuantia": {
+        "es": "Los precios públicos están regulados y cuentan con importantes descuentos para familias numerosas, jóvenes, personas con discapacidad y mayores de 65 años.",
+        "ca": "Los precios públicos están regulados y cuentan con importantes descuentos para familias numerosas, jóvenes, personas con discapacidad y mayores de 65 años."
+      },
+      "requisitos": {
+        "es": [
+          "Inscripción: darse de alta como abonado o inscribirse en los plazos fijados para las actividades de temporada."
+        ],
+        "ca": [
+          "Inscripción: darse de alta como abonado o inscribirse en los plazos fijados para las actividades de temporada."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE del solicitante.",
+          "Datos de la cuenta bancaria para la domiciliación de las cuotas.",
+          "Acreditación de la situación familiar o edad si se solicita algún descuento."
+        ],
+        "ca": [
+          "DNI / NIE del solicitante.",
+          "Datos de la cuenta bancaria para la domiciliación de las cuotas.",
+          "Acreditación de la situación familiar o edad si se solicita algún descuento."
+        ]
+      },
+      "coste": {
+        "es": "Variable (precios públicos reducidos).",
+        "ca": "Variable (precios públicos reducidos)."
+      }
+    },
+    {
+      "id": "plan-accesibilidad-tarjeta-aparcamiento",
+      "nombre": {
+        "es": "Plan de Accesibilidad de Tarragona y Tarjeta de Aparcamiento",
+        "ca": "Plan de Accesibilidad de Tarragona y Tarjeta de Aparcamiento"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Garantiza el derecho a la movilidad gestionando las tarjetas de estacionamiento reservado para personas con discapacidad y supervisando la adaptación del espacio público y el transporte de la ciudad.",
+        "ca": "Garantiza el derecho a la movilidad gestionando las tarjetas de estacionamiento reservado para personas con discapacidad y supervisando la adaptación del espacio público y el transporte de la ciudad."
+      },
+      "cuantia": {
+        "es": "La solicitud y tramitación de los títulos de movilidad accesible son 100% gratuitas.",
+        "ca": "La solicitud y tramitación de los títulos de movilidad accesible son 100% gratuitas."
+      },
+      "requisitos": {
+        "es": [
+          "Discapacidad: tener reconocido un grado de discapacidad igual o superior al 33% y superar el baremo de movilidad reducida de la Generalitat.",
+          "Empadronamiento: estar empadronado en el municipio de Tarragona."
+        ],
+        "ca": [
+          "Discapacidad: tener reconocido un grado de discapacidad igual o superior al 33% y superar el baremo de movilidad reducida de la Generalitat.",
+          "Empadronamiento: estar empadronado en el municipio de Tarragona."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE de la persona interesada.",
+          "Certificado oficial del Grado de Discapacidad y dictamen de movilidad.",
+          "Una fotografía reciente tamaño carné."
+        ],
+        "ca": [
+          "DNI / NIE de la persona interesada.",
+          "Certificado oficial del Grado de Discapacidad y dictamen de movilidad.",
+          "Una fotografía reciente tamaño carné."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "easb-equipos-atencion-social-basica",
+      "nombre": {
+        "es": "Equipos de Atención Social Básica (EASB)",
+        "ca": "Equipos de Atención Social Básica (EASB)"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Es la puerta de entrada a todas las ayudas públicas. Los trabajadores sociales valoran la situación de la persona o familia y gestionan los recursos idóneos en su propio barrio (ayuda a domicilio, teleasistencia, prestaciones, etc.).",
+        "ca": "Es la puerta de entrada a todas las ayudas públicas. Los trabajadores sociales valoran la situación de la persona o familia y gestionan los recursos idóneos en su propio barrio (ayuda a domicilio, teleasistencia, prestaciones, etc.)."
+      },
+      "cuantia": {
+        "es": "La atención, orientación y valoración técnica son 100% gratuitas.",
+        "ca": "La atención, orientación y valoración técnica son 100% gratuitas."
+      },
+      "requisitos": {
+        "es": [
+          "Proximidad: solicitar cita previa en el Centro Cívico u oficina de servicios sociales que corresponda a tu lugar de residencia dentro de Tarragona."
+        ],
+        "ca": [
+          "Proximidad: solicitar cita previa en el Centro Cívico u oficina de servicios sociales que corresponda a tu lugar de residencia dentro de Tarragona."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI / NIE o pasaporte de la persona que realiza la consulta.",
+          "Tarjeta Sanitaria Individual (TSI)."
+        ],
+        "ca": [
+          "DNI / NIE o pasaporte de la persona que realiza la consulta.",
+          "Tarjeta Sanitaria Individual (TSI)."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "pass-punt-atencio-sense-sostre",
+      "nombre": {
+        "es": "Punt d'Atenció a Persones en Situació de Sense Sostre (PASS)",
+        "ca": "Punt d'Atenció a Persones en Situació de Sense Sostre (PASS)"
+      },
+      "municipio": "Tarragona",
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/institut-municipal-de-serveis-socials/serveis-equips/habitatge/sensellarisme",
+      "para_que_sirve": {
+        "es": "Ofrece información, acogida e intervención inmediata a las personas que duermen en la calle o se encuentran en una situación de exclusión residencial grave. Funciona como la puerta de entrada a la red municipal para iniciar itinerarios de inserción, recuperar la autonomía y acceder de forma progresiva a recursos de alojamiento. Coordinado por el Institut Municipal de Serveis Socials (IMSST). Teléfono único de atención social municipal: 977 29 61 71.",
+        "ca": "Ofrece información, acogida e intervención inmediata a las personas que duermen en la calle o se encuentran en una situación de exclusión residencial grave. Funciona como la puerta de entrada a la red municipal para iniciar itinerarios de inserción, recuperar la autonomía y acceder de forma progresiva a recursos de alojamiento. Coordinado por el Institut Municipal de Serveis Socials (IMSST). Teléfono único de atención social municipal: 977 29 61 71."
+      },
+      "cuantia": {
+        "es": "Toda la atención, servicios de higiene, lavandería y orientación social son 100% gratuitos.",
+        "ca": "Toda la atención, servicios de higiene, lavandería y orientación social son 100% gratuitos."
+      },
+      "requisitos": {
+        "es": [
+          "Situación: encontrarse sin hogar, pernoctar en la vía pública o sufrir una exclusión residencial extrema dentro del municipio de Tarragona.",
+          "Jóvenes de 18 a 23 años: atención preferente los martes y jueves de 9:00 a 14:00 h.",
+          "Adultos mayores de 24 años: atención preferente los lunes, miércoles y viernes de 9:00 a 14:00 h."
+        ],
+        "ca": [
+          "Situación: encontrarse sin hogar, pernoctar en la vía pública o sufrir una exclusión residencial extrema dentro del municipio de Tarragona.",
+          "Jóvenes de 18 a 23 años: atención preferente los martes y jueves de 9:00 a 14:00 h.",
+          "Adultos mayores de 24 años: atención preferente los lunes, miércoles y viernes de 9:00 a 14:00 h."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "No se exige documentación obligatoria previa para recibir la primera atención de emergencia, alimentación o higiene en los centros de día.",
+          "Para iniciar un plan de trabajo social o derivación a pisos de autonomía, se gestionará progresivamente el DNI / NIE o Pasaporte junto con los profesionales."
+        ],
+        "ca": [
+          "No se exige documentación obligatoria previa para recibir la primera atención de emergencia, alimentación o higiene en los centros de día.",
+          "Para iniciar un plan de trabajo social o derivación a pisos de autonomía, se gestionará progresivamente el DNI / NIE o Pasaporte junto con los profesionales."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    }
+  ]
+}

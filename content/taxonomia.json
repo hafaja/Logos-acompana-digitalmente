@@ -164,7 +164,8 @@
           },
           "servicios_ids": [
             "sad-atencio-domiciliaria",
-            "inss-cume"
+            "inss-cume",
+            "ayuda-cuidadores-no-profesionales"
           ]
         },
         {
@@ -307,7 +308,8 @@
             "inss-jubilacion",
             "inss-viudedad",
             "inss-orfandad",
-            "inss-prestaciones-favor-familiares"
+            "inss-prestaciones-favor-familiares",
+            "pnc-jubilacion"
           ]
         },
         {
@@ -316,7 +318,9 @@
             "es": "Prestaciones",
             "ca": "Prestacions"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "prestacion-crianza-ley-familias"
+          ]
         },
         {
           "id": "ayudas-economicas",
@@ -364,7 +368,9 @@
             "es": "Impuestos",
             "ca": "Impostos"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "deduccion-maternidad-custodia"
+          ]
         },
         {
           "id": "emergencia-social",
@@ -372,7 +378,9 @@
             "es": "Emergencia social",
             "ca": "Emergència social"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "ayudas-emergencia-social"
+          ]
         },
         {
           "id": "deudas",
@@ -380,7 +388,9 @@
             "es": "Deudas y dificultades económicas",
             "ca": "Deutes i dificultats econòmiques"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "ley-segunda-oportunidad"
+          ]
         }
       ]
     },
@@ -517,7 +527,9 @@
             "es": "Salud mental",
             "ca": "Salut mental"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "csma-ara-tescolto"
+          ]
         },
         {
           "id": "discapacidad-salud",
@@ -545,7 +557,9 @@
             "es": "Rehabilitación",
             "ca": "Rehabilitació"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "src-rehabilitacion-comunitaria"
+          ]
         },
         {
           "id": "personas-mayores-salud",
@@ -553,7 +567,9 @@
             "es": "Personas mayores",
             "ca": "Gent gran"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "tarjeta-rosa-tarragona"
+          ]
         },
         {
           "id": "centros-dia",
@@ -561,7 +577,9 @@
             "es": "Centros de día",
             "ca": "Centres de dia"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "centros-dia-personas-mayores"
+          ]
         },
         {
           "id": "residencias",
@@ -569,7 +587,9 @@
             "es": "Residencias",
             "ca": "Residències"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "residencias-tarragona"
+          ]
         },
         {
           "id": "atencion-domiciliaria-salud",
@@ -588,7 +608,9 @@
             "es": "Prevención",
             "ca": "Prevenció"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "talleres-envejecimiento-activo"
+          ]
         },
         {
           "id": "soledad-bienestar",
@@ -596,7 +618,9 @@
             "es": "Soledad y bienestar emocional",
             "ca": "Soledat i benestar emocional"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "radars-telefono-esperanza"
+          ]
         }
       ]
     },
@@ -709,7 +733,8 @@
             "ca": "Inclusió social"
           },
           "servicios_ids": [
-            "gencat-inclusio-social"
+            "gencat-inclusio-social",
+            "programas-inclusion-cohesion-social"
           ]
         },
         {
@@ -719,7 +744,8 @@
             "ca": "Migració i integració"
           },
           "servicios_ids": [
-            "gencat-migracio-integracio"
+            "gencat-migracio-integracio",
+            "servicio-acogida-integracion"
           ]
         },
         {
@@ -729,7 +755,8 @@
             "ca": "Participació ciutadana"
           },
           "servicios_ids": [
-            "gencat-participacio-ciutadana"
+            "gencat-participacio-ciutadana",
+            "presupuestos-participativos-tarragona"
           ]
         },
         {
@@ -739,7 +766,8 @@
             "ca": "Associacionisme"
           },
           "servicios_ids": [
-            "gencat-associacionisme"
+            "gencat-associacionisme",
+            "registro-municipal-entidades"
           ]
         },
         {
@@ -749,7 +777,8 @@
             "ca": "Voluntariat"
           },
           "servicios_ids": [
-            "gencat-voluntariat"
+            "gencat-voluntariat",
+            "punt-voluntariat-tarragona"
           ]
         },
         {
@@ -759,7 +788,8 @@
             "ca": "Cultura"
           },
           "servicios_ids": [
-            "gencat-cultura"
+            "gencat-cultura",
+            "agenda-cultural-municipal"
           ]
         },
         {
@@ -769,7 +799,8 @@
             "ca": "Oci"
           },
           "servicios_ids": [
-            "gencat-equipaments-civics-oci"
+            "gencat-equipaments-civics-oci",
+            "red-centros-civicos-tarragona"
           ]
         },
         {
@@ -779,7 +810,8 @@
             "ca": "Esport"
           },
           "servicios_ids": [
-            "gencat-esport"
+            "gencat-esport",
+            "pmet-patronat-esports"
           ]
         },
         {
@@ -789,7 +821,8 @@
             "ca": "Accessibilitat"
           },
           "servicios_ids": [
-            "gencat-accessibilitat"
+            "gencat-accessibilitat",
+            "plan-accesibilidad-tarjeta-aparcamiento"
           ]
         },
         {
@@ -799,7 +832,8 @@
             "ca": "Recursos comunitaris"
           },
           "servicios_ids": [
-            "gencat-mapa-recursos-comunitaris"
+            "gencat-mapa-recursos-comunitaris",
+            "easb-equipos-atencion-social-basica"
           ]
         },
         {
@@ -809,7 +843,8 @@
             "ca": "Situacions d'exclusió"
           },
           "servicios_ids": [
-            "gencat-serveis-socials-exclusio"
+            "gencat-serveis-socials-exclusio",
+            "pass-punt-atencio-sense-sostre"
           ]
         }
       ]
