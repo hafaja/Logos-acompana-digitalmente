@@ -16,7 +16,10 @@
             "es": "Identidad y documentación",
             "ca": "Identitat i documentació"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "dni-espanol",
+            "pasaporte-espanol"
+          ]
         },
         {
           "id": "empadronamiento",
@@ -119,7 +122,8 @@
             "ca": "Família nombrosa"
           },
           "servicios_ids": [
-            "inss-pago-unico-nacimiento-protegido"
+            "inss-pago-unico-nacimiento-protegido",
+            "familia-numerosa-titulo"
           ]
         },
         {
@@ -129,7 +133,8 @@
             "ca": "Família monoparental"
           },
           "servicios_ids": [
-            "inss-pago-unico-nacimiento-protegido"
+            "inss-pago-unico-nacimiento-protegido",
+            "familia-monoparental-titulo"
           ]
         },
         {
@@ -143,7 +148,8 @@
             "inss-pago-unico-nacimiento-protegido",
             "inss-nacimiento-multiple",
             "inss-riesgo-embarazo",
-            "inss-riesgo-lactancia"
+            "inss-riesgo-lactancia",
+            "embarazo-nacimiento-prestaciones"
           ]
         },
         {
@@ -153,7 +159,8 @@
             "ca": "Conciliació"
           },
           "servicios_ids": [
-            "inss-riesgo-lactancia"
+            "inss-riesgo-lactancia",
+            "conciliacion-laboral-familiar"
           ]
         },
         {
@@ -175,7 +182,8 @@
           "servicios_ids": [
             "sad-atencio-domiciliaria",
             "inss-cume",
-            "ayuda-cuidadores-no-profesionales"
+            "ayuda-cuidadores-no-profesionales",
+            "cuidado-familiares-saad"
           ]
         },
         {
@@ -184,7 +192,14 @@
             "es": "Personas mayores",
             "ca": "Gent gran"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "tarjeta-rosa-tarragona",
+            "pnc-jubilacion",
+            "centros-dia-personas-mayores",
+            "residencias-tarragona",
+            "talleres-envejecimiento-activo",
+            "radars-telefono-esperanza"
+          ]
         },
         {
           "id": "soledad-familia",
@@ -356,7 +371,11 @@
             "es": "Ayudas económicas",
             "ca": "Ajuts econòmics"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "ayudas-emergencia-social",
+            "renta-minima-insercion-autonomica",
+            "prestacion-crianza-ley-familias"
+          ]
         },
         {
           "id": "renta-garantizada",
@@ -438,7 +457,8 @@
             "ca": "Cercar feina"
           },
           "servicios_ids": [
-            "soc-inscripcion-demandante-empleo"
+            "soc-inscripcion-demandante-empleo",
+            "buscar-trabajo-sne"
           ]
         },
         {
@@ -455,7 +475,8 @@
             "sepe-subsidio-emigrantes-retornados",
             "sepe-subsidio-violencia",
             "sepe-complemento-apoyo-empleo",
-            "soc-bonificacion-transporte-atur"
+            "soc-bonificacion-transporte-atur",
+            "desempleo-prestaciones-subsidios"
           ]
         },
         {
@@ -465,7 +486,8 @@
             "ca": "Formació"
           },
           "servicios_ids": [
-            "soc-formacion-empleo"
+            "soc-formacion-empleo",
+            "formacion-sepe-cursos"
           ]
         },
         {
@@ -475,7 +497,8 @@
             "ca": "Orientació laboral"
           },
           "servicios_ids": [
-            "soc-programas-orientacion-insercion"
+            "soc-programas-orientacion-insercion",
+            "orientacion-laboral-tutor"
           ]
         },
         {
@@ -485,7 +508,8 @@
             "ca": "Inserció laboral"
           },
           "servicios_ids": [
-            "soc-programas-orientacion-insercion"
+            "soc-programas-orientacion-insercion",
+            "insercion-laboral-programas"
           ]
         },
         {
@@ -495,7 +519,8 @@
             "ca": "Autònoms"
           },
           "servicios_ids": [
-            "sepe-capitalizacion-paro"
+            "sepe-capitalizacion-paro",
+            "autonomos-reta-alta"
           ]
         },
         {
@@ -505,7 +530,8 @@
             "ca": "Emprenedoria"
           },
           "servicios_ids": [
-            "sepe-capitalizacion-paro"
+            "sepe-capitalizacion-paro",
+            "emprendimiento-creacion-empresas"
           ]
         },
         {
@@ -690,7 +716,8 @@
             "ca": "Beques"
           },
           "servicios_ids": [
-            "soc-becas-formacion"
+            "soc-becas-formacion",
+            "becas-mec"
           ]
         },
         {
