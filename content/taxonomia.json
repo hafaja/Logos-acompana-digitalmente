@@ -24,7 +24,9 @@
             "es": "Empadronamiento",
             "ca": "Empadronament"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "empadronamiento-tramite"
+          ]
         },
         {
           "id": "nacionalidad",
@@ -32,7 +34,9 @@
             "es": "Nacionalidad",
             "ca": "Nacionalitat"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "nacionalidad-residencia"
+          ]
         },
         {
           "id": "extranjeria",
@@ -40,7 +44,9 @@
             "es": "Extranjería",
             "ca": "Estrangeria"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "extranjeria-nie-tie"
+          ]
         },
         {
           "id": "discapacidad-situacion",
@@ -70,7 +76,9 @@
             "es": "Autonomía personal",
             "ca": "Autonomia personal"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "autonomia-personal-dependencia"
+          ]
         },
         {
           "id": "derechos-orientacion",
@@ -78,7 +86,9 @@
             "es": "Derechos y orientación",
             "ca": "Drets i orientació"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "derechos-orientacion-social"
+          ]
         }
       ]
     },
@@ -192,7 +202,9 @@
             "es": "Apoyo a cuidadores",
             "ca": "Suport a cuidadors"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "apoyo-cuidadores-respiro"
+          ]
         }
       ]
     },
@@ -210,7 +222,9 @@
             "es": "Alquiler",
             "ca": "Lloguer"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "alquiler-vivienda-tramite"
+          ]
         },
         {
           "id": "compra-vivienda",
@@ -218,7 +232,9 @@
             "es": "Compra de vivienda",
             "ca": "Compra d'habitatge"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "compra-vivienda-tramite"
+          ]
         },
         {
           "id": "vivienda-social",
@@ -226,7 +242,9 @@
             "es": "Vivienda social",
             "ca": "Habitatge social"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "vivienda-social-tramite"
+          ]
         },
         {
           "id": "ayudas-alquiler",
@@ -234,7 +252,9 @@
             "es": "Ayudas al alquiler",
             "ca": "Ajuts al lloguer"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "ayudas-alquiler-bono-joven"
+          ]
         },
         {
           "id": "emergencia-habitacional",
@@ -242,7 +262,9 @@
             "es": "Emergencia habitacional",
             "ca": "Emergència habitacional"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "emergencia-habitacional-mesa"
+          ]
         },
         {
           "id": "suministros",
@@ -250,7 +272,9 @@
             "es": "Suministros",
             "ca": "Subministraments"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "suministros-bono-social"
+          ]
         },
         {
           "id": "accesibilidad-vivienda",
@@ -258,7 +282,9 @@
             "es": "Accesibilidad de la vivienda",
             "ca": "Accessibilitat de l'habitatge"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "accesibilidad-vivienda-reformas"
+          ]
         },
         {
           "id": "ayuda-domicilio-vivienda",
@@ -296,7 +322,9 @@
             "es": "Ingresos",
             "ca": "Ingressos"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "acreditacion-rentas-ingresos"
+          ]
         },
         {
           "id": "pensiones",
@@ -338,7 +366,8 @@
           },
           "servicios_ids": [
             "gencat-rgc-activable",
-            "gencat-rgc-no-activable"
+            "gencat-rgc-no-activable",
+            "renta-minima-insercion-autonomica"
           ]
         },
         {
@@ -485,7 +514,9 @@
             "es": "Reconocimiento de competencias",
             "ca": "Reconeixement de competències"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "reconocimiento-competencias-peac"
+          ]
         },
         {
           "id": "jubilacion",
@@ -638,7 +669,9 @@
             "es": "Educación infantil",
             "ca": "Educació infantil"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "educacion-infantil-0-6"
+          ]
         },
         {
           "id": "escolarizacion",
@@ -646,7 +679,9 @@
             "es": "Escolarización",
             "ca": "Escolarització"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "escolarizacion-obligatoria"
+          ]
         },
         {
           "id": "becas",
@@ -664,7 +699,9 @@
             "es": "Formación profesional",
             "ca": "Formació professional"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "formacion-profesional-ciclos"
+          ]
         },
         {
           "id": "universidad",
@@ -672,7 +709,9 @@
             "es": "Universidad",
             "ca": "Universitat"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "universidad-grado-master"
+          ]
         },
         {
           "id": "educacion-especial",
@@ -680,7 +719,9 @@
             "es": "Educación especial",
             "ca": "Educació especial"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "educacion-especial-cee"
+          ]
         },
         {
           "id": "necesidades-educativas",
@@ -688,7 +729,9 @@
             "es": "Necesidades educativas",
             "ca": "Necessitats educatives"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "necesidades-educativas-apoyo"
+          ]
         },
         {
           "id": "formacion-adultos",
@@ -697,7 +740,8 @@
             "ca": "Formació d'adults"
           },
           "servicios_ids": [
-            "soc-formacion-empleo"
+            "soc-formacion-empleo",
+            "formacion-adultos-cepa"
           ]
         },
         {
@@ -706,7 +750,9 @@
             "es": "Aprendizaje permanente",
             "ca": "Aprenentatge permanent"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "aprendizaje-permanente-talleres"
+          ]
         },
         {
           "id": "actividades-mayores",
@@ -714,7 +760,9 @@
             "es": "Actividades para mayores",
             "ca": "Activitats per a la gent gran"
           },
-          "servicios_ids": []
+          "servicios_ids": [
+            "actividades-envejecimiento-activo-generico"
+          ]
         }
       ]
     },
