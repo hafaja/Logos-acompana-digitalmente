@@ -2074,10 +2074,13 @@ async function abrirCursoCiudadano(cursoId){
 
         const contenidosHtml = contenidos.map(c => {
           const visto = misProgresos.some(p => p.contenido_id === c.id);
+          const abrirBtnHtml = c.url_externa
+            ? `<a href="${c.url_externa}" target="_blank" rel="noopener" class="link-btn" style="font-size:12px;">${esCA?'Obrir':'Abrir'}</a>`
+            : (c.ruta_storage ? `<button class="link-btn" style="font-size:12px;" onclick="abrirArchivoContenidoCiudadano('${c.ruta_storage}')">${esCA?'Obrir':'Abrir'}</button>` : '');
           return `<div class="contenido-row">
             <span>${iconoTipo[c.tipo]||'📎'}</span>
             <span style="flex:1;">${c.titulo}</span>
-            ${c.url_externa ? `<a href="${c.url_externa}" target="_blank" rel="noopener" class="link-btn" style="font-size:12px;">${esCA?'Obrir':'Abrir'}</a>` : ''}
+            ${abrirBtnHtml}
             ${visto
               ? `<span class="chip hecho" style="font-size:10px;">✅ ${esCA?'Vist':'Visto'}</span>`
               : `<button class="link-btn" style="font-size:12px;" onclick="marcarContenidoVisto('${c.id}')">${esCA?'Marcar vist':'Marcar visto'}</button>`}
@@ -2148,6 +2151,12 @@ function toggleModuloCC(id){
   const abierto = cuerpo.style.display !== 'none';
   cuerpo.style.display = abierto ? 'none' : 'block';
   flecha.textContent = abierto ? '▾' : '▴';
+}
+
+async function abrirArchivoContenidoCiudadano(rutaStorage){
+  const { data, error } = await sb.storage.from('documentos').createSignedUrl(rutaStorage, 60);
+  if(error){ alert(error.message); return; }
+  window.open(data.signedUrl, '_blank');
 }
 
 async function marcarContenidoVisto(contenidoId){
