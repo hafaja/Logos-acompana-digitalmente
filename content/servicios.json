@@ -1,5 +1,5 @@
 {
-  "version": "0.6",
+  "version": "0.7",
   "nota": "Contenido de Fase 0. Las cuatro fichas tienen enlace oficial verificado, traducción completa CA/ES y campo municipio. Ampliado con 49 fichas nuevas de trámites y ayudas (identidad, vivienda, economía, salud, educación, familia, comunidad).",
   "servicios": [
     {
@@ -2449,6 +2449,790 @@
       "coste": {
         "es": "Gratuito",
         "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "dni-espanol",
+      "nombre": {
+        "es": "Documento Nacional de Identidad (DNI)",
+        "ca": "Documento Nacional de Identidad (DNI)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.dnielectronico.es/",
+      "para_que_sirve": {
+        "es": "Acredita oficialmente la identidad, los datos personales y la nacionalidad española de su titular. El DNI electrónico incorpora un chip que permite firmar documentos de manera telemática con plena validez legal ante las administraciones públicas.",
+        "ca": "Acredita oficialmente la identidad, los datos personales y la nacionalidad española de su titular. El DNI electrónico incorpora un chip que permite firmar documentos de manera telemática con plena validez legal ante las administraciones públicas."
+      },
+      "cuantia": {
+        "es": "Tasa de expedición de 12,00 €. Gratuito para familias numerosas, renovaciones por cambio de datos, o menores de 14 años en hogares del IMV.",
+        "ca": "Tasa de expedición de 12,00 €. Gratuito para familias numerosas, renovaciones por cambio de datos, o menores de 14 años en hogares del IMV."
+      },
+      "requisitos": {
+        "es": [
+          "Cita previa obligatoria a través del portal de la Policía Nacional o el teléfono 060.",
+          "Presencia física en la Unidad de Documentación asignada.",
+          "Los menores deben ir acompañados de su tutor legal identificado con su propio DNI."
+        ],
+        "ca": [
+          "Cita previa obligatoria a través del portal de la Policía Nacional o el teléfono 060.",
+          "Presencia física en la Unidad de Documentación asignada.",
+          "Los menores deben ir acompañados de su tutor legal identificado con su propio DNI."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Una fotografía reciente en color con fondo blanco.",
+          "El DNI anterior (renovación) o denuncia en caso de robo o extravío.",
+          "Certificado de empadronamiento si se ha cambiado de domicilio.",
+          "Certificación literal de nacimiento (solo primera inscripción)."
+        ],
+        "ca": [
+          "Una fotografía reciente en color con fondo blanco.",
+          "El DNI anterior (renovación) o denuncia en caso de robo o extravío.",
+          "Certificado de empadronamiento si se ha cambiado de domicilio.",
+          "Certificación literal de nacimiento (solo primera inscripción)."
+        ]
+      },
+      "coste": {
+        "es": "12,00 € (sujeto a supuestos de gratuidad)",
+        "ca": "12,00 € (sujeto a supuestos de gratuidad)"
+      }
+    },
+    {
+      "id": "pasaporte-espanol",
+      "nombre": {
+        "es": "Pasaporte español",
+        "ca": "Pasaporte español"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.policia.es/",
+      "para_que_sirve": {
+        "es": "Acredita la identidad y nacionalidad de los ciudadanos españoles fuera del territorio nacional y de la Unión Europea durante viajes internacionales.",
+        "ca": "Acredita la identidad y nacionalidad de los ciudadanos españoles fuera del territorio nacional y de la Unión Europea durante viajes internacionales."
+      },
+      "cuantia": {
+        "es": "Tasa de 30,00 €, tanto para primera obtención como renovación. Gratuito para familias numerosas.",
+        "ca": "Tasa de 30,00 €, tanto para primera obtención como renovación. Gratuito para familias numerosas."
+      },
+      "requisitos": {
+        "es": [
+          "Poseer la nacionalidad española y tener NIF o DNI asignado.",
+          "Aportar el DNI vigente del titular.",
+          "Disponer de cita previa del Ministerio del Interior."
+        ],
+        "ca": [
+          "Poseer la nacionalidad española y tener NIF o DNI asignado.",
+          "Aportar el DNI vigente del titular.",
+          "Disponer de cita previa del Ministerio del Interior."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI en vigor.",
+          "Fotografía reciente formato carnet (si no se tramita junto al DNI).",
+          "Pasaporte anterior si se renueva anticipadamente.",
+          "Título de familia numerosa si se solicita exención de tasa."
+        ],
+        "ca": [
+          "DNI en vigor.",
+          "Fotografía reciente formato carnet (si no se tramita junto al DNI).",
+          "Pasaporte anterior si se renueva anticipadamente.",
+          "Título de familia numerosa si se solicita exención de tasa."
+        ]
+      },
+      "coste": {
+        "es": "30,00 € (gratuito para familias numerosas)",
+        "ca": "30,00 € (gratuito para familias numerosas)"
+      }
+    },
+    {
+      "id": "buscar-trabajo-sne",
+      "nombre": {
+        "es": "Inscripción como demandante de empleo",
+        "ca": "Inscripción como demandante de empleo"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.sepe.es/",
+      "para_que_sirve": {
+        "es": "Permite inscribirse en el Sistema Nacional de Empleo como demandante de empleo o mejora de trabajo, acceder a la bolsa pública de ofertas y participar en procesos de selección de empresas que reclutan a través de la red pública.",
+        "ca": "Permite inscribirse en el Sistema Nacional de Empleo como demandante de empleo o mejora de trabajo, acceder a la bolsa pública de ofertas y participar en procesos de selección de empresas que reclutan a través de la red pública."
+      },
+      "cuantia": {
+        "es": "Gratuito.",
+        "ca": "Gratuito."
+      },
+      "requisitos": {
+        "es": [
+          "Tener 16 años o más.",
+          "Poseer DNI o autorización de residencia y trabajo en vigor.",
+          "Estar empadronado en el municipio (la inscripción se hace en el servicio de empleo de la Comunidad Autónoma)."
+        ],
+        "ca": [
+          "Tener 16 años o más.",
+          "Poseer DNI o autorización de residencia y trabajo en vigor.",
+          "Estar empadronado en el municipio (la inscripción se hace en el servicio de empleo de la Comunidad Autónoma)."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI, NIE o Pasaporte en vigor.",
+          "Certificado de empadronamiento si se ha cambiado de domicilio.",
+          "Títulos académicos, certificados de profesionalidad y contratos previos."
+        ],
+        "ca": [
+          "DNI, NIE o Pasaporte en vigor.",
+          "Certificado de empadronamiento si se ha cambiado de domicilio.",
+          "Títulos académicos, certificados de profesionalidad y contratos previos."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "desempleo-prestaciones-subsidios",
+      "nombre": {
+        "es": "Desempleo: prestación contributiva y subsidios",
+        "ca": "Desempleo: prestación contributiva y subsidios"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.sepe.es/",
+      "para_que_sirve": {
+        "es": "Garantiza protección económica temporal a trabajadores que han perdido su empleo de forma involuntaria o han visto reducida su jornada. Incluye la prestación contributiva (según tiempo cotizado) y subsidios asistenciales.",
+        "ca": "Garantiza protección económica temporal a trabajadores que han perdido su empleo de forma involuntaria o han visto reducida su jornada. Incluye la prestación contributiva (según tiempo cotizado) y subsidios asistenciales."
+      },
+      "cuantia": {
+        "es": "La prestación contributiva cubre el 70% de la base reguladora los primeros 180 días y el 60% a partir del día 181. Los subsidios de cuantía fija rondan los 480 €/mes de forma general.",
+        "ca": "La prestación contributiva cubre el 70% de la base reguladora los primeros 180 días y el 60% a partir del día 181. Los subsidios de cuantía fija rondan los 480 €/mes de forma general."
+      },
+      "requisitos": {
+        "es": [
+          "Haber terminado la relación laboral de forma involuntaria o sufrido reducción de jornada legal.",
+          "Tener cotizados al menos 360 días en los últimos 6 años (contributiva), o 3-6 meses para subsidio por cotización insuficiente.",
+          "Estar inscrito como demandante y suscribir el Compromiso de Actividad."
+        ],
+        "ca": [
+          "Haber terminado la relación laboral de forma involuntaria o sufrido reducción de jornada legal.",
+          "Tener cotizados al menos 360 días en los últimos 6 años (contributiva), o 3-6 meses para subsidio por cotización insuficiente.",
+          "Estar inscrito como demandante y suscribir el Compromiso de Actividad."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Solicitud oficial de la prestación o subsidio.",
+          "Certificado de empresa de los últimos 6 meses.",
+          "DNI o NIE e historial de rentas si se solicita subsidio."
+        ],
+        "ca": [
+          "Solicitud oficial de la prestación o subsidio.",
+          "Certificado de empresa de los últimos 6 meses.",
+          "DNI o NIE e historial de rentas si se solicita subsidio."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "formacion-sepe-cursos",
+      "nombre": {
+        "es": "Formación para el empleo (cursos SEPE)",
+        "ca": "Formación para el empleo (cursos SEPE)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.sepe.es/",
+      "para_que_sirve": {
+        "es": "Ofrece planes de formación gratuitos dirigidos prioritariamente a personas desempleadas para mejorar su empleabilidad, reciclarse profesionalmente o adquirir nuevas competencias, con Certificados de Profesionalidad válidos en toda Europa.",
+        "ca": "Ofrece planes de formación gratuitos dirigidos prioritariamente a personas desempleadas para mejorar su empleabilidad, reciclarse profesionalmente o adquirir nuevas competencias, con Certificados de Profesionalidad válidos en toda Europa."
+      },
+      "cuantia": {
+        "es": "Gratuito. Los alumnos desempleados pueden solicitar becas y ayudas de transporte, manutención o conciliación.",
+        "ca": "Gratuito. Los alumnos desempleados pueden solicitar becas y ayudas de transporte, manutención o conciliación."
+      },
+      "requisitos": {
+        "es": [
+          "Estar inscrito como demandante de empleo (o trabajador en activo para cursos de mejora).",
+          "Cumplir los requisitos académicos del nivel del curso.",
+          "Superar el proceso de selección si las solicitudes superan las plazas."
+        ],
+        "ca": [
+          "Estar inscrito como demandante de empleo (o trabajador en activo para cursos de mejora).",
+          "Cumplir los requisitos académicos del nivel del curso.",
+          "Superar el proceso de selección si las solicitudes superan las plazas."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Tarjeta de demanda de empleo (DARDE) actualizada.",
+          "DNI o NIE.",
+          "Justificante académico del mayor nivel de estudios alcanzado."
+        ],
+        "ca": [
+          "Tarjeta de demanda de empleo (DARDE) actualizada.",
+          "DNI o NIE.",
+          "Justificante académico del mayor nivel de estudios alcanzado."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "orientacion-laboral-tutor",
+      "nombre": {
+        "es": "Orientación laboral personalizada",
+        "ca": "Orientación laboral personalizada"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.sepe.es/",
+      "para_que_sirve": {
+        "es": "Proporciona asesoramiento individualizado con un tutor de empleo para definir un itinerario profesional: técnicas de currículum, entrevistas, búsqueda digital de empleo y detección de necesidades formativas.",
+        "ca": "Proporciona asesoramiento individualizado con un tutor de empleo para definir un itinerario profesional: técnicas de currículum, entrevistas, búsqueda digital de empleo y detección de necesidades formativas."
+      },
+      "cuantia": {
+        "es": "Gratuito.",
+        "ca": "Gratuito."
+      },
+      "requisitos": {
+        "es": [
+          "Estar dado de alta como demandante de empleo o de mejora.",
+          "Solicitar cita específica de \"Orientación Profesional\" en tu oficina de empleo o entidad colaboradora."
+        ],
+        "ca": [
+          "Estar dado de alta como demandante de empleo o de mejora.",
+          "Solicitar cita específica de \"Orientación Profesional\" en tu oficina de empleo o entidad colaboradora."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI o NIE.",
+          "Currículum vitae actualizado (si se dispone) y copias de títulos o contratos previos."
+        ],
+        "ca": [
+          "DNI o NIE.",
+          "Currículum vitae actualizado (si se dispone) y copias de títulos o contratos previos."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "insercion-laboral-programas",
+      "nombre": {
+        "es": "Programas de inserción laboral",
+        "ca": "Programas de inserción laboral"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.sepe.es/",
+      "para_que_sirve": {
+        "es": "Desarrolla acciones combinadas de orientación, formación y prácticas en empresas para colectivos con dificultades de acceso al mercado laboral (parados de larga duración, discapacidad, jóvenes sin experiencia, riesgo de exclusión), con incentivos a las empresas colaboradoras.",
+        "ca": "Desarrolla acciones combinadas de orientación, formación y prácticas en empresas para colectivos con dificultades de acceso al mercado laboral (parados de larga duración, discapacidad, jóvenes sin experiencia, riesgo de exclusión), con incentivos a las empresas colaboradoras."
+      },
+      "cuantia": {
+        "es": "Gratuito. Muchas prácticas no laborales incluyen una beca económica mensual de apoyo.",
+        "ca": "Gratuito. Muchas prácticas no laborales incluyen una beca económica mensual de apoyo."
+      },
+      "requisitos": {
+        "es": [
+          "Pertenecer al colectivo diana del programa (ej. más de 12 meses en paro, discapacidad ≥33%).",
+          "Ser derivado por un trabajador social municipal o el tutor de orientación."
+        ],
+        "ca": [
+          "Pertenecer al colectivo diana del programa (ej. más de 12 meses en paro, discapacidad ≥33%).",
+          "Ser derivado por un trabajador social municipal o el tutor de orientación."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Informe o resolución que acredite la pertenencia al colectivo.",
+          "Tarjeta de demanda de empleo ininterrumpida."
+        ],
+        "ca": [
+          "Informe o resolución que acredite la pertenencia al colectivo.",
+          "Tarjeta de demanda de empleo ininterrumpida."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "autonomos-reta-alta",
+      "nombre": {
+        "es": "Alta de autónomos (RETA)",
+        "ca": "Alta de autónomos (RETA)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.seg-social.es/",
+      "para_que_sirve": {
+        "es": "Permite dar de alta a una persona física para ejercer una actividad económica por cuenta propia. Legaliza la actividad, da acceso a la cotización para jubilación y cubre incapacidad temporal o cese de actividad.",
+        "ca": "Permite dar de alta a una persona física para ejercer una actividad económica por cuenta propia. Legaliza la actividad, da acceso a la cotización para jubilación y cubre incapacidad temporal o cese de actividad."
+      },
+      "cuantia": {
+        "es": "Cuota mensual según rendimientos netos reales. Tarifa Plana de 80 €/mes durante los primeros 12 meses para nuevos autónomos; algunas CCAA financian la \"Cuota Cero\" devolviendo el 100% el primer año.",
+        "ca": "Cuota mensual según rendimientos netos reales. Tarifa Plana de 80 €/mes durante los primeros 12 meses para nuevos autónomos; algunas CCAA financian la \"Cuota Cero\" devolviendo el 100% el primer año."
+      },
+      "requisitos": {
+        "es": [
+          "Alta en el Censo de Empresarios de Hacienda, y en los 30 días siguientes, alta en el RETA.",
+          "Ser mayor de 18 años (o menor emancipado)."
+        ],
+        "ca": [
+          "Alta en el Censo de Empresarios de Hacienda, y en los 30 días siguientes, alta en el RETA.",
+          "Ser mayor de 18 años (o menor emancipado)."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI o NIE y número de afiliación a la Seguridad Social.",
+          "Modelos 036 o 037 de Hacienda.",
+          "Datos bancarios para la domiciliación de la cuota."
+        ],
+        "ca": [
+          "DNI o NIE y número de afiliación a la Seguridad Social.",
+          "Modelos 036 o 037 de Hacienda.",
+          "Datos bancarios para la domiciliación de la cuota."
+        ]
+      },
+      "coste": {
+        "es": "Variable (Tarifa Plana de 80 €/mes para nuevos autónomos)",
+        "ca": "Variable (Tarifa Plana de 80 €/mes para nuevos autónomos)"
+      }
+    },
+    {
+      "id": "emprendimiento-creacion-empresas",
+      "nombre": {
+        "es": "Creación de empresas y emprendimiento",
+        "ca": "Creación de empresas y emprendimiento"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.ipyme.org/",
+      "para_que_sirve": {
+        "es": "Facilita la constitución legal de sociedades mercantiles o proyectos de autoempleo colectivo, con acceso a los Puntos de Atención al Emprendedor (PAE) para tramitar la empresa de forma telemática y optar a subvenciones.",
+        "ca": "Facilita la constitución legal de sociedades mercantiles o proyectos de autoempleo colectivo, con acceso a los Puntos de Atención al Emprendedor (PAE) para tramitar la empresa de forma telemática y optar a subvenciones."
+      },
+      "cuantia": {
+        "es": "Asesoramiento gratuito en los PAE. Constitución de S.L. con capital mínimo de 1 €, más gastos notariales y registrales reducidos (aprox. 60-150 € en tramitación telemática exprés).",
+        "ca": "Asesoramiento gratuito en los PAE. Constitución de S.L. con capital mínimo de 1 €, más gastos notariales y registrales reducidos (aprox. 60-150 € en tramitación telemática exprés)."
+      },
+      "requisitos": {
+        "es": [
+          "Disponer de un plan de viabilidad del negocio.",
+          "Realizar la declaración censal, NIF provisional, escrituras ante notario e inscripción en el Registro Mercantil."
+        ],
+        "ca": [
+          "Disponer de un plan de viabilidad del negocio.",
+          "Realizar la declaración censal, NIF provisional, escrituras ante notario e inscripción en el Registro Mercantil."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI de los socios fundadores.",
+          "Certificado negativo de denominación social del Registro Mercantil Central.",
+          "Estatutos sociales y contrato de constitución."
+        ],
+        "ca": [
+          "DNI de los socios fundadores.",
+          "Certificado negativo de denominación social del Registro Mercantil Central.",
+          "Estatutos sociales y contrato de constitución."
+        ]
+      },
+      "coste": {
+        "es": "Asesoramiento gratuito (gastos notariales y registrales variables)",
+        "ca": "Asesoramiento gratuito (gastos notariales y registrales variables)"
+      }
+    },
+    {
+      "id": "inss-jubilacion",
+      "nombre": {
+        "es": "Jubilación (pensión contributiva)",
+        "ca": "Jubilación (pensión contributiva)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.seg-social.es/",
+      "para_que_sirve": {
+        "es": "Garantiza un ingreso mensual vitalicio a los trabajadores que, al alcanzar la edad legal, cesan su actividad laboral. Retribuye la trayectoria laboral, calculándose la cuantía según los años cotizados y las bases de cotización.",
+        "ca": "Garantiza un ingreso mensual vitalicio a los trabajadores que, al alcanzar la edad legal, cesan su actividad laboral. Retribuye la trayectoria laboral, calculándose la cuantía según los años cotizados y las bases de cotización."
+      },
+      "cuantia": {
+        "es": "Variable según el historial de cotización. La pensión mínima (con cónyuge a cargo) ronda los 1.080 €/mes (14 pagas); el máximo legal supera los 3.200 €/mes.",
+        "ca": "Variable según el historial de cotización. La pensión mínima (con cónyuge a cargo) ronda los 1.080 €/mes (14 pagas); el máximo legal supera los 3.200 €/mes."
+      },
+      "requisitos": {
+        "es": [
+          "Edad legal de 66 años y 10 meses (si menos de 38 años y 3 meses cotizados), o 65 años con ese periodo cotizado.",
+          "Tener cotizados al menos 15 años (5.475 días), con al menos 2 de ellos dentro de los 15 años anteriores a la jubilación."
+        ],
+        "ca": [
+          "Edad legal de 66 años y 10 meses (si menos de 38 años y 3 meses cotizados), o 65 años con ese periodo cotizado.",
+          "Tener cotizados al menos 15 años (5.475 días), con al menos 2 de ellos dentro de los 15 años anteriores a la jubilación."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Solicitud oficial de Pensión de Jubilación ante el INSS.",
+          "DNI, NIE o Pasaporte en vigor.",
+          "Certificado de empresa si está en activo.",
+          "Libro de familia si se solicitan complementos por cargas familiares."
+        ],
+        "ca": [
+          "Solicitud oficial de Pensión de Jubilación ante el INSS.",
+          "DNI, NIE o Pasaporte en vigor.",
+          "Certificado de empresa si está en activo.",
+          "Libro de familia si se solicitan complementos por cargas familiares."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "becas-mec",
+      "nombre": {
+        "es": "Becas MEC (convocatoria general)",
+        "ca": "Becas MEC (convocatoria general)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.educacionyfp.gob.es/servicios-al-ciudadano/catalogo/estudiantes/becas-ayudas.html",
+      "para_que_sirve": {
+        "es": "Proporciona apoyo financiero a estudiantes de niveles postobligatorios con recursos económicos limitados, para matrícula, material, transporte o residencia, asegurando que nadie abandone los estudios por motivos económicos.",
+        "ca": "Proporciona apoyo financiero a estudiantes de niveles postobligatorios con recursos económicos limitados, para matrícula, material, transporte o residencia, asegurando que nadie abandone los estudios por motivos económicos."
+      },
+      "cuantia": {
+        "es": "Cuantía fija de matrícula (100% de créditos en públicas), cuantía por renta (1.700 €), por residencia fuera del hogar (2.500 €), por excelencia académica (50-125 €), más una cuantía variable según nota media.",
+        "ca": "Cuantía fija de matrícula (100% de créditos en públicas), cuantía por renta (1.700 €), por residencia fuera del hogar (2.500 €), por excelencia académica (50-125 €), más una cuantía variable según nota media."
+      },
+      "requisitos": {
+        "es": [
+          "Matricularse del número mínimo de créditos fijado y cumplir el rendimiento académico exigido.",
+          "No superar los umbrales de renta familiar y patrimonio neto anuales.",
+          "Cursar Bachillerato, FP, Enseñanzas Artísticas/Deportivas/Idiomas, o Grados y Másteres oficiales."
+        ],
+        "ca": [
+          "Matricularse del número mínimo de créditos fijado y cumplir el rendimiento académico exigido.",
+          "No superar los umbrales de renta familiar y patrimonio neto anuales.",
+          "Cursar Bachillerato, FP, Enseñanzas Artísticas/Deportivas/Idiomas, o Grados y Másteres oficiales."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Solicitud online en la sede electrónica ministerial (marzo-mayo).",
+          "DNI o NIE de todos los miembros computables de la unidad familiar.",
+          "Datos de la vivienda o contrato de alquiler si se pide cuantía por residencia.",
+          "Cuenta bancaria española del alumno como titular o cotitular."
+        ],
+        "ca": [
+          "Solicitud online en la sede electrónica ministerial (marzo-mayo).",
+          "DNI o NIE de todos los miembros computables de la unidad familiar.",
+          "Datos de la vivienda o contrato de alquiler si se pide cuantía por residencia.",
+          "Cuenta bancaria española del alumno como titular o cotitular."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "familia-numerosa-titulo",
+      "nombre": {
+        "es": "Título de familia numerosa",
+        "ca": "Título de familia numerosa"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Acredita oficialmente la condición de familia numerosa. Permite acceder a bonificaciones fiscales (deducción de hasta 1.200-2.400 €/año en IRPF), descuentos en transporte (20-50%), acceso al Bono Social Eléctrico y exenciones de tasas en educación y documentos de identidad.",
+        "ca": "Acredita oficialmente la condición de familia numerosa. Permite acceder a bonificaciones fiscales (deducción de hasta 1.200-2.400 €/año en IRPF), descuentos en transporte (20-50%), acceso al Bono Social Eléctrico y exenciones de tasas en educación y documentos de identidad."
+      },
+      "cuantia": {
+        "es": "Gratuito el título y los carnés individuales.",
+        "ca": "Gratuito el título y los carnés individuales."
+      },
+      "requisitos": {
+        "es": [
+          "Uno o dos progenitores con 3 o más hijos.",
+          "2 hijos si uno de ellos o un progenitor tiene discapacidad ≥33%, o por fallecimiento de un progenitor.",
+          "Hijos menores de 21 años (26 si estudian), que convivan y dependan económicamente."
+        ],
+        "ca": [
+          "Uno o dos progenitores con 3 o más hijos.",
+          "2 hijos si uno de ellos o un progenitor tiene discapacidad ≥33%, o por fallecimiento de un progenitor.",
+          "Hijos menores de 21 años (26 si estudian), que convivan y dependan económicamente."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Solicitud oficial firmada por los progenitores.",
+          "DNI, NIE o Pasaporte de todos los miembros.",
+          "Libro de familia completo.",
+          "Certificado de convivencia o empadronamiento colectivo.",
+          "Título de discapacidad o justificante de estudios si aplica."
+        ],
+        "ca": [
+          "Solicitud oficial firmada por los progenitores.",
+          "DNI, NIE o Pasaporte de todos los miembros.",
+          "Libro de familia completo.",
+          "Certificado de convivencia o empadronamiento colectivo.",
+          "Título de discapacidad o justificante de estudios si aplica."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "familia-monoparental-titulo",
+      "nombre": {
+        "es": "Título de familia monoparental",
+        "ca": "Título de familia monoparental"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://dretssocials.gencat.cat/",
+      "para_que_sirve": {
+        "es": "Reconoce el núcleo familiar formado por un único progenitor y sus hijos a cargo. Otorga deducciones en el tramo autonómico de la renta, prioridad en VPO, puntos en escolarización y acceso preferente a empleo y conciliación.",
+        "ca": "Reconoce el núcleo familiar formado por un único progenitor y sus hijos a cargo. Otorga deducciones en el tramo autonómico de la renta, prioridad en VPO, puntos en escolarización y acceso preferente a empleo y conciliación."
+      },
+      "cuantia": {
+        "es": "Gratuito.",
+        "ca": "Gratuito."
+      },
+      "requisitos": {
+        "es": [
+          "Una persona con los hijos que conviven y dependen económicamente de ella en exclusividad.",
+          "Hijos reconocidos por un solo progenitor, viudedad, o separación sin pensión de alimentos fijada.",
+          "Hijos menores de 21 años (26 si estudian) sin ingresos superiores al SMI."
+        ],
+        "ca": [
+          "Una persona con los hijos que conviven y dependen económicamente de ella en exclusividad.",
+          "Hijos reconocidos por un solo progenitor, viudedad, o separación sin pensión de alimentos fijada.",
+          "Hijos menores de 21 años (26 si estudian) sin ingresos superiores al SMI."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Solicitud oficial cumplimentada.",
+          "DNI o NIE del progenitor y de los hijos mayores de 14 años.",
+          "Libro de familia o partida de nacimiento.",
+          "Sentencia de separación/divorcio o certificado de defunción.",
+          "Certificado de empadronamiento histórico de convivencia."
+        ],
+        "ca": [
+          "Solicitud oficial cumplimentada.",
+          "DNI o NIE del progenitor y de los hijos mayores de 14 años.",
+          "Libro de familia o partida de nacimiento.",
+          "Sentencia de separación/divorcio o certificado de defunción.",
+          "Certificado de empadronamiento histórico de convivencia."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "embarazo-nacimiento-prestaciones",
+      "nombre": {
+        "es": "Prestaciones por embarazo y nacimiento",
+        "ca": "Prestaciones por embarazo y nacimiento"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.seg-social.es/",
+      "para_que_sirve": {
+        "es": "Protege la maternidad y el nacimiento mediante prestaciones de pago único o periódico: baja maternal/paternal (100% de la base), abono anticipado de la deducción por maternidad, y subsidios por partos múltiples.",
+        "ca": "Protege la maternidad y el nacimiento mediante prestaciones de pago único o periódico: baja maternal/paternal (100% de la base), abono anticipado de la deducción por maternidad, y subsidios por partos múltiples."
+      },
+      "cuantia": {
+        "es": "El subsidio cubre el 100% de la base reguladora durante el permiso. La Generalitat de Catalunya ofrece 650 € por hijo (750 € con familia numerosa o monoparental) para familias con bajos ingresos.",
+        "ca": "El subsidio cubre el 100% de la base reguladora durante el permiso. La Generalitat de Catalunya ofrece 650 € por hijo (750 € con familia numerosa o monoparental) para familias con bajos ingresos."
+      },
+      "requisitos": {
+        "es": [
+          "Estar en alta o situación asimilada en la Seguridad Social al ocurrir el nacimiento.",
+          "Cotización previa según edad de la madre (no se exige <21 años; 90 días entre 21-26; 180 días si >26).",
+          "Para la ayuda de la Generalitat: no superar el umbral de ingresos anuales fijado."
+        ],
+        "ca": [
+          "Estar en alta o situación asimilada en la Seguridad Social al ocurrir el nacimiento.",
+          "Cotización previa según edad de la madre (no se exige <21 años; 90 días entre 21-26; 180 días si >26).",
+          "Para la ayuda de la Generalitat: no superar el umbral de ingresos anuales fijado."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Informe médico oficial de nacimiento.",
+          "Inscripción en el Registro Civil y Libro de Familia.",
+          "Solicitud de prestación ante el INSS.",
+          "Formulario Gencat (idCAT Mòbil o certificado digital) para la ayuda de crianza."
+        ],
+        "ca": [
+          "Informe médico oficial de nacimiento.",
+          "Inscripción en el Registro Civil y Libro de Familia.",
+          "Solicitud de prestación ante el INSS.",
+          "Formulario Gencat (idCAT Mòbil o certificado digital) para la ayuda de crianza."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "conciliacion-laboral-familiar",
+      "nombre": {
+        "es": "Conciliación laboral y familiar",
+        "ca": "Conciliación laboral y familiar"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.mites.gob.es/",
+      "para_que_sirve": {
+        "es": "Permite compatibilizar la vida laboral con la familiar mediante derechos laborales: adaptación de jornada, reducción de jornada por cuidado de menores de 12 años o familiar dependiente, y permisos retribuidos para atención urgente.",
+        "ca": "Permite compatibilizar la vida laboral con la familiar mediante derechos laborales: adaptación de jornada, reducción de jornada por cuidado de menores de 12 años o familiar dependiente, y permisos retribuidos para atención urgente."
+      },
+      "cuantia": {
+        "es": "La reducción de jornada implica bajada proporcional del sueldo, pero la Seguridad Social mantiene la cotización al 100% los primeros años.",
+        "ca": "La reducción de jornada implica bajada proporcional del sueldo, pero la Seguridad Social mantiene la cotización al 100% los primeros años."
+      },
+      "requisitos": {
+        "es": [
+          "Tener a cargo el cuidado directo de menores de 12 años, personas con discapacidad o familiares hasta el segundo grado que no puedan valerse por sí mismos.",
+          "Solicitar por escrito a la empresa con antelación mínima (habitualmente 15 días)."
+        ],
+        "ca": [
+          "Tener a cargo el cuidado directo de menores de 12 años, personas con discapacidad o familiares hasta el segundo grado que no puedan valerse por sí mismos.",
+          "Solicitar por escrito a la empresa con antelación mínima (habitualmente 15 días)."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Escrito formal de solicitud presentado ante la empresa.",
+          "Libro de familia o documento que acredite el parentesco.",
+          "Certificado de discapacidad o informe médico de dependencia si es un familiar adulto."
+        ],
+        "ca": [
+          "Escrito formal de solicitud presentado ante la empresa.",
+          "Libro de familia o documento que acredite el parentesco.",
+          "Certificado de discapacidad o informe médico de dependencia si es un familiar adulto."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito (con alteración proporcional del salario)",
+        "ca": "Gratuito (con alteración proporcional del salario)"
+      }
+    },
+    {
+      "id": "cuidado-familiares-saad",
+      "nombre": {
+        "es": "Cuidado de familiares en el propio domicilio (SAAD)",
+        "ca": "Cuidado de familiares en el propio domicilio (SAAD)"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://imserso.es/",
+      "para_que_sirve": {
+        "es": "Articula los recursos del Sistema para la Autonomía y Atención a la Dependencia (SAAD) para mantener al familiar vulnerable en su domicilio, con reconocimiento oficial de la figura del \"cuidador no profesional\" y acceso a recursos formativos y de respiro.",
+        "ca": "Articula los recursos del Sistema para la Autonomía y Atención a la Dependencia (SAAD) para mantener al familiar vulnerable en su domicilio, con reconocimiento oficial de la figura del \"cuidador no profesional\" y acceso a recursos formativos y de respiro."
+      },
+      "cuantia": {
+        "es": "Gratuito. Activa el derecho a una prestación económica mensual y registra formalmente las tareas de cuidado ante las administraciones.",
+        "ca": "Gratuito. Activa el derecho a una prestación económica mensual y registra formalmente las tareas de cuidado ante las administraciones."
+      },
+      "requisitos": {
+        "es": [
+          "El familiar a cuidar debe tener resolución oficial de Grado de Dependencia (I, II o III).",
+          "El cuidador debe ser familiar hasta el tercer grado con condiciones adecuadas en la vivienda.",
+          "El recurso debe estar fijado en el Programa Individual de Atención (PIA)."
+        ],
+        "ca": [
+          "El familiar a cuidar debe tener resolución oficial de Grado de Dependencia (I, II o III).",
+          "El cuidador debe ser familiar hasta el tercer grado con condiciones adecuadas en la vivienda.",
+          "El recurso debe estar fijado en el Programa Individual de Atención (PIA)."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "Resolución del Grado de Dependencia del familiar.",
+          "Informe de idoneidad y compromiso firmado por el cuidador.",
+          "Certificado de empadronamiento colectivo que acredite convivencia."
+        ],
+        "ca": [
+          "Resolución del Grado de Dependencia del familiar.",
+          "Informe de idoneidad y compromiso firmado por el cuidador.",
+          "Certificado de empadronamiento colectivo que acredite convivencia."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito",
+        "ca": "Gratuito"
+      }
+    },
+    {
+      "id": "soc-bonificacion-transporte-atur",
+      "nombre": {
+        "es": "Bonificaciones en el transporte público",
+        "ca": "Bonificaciones en el transporte público"
+      },
+      "estado_enlace": "verificado",
+      "ultima_verificacion": "2026-09",
+      "enlace_oficial": "https://www.tarragona.cat/",
+      "para_que_sirve": {
+        "es": "Aplica descuentos directos en abonos, billetes y tarjetas de transporte público (autobuses, metro, Cercanías) para garantizar la movilidad de colectivos específicos hacia el trabajo, estudios o centros sanitarios.",
+        "ca": "Aplica descuentos directos en abonos, billetes y tarjetas de transporte público (autobuses, metro, Cercanías) para garantizar la movilidad de colectivos específicos hacia el trabajo, estudios o centros sanitarios."
+      },
+      "cuantia": {
+        "es": "Descuentos entre el 20% y el 50% en general. Para colectivos prioritarios (jóvenes, estudiantes, familia numerosa especial, discapacidad ≥33%), hasta el 100% (gratuito).",
+        "ca": "Descuentos entre el 20% y el 50% en general. Para colectivos prioritarios (jóvenes, estudiantes, familia numerosa especial, discapacidad ≥33%), hasta el 100% (gratuito)."
+      },
+      "requisitos": {
+        "es": [
+          "Acreditar la pertenencia al colectivo protegido (edad, jubilado, familia numerosa, monoparental o discapacidad).",
+          "Disponer de tarjeta de transporte personalizada a nombre del titular.",
+          "Estar empadronado en el ámbito territorial de la red de transporte, para los abonos subvencionados."
+        ],
+        "ca": [
+          "Acreditar la pertenencia al colectivo protegido (edad, jubilado, familia numerosa, monoparental o discapacidad).",
+          "Disponer de tarjeta de transporte personalizada a nombre del titular.",
+          "Estar empadronado en el ámbito territorial de la red de transporte, para los abonos subvencionados."
+        ]
+      },
+      "documentacion": {
+        "es": [
+          "DNI, NIE o Pasaporte.",
+          "Título o carnet que justifique la bonificación (Familia Numerosa, Discapacidad o Tarjeta Dorada).",
+          "Fotografía reciente tamaño carnet (primera vez)."
+        ],
+        "ca": [
+          "DNI, NIE o Pasaporte.",
+          "Título o carnet que justifique la bonificación (Familia Numerosa, Discapacidad o Tarjeta Dorada).",
+          "Fotografía reciente tamaño carnet (primera vez)."
+        ]
+      },
+      "coste": {
+        "es": "Gratuito el alta; el título de transporte tiene coste reducido o gratuito según perfil.",
+        "ca": "Gratuito el alta; el título de transporte tiene coste reducido o gratuito según perfil."
       }
     }
   ]
