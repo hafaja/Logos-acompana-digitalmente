@@ -29,6 +29,9 @@
   .sidebar nav button{text-align:left;background:none;border:none;color:var(--ink-soft);font-family:var(--font-body);font-weight:700;font-size:13.5px;padding:11px 14px;border-radius:10px;cursor:pointer;transition:background .15s;}
   .sidebar nav button:hover{background:var(--bg);}
   .sidebar nav button.active{background:var(--teal);color:#fff;}
+  .nav-staff-btn{color:#7A4A1F !important;}
+  .nav-staff-btn:hover{background:var(--ochre-soft);}
+  .nav-staff-btn.active{background:var(--ochre) !important;color:#fff !important;}
   .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
   .sidebar-public-nav button{text-align:left;background:none;border:none;color:var(--ink-soft);font-family:var(--font-body);font-weight:700;font-size:13.5px;padding:11px 14px;border-radius:10px;cursor:pointer;transition:background .15s;}
   .sidebar-public-nav button:hover{background:var(--bg);}
@@ -79,9 +82,10 @@
   @media (max-width: 760px){
     #app{flex-direction:column;}
     .sidebar{width:100%;height:auto;position:sticky;bottom:0;top:auto;order:2;flex-direction:row;align-items:center;padding:8px 6px;border-right:none;border-top:1.5px solid var(--line);}
-    .sidebar-logo-img,.sidebar-logout,.sidebar-public-nav,.sidebar-social{display:none;}
-    .sidebar nav{flex-direction:row;width:100%;}
-    .sidebar nav button{flex:1;text-align:center;font-size:11px;padding:10px 4px;}
+    .sidebar-logo-img,.sidebar-logout,.sidebar-public-nav,.sidebar > .sidebar-social{display:none;}
+    .sidebar nav{flex-direction:row;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .sidebar nav::-webkit-scrollbar{display:none;}
+    .sidebar nav button{flex:0 0 auto;text-align:center;font-size:11px;padding:10px 12px;white-space:nowrap;}
     .main{order:1;}
     .main-content{padding:22px 18px 96px;}
     .home-mobile-extra{display:block;}
@@ -233,8 +237,8 @@
       <button data-target="home" onclick="showScreen('home');renderDatosStep()">Completar mis datos</button>
       <button data-target="cv" onclick="showScreen('cv');renderCVScreen()">Mi currículum</button>
       <button data-target="encuesta" onclick="showScreen('encuesta');renderEncuestaForm()">Encuesta de satisfacción</button>
-      <button data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
-      <button data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
+      <button class="nav-staff-btn" data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
+      <button class="nav-staff-btn" data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
     </nav>
     <div class="sidebar-public-nav">
       <button data-target="empleo" onclick="showScreen('empleo');renderBusquedaEmpleo()" id="sidebar-empleo-btn" style="background:var(--ochre);color:#fff;">💼 Búsqueda de empleo</button>
