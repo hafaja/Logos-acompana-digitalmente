@@ -2544,6 +2544,85 @@ async function descargarCertificadoPDF(){
   }
 }
 
+function textoLegalConsentimientoHtml(esCA){
+  return `
+    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '1. Responsable del tractament' : '1. Responsable del tratamiento'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0;">Associació Logos Projectes Socials · NIF: G55725436<br>
+    ${esCA ? 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona' : 'Calle de la Pau del Protectorat, 14, 43004 Tarragona'}<br>
+    ${esCA ? 'Correu electrònic' : 'Correo electrónico'}: info@logostgn.cat</p>
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '2. Finalitat del tractament' : '2. Finalidad del tratamiento'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${esCA ? 'Les dades personals facilitades seran tractades per:' : 'Los datos personales facilitados serán tratados para:'}</p>
+    <ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">
+      <li>${esCA ? 'La gestió administrativa, operativa i funcional de la participació en programes i serveis.' : 'La gestión administrativa, operativa y funcional de la participación en programas y servicios.'}</li>
+      <li>${esCA ? 'El compliment d\'obligacions legals derivades de subvencions i convenis.' : 'El cumplimiento de obligaciones legales derivadas de subvenciones y convenios.'}</li>
+      <li>${esCA ? 'Comunicacions informatives relacionades amb els serveis de l\'entitat.' : 'Comunicaciones informativas relacionadas con los servicios de la entidad.'}</li>
+      <li>${esCA ? 'Elaboració d\'estadístiques i memòries amb dades anonimitzades.' : 'Elaboración de estadísticas y memorias con datos anonimizados.'}</li>
+      <li>${esCA ? 'Justificació de les subvencions rebudes.' : 'Justificación de las subvenciones recibidas.'}</li>
+      <li>${esCA ? 'Conservació de les dades durant els terminis legals establerts.' : 'Conservación de los datos durante los plazos legales establecidos.'}</li>
+    </ul>
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '3. Legitimació' : '3. Legitimación'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${esCA ? 'El tractament es basa en la Llei orgànica 3/2018 (LOPDGDD) i el Reglament (UE) 2016/679 (RGPD):' : 'El tratamiento se basa en la Ley orgánica 3/2018 (LOPDGDD) y el Reglamento (UE) 2016/679 (RGPD):'}</p>
+    <ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">
+      <li>${esCA ? 'El consentiment exprés de la persona interessada (Art. 6.1.a RGPD).' : 'El consentimiento expreso de la persona interesada (Art. 6.1.a RGPD).'}</li>
+      <li>${esCA ? 'El compliment d\'obligacions legals (Art. 6.1.c RGPD).' : 'El cumplimiento de obligaciones legales (Art. 6.1.c RGPD).'}</li>
+      <li>${esCA ? 'El compliment d\'una missió d\'interès públic vinculada als programes socials (Art. 6.1.e RGPD).' : 'El cumplimiento de una misión de interés público vinculada a los programas sociales (Art. 6.1.e RGPD).'}</li>
+      <li>${esCA ? 'Per a dades especialment sensibles, el tractament es realitza conforme a l\'Art. 9.2 del RGPD.' : 'Para datos especialmente sensibles, el tratamiento se realiza conforme al Art. 9.2 del RGPD.'}</li>
+    </ul>
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '4. Destinataris' : '4. Destinatarios'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${esCA ? 'Les dades no seran cedides a tercers excepte:' : 'Los datos no serán cedidos a terceros excepto:'}</p>
+    <ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">
+      <li>${esCA ? 'Administracions públiques que ho requereixin per obligació legal.' : 'Administraciones públicas que lo requieran por obligación legal.'}</li>
+      <li>${esCA ? 'Entitats col·laboradores o finançadores quan sigui necessari.' : 'Entidades colaboradoras o financiadoras cuando sea necesario.'}</li>
+      <li>${esCA ? 'Proveïdors amb contracte d\'encarregat del tractament (Art. 28 RGPD).' : 'Proveedores con contrato de encargado del tratamiento (Art. 28 RGPD).'}</li>
+    </ul>
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '5. Drets de la persona interessada' : '5. Derechos de la persona interesada'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0;">${esCA
+      ? 'Pots exercir els drets d\'accés, rectificació, supressió, oposició, limitació i portabilitat escrivint a info@logostgn.cat amb un document identificatiu adjunt. En cas de desacord, pots presentar una reclamació a l\'Agència Espanyola de Protecció de Dades (www.aepd.es).'
+      : 'Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a info@logostgn.cat con un documento identificativo adjunto. En caso de desacuerdo, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es).'}</p>
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '6. Conservació de les dades' : '6. Conservación de los datos'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0;">${esCA
+      ? 'Les dades es conservaran mentre existeixi relació amb l\'entitat i durant els terminis legals exigits. Posteriorment, es suprimiran o anonimitzaran.'
+      : 'Los datos se conservarán mientras exista relación con la entidad y durante los plazos legales exigidos. Posteriormente, se suprimirán o anonimizarán.'}</p>
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;color:#7A4A1F;">${esCA ? 'Clàusula sobre responsabilitat en tràmits' : 'Cláusula sobre responsabilidad en trámites'}</h3>
+    <p style="font-size:12px;line-height:1.6;margin:0;">${esCA
+      ? "L'Associació Logos Projectes Socials presta un servei d'acompanyament, suport i orientació en la realització de tràmits administratius i gestions digitals. L'entitat no és responsable del resultat final dels tràmits, ni de la seva resolució, terminis de resposta, incidències tècniques o eventual denegació, ja que aquests depenen exclusivament dels organismes i administracions competents."
+      : "La Associació Logos Projectes Socials presta un servicio de acompañamiento, apoyo y orientación en la realización de trámites administrativos y gestiones digitales. La entidad no es responsable del resultado final de los trámites, ni de su resolución, plazos de respuesta, incidencias técnicas o eventual denegación, ya que estos dependen exclusivamente de los organismos y administraciones competentes."}</p>
+  `;
+}
+
+async function generarPdfMultipagina(contenedor, nombreArchivo){
+  const canvas = await html2canvas(contenedor, { scale: 2, backgroundColor: '#ffffff' });
+  const imgData = canvas.toDataURL('image/png');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const anchoPagina = pdf.internal.pageSize.getWidth();
+  const altoPagina = pdf.internal.pageSize.getHeight();
+  const margen = 10;
+  const anchoImg = anchoPagina - margen * 2;
+  const altoImgTotal = (canvas.height * anchoImg) / canvas.width;
+  const altoUtilPagina = altoPagina - margen * 2;
+
+  let alturaRestante = altoImgTotal;
+  let posicionY = margen;
+  pdf.addImage(imgData, 'PNG', margen, posicionY, anchoImg, altoImgTotal);
+  alturaRestante -= altoUtilPagina;
+
+  while(alturaRestante > 0){
+    posicionY = margen - (altoImgTotal - alturaRestante);
+    pdf.addPage();
+    pdf.addImage(imgData, 'PNG', margen, posicionY, anchoImg, altoImgTotal);
+    alturaRestante -= altoUtilPagina;
+  }
+
+  pdf.save(nombreArchivo);
+}
+
 async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
   const esCA = LANG === 'ca';
   const boton = document.getElementById('btn-descargar-mi-consent');
@@ -2559,28 +2638,27 @@ async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
       <h1 style="font-size:20px;margin:0 0 4px;">Associació Logos — Projectes Socials</h1>
       <p style="font-size:12px;color:#666;margin:0;">G55725436 · Tarragona</p>
     </div>
-    <h2 style="font-size:16px;text-align:center;border-bottom:2px solid #C99A2E;padding-bottom:10px;">Consentimiento de tratamiento de datos personales</h2>
-    <p style="font-size:13px;line-height:1.6;"><strong>Nombre:</strong> ${nombre || '—'}<br><strong>DNI/NIE:</strong> ${dni || '—'}<br><strong>Fecha de firma:</strong> ${fechaFmt}</p>
-    <p style="font-size:12.5px;line-height:1.7;margin-top:16px;">La persona arriba identificada AUTORIZA el tratamiento de sus datos personales por parte de la Associació Logos - Projectes Socials, de acuerdo con la Ley Orgánica 3/2018 (LOPDGDD) y el Reglamento (UE) 2016/679 (RGPD), con la finalidad de gestionar su atención social, orientación y seguimiento de trámites y recursos, así como la posible cesión a organismos públicos cuando sea necesario para la tramitación de ayudas o prestaciones.</p>
-    <p style="font-size:12.5px;line-height:1.7;">La persona interesada puede ejercer en cualquier momento sus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad, dirigiéndose a Logos - Projectes Socials, Tarragona.</p>
-    <div style="margin-top:50px;display:flex;justify-content:space-between;">
-      <div style="text-align:center;width:45%;"><div style="border-top:1px solid #333;padding-top:6px;font-size:11px;">Firma de la persona interesada</div></div>
-      <div style="text-align:center;width:45%;"><div style="border-top:1px solid #333;padding-top:6px;font-size:11px;">Logos - Projectes Socials</div></div>
+    <h2 style="font-size:16px;text-align:center;border-bottom:2px solid #C99A2E;padding-bottom:10px;">${esCA ? 'Document de consentiment per al tractament de dades personals' : 'Documento de consentimiento para el tratamiento de datos personales'}</h2>
+
+    ${textoLegalConsentimientoHtml(esCA)}
+
+    <div style="page-break-before:always;margin-top:30px;padding-top:20px;border-top:2px solid #C99A2E;">
+      <h3 style="font-size:14px;margin:0 0 10px;">${esCA ? 'Consentiment de la persona interessada' : 'Consentimiento de la persona interesada'}</h3>
+      <p style="font-size:13px;line-height:1.6;"><strong>${esCA?'Nom':'Nombre'}:</strong> ${nombre || '—'}<br><strong>DNI/NIE:</strong> ${dni || '—'}<br><strong>${esCA?'Data de signatura':'Fecha de firma'}:</strong> ${fechaFmt}</p>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:16px;">${esCA
+        ? 'La persona identificada anteriorment AUTORITZA el tractament de les seves dades personals per part de la Associació Logos - Projectes Socials, d\'acord amb la normativa detallada anteriorment.'
+        : 'La persona identificada anteriormente AUTORIZA el tratamiento de sus datos personales por parte de la Associació Logos - Projectes Socials, de acuerdo con la normativa detallada anteriormente.'}</p>
+      <div style="margin-top:50px;display:flex;justify-content:space-between;">
+        <div style="text-align:center;width:45%;"><div style="border-top:1px solid #333;padding-top:6px;font-size:11px;">${esCA?'Signatura de la persona interessada':'Firma de la persona interesada'}</div></div>
+        <div style="text-align:center;width:45%;"><div style="border-top:1px solid #333;padding-top:6px;font-size:11px;">Logos - Projectes Socials</div></div>
+      </div>
     </div>
   `;
   document.body.appendChild(contenedor);
 
   try {
-    const canvas = await html2canvas(contenedor, { scale: 2, backgroundColor: '#ffffff' });
-    const imgData = canvas.toDataURL('image/png');
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const anchoPagina = pdf.internal.pageSize.getWidth();
-    const anchoImg = anchoPagina - 20;
-    const altoImg = (canvas.height * anchoImg) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 10, 10, anchoImg, altoImg);
     const nombreArchivo = 'mi-consentimiento-' + (nombre || 'logos').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.pdf';
-    pdf.save(nombreArchivo);
+    await generarPdfMultipagina(contenedor, nombreArchivo);
   } catch(e) {
     alert('No se pudo generar el PDF: ' + e.message);
   } finally {
@@ -2600,6 +2678,12 @@ async function renderDashboard(){
   const { data: documentos } = await sb.from('documentos').select('*').eq('usuario_id', CURRENT_USER.id).order('subido_en', { ascending:false });
   const { data: citas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').order('fecha', { ascending:true });
   const { data: consultas } = await sb.from('consultas_orientacion').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const { data: misProyectos } = await sb.from('proyecto_participantes').select('proyecto_id').eq('usuario_id', CURRENT_USER.id).eq('rol', 'beneficiario');
+  let avisosProyecto = [];
+  if(misProyectos && misProyectos.length){
+    const { data } = await sb.from('proyecto_avisos').select('*, proyectos(nombre)').in('proyecto_id', misProyectos.map(mp => mp.proyecto_id)).order('creado_en', { ascending:false }).limit(10);
+    avisosProyecto = data || [];
+  }
 
   const nombre = (perfil && perfil.nombre_completo) ? perfil.nombre_completo : CURRENT_USER.email;
   const inicial = nombre.trim().charAt(0).toUpperCase();
@@ -2673,6 +2757,17 @@ async function renderDashboard(){
     </div>
 
     ${recordatoriosHtml}
+
+    ${avisosProyecto.length ? `
+    <div class="section-label">${LANG==='ca' ? 'AVISOS DEL PROJECTE' : 'AVISOS DEL PROYECTO'}</div>
+    <div class="panel-card" style="margin-bottom:16px;">
+      ${avisosProyecto.map(av => `
+        <div style="padding:8px 0;border-bottom:1px solid var(--line);">
+          <p class="subtle" style="margin:0 0 2px;font-size:11px;">${av.proyectos ? av.proyectos.nombre : ''} · ${new Date(av.creado_en).toLocaleDateString(LANG==='ca'?'ca-ES':'es-ES')}</p>
+          <p style="margin:0;font-weight:700;font-size:13.5px;">${av.titulo}</p>
+          <p style="margin:2px 0 0;font-size:13px;">${av.mensaje}</p>
+        </div>`).join('')}
+    </div>` : ''}
 
     ${consultasHtml ? `<div class="section-label">${LANG==='ca' ? 'LA MEVA CONSULTA D\'ORIENTACIÓ' : 'MI CONSULTA DE ORIENTACIÓN'}</div>${consultasHtml}` : ''}
 
