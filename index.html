@@ -1870,9 +1870,13 @@ function renderWebRedes(){
     <a href="${e.url}" target="_blank" rel="noopener" class="official-link" style="margin-bottom:10px;">
       <div><div class="l1">${e.nombre}</div><div class="l2">${e.desc}</div></div>
     </a>`).join('');
+  const logoSrc = document.querySelector('.sidebar-logo-img').src;
   document.getElementById('webredes-content').innerHTML = `
-    <h2 class="screen-title">🌐 ${esCA ? 'Web i xarxes socials' : 'Web y redes sociales'}</h2>
-    <p class="subtle" style="margin:0 0 16px;">${esCA ? "Segueix l'actualitat de Logos i contacta amb nosaltres." : 'Sigue la actualidad de Logos y contacta con nosotros.'}</p>
+    <div style="text-align:center;margin-bottom:18px;">
+      <img src="${logoSrc}" alt="Logos" style="max-width:150px;margin-bottom:6px;">
+      <p style="font-family:var(--font-display);font-style:italic;color:var(--ochre);margin:0;font-size:14px;">${esCA ? 'Segueix-nos, som Logos' : 'Síguenos, somos Logos'}</p>
+    </div>
+    <p class="subtle" style="margin:0 0 16px;text-align:center;">${esCA ? "Aquests són els canals oficials de l'Associació Logos — Projectes Socials." : 'Estos son los canales oficiales de la Associació Logos — Projectes Socials.'}</p>
     ${enlacesHtml}
   `;
 }
