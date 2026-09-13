@@ -243,6 +243,7 @@
     <div class="sidebar-public-nav">
       <button data-target="empleo" onclick="showScreen('empleo');renderBusquedaEmpleo()" id="sidebar-empleo-btn" style="background:var(--ochre);color:#fff;">💼 Búsqueda de empleo</button>
       <button data-target="cuidados" onclick="showScreen('cuidados');renderCuidadosCompania()" id="sidebar-cuidados-btn" style="background:var(--teal);color:#fff;">🧓 Cuidados y compañía</button>
+      <button data-target="crearproyecto" onclick="showScreen('crearproyecto');renderCrearProyectoEntrada()" id="sidebar-crearproyecto-btn" style="background:var(--ochre);color:#fff;">💡 Crea tu proyecto</button>
       <button data-target="webredes" onclick="showScreen('webredes');renderWebRedes()" id="sidebar-webredes-btn" style="background:var(--teal-dark);color:#fff;">🌐 Web y redes sociales</button>
       <button data-target="aulaciudadano" onclick="showScreen('aulaciudadano');renderAulaCiudadano()" id="sidebar-aula-btn">🎓 Aula Virtual</button>
       <button data-target="voluntariado" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🤝 Voluntariado</button>
@@ -284,6 +285,7 @@
         <div class="section-label" style="margin-top:22px;">Más accesos</div>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('empleo');renderBusquedaEmpleo()">💼 <span style="margin-left:10px;">Búsqueda de empleo</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('cuidados');renderCuidadosCompania()">🧓 <span style="margin-left:10px;">Cuidados y compañía</span></button>
+        <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('crearproyecto');renderCrearProyectoEntrada()">💡 <span style="margin-left:10px;">Crea tu proyecto</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('webredes');renderWebRedes()">🌐 <span style="margin-left:10px;">Web y redes sociales</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('aulaciudadano');renderAulaCiudadano()">🎓 <span style="margin-left:10px;">Aula Virtual</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('voluntariado');renderVoluntariado()">🤝 <span style="margin-left:10px;">Voluntariado</span></button>
@@ -384,6 +386,11 @@
   <div class="screen" id="screen-cuidados">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
     <div class="content" id="cuidados-content"></div>
+  </div>
+
+  <div class="screen" id="screen-crearproyecto">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="crearproyecto-content"></div>
   </div>
 
   <div class="screen" id="screen-webredes">
@@ -1879,6 +1886,325 @@ function renderWebRedes(){
     <p class="subtle" style="margin:0 0 16px;text-align:center;">${esCA ? "Aquests són els canals oficials de l'Associació Logos — Projectes Socials." : 'Estos son los canales oficiales de la Associació Logos — Projectes Socials.'}</p>
     ${enlacesHtml}
   `;
+}
+
+const ETAPAS_ITINERARIO = [
+  { num: 1, icono: '💡', titulo: { es: 'Mi idea', ca: 'La meva idea' },
+    campos: [
+      { id: 'idea_que', label: { es: '¿Qué quiero hacer?', ca: 'Què vull fer?' }, tipo: 'textarea' },
+      { id: 'idea_porque', label: { es: '¿Por qué quiero hacerlo?', ca: 'Per què ho vull fer?' }, tipo: 'textarea' },
+      { id: 'idea_problema', label: { es: '¿Qué problema quiero solucionar?', ca: 'Quin problema vull solucionar?' }, tipo: 'textarea' },
+      { id: 'idea_a_quien', label: { es: '¿A quién quiero ayudar?', ca: 'A qui vull ajudar?' }, tipo: 'textarea' },
+      { id: 'idea_descripcion', label: { es: 'Descripción breve de la idea', ca: 'Descripció breu de la idea' }, tipo: 'textarea' },
+    ]},
+  { num: 2, icono: '🎯', titulo: { es: 'Definir el proyecto', ca: 'Definir el projecte' },
+    campos: [
+      { id: 'nombre_proyecto', label: { es: 'Nombre del proyecto', ca: 'Nom del projecte' }, tipo: 'input' },
+      { id: 'objetivo_general', label: { es: 'Objetivo general', ca: 'Objectiu general' }, tipo: 'textarea' },
+      { id: 'objetivos_especificos', label: { es: 'Objetivos específicos', ca: 'Objectius específics' }, tipo: 'textarea' },
+      { id: 'beneficiarios', label: { es: 'Personas beneficiarias', ca: 'Persones beneficiàries' }, tipo: 'textarea' },
+      { id: 'necesidades_atender', label: { es: 'Necesidades que queremos atender', ca: 'Necessitats que volem atendre' }, tipo: 'textarea' },
+      { id: 'lugar_desarrollo', label: { es: 'Lugar donde se desarrollará', ca: 'Lloc on es desenvoluparà' }, tipo: 'input' },
+    ]},
+  { num: 3, icono: '🔎', titulo: { es: 'Analizar la necesidad', ca: 'Analitzar la necessitat' },
+    campos: [
+      { id: 'necesidad_existe', label: { es: '¿Existe realmente esta necesidad?', ca: 'Existeix realment aquesta necessitat?' }, tipo: 'textarea' },
+      { id: 'personas_afectadas', label: { es: '¿A cuántas personas afecta?', ca: 'A quantes persones afecta?' }, tipo: 'input' },
+      { id: 'recursos_actuales', label: { es: '¿Qué recursos existen actualmente?', ca: 'Quins recursos existeixen actualment?' }, tipo: 'textarea' },
+      { id: 'otras_entidades', label: { es: '¿Qué hacen otras entidades?', ca: 'Què fan altres entitats?' }, tipo: 'textarea' },
+      { id: 'aporte_diferente', label: { es: '¿Qué aportará nuestro proyecto de diferente?', ca: 'Què aportarà el nostre projecte de diferent?' }, tipo: 'textarea' },
+    ]},
+  { num: 4, icono: '🛠️', titulo: { es: 'Diseñar las actividades', ca: 'Dissenyar les activitats' },
+    campos: [
+      { id: 'actividades_que', label: { es: '¿Qué vamos a hacer?', ca: 'Què farem?' }, tipo: 'textarea' },
+      { id: 'actividades_como', label: { es: '¿Cómo lo vamos a hacer?', ca: 'Com ho farem?' }, tipo: 'textarea' },
+      { id: 'actividades_cuando', label: { es: '¿Cuándo?', ca: 'Quan?' }, tipo: 'input' },
+      { id: 'actividades_donde', label: { es: '¿Dónde?', ca: 'On?' }, tipo: 'input' },
+      { id: 'actividades_quien', label: { es: '¿Quién participará?', ca: 'Qui participarà?' }, tipo: 'textarea' },
+      { id: 'actividades_materiales', label: { es: '¿Qué materiales necesitamos?', ca: 'Quins materials necessitem?' }, tipo: 'textarea' },
+    ]},
+  { num: 5, icono: '👥', titulo: { es: 'Organizar el equipo', ca: 'Organitzar l\'equip' },
+    campos: [
+      { id: 'equipo_responsable', label: { es: 'Responsable del proyecto', ca: 'Responsable del projecte' }, tipo: 'input' },
+      { id: 'equipo_colaboradores', label: { es: 'Colaboradores', ca: 'Col·laboradors' }, tipo: 'textarea' },
+      { id: 'equipo_voluntarios', label: { es: 'Voluntarios', ca: 'Voluntaris' }, tipo: 'textarea' },
+      { id: 'equipo_entidades_asociadas', label: { es: 'Entidades asociadas', ca: 'Entitats associades' }, tipo: 'textarea' },
+      { id: 'equipo_funciones', label: { es: 'Funciones de cada persona', ca: 'Funcions de cada persona' }, tipo: 'textarea' },
+    ]},
+  { num: 6, icono: '💰', titulo: { es: 'Preparar el presupuesto', ca: 'Preparar el pressupost' },
+    campos: [
+      { id: 'presupuesto_recursos_necesarios', label: { es: 'Recursos necesarios', ca: 'Recursos necessaris' }, tipo: 'textarea' },
+      { id: 'presupuesto_gastos', label: { es: 'Gastos', ca: 'Despeses' }, tipo: 'textarea' },
+      { id: 'presupuesto_recursos_propios', label: { es: 'Recursos propios', ca: 'Recursos propis' }, tipo: 'textarea' },
+      { id: 'presupuesto_subvenciones', label: { es: 'Subvenciones posibles', ca: 'Subvencions possibles' }, tipo: 'textarea' },
+      { id: 'presupuesto_donaciones', label: { es: 'Donaciones', ca: 'Donacions' }, tipo: 'textarea' },
+      { id: 'presupuesto_colaboraciones', label: { es: 'Colaboraciones', ca: 'Col·laboracions' }, tipo: 'textarea' },
+      { id: 'presupuesto_otras_fuentes', label: { es: 'Otras fuentes de financiación', ca: 'Altres fonts de finançament' }, tipo: 'textarea' },
+    ]},
+  { num: 7, icono: '📅', titulo: { es: 'Crear el calendario', ca: 'Crear el calendari' },
+    campos: [
+      { id: 'calendario_inicio', label: { es: 'Inicio', ca: 'Inici' }, tipo: 'date' },
+      { id: 'calendario_preparacion', label: { es: 'Preparación', ca: 'Preparació' }, tipo: 'input' },
+      { id: 'calendario_actividades', label: { es: 'Actividades', ca: 'Activitats' }, tipo: 'input' },
+      { id: 'calendario_seguimiento', label: { es: 'Seguimiento', ca: 'Seguiment' }, tipo: 'input' },
+      { id: 'calendario_evaluacion', label: { es: 'Evaluación', ca: 'Avaluació' }, tipo: 'input' },
+      { id: 'calendario_finalizacion', label: { es: 'Finalización', ca: 'Finalització' }, tipo: 'date' },
+    ]},
+];
+
+async function renderCrearProyectoEntrada(){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('crearproyecto-content');
+  cont.innerHTML = `<div class="placeholder">${esCA?'Carregant…':'Cargando…'}</div>`;
+
+  const { data: itinerarios } = await sb.from('itinerario_proyectos').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const enCurso = (itinerarios||[]).filter(it => it.estado === 'en_curso');
+
+  const continuarHtml = enCurso.length ? enCurso.map(it => `
+    <div class="panel-card" style="margin-bottom:12px;">
+      <h3 style="margin:0 0 4px;">${it.nombre_proyecto || (esCA?'Idea sense nom encara':'Idea sin nombre todavía')}</h3>
+      <p class="subtle" style="margin:0 0 10px;">${esCA?'Vas per l\'etapa':'Vas por la etapa'} ${it.etapa_actual} ${esCA?'de 8':'de 8'}</p>
+      <button class="primary-btn" onclick="renderEtapaItinerario('${it.id}', ${it.etapa_actual})">${esCA?'Continuar':'Continuar'}</button>
+    </div>`).join('') : '';
+
+  cont.innerHTML = `
+    <h2 class="screen-title">💡 ${esCA?'Crea el teu projecte':'Crea tu proyecto'}</h2>
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:16px;">
+      <p style="margin:0;font-size:14px;">${esCA
+        ? "Tens una idea i no saps com convertir-la en un projecte? Logos t'acompanya pas a pas, des de la idea fins a posar-la en marxa."
+        : '¿Tienes una idea y no sabes cómo convertirla en un proyecto? Logos te acompaña paso a paso, desde la idea hasta ponerla en marcha.'}</p>
+    </div>
+
+    ${continuarHtml}
+
+    <button class="primary-btn" style="background:var(--good);margin-bottom:10px;" onclick="iniciarItinerario('idea')">🟢 ${esCA?'Tinc una idea':'Tengo una idea'}</button>
+    <button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="iniciarItinerario('existente')">🟡 ${esCA?'Ja tinc un projecte':'Ya tengo un proyecto'}</button>
+    <button class="primary-btn" style="background:var(--teal);margin-bottom:10px;" onclick="iniciarItinerario('mejorar')">🔵 ${esCA?'Vull millorar un projecte existent':'Quiero mejorar un proyecto existente'}</button>
+  `;
+}
+
+async function iniciarItinerario(modo){
+  const { data, error } = await sb.from('itinerario_proyectos').insert({ usuario_id: CURRENT_USER.id, modo }).select('id').single();
+  if(error){ alert(error.message); return; }
+  renderEtapaItinerario(data.id, 1);
+}
+
+async function renderEtapaItinerario(itinerarioId, etapaNum){
+  const esCA = LANG === 'ca';
+  window.__itinerarioActual = itinerarioId;
+  const cont = document.getElementById('crearproyecto-content');
+  cont.innerHTML = `<div class="placeholder">${esCA?'Carregant…':'Cargando…'}</div>`;
+
+  if(etapaNum > 7){ renderResumenItinerarioProyecto(itinerarioId); return; }
+
+  const { data: it } = await sb.from('itinerario_proyectos').select('*').eq('id', itinerarioId).maybeSingle();
+  const etapa = ETAPAS_ITINERARIO[etapaNum - 1];
+
+  const camposHtml = etapa.campos.map(c => {
+    const valorActual = it ? (it[c.id] || '') : '';
+    const lbl = esCA ? c.label.ca : c.label.es;
+    if(c.tipo === 'textarea') return `<div class="field"><label>${lbl}</label><textarea id="campo-${c.id}" rows="2">${valorActual}</textarea></div>`;
+    if(c.tipo === 'date') return `<div class="field"><label>${lbl}</label><input type="date" id="campo-${c.id}" value="${valorActual}"></div>`;
+    return `<div class="field"><label>${lbl}</label><input type="text" id="campo-${c.id}" value="${valorActual}"></div>`;
+  }).join('');
+
+  cont.innerHTML = `
+    <div class="panel-card" style="margin-bottom:16px;background:var(--good-soft);border-color:var(--good);">
+      <p style="margin:0;font-size:12px;font-weight:700;">${esCA?'ETAPA':'ETAPA'} ${etapaNum} ${esCA?'DE':'DE'} 7</p>
+    </div>
+    <h2 class="screen-title">${etapa.icono} ${esCA ? etapa.titulo.ca : etapa.titulo.es}</h2>
+    ${camposHtml}
+    <div style="display:flex;gap:10px;margin-top:10px;">
+      ${etapaNum > 1 ? `<button class="link-btn" onclick="renderEtapaItinerario('${itinerarioId}', ${etapaNum - 1})">← ${esCA?'Enrere':'Atrás'}</button>` : ''}
+      <button class="primary-btn" style="flex:1;" onclick="guardarEtapaItinerario('${itinerarioId}', ${etapaNum})">${etapaNum === 7 ? (esCA?'Veure el meu projecte':'Ver mi proyecto') : (esCA?'Guardar i continuar':'Guardar y continuar')} →</button>
+    </div>
+  `;
+}
+
+async function guardarEtapaItinerario(itinerarioId, etapaNum){
+  const etapa = ETAPAS_ITINERARIO[etapaNum - 1];
+  const payload = { etapa_actual: etapaNum + 1, actualizado_en: new Date().toISOString() };
+  etapa.campos.forEach(c => { payload[c.id] = document.getElementById(`campo-${c.id}`).value.trim() || null; });
+  const { error } = await sb.from('itinerario_proyectos').update(payload).eq('id', itinerarioId);
+  if(error){ alert(error.message); return; }
+  renderEtapaItinerario(itinerarioId, etapaNum + 1);
+}
+
+async function renderResumenItinerarioProyecto(itinerarioId){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('crearproyecto-content');
+  const { data: it } = await sb.from('itinerario_proyectos').select('*').eq('id', itinerarioId).maybeSingle();
+  if(!it){ cont.innerHTML = `<div class="empty-note">${esCA?'No s\'ha trobat.':'No se ha encontrado.'}</div>`; return; }
+
+  const punto = (num, titulo, contenido) => `
+    <div class="panel-card" style="margin-bottom:10px;">
+      <p class="subtle" style="margin:0 0 4px;font-weight:700;">${num}. ${titulo}</p>
+      <p style="margin:0;font-size:13.5px;white-space:pre-wrap;">${contenido || (esCA?'— (encara sense omplir) —':'— (todavía sin rellenar) —')}</p>
+    </div>`;
+
+  cont.innerHTML = `
+    <h2 class="screen-title">📄 ${it.nombre_proyecto || (esCA?'El teu projecte':'Tu proyecto')}</h2>
+    <p class="subtle" style="margin-bottom:16px;">${esCA
+      ? 'Aquest és el resum del teu projecte, generat a partir del que has anat omplint. Pots tornar a qualsevol etapa per completar-lo més.'
+      : 'Este es el resumen de tu proyecto, generado a partir de lo que has ido rellenando. Puedes volver a cualquier etapa para completarlo más.'}</p>
+
+    ${punto(1, esCA?'Nom':'Nombre', it.nombre_proyecto)}
+    ${punto(2, esCA?'Resum':'Resumen', it.idea_descripcion)}
+    ${punto(3, esCA?'Justificació':'Justificación', it.idea_porque)}
+    ${punto(4, esCA?'Diagnòstic':'Diagnóstico', [it.necesidad_existe, it.personas_afectadas, it.recursos_actuales, it.otras_entidades, it.aporte_diferente].filter(Boolean).join('\n'))}
+    ${punto(5, esCA?'Objectius':'Objetivos', [it.objetivo_general, it.objetivos_especificos].filter(Boolean).join('\n'))}
+    ${punto(6, esCA?'Beneficiaris':'Beneficiarios', it.beneficiarios)}
+    ${punto(7, esCA?'Activitats':'Actividades', [it.actividades_que, it.actividades_cuando, it.actividades_donde].filter(Boolean).join('\n'))}
+    ${punto(8, esCA?'Metodologia':'Metodología', it.actividades_como)}
+    ${punto(9, esCA?'Equip':'Equipo', [it.equipo_responsable, it.equipo_colaboradores, it.equipo_voluntarios].filter(Boolean).join('\n'))}
+    ${punto(10, esCA?'Calendari':'Calendario', [it.calendario_inicio, it.calendario_actividades, it.calendario_finalizacion].filter(Boolean).join(' · '))}
+    ${punto(11, esCA?'Recursos':'Recursos', it.actividades_materiales)}
+    ${punto(12, esCA?'Pressupost':'Presupuesto', [it.presupuesto_gastos, it.presupuesto_subvenciones, it.presupuesto_donaciones].filter(Boolean).join('\n'))}
+    ${punto(13, esCA?'Avaluació':'Evaluación', it.calendario_evaluacion)}
+    ${punto(14, esCA?'Continuïtat':'Continuidad del proyecto', it.calendario_seguimiento)}
+
+    <button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="renderEtapa9Itinerario('${itinerarioId}')">🔗 ${esCA?'Continuar: buscar recursos':'Continuar: buscar recursos'} →</button>
+    <button class="link-btn" onclick="renderEtapaItinerario('${itinerarioId}', 1)">← ${esCA?'Tornar a editar les etapes':'Volver a editar las etapas'}</button>
+  `;
+}
+
+async function renderEtapa9Itinerario(itinerarioId){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('crearproyecto-content');
+  const { data: it } = await sb.from('itinerario_proyectos').select('*').eq('id', itinerarioId).maybeSingle();
+
+  cont.innerHTML = `
+    <div class="panel-card" style="margin-bottom:16px;background:var(--good-soft);border-color:var(--good);">
+      <p style="margin:0;font-size:12px;font-weight:700;">ETAPA 9 ${esCA?'DE':'DE'} 11</p>
+    </div>
+    <h2 class="screen-title">🔗 ${esCA?'Recursos i oportunitats':'Recursos y oportunidades'}</h2>
+    <p class="subtle" style="margin-bottom:16px;">${esCA
+      ? "L'equip de Logos revisarà la teva idea i t'orientarà cap a subvencions, convocatòries, ajuntaments, la Generalitat, la Diputació, fundacions, altres entitats, espais, formació o voluntariat que et puguin ajudar."
+      : 'El equipo de Logos revisará tu idea y te orientará hacia subvenciones, convocatorias, ayuntamientos, la Generalitat, la Diputación, fundaciones, otras entidades, espacios, formación o voluntariado que te puedan ayudar.'}</p>
+
+    <div class="panel-card" style="margin-bottom:16px;">
+      <h3>📋 ${esCA?'Notes del teu tècnic':'Notas de tu técnico'}</h3>
+      <p style="margin:0;font-size:13.5px;white-space:pre-wrap;">${it.recursos_oportunidades || (esCA
+        ? 'Encara no hi ha notes. Comenta la teva idea amb el teu tècnic de referència a Logos, o espera que la revisi.'
+        : 'Todavía no hay notas. Comenta tu idea con tu técnico de referencia en Logos, o espera a que la revise.')}</p>
+    </div>
+
+    <a href="#" onclick="showScreen('home');return false;" class="official-link" style="margin-bottom:16px;">
+      <div><div class="l1">${esCA?'Consulta també el catàleg de Logos':'Consulta también el catálogo de Logos'}</div><div class="l2">${esCA?'Ajuts i tràmits ja catalogats':'Ayudas y trámites ya catalogados'}</div></div>
+    </a>
+
+    <button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="renderEtapa10Itinerario('${itinerarioId}')">🚀 ${esCA?'Continuar: posar en marxa':'Continuar: poner en marcha'} →</button>
+    <button class="link-btn" onclick="renderResumenItinerarioProyecto('${itinerarioId}')">← ${esCA?'Tornar al resum':'Volver al resumen'}</button>
+  `;
+}
+
+async function renderEtapa10Itinerario(itinerarioId){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('crearproyecto-content');
+  const { data: it } = await sb.from('itinerario_proyectos').select('*').eq('id', itinerarioId).maybeSingle();
+
+  const items = [
+    { campo: 'marcha_documentacion', label: esCA?'Preparar la documentació':'Preparar la documentación' },
+    { campo: 'marcha_presentado', label: esCA?'Presentar el projecte':'Presentar el proyecto' },
+    { campo: 'marcha_financiacion', label: esCA?'Buscar finançament':'Buscar financiación' },
+    { campo: 'marcha_equipo', label: esCA?'Crear l\'equip':'Crear el equipo' },
+    { campo: 'marcha_actividades_iniciadas', label: esCA?'Començar les activitats':'Comenzar las actividades' },
+  ];
+  const todoMarcado = items.every(i => it[i.campo]);
+
+  cont.innerHTML = `
+    <div class="panel-card" style="margin-bottom:16px;background:var(--good-soft);border-color:var(--good);">
+      <p style="margin:0;font-size:12px;font-weight:700;">ETAPA 10 ${esCA?'DE':'DE'} 11</p>
+    </div>
+    <h2 class="screen-title">🚀 ${esCA?'Presentar i posar en marxa':'Presentar y poner en marcha'}</h2>
+    <div class="panel-card" style="margin-bottom:16px;">
+      ${items.map(i => `
+        <label class="checkbox-row" style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);">
+          <input type="checkbox" id="check-${i.campo}" ${it[i.campo] ? 'checked' : ''} onchange="guardarChecklistEtapa10('${itinerarioId}','${i.campo}', this.checked)">
+          <span>${i.label}</span>
+        </label>`).join('')}
+    </div>
+
+    ${it.proyecto_id
+      ? `<div class="panel-card" style="background:var(--good-soft);border-color:var(--good);margin-bottom:16px;"><p style="margin:0;">✅ ${esCA?'Aquest projecte ja està registrat com a projecte en marxa a Logos.':'Este proyecto ya está registrado como proyecto en marcha en Logos.'}</p></div>`
+      : `<button class="primary-btn" style="background:var(--good);margin-bottom:10px;" ${todoMarcado ? '' : 'disabled'} onclick="marcarProyectoEnMarcha('${itinerarioId}')">🚀 ${esCA?'Marcar com a projecte en marxa':'Marcar como proyecto en marcha'}</button>
+         ${!todoMarcado ? `<p class="subtle" style="margin:0 0 10px;">${esCA?'Marca tots els passos per poder activar-lo.':'Marca todos los pasos para poder activarlo.'}</p>` : ''}`}
+
+    <button class="primary-btn" style="background:var(--ochre);margin-bottom:10px;" onclick="renderEtapa11Itinerario('${itinerarioId}')">📊 ${esCA?'Continuar: seguiment':'Continuar: seguimiento'} →</button>
+    <button class="link-btn" onclick="renderEtapa9Itinerario('${itinerarioId}')">← ${esCA?'Enrere':'Atrás'}</button>
+  `;
+}
+
+async function guardarChecklistEtapa10(itinerarioId, campo, valor){
+  await sb.from('itinerario_proyectos').update({ [campo]: valor }).eq('id', itinerarioId);
+}
+
+async function marcarProyectoEnMarcha(itinerarioId){
+  const esCA = LANG === 'ca';
+  const { data: it } = await sb.from('itinerario_proyectos').select('*').eq('id', itinerarioId).maybeSingle();
+  const { data: nuevoProyecto, error: errorProyecto } = await sb.from('proyectos')
+    .insert({ nombre: it.nombre_proyecto || (esCA?'Projecte nou':'Proyecto nuevo'), descripcion: it.idea_descripcion, creado_por_email: CURRENT_USER.email })
+    .select('id').single();
+  if(errorProyecto){ alert(errorProyecto.message); return; }
+
+  await sb.from('proyecto_participantes').insert({ proyecto_id: nuevoProyecto.id, rol: 'beneficiario', usuario_id: CURRENT_USER.id, anadido_por_email: CURRENT_USER.email });
+  const { error } = await sb.from('itinerario_proyectos').update({ proyecto_id: nuevoProyecto.id, estado: 'en_marcha' }).eq('id', itinerarioId);
+  if(error){ alert(error.message); return; }
+  alert(esCA ? 'Enhorabona! El teu projecte ja està en marxa a Logos.' : '¡Enhorabuena! Tu proyecto ya está en marcha en Logos.');
+  renderEtapa10Itinerario(itinerarioId);
+}
+
+async function renderEtapa11Itinerario(itinerarioId){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('crearproyecto-content');
+  const { data: seguimientos } = await sb.from('itinerario_seguimientos').select('*').eq('itinerario_id', itinerarioId).order('fecha', { ascending:false });
+
+  const seguimientosHtml = (seguimientos && seguimientos.length)
+    ? seguimientos.map(s => `
+        <div class="panel-card" style="margin-bottom:10px;">
+          <p class="subtle" style="margin:0 0 6px;font-weight:700;">${new Date(s.fecha+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES')}</p>
+          ${s.actividades_realizadas ? `<p style="margin:0 0 4px;font-size:13px;"><strong>${esCA?'Activitats':'Actividades'}:</strong> ${s.actividades_realizadas}</p>` : ''}
+          ${s.personas_atendidas ? `<p style="margin:0 0 4px;font-size:13px;"><strong>${esCA?'Persones ateses':'Personas atendidas'}:</strong> ${s.personas_atendidas}</p>` : ''}
+          ${s.resultados ? `<p style="margin:0 0 4px;font-size:13px;"><strong>${esCA?'Resultats':'Resultados'}:</strong> ${s.resultados}</p>` : ''}
+          ${s.dificultades ? `<p style="margin:0;font-size:13px;"><strong>${esCA?'Dificultats':'Dificultades'}:</strong> ${s.dificultades}</p>` : ''}
+        </div>`).join('')
+    : `<div class="empty-note">${esCA?'Encara no hi ha cap seguiment registrat.':'Todavía no hay ningún seguimiento registrado.'}</div>`;
+
+  cont.innerHTML = `
+    <div class="panel-card" style="margin-bottom:16px;background:var(--good-soft);border-color:var(--good);">
+      <p style="margin:0;font-size:12px;font-weight:700;">ETAPA 11 ${esCA?'DE':'DE'} 11</p>
+    </div>
+    <h2 class="screen-title">📊 ${esCA?'Seguiment i avaluació':'Seguimiento y evaluación'}</h2>
+    <p class="subtle" style="margin-bottom:16px;">${esCA?'Vés registrant com avança el teu projecte, de tant en tant.':'Ve registrando cómo avanza tu proyecto, de vez en cuando.'}</p>
+
+    ${seguimientosHtml}
+
+    <div class="panel-card" style="margin-bottom:16px;">
+      <h3>➕ ${esCA?'Nou registre':'Nuevo registro'}</h3>
+      <div class="field"><label>${esCA?'Activitats realitzades':'Actividades realizadas'}</label><textarea id="seg-actividades" rows="2"></textarea></div>
+      <div class="field"><label>${esCA?'Persones ateses':'Personas atendidas'}</label><input type="text" id="seg-personas"></div>
+      <div class="field"><label>${esCA?'Resultats':'Resultados'}</label><textarea id="seg-resultados" rows="2"></textarea></div>
+      <div class="field"><label>${esCA?'Dificultats':'Dificultades'}</label><textarea id="seg-dificultades" rows="2"></textarea></div>
+      <div class="field"><label>${esCA?'Millores necessàries':'Mejoras necesarias'}</label><textarea id="seg-mejoras" rows="2"></textarea></div>
+      <button class="primary-btn" onclick="agregarSeguimientoItinerario('${itinerarioId}')">➕ ${esCA?'Guardar registre':'Guardar registro'}</button>
+    </div>
+
+    <button class="link-btn" onclick="renderEtapa10Itinerario('${itinerarioId}')">← ${esCA?'Enrere':'Atrás'}</button>
+  `;
+}
+
+async function agregarSeguimientoItinerario(itinerarioId){
+  const payload = {
+    itinerario_id: itinerarioId,
+    actividades_realizadas: document.getElementById('seg-actividades').value.trim() || null,
+    personas_atendidas: document.getElementById('seg-personas').value.trim() || null,
+    resultados: document.getElementById('seg-resultados').value.trim() || null,
+    dificultades: document.getElementById('seg-dificultades').value.trim() || null,
+    mejoras_necesarias: document.getElementById('seg-mejoras').value.trim() || null,
+  };
+  const { error } = await sb.from('itinerario_seguimientos').insert(payload);
+  if(error){ alert(error.message); return; }
+  renderEtapa11Itinerario(itinerarioId);
 }
 
 function renderCuidadosCompania(){
