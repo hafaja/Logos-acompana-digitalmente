@@ -111,10 +111,13 @@
   .trust-banner{display:flex;gap:10px;background:var(--ochre-soft);border:1.5px solid var(--ochre);border-radius:14px;padding:12px 14px;margin-bottom:18px;}
   .trust-banner strong{font-size:13px;display:block;margin-bottom:2px;color:#7A4A1F;}
   .trust-banner span{font-size:12.5px;color:#7A4A1F;line-height:1.4;}
-  .service-row{display:flex;gap:12px;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer;}
+  .service-row{display:flex;gap:12px;align-items:center;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;}
+  .service-row:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,35,63,.1);border-color:var(--ochre);}
   .service-row .icon{width:38px;height:38px;border-radius:10px;background:#E6E9F1;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
   .service-row .txt strong{display:block;font-size:14.5px;}
   .service-row .txt span{font-size:12px;color:var(--ink-soft);}
+  .necesidad-grupo{background:var(--bg);border:1.5px dashed var(--line);border-radius:14px;padding:12px 12px 4px;margin:12px 0;}
+  .necesidad-grupo-titulo{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 2px 8px;}
   .verified-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--teal-dark);background:#E6E9F1;border:1px solid var(--teal);border-radius:999px;padding:3px 9px;}
   .pending-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#7A4A1F;background:var(--ochre-soft);border:1px solid var(--ochre);border-radius:999px;padding:3px 9px;}
   .detail-block{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
@@ -514,7 +517,7 @@ function showNecesidades(ambitoId, silent){
       const tag = `<span class="next-tag">${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>`;
       return `
         <div class="service-row" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
-          <div class="icon">🕓</div>
+          <div class="icon" style="background:var(--ochre-soft);color:#7A4A1F;">🕓</div>
           <div class="txt" style="flex:1;"><strong>${n.nombre[LANG]}</strong></div>
           ${tag}
         </div>`;
@@ -522,7 +525,7 @@ function showNecesidades(ambitoId, silent){
     if(ids.length === 1){
       return `
         <div class="service-row" onclick="showDetail('${ids[0]}')">
-          <div class="icon">📋</div>
+          <div class="icon" style="background:var(--good-soft);color:var(--good);">📋</div>
           <div class="txt" style="flex:1;"><strong>${n.nombre[LANG]}</strong></div>
         </div>`;
     }
@@ -531,12 +534,12 @@ function showNecesidades(ambitoId, silent){
       const s = SERVICIOS.find(x => x.id === sid);
       if(!s) return '';
       return `
-        <div class="service-row" style="margin-left:14px;" onclick="showDetail('${sid}')">
-          <div class="icon">📋</div>
+        <div class="service-row" onclick="showDetail('${sid}')">
+          <div class="icon" style="background:#E7ECFF;color:#33449E;">📋</div>
           <div class="txt" style="flex:1;"><strong>${s.nombre[LANG]}</strong>${s.municipio ? `<span>${s.municipio}</span>` : ''}</div>
         </div>`;
     }).join('');
-    return `<div class="section-label" style="margin-top:10px;">${n.nombre[LANG]}</div>${subRows}`;
+    return `<div class="necesidad-grupo"><div class="necesidad-grupo-titulo">${n.nombre[LANG]}</div>${subRows}</div>`;
   }).join('');
 
   if(!silent) showScreen('necesidades');
@@ -3192,8 +3195,11 @@ async function renderDashboard(){
     ${recordatoriosHtml}
 
     ${avisosProyecto.length ? `
-    <div class="section-label">${LANG==='ca' ? 'AVISOS DEL PROJECTE' : 'AVISOS DEL PROYECTO'}</div>
     <div class="panel-card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">📣</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'Avisos del projecte' : 'Avisos del proyecto'}</h3>
+      </div>
       ${avisosProyecto.map(av => `
         <div style="padding:8px 0;border-bottom:1px solid var(--line);">
           <p class="subtle" style="margin:0 0 2px;font-size:11px;">${av.proyectos ? av.proyectos.nombre : ''} · ${new Date(av.creado_en).toLocaleDateString(LANG==='ca'?'ca-ES':'es-ES')}</p>
@@ -3202,36 +3208,60 @@ async function renderDashboard(){
         </div>`).join('')}
     </div>` : ''}
 
-    ${consultasHtml ? `<div class="section-label">${LANG==='ca' ? 'LA MEVA CONSULTA D\'ORIENTACIÓ' : 'MI CONSULTA DE ORIENTACIÓN'}</div>${consultasHtml}` : ''}
+    ${consultasHtml ? `
+    <div style="display:flex;align-items:center;gap:10px;margin:0 0 8px;">
+      <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">💬</div>
+      <h3 style="margin:0;font-size:14px;">${LANG==='ca' ? 'La meva consulta d\'orientació' : 'Mi consulta de orientación'}</h3>
+    </div>
+    ${consultasHtml}` : ''}
 
-    <div class="section-label">📅 ${LANG==='ca' ? 'LES MEVES CITES' : 'MIS CITAS'}</div>
-    ${citasHtml}
-    <button class="primary-btn" style="background:var(--ochre);margin-top:8px;margin-bottom:4px;" onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button>
+    <div class="panel-card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:var(--good-soft);color:var(--good);margin:0;">📅</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'Les meves cites' : 'Mis citas'}</h3>
+      </div>
+      ${citasHtml}
+      <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button>
+    </div>
 
-    <div class="section-label" style="margin-top:18px;">🗂️ ${t.misTramites}</div>
-    ${tramitesHtml}
+    <div class="panel-card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🗂️</div>
+        <h3 style="margin:0;">${t.misTramites}</h3>
+      </div>
+      ${tramitesHtml}
+    </div>
 
     ${perfil && perfil.consentimiento_firmado ? `
-    <div class="doc-upload-row" style="margin-top:18px;">
+    <div class="panel-card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">✅</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
+      </div>
       <p class="subtle" style="margin:0 0 8px;">${LANG==='ca'
         ? `Vas signar el teu consentiment de protecció de dades el ${perfil.consentimiento_fecha ? new Date(perfil.consentimiento_fecha).toLocaleDateString('ca-ES') : '—'}.`
         : `Firmaste tu consentimiento de protección de datos el ${perfil.consentimiento_fecha ? new Date(perfil.consentimiento_fecha).toLocaleDateString('es-ES') : '—'}.`}</p>
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
     </div>` : ''}
 
-    <div class="section-label" style="margin-top:18px;">📄 ${t.misDocumentos}</div>
-    ${documentosHtml}
-    <div class="doc-upload-row">
-      <input type="file" id="doc-file-input">
-      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-file-input')">${t.subirDocumento}</button>
-    </div>
-    <button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
-    <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
+    <div class="panel-card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">📄</div>
+        <h3 style="margin:0;">${t.misDocumentos}</h3>
+      </div>
+      ${documentosHtml}
+      <div class="doc-upload-row" style="margin-top:10px;">
+        <input type="file" id="doc-file-input">
+        <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-file-input')">${t.subirDocumento}</button>
+      </div>
+      <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
+      <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
 
-    <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:10px;">
-      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Ja tens un currículum fet? Puja\'l aquí.' : '¿Ya tienes un currículum hecho? Súbelo aquí.'}</p>
-      <input type="file" id="doc-cv-input" accept="application/pdf,image/*,.doc,.docx">
-      <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-cv-input','curriculum')">${LANG==='ca' ? 'Pujar currículum' : 'Subir currículum'}</button>
+      <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:14px;">
+        <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Ja tens un currículum fet? Puja\'l aquí.' : '¿Ya tienes un currículum hecho? Súbelo aquí.'}</p>
+        <input type="file" id="doc-cv-input" accept="application/pdf,image/*,.doc,.docx">
+        <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-cv-input','curriculum')">${LANG==='ca' ? 'Pujar currículum' : 'Subir currículum'}</button>
+      </div>
     </div>
 
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
