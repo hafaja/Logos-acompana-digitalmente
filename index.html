@@ -523,7 +523,7 @@ function showNecesidades(ambitoId, silent){
       return `
         <div class="service-row" style="margin-left:14px;" onclick="showDetail('${sid}')">
           <div class="icon">📋</div>
-          <div class="txt" style="flex:1;"><strong>${s.nombre[LANG]}</strong><span>${s.municipio || 'Generalitat de Catalunya'}</span></div>
+          <div class="txt" style="flex:1;"><strong>${s.nombre[LANG]}</strong>${s.municipio ? `<span>${s.municipio}</span>` : ''}</div>
         </div>`;
     }).join('');
     return `<div class="section-label" style="margin-top:10px;">${n.nombre[LANG]}</div>${subRows}`;
@@ -1898,7 +1898,7 @@ function renderWebRedes(){
     { nombre: 'Web de Logos', desc: 'logostgn.cat', url: 'https://logostgn.cat/' },
     { nombre: 'Facebook', desc: esCA ? 'Segueix-nos a Facebook' : 'Síguenos en Facebook', url: 'https://www.facebook.com/profile.php?id=100077291835224' },
     { nombre: 'Instagram', desc: esCA ? 'Segueix-nos a Instagram' : 'Síguenos en Instagram', url: 'https://www.instagram.com/logostarragona/' },
-    { nombre: 'LinkedIn', desc: esCA ? 'Segueix-nos a LinkedIn' : 'Síguenos en LinkedIn', url: 'https://www.linkedin.com/company/associaci%C3%B3-logos-projectes-socials/home/' },
+    { nombre: 'LinkedIn', desc: esCA ? 'Segueix-nos a LinkedIn' : 'Síguenos en LinkedIn', url: 'https://www.linkedin.com/company/asociaci%C3%B3-logos-projectes-socials/' },
     { nombre: 'X (Twitter)', desc: esCA ? 'Segueix-nos a X' : 'Síguenos en X', url: 'https://x.com/logostarragona' },
   ];
   const enlacesHtml = enlaces.map(e => `
