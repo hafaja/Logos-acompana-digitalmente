@@ -167,7 +167,7 @@
   .auth-ok{background:#E6E9F1;border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--teal-dark);margin-bottom:12px;}
   .profile-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
   .avatar{width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:19px;flex-shrink:0;}
-  .profile-head strong{display:block;font-size:15.5px;}
+  .profile-head strong{display:block;font-size:18px;font-family:var(--font-display);font-weight:600;color:var(--teal-dark);}
   .profile-head span{font-size:12.5px;color:var(--ink-soft);}
   .list-row{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line);font-size:13.5px;}
   .list-row:last-child{border-bottom:none;}
@@ -203,7 +203,7 @@
   .info-box-gold .info-box-title{color:#8A4E12;}
 
   .pull-quote{border-left:4px solid var(--ochre);padding:14px 18px;margin:14px 0;background:var(--paper);border-radius:0 12px 12px 0;font-family:var(--font-display);font-size:15px;line-height:1.55;color:var(--teal);font-style:italic;}
-  .panel-card h3{margin:0 0 10px;font-size:13.5px;color:var(--teal-dark);font-family:var(--font-body);}
+  .panel-card h3{margin:0 0 10px;font-size:14.5px;color:var(--teal-dark);font-family:var(--font-display);font-weight:600;}
   .panel-stat-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
   .panel-stat-row:last-child{border-bottom:none;}
   .panel-big-number{font-family:var(--font-display);font-size:34px;color:var(--teal-dark);font-weight:600;line-height:1;}
@@ -271,8 +271,8 @@
       <button class="active" data-target="home" onclick="showScreen('home')">Inicio</button>
       <button data-target="home" onclick="showScreen('home');renderConsentStep()">✅ Firmar mi consentimiento</button>
       <button data-target="home" onclick="showScreen('home');renderDatosStep()">Completar mis datos</button>
-      <button data-target="profile" onclick="showScreen('profile');renderDashboard()">Mi espacio</button>
       <button data-target="home" onclick="showScreen('home');revelarCatalogo()">Mis necesidades</button>
+      <button data-target="profile" onclick="showScreen('profile');renderDashboard()">Mi espacio</button>
       <button data-target="cv" onclick="showScreen('cv');renderCVScreen()">Mi currículum</button>
       <button data-target="encuesta" onclick="showScreen('encuesta');renderEncuestaForm()">Encuesta de satisfacción</button>
       <button class="nav-staff-btn" data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
@@ -3211,7 +3211,7 @@ async function renderDashboard(){
     ${consultasHtml ? `
     <div style="display:flex;align-items:center;gap:10px;margin:0 0 8px;">
       <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">💬</div>
-      <h3 style="margin:0;font-size:14px;">${LANG==='ca' ? 'La meva consulta d\'orientació' : 'Mi consulta de orientación'}</h3>
+      <h3 style="margin:0;font-size:14px;font-family:var(--font-display);font-weight:600;color:var(--teal-dark);">${LANG==='ca' ? 'La meva consulta d\'orientació' : 'Mi consulta de orientación'}</h3>
     </div>
     ${consultasHtml}` : ''}
 
