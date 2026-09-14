@@ -135,6 +135,11 @@
   .lang-toggle button{font-family:var(--font-body);font-weight:700;font-size:12px;padding:5px 12px;border:none;background:transparent;color:var(--teal-dark);cursor:pointer;}
   .lang-toggle button.active{background:var(--teal);color:#fff;}
   .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
+  .icon-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:8px;flex-shrink:0;}
+  .stat-icon-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;}
+  .stat-icon-num{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--ink);line-height:1;}
+  .stat-icon-label{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.3;}
+  .stats-mini-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
   .life-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .life-card{background:var(--paper);border:1.5px solid var(--line);border-top:3px solid var(--ochre);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .15s, box-shadow .15s;}
   .life-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,35,63,.08);}
@@ -800,9 +805,11 @@ async function renderResumenStep(mostrarCatalogoYa){
   catalogo.style.display = mostrarCatalogoYa ? 'block' : 'none';
 
   const hoyIsoEntrada = new Date().toISOString().slice(0,10);
-  const [{ data: citasEntrada }, { data: consultasEntrada }] = await Promise.all([
+  const [{ data: citasEntrada }, { data: consultasEntrada }, { count: tramitesEnCursoEntrada }, { count: documentosEntrada }] = await Promise.all([
     sb.from('citas').select('fecha, hora').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoyIsoEntrada).order('fecha', { ascending: true }).limit(1),
-    sb.from('consultas_orientacion').select('id').eq('usuario_id', CURRENT_USER.id).neq('estado', 'respondida')
+    sb.from('consultas_orientacion').select('id').eq('usuario_id', CURRENT_USER.id).neq('estado', 'respondida'),
+    sb.from('tramites').select('id', { count: 'exact', head: true }).eq('usuario_id', CURRENT_USER.id).eq('estado', 'en_curso'),
+    sb.from('documentos').select('id', { count: 'exact', head: true }).eq('usuario_id', CURRENT_USER.id)
   ]);
   const proximaCitaEntrada = (citasEntrada || [])[0];
   const consultasPendEntrada = (consultasEntrada || []).length;
@@ -810,7 +817,7 @@ async function renderResumenStep(mostrarCatalogoYa){
   const diasHastaCitaEntrada = proximaCitaEntrada ? Math.round((new Date(proximaCitaEntrada.fecha+'T00:00:00') - new Date(hoyIsoEntrada+'T00:00:00')) / 86400000) : 0;
 
   const recordatorioEntradaHtml = (proximaCitaEntrada || consultasPendEntrada > 0) ? `
-    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;">
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;cursor:pointer;" onclick="showScreen('profile');renderDashboard()">
       <h3 style="color:#7A4A1F;margin-bottom:6px;">🔔 ${esCA ? 'Recordatoris' : 'Recordatorios'}</h3>
       ${proximaCitaEntrada ? `<p style="margin:0 0 6px;font-size:13.5px;">${esCitaHoyEntrada
         ? (esCA ? `Tens una cita <strong>avui</strong> a les ${proximaCitaEntrada.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCitaEntrada.hora.slice(0,5)}.`)
@@ -820,10 +827,31 @@ async function renderResumenStep(mostrarCatalogoYa){
       ${consultasPendEntrada > 0 ? `<p style="margin:0;font-size:13.5px;">${esCA
         ? `Tens ${consultasPendEntrada} consulta${consultasPendEntrada>1?'s':''} pendent${consultasPendEntrada>1?'s':''} de resposta.`
         : `Tienes ${consultasPendEntrada} consulta${consultasPendEntrada>1?'s':''} pendiente${consultasPendEntrada>1?'s':''} de respuesta.`}</p>` : ''}
+      <span class="link-btn" style="font-size:12px;display:inline-block;margin-top:8px;">${esCA ? 'Veure detalls →' : 'Ver detalles →'}</span>
     </div>` : '';
+
+  const statsEntradaHtml = `
+    <div class="stats-mini-row">
+      <div class="stat-icon-card" style="cursor:pointer;" onclick="showScreen('profile');renderDashboard()">
+        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0 auto 6px;">🗂️</div>
+        <div class="stat-icon-num">${tramitesEnCursoEntrada || 0}</div>
+        <div class="stat-icon-label">${esCA ? 'Tràmits en curs' : 'Trámites en curso'}</div>
+      </div>
+      <div class="stat-icon-card" style="cursor:pointer;" onclick="showScreen('profile');renderDashboard()">
+        <div class="icon-badge" style="background:var(--good-soft);color:var(--good);margin:0 auto 6px;">📅</div>
+        <div class="stat-icon-num">${proximaCitaEntrada ? (esCitaHoyEntrada ? (esCA?'Avui':'Hoy') : diasHastaCitaEntrada) : '—'}</div>
+        <div class="stat-icon-label">${proximaCitaEntrada && !esCitaHoyEntrada ? (esCA ? 'dies per la cita' : 'días para la cita') : (esCA ? 'Propera cita' : 'Próxima cita')}</div>
+      </div>
+      <div class="stat-icon-card" style="cursor:pointer;" onclick="showScreen('profile');renderDashboard()">
+        <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0 auto 6px;">📄</div>
+        <div class="stat-icon-num">${documentosEntrada || 0}</div>
+        <div class="stat-icon-label">${esCA ? 'Documents' : 'Documentos'}</div>
+      </div>
+    </div>`;
 
   el.innerHTML = `
     ${recordatorioEntradaHtml}
+    ${statsEntradaHtml}
     <div class="panel-card">
       <div class="profile-head" style="margin-bottom:10px;">
         <div class="avatar">${inicial}</div>
@@ -3149,11 +3177,11 @@ async function renderDashboard(){
 
     ${consultasHtml ? `<div class="section-label">${LANG==='ca' ? 'LA MEVA CONSULTA D\'ORIENTACIÓ' : 'MI CONSULTA DE ORIENTACIÓN'}</div>${consultasHtml}` : ''}
 
-    <div class="section-label">${LANG==='ca' ? 'LES MEVES CITES' : 'MIS CITAS'}</div>
+    <div class="section-label">📅 ${LANG==='ca' ? 'LES MEVES CITES' : 'MIS CITAS'}</div>
     ${citasHtml}
     <button class="primary-btn" style="background:var(--ochre);margin-top:8px;margin-bottom:4px;" onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button>
 
-    <div class="section-label" style="margin-top:18px;">${t.misTramites}</div>
+    <div class="section-label" style="margin-top:18px;">🗂️ ${t.misTramites}</div>
     ${tramitesHtml}
 
     ${perfil && perfil.consentimiento_firmado ? `
@@ -3164,7 +3192,7 @@ async function renderDashboard(){
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
     </div>` : ''}
 
-    <div class="section-label" style="margin-top:18px;">${t.misDocumentos}</div>
+    <div class="section-label" style="margin-top:18px;">📄 ${t.misDocumentos}</div>
     ${documentosHtml}
     <div class="doc-upload-row">
       <input type="file" id="doc-file-input">
