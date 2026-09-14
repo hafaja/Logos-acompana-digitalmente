@@ -788,7 +788,7 @@ async function renderEntradaPanel(){
   renderResumenStep();
 }
 
-function renderResumenStep(mostrarCatalogoYa){
+async function renderResumenStep(mostrarCatalogoYa){
   const el = document.getElementById('entrada-panel');
   const catalogo = document.getElementById('catalogo-panel');
   const t = T1[LANG];
@@ -799,7 +799,31 @@ function renderResumenStep(mostrarCatalogoYa){
 
   catalogo.style.display = mostrarCatalogoYa ? 'block' : 'none';
 
+  const hoyIsoEntrada = new Date().toISOString().slice(0,10);
+  const [{ data: citasEntrada }, { data: consultasEntrada }] = await Promise.all([
+    sb.from('citas').select('fecha, hora').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoyIsoEntrada).order('fecha', { ascending: true }).limit(1),
+    sb.from('consultas_orientacion').select('id').eq('usuario_id', CURRENT_USER.id).neq('estado', 'respondida')
+  ]);
+  const proximaCitaEntrada = (citasEntrada || [])[0];
+  const consultasPendEntrada = (consultasEntrada || []).length;
+  const esCitaHoyEntrada = proximaCitaEntrada && proximaCitaEntrada.fecha === hoyIsoEntrada;
+  const diasHastaCitaEntrada = proximaCitaEntrada ? Math.round((new Date(proximaCitaEntrada.fecha+'T00:00:00') - new Date(hoyIsoEntrada+'T00:00:00')) / 86400000) : 0;
+
+  const recordatorioEntradaHtml = (proximaCitaEntrada || consultasPendEntrada > 0) ? `
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;">
+      <h3 style="color:#7A4A1F;margin-bottom:6px;">🔔 ${esCA ? 'Recordatoris' : 'Recordatorios'}</h3>
+      ${proximaCitaEntrada ? `<p style="margin:0 0 6px;font-size:13.5px;">${esCitaHoyEntrada
+        ? (esCA ? `Tens una cita <strong>avui</strong> a les ${proximaCitaEntrada.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCitaEntrada.hora.slice(0,5)}.`)
+        : (esCA
+            ? `Et falten <strong>${diasHastaCitaEntrada} dia${diasHastaCitaEntrada===1?'':'s'}</strong> per a la teva cita.`
+            : `Te falta${diasHastaCitaEntrada===1?'n':'n'} <strong>${diasHastaCitaEntrada} día${diasHastaCitaEntrada===1?'':'s'}</strong> para tu cita.`)}</p>` : ''}
+      ${consultasPendEntrada > 0 ? `<p style="margin:0;font-size:13.5px;">${esCA
+        ? `Tens ${consultasPendEntrada} consulta${consultasPendEntrada>1?'s':''} pendent${consultasPendEntrada>1?'s':''} de resposta.`
+        : `Tienes ${consultasPendEntrada} consulta${consultasPendEntrada>1?'s':''} pendiente${consultasPendEntrada>1?'s':''} de respuesta.`}</p>` : ''}
+    </div>` : '';
+
   el.innerHTML = `
+    ${recordatorioEntradaHtml}
     <div class="panel-card">
       <div class="profile-head" style="margin-bottom:10px;">
         <div class="avatar">${inicial}</div>
