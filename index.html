@@ -284,7 +284,8 @@
       <button data-target="voluntariado" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🤝 Voluntariado</button>
       <button data-target="empleo" onclick="showScreen('empleo');renderBusquedaEmpleo()" id="sidebar-empleo-btn" style="background:var(--ochre);color:#fff;">💼 Búsqueda de empleo</button>
       <button data-target="cuidados" onclick="showScreen('cuidados');renderCuidadosCompania()" id="sidebar-cuidados-btn" style="background:var(--teal);color:#fff;">🧓 Cuidados y compañía</button>
-      <button data-target="crearproyecto" onclick="showScreen('crearproyecto');renderCrearProyectoEntrada()" id="sidebar-crearproyecto-btn" style="background:var(--ochre);color:#fff;">💡 Crea tu proyecto</button>
+      <button data-target="emprendimiento" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()" id="sidebar-emprendimiento-btn" style="background:var(--ochre);color:#fff;">🚀 Mi emprendimiento</button>
+      <button data-target="queofrecemos" onclick="showScreen('queofrecemos');renderQueOfrecemos()" id="sidebar-queofrecemos-btn">🎁 ¿Qué te ofrecemos?</button>
       <div class="section-label" style="margin-top:10px;">¿Quiénes somos?</div>
       <button data-target="webredes" onclick="showScreen('webredes');renderWebRedes()" id="sidebar-webredes-btn" style="background:var(--teal-dark);color:#fff;">🌐 Web y redes sociales</button>
       <button data-target="verificarcert" onclick="showScreen('verificarcert');renderVerificarCertificado()" id="sidebar-verificar-btn">🔎 Verificar certificado</button>
@@ -325,7 +326,7 @@
         <div class="section-label" style="margin-top:22px;">Más accesos</div>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('empleo');renderBusquedaEmpleo()">💼 <span style="margin-left:10px;">Búsqueda de empleo</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('cuidados');renderCuidadosCompania()">🧓 <span style="margin-left:10px;">Cuidados y compañía</span></button>
-        <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('crearproyecto');renderCrearProyectoEntrada()">💡 <span style="margin-left:10px;">Crea tu proyecto</span></button>
+        <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()">🚀 <span style="margin-left:10px;">Mi emprendimiento</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('webredes');renderWebRedes()">🌐 <span style="margin-left:10px;">Web y redes sociales</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('aulaciudadano');renderAulaCiudadano()">🎓 <span style="margin-left:10px;">Aula Virtual</span></button>
         <button class="service-row" style="justify-content:flex-start;" onclick="showScreen('voluntariado');renderVoluntariado()">🤝 <span style="margin-left:10px;">Voluntariado</span></button>
@@ -426,6 +427,16 @@
   <div class="screen" id="screen-cuidados">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
     <div class="content" id="cuidados-content"></div>
+  </div>
+
+  <div class="screen" id="screen-emprendimiento">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="emprendimiento-content"></div>
+  </div>
+
+  <div class="screen" id="screen-queofrecemos">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="queofrecemos-content"></div>
   </div>
 
   <div class="screen" id="screen-crearproyecto">
@@ -2051,6 +2062,125 @@ const ETAPAS_ITINERARIO = [
     ]},
 ];
 
+const ETAPAS_EMPRENDIMIENTO = [
+  { key:'acogida', es:'Acogida', ca:'Acollida', descEs:'Primer contacto: cuéntanos brevemente tu idea y por qué quieres emprender.', descCa:'Primer contacte: explica\'ns breument la teva idea i per què vols emprendre.' },
+  { key:'diagnostico', es:'Diagnóstico', ca:'Diagnòstic', descEs:'Valoramos juntos tu situación actual y la viabilidad inicial de tu idea.', descCa:'Valorem junts la teva situació actual i la viabilitat inicial de la teva idea.' },
+  { key:'idea', es:'Idea de negocio', ca:'Idea de negoci', descEs:'Definimos qué quieres montar, a quién va dirigido y qué lo hace diferente.', descCa:'Definim què vols muntar, a qui va dirigit i què ho fa diferent.' },
+  { key:'plan', es:'Plan de empresa', ca:'Pla d\'empresa', descEs:'Preparamos el plan: producto o servicio, mercado, gastos e ingresos previstos.', descCa:'Preparem el pla: producte o servei, mercat, despeses i ingressos previstos.' },
+  { key:'financiacion', es:'Financiación', ca:'Finançament', descEs:'Buscamos cómo financiar el proyecto: ahorro propio, préstamos, ayudas o subvenciones.', descCa:'Busquem com finançar el projecte: estalvi propi, préstecs, ajuts o subvencions.' },
+  { key:'alta', es:'Alta', ca:'Alta', descEs:'Trámites para darte de alta como autónomo/a o constituir tu empresa.', descCa:'Tràmits per donar-te d\'alta com a autònom/a o constituir la teva empresa.' },
+  { key:'consolidacion', es:'Consolidación', ca:'Consolidació', descEs:'Acompañamiento y seguimiento del negocio una vez ya está en marcha.', descCa:'Acompanyament i seguiment del negoci un cop ja està en marxa.' }
+];
+
+async function renderEmprendimientoScreen(){
+  if(bloquearSinConsentimiento()) return;
+  const cont = document.getElementById('emprendimiento-content');
+  const esCA = LANG === 'ca';
+  cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+
+  let { data: emp } = await sb.from('emprendimiento').select('*').eq('usuario_id', CURRENT_USER.id).maybeSingle();
+  if(!emp){
+    const { data: nuevo } = await sb.from('emprendimiento').insert({ usuario_id: CURRENT_USER.id, etapa_actual: 'acogida', etapas_completadas: [] }).select().maybeSingle();
+    emp = nuevo;
+  }
+  window.__emprendimientoActual = emp;
+
+  renderEmprendimientoContenido();
+}
+
+function renderEmprendimientoContenido(){
+  const cont = document.getElementById('emprendimiento-content');
+  const esCA = LANG === 'ca';
+  const emp = window.__emprendimientoActual || {};
+  const completadas = emp.etapas_completadas || [];
+  const etapaActualKey = emp.etapa_actual || 'acogida';
+  const etapaActual = ETAPAS_EMPRENDIMIENTO.find(e => e.key === etapaActualKey) || ETAPAS_EMPRENDIMIENTO[0];
+  const idxActual = ETAPAS_EMPRENDIMIENTO.findIndex(e => e.key === etapaActualKey);
+  const siguiente = ETAPAS_EMPRENDIMIENTO[idxActual + 1];
+
+  const stepperHtml = ETAPAS_EMPRENDIMIENTO.map((e, i) => {
+    const completada = completadas.includes(e.key);
+    const esActual = e.key === etapaActualKey;
+    const color = completada ? 'var(--good)' : esActual ? 'var(--ochre)' : 'var(--line)';
+    const bg = completada ? 'var(--good-soft)' : esActual ? 'var(--ochre-soft)' : 'var(--paper)';
+    return `
+      <button onclick="irAEtapaEmprendimiento('${e.key}')" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:4px 8px;">
+        <div style="width:34px;height:34px;border-radius:50%;background:${bg};border:2px solid ${color};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:${color};">${completada ? '✓' : i+1}</div>
+        <span style="font-size:10.5px;font-weight:${esActual?'800':'600'};color:${esActual?'var(--ink)':'var(--ink-soft)'};white-space:nowrap;">${esCA ? e.ca : e.es}</span>
+      </button>`;
+  }).join('<div style="flex:1;height:2px;background:var(--line);margin-top:17px;min-width:14px;"></div>');
+
+  cont.innerHTML = `
+    <h2 class="screen-title">🚀 ${esCA ? 'El meu emprenedoria' : 'Mi emprendimiento'}</h2>
+    <p class="subtle">${esCA
+      ? 'Segueix aquí el teu camí per posar en marxa la teva idea, pas a pas, amb l\'acompanyament de Logos.'
+      : 'Sigue aquí tu camino para poner en marcha tu idea, paso a paso, con el acompañamiento de Logos.'}</p>
+
+    <div class="panel-card" style="margin:14px 0;">
+      <h3>${esCA ? 'La meva idea' : 'Mi idea'}</h3>
+      <div class="field">
+        <label>${esCA ? 'En què consisteix la teva idea de negoci?' : '¿En qué consiste tu idea de negocio?'}</label>
+        <textarea id="emp-idea" rows="2" placeholder="${esCA ? 'Ex: obrir una petita perruqueria al meu barri' : 'Ej: abrir una pequeña peluquería en mi barrio'}">${emp.idea_negocio || ''}</textarea>
+      </div>
+      <div class="field">
+        <label>${esCA ? 'Sector' : 'Sector'}</label>
+        <input type="text" id="emp-sector" value="${emp.sector || ''}" placeholder="${esCA ? 'Ex: comerç, hosteleria, serveis…' : 'Ej: comercio, hostelería, servicios…'}">
+      </div>
+      <button class="link-btn" onclick="guardarIdeaEmprendimiento()">💾 ${esCA ? 'Desar' : 'Guardar'}</button>
+    </div>
+
+    <div class="section-label">${esCA ? 'EL TEU ITINERARI' : 'TU ITINERARIO'}</div>
+    <div class="panel-card" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:4px;">${stepperHtml}</div>
+    </div>
+
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+      <h3 style="color:#7A4A1F;">${esCA ? 'Etapa actual' : 'Etapa actual'}: ${esCA ? etapaActual.ca : etapaActual.es}</h3>
+      <p style="margin:0 0 10px;">${esCA ? etapaActual.descCa : etapaActual.descEs}</p>
+      <div class="field">
+        <label>${esCA ? 'Notes (opcional)' : 'Notas (opcional)'}</label>
+        <textarea id="emp-notas" rows="2" placeholder="${esCA ? 'Apunta el que vulguis sobre aquesta etapa…' : 'Apunta lo que quieras sobre esta etapa…'}">${emp.notas || ''}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="link-btn" onclick="guardarNotasEmprendimiento()">💾 ${esCA ? 'Desar nota' : 'Guardar nota'}</button>
+        ${siguiente ? `<button class="primary-btn" style="margin:0;background:var(--good);" onclick="completarEtapaEmprendimiento('${etapaActualKey}','${siguiente.key}')">✓ ${esCA ? 'Completar i passar a' : 'Completar y pasar a'} "${esCA ? siguiente.ca : siguiente.es}"</button>` : `<span class="chip" style="background:var(--good);color:#fff;">🎉 ${esCA ? 'Itinerari completat' : 'Itinerario completado'}</span>`}
+      </div>
+    </div>
+
+    <div class="panel-card" style="margin-top:14px;background:var(--good-soft);border-color:var(--good);">
+      <p style="margin:0;font-size:13px;">${esCA
+        ? 'Un/a tècnic/a de Logos revisarà el teu itinerari i es posarà en contacte amb tu per acompanyar-te en cada pas. Si tens dubtes, escriu-nos des del xat 💬.'
+        : 'Un/a técnico/a de Logos revisará tu itinerario y se pondrá en contacto contigo para acompañarte en cada paso. Si tienes dudas, escríbenos desde el chat 💬.'}</p>
+    </div>
+  `;
+}
+
+async function guardarIdeaEmprendimiento(){
+  const idea_negocio = document.getElementById('emp-idea').value.trim();
+  const sector = document.getElementById('emp-sector').value.trim();
+  await sb.from('emprendimiento').update({ idea_negocio, sector, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, idea_negocio, sector };
+}
+
+async function guardarNotasEmprendimiento(){
+  const notas = document.getElementById('emp-notas').value.trim();
+  await sb.from('emprendimiento').update({ notas, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, notas };
+}
+
+async function irAEtapaEmprendimiento(etapaKey){
+  await sb.from('emprendimiento').update({ etapa_actual: etapaKey, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, etapa_actual: etapaKey, notas: '' };
+  renderEmprendimientoContenido();
+}
+
+async function completarEtapaEmprendimiento(etapaKey, siguienteKey){
+  const completadas = [...new Set([...(window.__emprendimientoActual.etapas_completadas || []), etapaKey])];
+  await sb.from('emprendimiento').update({ etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '', actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '' };
+  renderEmprendimientoContenido();
+}
+
 async function renderCrearProyectoEntrada(){
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
@@ -2714,6 +2844,40 @@ async function enviarTarea(actividadId){
   if(error){ alert(error.message); return; }
   alert(esCA ? 'Entrega enviada. El tècnic la revisarà aviat.' : 'Entrega enviada. El técnico la revisará pronto.');
   abrirCursoCiudadano(window.__cursoCiudadanoActual);
+}
+
+const OFERTA_EMPRENDIMIENTO = [
+  { icono:'🧭', es:'Asesoramiento personalizado', ca:'Assessorament personalitzat', descEs:'Un/a técnico/a te acompaña desde la primera idea hasta que el negocio esté en marcha.', descCa:'Un/a tècnic/a t\'acompanya des de la primera idea fins que el negoci estigui en marxa.' },
+  { icono:'📋', es:'Ayuda con el plan de empresa', ca:'Ajuda amb el pla d\'empresa', descEs:'Te ayudamos a estructurar tu idea: producto, mercado, gastos e ingresos previstos.', descCa:'T\'ajudem a estructurar la teva idea: producte, mercat, despeses i ingressos previstos.' },
+  { icono:'💶', es:'Orientación sobre financiación y ayudas', ca:'Orientació sobre finançament i ajuts', descEs:'Información sobre préstamos, microcréditos, subvenciones y otras fuentes de financiación.', descCa:'Informació sobre préstecs, microcrèdits, subvencions i altres fonts de finançament.' },
+  { icono:'📝', es:'Acompañamiento en trámites', ca:'Acompanyament en tràmits', descEs:'Te guiamos en el alta de autónomo/a o la constitución de tu empresa.', descCa:'Et guiem en l\'alta d\'autònom/a o la constitució de la teva empresa.' },
+  { icono:'🎓', es:'Formación', ca:'Formació', descEs:'Talleres y cursos sobre gestión, digitalización y otras competencias útiles para emprender.', descCa:'Tallers i cursos sobre gestió, digitalització i altres competències útils per emprendre.' },
+  { icono:'🤝', es:'Red de contactos', ca:'Xarxa de contactes', descEs:'Te conectamos con otras entidades, recursos y programas de emprendimiento de la zona.', descCa:'Et connectem amb altres entitats, recursos i programes d\'emprenedoria de la zona.' }
+];
+
+function renderQueOfrecemos(){
+  if(bloquearSinConsentimiento()) return;
+  const cont = document.getElementById('queofrecemos-content');
+  const esCA = LANG === 'ca';
+
+  cont.innerHTML = `
+    <h2 class="screen-title">🎁 ${esCA ? 'Què t\'oferim' : '¿Qué te ofrecemos?'}</h2>
+    <p class="subtle">${esCA
+      ? 'Si estàs pensant a muntar un negoci o ja has començat, això és el que trobaràs a Logos per acompanyar-te.'
+      : 'Si estás pensando en montar un negocio o ya has empezado, esto es lo que encontrarás en Logos para acompañarte.'}</p>
+
+    <div class="cards-grid" style="margin:16px 0;">
+      ${OFERTA_EMPRENDIMIENTO.map(o => `
+        <div class="panel-card">
+          <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0 0 8px;">${o.icono}</div>
+          <h3 style="margin:0 0 4px;">${esCA ? o.ca : o.es}</h3>
+          <p style="margin:0;font-size:13px;color:var(--ink-soft);">${esCA ? o.descCa : o.descEs}</p>
+        </div>`).join('')}
+    </div>
+
+    <button class="primary-btn" style="background:var(--ochre);" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()">🚀 ${esCA ? 'Comença el meu emprenedoria' : 'Empieza mi emprendimiento'}</button>
+    <button class="primary-btn" onclick="showScreen('home')">← ${esCA ? 'Tornar a l\'inici' : 'Volver al inicio'}</button>
+  `;
 }
 
 function renderVoluntariado(){
