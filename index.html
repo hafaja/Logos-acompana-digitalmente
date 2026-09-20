@@ -17,23 +17,24 @@
     --teal:#16233F; --teal-dark:#0B1526; --ochre:#D9832E; --ochre-soft:#FBE7D3;
     --alert:#A8431F; --alert-soft:#FBE7DE;
     --good:#2F6B27; --good-soft:#DDEFD9;
+    --sidebar-green:#1B5E3F; --sidebar-yellow:#F5C518;
     --font-display:'Fraunces',serif; --font-body:'Atkinson Hyperlegible',sans-serif;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--bg);font-family:var(--font-body);color:var(--ink);}
   #app{min-height:100vh;display:flex;}
 
-  .sidebar{width:230px;flex-shrink:0;background:var(--paper);border-right:1.5px solid var(--line);display:flex;flex-direction:column;padding:16px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+  .sidebar{width:230px;flex-shrink:0;background:var(--sidebar-green);border-right:1.5px solid var(--line);display:flex;flex-direction:column;padding:16px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .sidebar-logo-img{width:100%;max-width:150px;margin-bottom:18px;display:block;}
   .sidebar nav{display:none;flex-direction:column;gap:4px;flex:1;}
-  .sidebar nav button{text-align:left;background:none;border:none;color:#111;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
+  .sidebar nav button{text-align:left;background:none;border:none;color:var(--sidebar-yellow);font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar nav button:hover{background:var(--bg);}
   .sidebar nav button.active{background:var(--teal);color:#fff;}
   .nav-staff-btn{color:#7A4A1F !important;}
   .nav-staff-btn:hover{background:var(--ochre-soft);}
   .nav-staff-btn.active{background:var(--ochre) !important;color:#fff !important;}
   .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
-  .sidebar-public-nav button{text-align:left;background:none;border:none;color:#111;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
+  .sidebar-public-nav button{text-align:left;background:none;border:none;color:var(--sidebar-yellow);font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar-public-nav button:hover{background:var(--bg);}
   .sidebar-public-nav button.active{background:var(--teal);color:#fff;}
   .sidebar-social{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);text-align:center;}
@@ -144,6 +145,7 @@
   .lang-toggle button{font-family:var(--font-body);font-weight:700;font-size:12px;padding:5px 12px;border:none;background:transparent;color:var(--teal-dark);cursor:pointer;}
   .lang-toggle button.active{background:var(--teal);color:#fff;}
   .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
+  .sidebar .section-label{color:var(--sidebar-yellow);opacity:.8;}
   .icon-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:8px;flex-shrink:0;}
   .stat-icon-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;}
   .stat-icon-num{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--ink);line-height:1;}
@@ -171,10 +173,10 @@
   .link-btn{background:none;border:none;color:var(--teal-dark);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:0;}
   .auth-error{background:var(--alert-soft);border:1.5px solid var(--alert);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--alert);margin-bottom:12px;}
   .auth-ok{background:#E6E9F1;border:1.5px solid var(--teal);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--teal-dark);margin-bottom:12px;}
-  .profile-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-  .avatar{width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:19px;flex-shrink:0;}
-  .profile-head strong{display:block;font-size:18px;font-family:var(--font-display);font-weight:600;color:var(--teal-dark);}
-  .profile-head span{font-size:12.5px;color:var(--ink-soft);}
+  .profile-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;background:var(--sidebar-green);padding:16px;border-radius:14px;}
+  .avatar{width:48px;height:48px;border-radius:50%;background:var(--sidebar-yellow);color:var(--sidebar-green);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;font-size:19px;flex-shrink:0;}
+  .profile-head strong{display:block;font-size:18px;font-family:var(--font-display);font-weight:600;color:var(--sidebar-yellow);}
+  .profile-head span{font-size:12.5px;color:#fff;opacity:.85;}
   .list-row{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line);font-size:13.5px;}
   .list-row:last-child{border-bottom:none;}
   .chip{font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 9px;}
@@ -3981,6 +3983,71 @@ async function guardarEncuesta(){
 }
 
 function renderDatosStep(){
+  if(bloquearSinConsentimiento()) return;
+  const p = window.__perfilActual || {};
+  if(!p.nombre_completo || !p.telefono){
+    renderDatosStepMinimo();
+  } else {
+    renderDatosStepEleccion();
+  }
+}
+
+function renderDatosStepMinimo(){
+  const esCA = LANG === 'ca';
+  const p = window.__perfilActual || {};
+  document.getElementById('entrada-panel').innerHTML = `
+    <h2 class="screen-title">${esCA ? 'Les teves dades bàsiques' : 'Tus datos básicos'}</h2>
+    <p class="subtle">${esCA
+      ? 'Només et demanem el nom i un telèfon de contacte per començar. La resta ho pots fer tu mateix/a ara, o t\'ajudem nosaltres més endavant, com prefereixis.'
+      : 'Solo te pedimos el nombre y un teléfono de contacto para empezar. El resto lo puedes hacer tú mismo/a ahora, o te ayudamos nosotros más adelante, como prefieras.'}</p>
+    <div class="field">
+      <label>${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'} *</label>
+      <input type="text" id="pf-nombre-min" value="${p.nombre_completo || ''}">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Telèfon de contacte' : 'Teléfono de contacto'} *</label>
+      <input type="tel" id="pf-telefono-min" value="${p.telefono || ''}">
+    </div>
+    <button class="primary-btn" onclick="guardarDatosMinimos()">${esCA ? 'Continuar →' : 'Continuar →'}</button>
+  `;
+}
+
+async function guardarDatosMinimos(){
+  const esCA = LANG === 'ca';
+  const nombre = document.getElementById('pf-nombre-min').value.trim();
+  const telefono = document.getElementById('pf-telefono-min').value.trim();
+  if(!nombre || !telefono){
+    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${esCA ? 'El nom i el telèfon són obligatoris per continuar.' : 'El nombre y el teléfono son obligatorios para continuar.'}</div>`);
+    return;
+  }
+  await sb.from('perfiles').update({ nombre_completo: nombre, telefono }).eq('id', CURRENT_USER.id);
+  window.__perfilActual = { ...window.__perfilActual, nombre_completo: nombre, telefono };
+  renderDatosStepEleccion();
+}
+
+function renderDatosStepEleccion(){
+  const esCA = LANG === 'ca';
+  document.getElementById('entrada-panel').innerHTML = `
+    <div class="panel-card" style="background:var(--good-soft);border-color:var(--good);">
+      <h3 style="color:var(--good);">✅ ${esCA ? 'Dades bàsiques desades' : 'Datos básicos guardados'}</h3>
+      <p style="margin:0;">${esCA
+        ? 'Ja tens el mínim per començar a fer servir la plataforma. Vols completar la resta ara mateix, o prefereixes que ho fem junts?'
+        : 'Ya tienes lo mínimo para empezar a usar la plataforma. ¿Quieres completar el resto ahora mismo, o prefieres que lo hagamos juntos?'}</p>
+    </div>
+    <button class="primary-btn" style="margin-top:14px;" onclick="renderDatosStepCompleto()">📝 ${esCA ? 'Completar-ho ara jo mateix/a' : 'Completarlo ahora yo mismo/a'}</button>
+    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-top:14px;">
+      <h3 style="color:#7A4A1F;">⚡ ${esCA ? 'O fem-ho junts — és ràpid' : 'O lo hacemos juntos — es rápido'}</h3>
+      <p style="margin:0 0 10px;">${esCA
+        ? 'Truca\'ns, escriu-nos per WhatsApp, o passa per l\'oficina — completem la resta amb tu en pocs minuts, sense presses.'
+        : 'Llámanos, escríbenos por WhatsApp, o pasa por la oficina — completamos el resto contigo en pocos minutos, sin prisas.'}</p>
+      <p style="margin:0;font-weight:700;font-size:15px;">📞 +34 630 46 15 60</p>
+    </div>
+    <button class="primary-btn" style="margin-top:14px;" onclick="showScreen('home');revelarCatalogo()">${esCA ? 'Continuar sense completar-ho ara →' : 'Continuar sin completarlo ahora →'}</button>
+  `;
+}
+
+function renderDatosStepCompleto(){
   if(bloquearSinConsentimiento()) return;
   const t = T1[LANG];
   const p = window.__perfilActual || {};
