@@ -27,14 +27,14 @@
   .sidebar{width:230px;flex-shrink:0;background:var(--sidebar-green);border-right:1.5px solid var(--line);display:flex;flex-direction:column;padding:16px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .sidebar-logo-img{width:100%;max-width:150px;margin-bottom:18px;display:block;}
   .sidebar nav{display:none;flex-direction:column;gap:4px;flex:1;}
-  .sidebar nav button{text-align:left;background:none;border:none;color:var(--sidebar-yellow);font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
+  .sidebar nav button{text-align:left;background:none;border:none;color:#111;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar nav button:hover{background:var(--bg);}
   .sidebar nav button.active{background:var(--teal);color:#fff;}
   .nav-staff-btn{color:#7A4A1F !important;}
   .nav-staff-btn:hover{background:var(--ochre-soft);}
   .nav-staff-btn.active{background:var(--ochre) !important;color:#fff !important;}
   .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
-  .sidebar-public-nav button{text-align:left;background:none;border:none;color:var(--sidebar-yellow);font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
+  .sidebar-public-nav button{text-align:left;background:none;border:none;color:#111;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar-public-nav button:hover{background:var(--bg);}
   .sidebar-public-nav button.active{background:var(--teal);color:#fff;}
   .sidebar-social{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);text-align:center;}
@@ -125,6 +125,25 @@
   .service-row .txt span{font-size:12px;color:var(--ink-soft);}
   .necesidad-grupo{background:var(--bg);border:1.5px dashed var(--line);border-radius:14px;padding:12px 12px 4px;margin:12px 0;}
   .necesidad-grupo-titulo{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 2px 8px;}
+
+  /* Listado de necesidades, estilo CRM */
+  .crm-list{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+  .crm-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s ease;}
+  .crm-list > .crm-row:last-child{border-bottom:none;}
+  .crm-row:hover{background:var(--bg);}
+  .crm-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .crm-name{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3;}
+  .crm-sub{font-size:11.5px;color:var(--ink-soft);margin-top:1px;}
+  .crm-badge{font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;flex-shrink:0;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em;}
+  .crm-badge.disponible{background:var(--good-soft);color:var(--good);}
+  .crm-badge.proximo{background:var(--ochre-soft);color:#7A4A1F;}
+  .crm-chevron{color:var(--ink-soft);font-size:16px;flex-shrink:0;opacity:.6;}
+  .crm-group-header{padding:9px 14px;background:var(--bg);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+  @media (max-width: 760px){
+    .crm-row{padding:14px;gap:10px;}
+    .crm-name{font-size:14.5px;}
+    .crm-badge{font-size:9.5px;padding:3px 8px;}
+  }
   .verified-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--teal-dark);background:#E6E9F1;border:1px solid var(--teal);border-radius:999px;padding:3px 9px;}
   .pending-stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#7A4A1F;background:var(--ochre-soft);border:1px solid var(--ochre);border-radius:999px;padding:3px 9px;}
   .detail-block{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
@@ -145,7 +164,7 @@
   .lang-toggle button{font-family:var(--font-body);font-weight:700;font-size:12px;padding:5px 12px;border:none;background:transparent;color:var(--teal-dark);cursor:pointer;}
   .lang-toggle button.active{background:var(--teal);color:#fff;}
   .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
-  .sidebar .section-label{color:var(--sidebar-yellow);opacity:.8;}
+  .sidebar .section-label{color:#111;opacity:.65;}
   .icon-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:8px;flex-shrink:0;}
   .stat-icon-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;}
   .stat-icon-num{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--ink);line-height:1;}
@@ -539,22 +558,24 @@ function showNecesidades(ambitoId, silent){
     : 'Selecciona lo que te corresponda.';
   const list = document.getElementById('necesidades-list');
 
-  list.innerHTML = a.necesidades.map(n => {
+  list.innerHTML = `<div class="crm-list">` + a.necesidades.map(n => {
     const ids = n.servicios_ids || [];
     if(ids.length === 0){
-      const tag = `<span class="next-tag">${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>`;
       return `
-        <div class="service-row" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
-          <div class="icon" style="background:var(--ochre-soft);color:#7A4A1F;">🕓</div>
-          <div class="txt" style="flex:1;"><strong>${n.nombre[LANG]}</strong></div>
-          ${tag}
+        <div class="crm-row" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
+          <span class="crm-dot" style="background:var(--ochre);"></span>
+          <div style="flex:1;min-width:0;"><div class="crm-name">${n.nombre[LANG]}</div></div>
+          <span class="crm-badge proximo">${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>
+          <span class="crm-chevron">›</span>
         </div>`;
     }
     if(ids.length === 1){
       return `
-        <div class="service-row" onclick="showDetail('${ids[0]}')">
-          <div class="icon" style="background:var(--good-soft);color:var(--good);">📋</div>
-          <div class="txt" style="flex:1;"><strong>${n.nombre[LANG]}</strong></div>
+        <div class="crm-row" onclick="showDetail('${ids[0]}')">
+          <span class="crm-dot" style="background:var(--good);"></span>
+          <div style="flex:1;min-width:0;"><div class="crm-name">${n.nombre[LANG]}</div></div>
+          <span class="crm-badge disponible">${LANG==='ca' ? 'Disponible' : 'Disponible'}</span>
+          <span class="crm-chevron">›</span>
         </div>`;
     }
     // varios servicios reales para la misma necesidad: se listan por su nombre propio, no se elige uno solo
@@ -562,13 +583,18 @@ function showNecesidades(ambitoId, silent){
       const s = SERVICIOS.find(x => x.id === sid);
       if(!s) return '';
       return `
-        <div class="service-row" onclick="showDetail('${sid}')">
-          <div class="icon" style="background:#E7ECFF;color:#33449E;">📋</div>
-          <div class="txt" style="flex:1;"><strong>${s.nombre[LANG]}</strong>${s.municipio ? `<span>${s.municipio}</span>` : ''}</div>
+        <div class="crm-row" onclick="showDetail('${sid}')">
+          <span class="crm-dot" style="background:#33449E;"></span>
+          <div style="flex:1;min-width:0;">
+            <div class="crm-name">${s.nombre[LANG]}</div>
+            ${s.municipio ? `<div class="crm-sub">${s.municipio}</div>` : ''}
+          </div>
+          <span class="crm-badge disponible">${LANG==='ca' ? 'Disponible' : 'Disponible'}</span>
+          <span class="crm-chevron">›</span>
         </div>`;
     }).join('');
-    return `<div class="necesidad-grupo"><div class="necesidad-grupo-titulo">${n.nombre[LANG]}</div>${subRows}</div>`;
-  }).join('');
+    return `<div class="crm-group-header">${n.nombre[LANG]}</div>${subRows}`;
+  }).join('') + `</div>`;
 
   if(!silent) showScreen('necesidades');
 }
@@ -3261,12 +3287,18 @@ async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
       <p style="font-size:12.5px;line-height:1.7;margin-top:16px;">${esCA
         ? 'La persona identificada anteriorment AUTORITZA el tractament de les seves dades personals per part de la Associació Logos - Projectes Socials, d\'acord amb la normativa detallada anteriorment.'
         : 'La persona identificada anteriormente AUTORIZA el tratamiento de sus datos personales por parte de la Associació Logos - Projectes Socials, de acuerdo con la normativa detallada anteriormente.'}</p>
-      <div style="margin-top:50px;display:flex;justify-content:space-between;">
-        <div style="text-align:center;width:45%;">
-          ${firmaImg ? `<img src="${firmaImg}" style="max-width:100%;max-height:70px;display:block;margin:0 auto 4px;">` : ''}
-          <div style="border-top:1px solid #333;padding-top:6px;font-size:11px;">${esCA?'Signatura de la persona interessada':'Firma de la persona interesada'}</div>
+      <div style="margin-top:40px;">
+        <div style="text-align:center;">
+          ${firmaImg
+            ? `<img src="${firmaImg}" style="max-width:280px;width:100%;max-height:90px;display:block;margin:0 auto 4px;">`
+            : `<div style="height:70px;"></div>`}
+          <div style="border-top:1px solid #333;max-width:280px;margin:0 auto;padding-top:6px;font-size:11px;">${esCA?'Signatura de la persona interessada':'Firma de la persona interesada'}</div>
         </div>
-        <div style="text-align:center;width:45%;"><div style="border-top:1px solid #333;padding-top:6px;font-size:11px;">Logos - Projectes Socials</div></div>
+        <div style="text-align:center;margin-top:36px;">
+          <img src="${FIRMA_DAVID_B64}" alt="Firma" style="max-width:150px;max-height:65px;display:block;margin:0 auto 2px;">
+          <img src="${SELLO_LOGOS_B64}" alt="Sello Logos" style="max-width:110px;max-height:55px;display:block;margin:6px auto 2px;">
+          <div style="border-top:1px solid #333;max-width:280px;margin:0 auto;padding-top:6px;font-size:11px;">${esCA?'Signatura — David Domènech V.':'Firma — David Domènech V.'}<br>Logos - Projectes Socials</div>
+        </div>
       </div>
     </div>
   `;
@@ -3786,6 +3818,14 @@ function renderConsentStep(avisoBloqueo){
 
     <div class="panel-card">
       <h3>${esCA ? 'Consentiment de la persona interessada' : 'Consentimiento de la persona interesada'}</h3>
+      <div class="field">
+        <label>${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'} <span style="color:var(--alert);">*</span></label>
+        <input type="text" id="cons-nombre" placeholder="${esCA ? 'El teu nom complet' : 'Tu nombre completo'}">
+      </div>
+      <div class="field">
+        <label>DNI/NIE <span style="color:var(--alert);">*</span></label>
+        <input type="text" id="cons-dni" placeholder="Ej: 12345678A">
+      </div>
       <label class="checkbox-row"><input type="checkbox" id="cons-tractament">
         ${esCA ? "AUTORITZO el tractament de les meves dades personals segons la normativa vigent (RGPD i LOPDGDD)." : "AUTORIZO el tratamiento de mis datos personales según la normativa vigente (RGPD y LOPDGDD)."}
         <span style="color:var(--alert);">*</span>
@@ -3869,6 +3909,13 @@ function firmaCanvasEstaVacia(){
 
 async function firmarConsentimientoGeneral(){
   const esCA = LANG === 'ca';
+  const nombreConsent = document.getElementById('cons-nombre').value.trim();
+  const dniConsent = document.getElementById('cons-dni').value.trim();
+  if(!nombreConsent || !dniConsent){
+    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${esCA ? 'Cal escriure el teu nom i DNI/NIE per continuar.' : 'Debes escribir tu nombre y DNI/NIE para continuar.'}</div>`);
+    return;
+  }
   if(!document.getElementById('cons-tractament').checked){
     document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin',
       `<div class="auth-error">${esCA ? 'Cal marcar l\'autorització de tractament de dades per continuar.' : 'Debes marcar la autorización de tratamiento de datos para continuar.'}</div>`);
@@ -3884,6 +3931,8 @@ async function firmarConsentimientoGeneral(){
   const firmaBase64 = document.getElementById('firma-canvas').toDataURL('image/png');
   const payload = {
     id: CURRENT_USER.id,
+    nombre_completo: nombreConsent,
+    dni_nie: dniConsent,
     consentimiento_firmado: true,
     consentimiento_fecha: new Date().toISOString().slice(0,10),
     consentimiento_cesion_organismos: document.getElementById('cons-cesion').checked,
