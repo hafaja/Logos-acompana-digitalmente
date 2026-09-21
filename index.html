@@ -2108,13 +2108,27 @@ const ETAPAS_ITINERARIO = [
 ];
 
 const ETAPAS_EMPRENDIMIENTO = [
-  { key:'acogida', es:'Acogida', ca:'Acollida', descEs:'Primer contacto: cuéntanos brevemente tu idea y por qué quieres emprender.', descCa:'Primer contacte: explica\'ns breument la teva idea i per què vols emprendre.' },
-  { key:'diagnostico', es:'Diagnóstico', ca:'Diagnòstic', descEs:'Valoramos juntos tu situación actual y la viabilidad inicial de tu idea.', descCa:'Valorem junts la teva situació actual i la viabilitat inicial de la teva idea.' },
-  { key:'idea', es:'Idea de negocio', ca:'Idea de negoci', descEs:'Definimos qué quieres montar, a quién va dirigido y qué lo hace diferente.', descCa:'Definim què vols muntar, a qui va dirigit i què ho fa diferent.' },
-  { key:'plan', es:'Plan de empresa', ca:'Pla d\'empresa', descEs:'Preparamos el plan: producto o servicio, mercado, gastos e ingresos previstos.', descCa:'Preparem el pla: producte o servei, mercat, despeses i ingressos previstos.' },
-  { key:'financiacion', es:'Financiación', ca:'Finançament', descEs:'Buscamos cómo financiar el proyecto: ahorro propio, préstamos, ayudas o subvenciones.', descCa:'Busquem com finançar el projecte: estalvi propi, préstecs, ajuts o subvencions.' },
-  { key:'alta', es:'Alta', ca:'Alta', descEs:'Trámites para darte de alta como autónomo/a o constituir tu empresa.', descCa:'Tràmits per donar-te d\'alta com a autònom/a o constituir la teva empresa.' },
-  { key:'consolidacion', es:'Consolidación', ca:'Consolidació', descEs:'Acompañamiento y seguimiento del negocio una vez ya está en marcha.', descCa:'Acompanyament i seguiment del negoci un cop ja està en marxa.' }
+  { key:'acogida', es:'Acogida', ca:'Acollida',
+    descEs:'Primer contacto: cuéntanos brevemente tu idea y por qué quieres emprender.', descCa:'Primer contacte: explica\'ns breument la teva idea i per què vols emprendre.',
+    pregEs:'¿Por qué quieres montar este negocio? ¿Qué te ha hecho decidirte ahora?', pregCa:'Per què vols muntar aquest negoci? Què t\'ha fet decidir-te ara?' },
+  { key:'diagnostico', es:'Diagnóstico', ca:'Diagnòstic',
+    descEs:'Valoramos juntos tu situación actual y la viabilidad inicial de tu idea.', descCa:'Valorem junts la teva situació actual i la viabilitat inicial de la teva idea.',
+    pregEs:'¿Cuál es tu situación actual (trabajo, formación, tiempo disponible)? ¿Has hecho algo parecido antes?', pregCa:'Quina és la teva situació actual (feina, formació, temps disponible)? Has fet mai res semblant?' },
+  { key:'idea', es:'Idea de negocio', ca:'Idea de negoci',
+    descEs:'Definimos qué quieres montar, a quién va dirigido y qué lo hace diferente.', descCa:'Definim què vols muntar, a qui va dirigit i què ho fa diferent.',
+    pregEs:'¿A quién va dirigido tu negocio? ¿Qué necesidad cubre y qué lo hace diferente de otros que ya existen?', pregCa:'A qui va dirigit el teu negoci? Quina necessitat cobreix i què el fa diferent d\'altres que ja existeixen?' },
+  { key:'plan', es:'Plan de empresa', ca:'Pla d\'empresa',
+    descEs:'Preparamos el plan: producto o servicio, mercado, gastos e ingresos previstos.', descCa:'Preparem el pla: producte o servei, mercat, despeses i ingressos previstos.',
+    pregEs:'¿Qué necesitas para empezar (local, material, personal)? ¿Cuánto crees que costará y cuánto esperas ganar?', pregCa:'Què necessites per començar (local, material, personal)? Quant creus que costarà i quant esperes guanyar?' },
+  { key:'financiacion', es:'Financiación', ca:'Finançament',
+    descEs:'Buscamos cómo financiar el proyecto: ahorro propio, préstamos, ayudas o subvenciones.', descCa:'Busquem com finançar el projecte: estalvi propi, préstecs, ajuts o subvencions.',
+    pregEs:'¿Cómo vas a financiarlo? ¿Tienes ahorros, necesitas un préstamo, o conoces alguna ayuda o subvención?', pregCa:'Com ho finançaràs? Tens estalvis, necessites un préstec, o coneixes algun ajut o subvenció?' },
+  { key:'alta', es:'Alta', ca:'Alta',
+    descEs:'Trámites para darte de alta como autónomo/a o constituir tu empresa.', descCa:'Tràmits per donar-te d\'alta com a autònom/a o constituir la teva empresa.',
+    pregEs:'¿Sabes si necesitas darte de alta como autónomo/a o crear una empresa? ¿Tienes ya el DNI, certificado digital y el resto de papeles?', pregCa:'Saps si necessites donar-te d\'alta com a autònom/a o crear una empresa? Tens ja el DNI, certificat digital i la resta de papers?' },
+  { key:'consolidacion', es:'Consolidación', ca:'Consolidació',
+    descEs:'Acompañamiento y seguimiento del negocio una vez ya está en marcha.', descCa:'Acompanyament i seguiment del negoci un cop ja està en marxa.',
+    pregEs:'¿Cómo va el negocio ahora que está en marcha? ¿Qué dificultades tienes y en qué necesitas más apoyo?', pregCa:'Com va el negoci ara que està en marxa? Quines dificultats tens i en què necessites més suport?' }
 ];
 
 async function renderEmprendimientoScreen(){
@@ -2138,6 +2152,7 @@ function renderEmprendimientoContenido(){
   const esCA = LANG === 'ca';
   const emp = window.__emprendimientoActual || {};
   const completadas = emp.etapas_completadas || [];
+  const respuestas = emp.respuestas_etapas || {};
   const etapaActualKey = emp.etapa_actual || 'acogida';
   const etapaActual = ETAPAS_EMPRENDIMIENTO.find(e => e.key === etapaActualKey) || ETAPAS_EMPRENDIMIENTO[0];
   const idxActual = ETAPAS_EMPRENDIMIENTO.findIndex(e => e.key === etapaActualKey);
@@ -2162,7 +2177,16 @@ function renderEmprendimientoContenido(){
       : 'Sigue aquí tu camino para poner en marcha tu idea, paso a paso, con el acompañamiento de Logos.'}</p>
 
     <div class="panel-card" style="margin:14px 0;">
-      <h3>${esCA ? 'La meva idea' : 'Mi idea'}</h3>
+      ${emp.idea_negocio ? `
+        <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="document.getElementById('emp-idea-form').style.display = document.getElementById('emp-idea-form').style.display==='none' ? 'block' : 'none';">
+          <div>
+            <h3 style="margin:0 0 2px;">💡 ${esCA ? 'La meva idea' : 'Mi idea'}</h3>
+            <p style="margin:0;font-size:13px;color:var(--ink-soft);">${emp.idea_negocio}${emp.sector ? ` · ${emp.sector}` : ''}</p>
+          </div>
+          <span class="link-btn" style="font-size:12px;flex-shrink:0;">${esCA ? 'Editar' : 'Editar'}</span>
+        </div>
+        <div id="emp-idea-form" style="display:none;margin-top:14px;">
+      ` : `<h3>${esCA ? 'La meva idea' : 'Mi idea'}</h3><div id="emp-idea-form">`}
       <div class="field">
         <label>${esCA ? 'En què consisteix la teva idea de negoci?' : '¿En qué consiste tu idea de negocio?'}</label>
         <textarea id="emp-idea" rows="2" placeholder="${esCA ? 'Ex: obrir una petita perruqueria al meu barri' : 'Ej: abrir una pequeña peluquería en mi barrio'}">${emp.idea_negocio || ''}</textarea>
@@ -2172,6 +2196,7 @@ function renderEmprendimientoContenido(){
         <input type="text" id="emp-sector" value="${emp.sector || ''}" placeholder="${esCA ? 'Ex: comerç, hosteleria, serveis…' : 'Ej: comercio, hostelería, servicios…'}">
       </div>
       <button class="link-btn" onclick="guardarIdeaEmprendimiento()">💾 ${esCA ? 'Desar' : 'Guardar'}</button>
+      </div>
     </div>
 
     <div class="section-label">${esCA ? 'EL TEU ITINERARI' : 'TU ITINERARIO'}</div>
@@ -2183,8 +2208,8 @@ function renderEmprendimientoContenido(){
       <h3 style="color:#7A4A1F;">${esCA ? 'Etapa actual' : 'Etapa actual'}: ${esCA ? etapaActual.ca : etapaActual.es}</h3>
       <p style="margin:0 0 10px;">${esCA ? etapaActual.descCa : etapaActual.descEs}</p>
       <div class="field">
-        <label>${esCA ? 'Notes (opcional)' : 'Notas (opcional)'}</label>
-        <textarea id="emp-notas" rows="2" placeholder="${esCA ? 'Apunta el que vulguis sobre aquesta etapa…' : 'Apunta lo que quieras sobre esta etapa…'}">${emp.notas || ''}</textarea>
+        <label style="font-weight:700;color:var(--ink);">❓ ${esCA ? etapaActual.pregCa : etapaActual.pregEs}</label>
+        <textarea id="emp-notas" rows="3" placeholder="${esCA ? 'Escriu la teva resposta aquí…' : 'Escribe tu respuesta aquí…'}">${respuestas[etapaActualKey] || ''}</textarea>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="link-btn" onclick="guardarNotasEmprendimiento()">💾 ${esCA ? 'Desar nota' : 'Guardar nota'}</button>
@@ -2205,26 +2230,32 @@ async function guardarIdeaEmprendimiento(){
   const sector = document.getElementById('emp-sector').value.trim();
   await sb.from('emprendimiento').update({ idea_negocio, sector, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
   window.__emprendimientoActual = { ...window.__emprendimientoActual, idea_negocio, sector };
+  renderEmprendimientoContenido();
 }
 
 async function guardarNotasEmprendimiento(){
-  const notas = document.getElementById('emp-notas').value.trim();
-  await sb.from('emprendimiento').update({ notas, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
-  window.__emprendimientoActual = { ...window.__emprendimientoActual, notas };
+  const notaTexto = document.getElementById('emp-notas').value.trim();
+  const etapaActualKey = window.__emprendimientoActual.etapa_actual || 'acogida';
+  const respuestas = { ...(window.__emprendimientoActual.respuestas_etapas || {}), [etapaActualKey]: notaTexto };
+  const { error } = await sb.from('emprendimiento').update({ respuestas_etapas: respuestas, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  if(error){ alert('Error al guardar: ' + error.message); return; }
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, respuestas_etapas: respuestas };
 }
 
 async function irAEtapaEmprendimiento(etapaKey){
   const { error } = await sb.from('emprendimiento').update({ etapa_actual: etapaKey, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
   if(error){ alert('Error al guardar: ' + error.message); return; }
-  window.__emprendimientoActual = { ...window.__emprendimientoActual, etapa_actual: etapaKey, notas: '' };
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, etapa_actual: etapaKey };
   renderEmprendimientoContenido();
 }
 
 async function completarEtapaEmprendimiento(etapaKey, siguienteKey){
+  const notaTexto = document.getElementById('emp-notas').value.trim();
+  const respuestas = { ...(window.__emprendimientoActual.respuestas_etapas || {}), [etapaKey]: notaTexto };
   const completadas = [...new Set([...(window.__emprendimientoActual.etapas_completadas || []), etapaKey])];
-  const { error } = await sb.from('emprendimiento').update({ etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '', actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  const { error } = await sb.from('emprendimiento').update({ etapas_completadas: completadas, respuestas_etapas: respuestas, etapa_actual: siguienteKey, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
   if(error){ alert('Error al guardar: ' + error.message); return; }
-  window.__emprendimientoActual = { ...window.__emprendimientoActual, etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '' };
+  window.__emprendimientoActual = { ...window.__emprendimientoActual, etapas_completadas: completadas, respuestas_etapas: respuestas, etapa_actual: siguienteKey };
   renderEmprendimientoContenido();
 }
 
