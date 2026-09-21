@@ -2228,19 +2228,26 @@ function renderEmprendimientoContenido(){
 async function guardarIdeaEmprendimiento(){
   const idea_negocio = document.getElementById('emp-idea').value.trim();
   const sector = document.getElementById('emp-sector').value.trim();
+  const btn = event.target;
+  const textoOriginal = btn.textContent;
   const { error } = await sb.from('emprendimiento').update({ idea_negocio, sector, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
   if(error){ alert('Error al guardar: ' + error.message); return; }
   window.__emprendimientoActual = { ...window.__emprendimientoActual, idea_negocio, sector };
-  renderEmprendimientoContenido();
+  btn.textContent = '✅ Guardado';
+  setTimeout(() => { renderEmprendimientoContenido(); }, 700);
 }
 
 async function guardarNotasEmprendimiento(){
   const notaTexto = document.getElementById('emp-notas').value.trim();
   const etapaActualKey = window.__emprendimientoActual.etapa_actual || 'acogida';
   const respuestas = { ...(window.__emprendimientoActual.respuestas_etapas || {}), [etapaActualKey]: notaTexto };
+  const btn = event.target;
+  const textoOriginal = btn.textContent;
   const { error } = await sb.from('emprendimiento').update({ respuestas_etapas: respuestas, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
   if(error){ alert('Error al guardar: ' + error.message); return; }
   window.__emprendimientoActual = { ...window.__emprendimientoActual, respuestas_etapas: respuestas };
+  btn.textContent = '✅ Guardado';
+  setTimeout(() => { btn.textContent = textoOriginal; }, 1200);
 }
 
 async function irAEtapaEmprendimiento(etapaKey){
