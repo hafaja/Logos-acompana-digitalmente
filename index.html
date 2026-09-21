@@ -2214,14 +2214,16 @@ async function guardarNotasEmprendimiento(){
 }
 
 async function irAEtapaEmprendimiento(etapaKey){
-  await sb.from('emprendimiento').update({ etapa_actual: etapaKey, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  const { error } = await sb.from('emprendimiento').update({ etapa_actual: etapaKey, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  if(error){ alert('Error al guardar: ' + error.message); return; }
   window.__emprendimientoActual = { ...window.__emprendimientoActual, etapa_actual: etapaKey, notas: '' };
   renderEmprendimientoContenido();
 }
 
 async function completarEtapaEmprendimiento(etapaKey, siguienteKey){
   const completadas = [...new Set([...(window.__emprendimientoActual.etapas_completadas || []), etapaKey])];
-  await sb.from('emprendimiento').update({ etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '', actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  const { error } = await sb.from('emprendimiento').update({ etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '', actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  if(error){ alert('Error al guardar: ' + error.message); return; }
   window.__emprendimientoActual = { ...window.__emprendimientoActual, etapas_completadas: completadas, etapa_actual: siguienteKey, notas: '' };
   renderEmprendimientoContenido();
 }
