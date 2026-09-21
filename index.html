@@ -27,14 +27,14 @@
   .sidebar{width:230px;flex-shrink:0;background:var(--sidebar-green);border-right:1.5px solid var(--line);display:flex;flex-direction:column;padding:16px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;}
   .sidebar-logo-img{width:100%;max-width:150px;margin-bottom:18px;display:block;}
   .sidebar nav{display:none;flex-direction:column;gap:4px;flex:1;}
-  .sidebar nav button{text-align:left;background:none;border:none;color:var(--sidebar-yellow);font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
+  .sidebar nav button{text-align:left;background:none;border:none;color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar nav button:hover{background:var(--bg);}
   .sidebar nav button.active{background:var(--teal);color:#fff;}
   .nav-staff-btn{color:#7A4A1F !important;}
   .nav-staff-btn:hover{background:var(--ochre-soft);}
   .nav-staff-btn.active{background:var(--ochre) !important;color:#fff !important;}
   .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
-  .sidebar-public-nav button{text-align:left;background:none;border:none;color:var(--sidebar-yellow);font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
+  .sidebar-public-nav button{text-align:left;background:none;border:none;color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar-public-nav button:hover{background:var(--bg);}
   .sidebar-public-nav button.active{background:var(--teal);color:#fff;}
   .sidebar-social{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);text-align:center;}
@@ -129,18 +129,18 @@
   .necesidad-grupo-titulo{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 2px 8px;}
 
   /* Listado de necesidades, estilo CRM */
-  .crm-list{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-  .crm-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s ease;}
+  .crm-list{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+  .crm-row{display:flex;align-items:center;gap:14px;padding:15px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s ease, transform .15s ease, box-shadow .15s ease;position:relative;}
   .crm-list > .crm-row:last-child{border-bottom:none;}
-  .crm-row:hover{background:var(--bg);}
+  .crm-row:hover{background:var(--bg);transform:translateX(3px);box-shadow:-3px 0 0 var(--sidebar-green) inset;}
   .crm-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-  .crm-name{font-size:14px;font-weight:700;color:var(--ink);line-height:1.3;}
-  .crm-sub{font-size:11.5px;color:var(--ink-soft);margin-top:1px;}
-  .crm-badge{font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;flex-shrink:0;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em;}
+  .crm-name{font-size:15px;font-weight:600;font-family:var(--font-display);color:var(--ink);line-height:1.3;}
+  .crm-sub{font-size:11.5px;color:var(--ink-soft);margin-top:1px;font-family:var(--font-body);}
+  .crm-badge{font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;flex-shrink:0;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em;font-family:var(--font-body);}
   .crm-badge.disponible{background:var(--good-soft);color:var(--good);}
   .crm-badge.proximo{background:var(--ochre-soft);color:#7A4A1F;}
   .crm-chevron{color:var(--ink-soft);font-size:16px;flex-shrink:0;opacity:.6;}
-  .crm-group-header{padding:9px 14px;background:var(--bg);font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+  .crm-group-header{padding:11px 16px;background:var(--bg);font-size:11px;font-weight:800;font-family:var(--font-body);text-transform:uppercase;letter-spacing:.06em;color:var(--sidebar-green);border-bottom:1px solid var(--line);}
   @media (max-width: 760px){
     .crm-row{padding:14px;gap:10px;}
     .crm-name{font-size:14.5px;}
@@ -166,7 +166,7 @@
   .lang-toggle button{font-family:var(--font-body);font-weight:700;font-size:12px;padding:5px 12px;border:none;background:transparent;color:var(--teal-dark);cursor:pointer;}
   .lang-toggle button.active{background:var(--teal);color:#fff;}
   .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
-  .sidebar .section-label{color:var(--sidebar-yellow);opacity:.7;}
+  .sidebar .section-label{color:#fff;opacity:.6;}
   .icon-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:8px;flex-shrink:0;}
   .stat-icon-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;}
   .stat-icon-num{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--ink);line-height:1;}
