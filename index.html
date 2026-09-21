@@ -2228,7 +2228,8 @@ function renderEmprendimientoContenido(){
 async function guardarIdeaEmprendimiento(){
   const idea_negocio = document.getElementById('emp-idea').value.trim();
   const sector = document.getElementById('emp-sector').value.trim();
-  await sb.from('emprendimiento').update({ idea_negocio, sector, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  const { error } = await sb.from('emprendimiento').update({ idea_negocio, sector, actualizado_en: new Date().toISOString() }).eq('usuario_id', CURRENT_USER.id);
+  if(error){ alert('Error al guardar: ' + error.message); return; }
   window.__emprendimientoActual = { ...window.__emprendimientoActual, idea_negocio, sector };
   renderEmprendimientoContenido();
 }
