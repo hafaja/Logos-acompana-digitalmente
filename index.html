@@ -516,6 +516,7 @@ let SERVICIOS = [];
 let TAXONOMIA = [];
 let LANG = 'es';
 let CURRENT_AMBITO = null;
+let ENLACES_ESTADO = {};
 
 async function loadData(){
   try{
@@ -530,6 +531,11 @@ async function loadData(){
     document.getElementById('ambitos-grid').innerHTML =
       '<div class="placeholder">No se pudieron cargar los datos. Si abriste este archivo con doble clic, sírvelo con un servidor local (ej. <code>python3 -m http.server</code>) — los navegadores bloquean fetch() sobre file://.</div>';
   }
+  // No se espera esta consulta para no retrasar la pantalla principal; el estado de los
+  // enlaces solo se usa más adelante, cuando la persona entra a ver sus necesidades.
+  sb.from('enlaces_estado').select('servicio_id, funciona').then(({ data }) => {
+    (data || []).forEach(r => { ENLACES_ESTADO[r.servicio_id] = r.funciona; });
+  });
 }
 
 function setLang(lang){
@@ -550,14 +556,28 @@ function setLang(lang){
   if(CURRENT_AMBITO) showNecesidades(CURRENT_AMBITO, true);
 }
 
+const COLORES_AMBITO = [
+  { bg:'#FBE7D3', color:'#7A4A1F' }, { bg:'#E7ECFF', color:'#33449E' },
+  { bg:'#DDEFD9', color:'var(--good)' }, { bg:'#F0EAF8', color:'#6A3FA0' },
+  { bg:'#FBEEE3', color:'#A8431F' }, { bg:'#FBE0E0', color:'#B0392F' },
+  { bg:'#EAF1F8', color:'#2E5A8F' }, { bg:'#FFF3D0', color:'#8A6D1D' }
+];
+
 function renderAmbitos(){
   const grid = document.getElementById('ambitos-grid');
-  grid.innerHTML = TAXONOMIA.map(a => `
-    <div class="life-card" onclick="showNecesidades('${a.id}')">
-      <span class="emoji">${a.icono}</span>
-      <span>${a.nombre[LANG]}</span>
-    </div>
-  `).join('');
+  grid.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">` + TAXONOMIA.map((a, i) => {
+    const col = COLORES_AMBITO[i % COLORES_AMBITO.length];
+    const numServicios = (a.necesidades || []).reduce((acc, n) => acc + (n.servicios_ids ? n.servicios_ids.length : 0), 0);
+    const sub = numServicios > 0
+      ? (LANG==='ca' ? `${numServicios} servei(s) disponible(s)` : `${numServicios} servicio(s) disponible(s)`)
+      : (LANG==='ca' ? 'Properament' : 'Próximamente');
+    return `
+    <div class="quick-card" onclick="showNecesidades('${a.id}')">
+      <div class="icon-badge" style="background:${col.bg};color:${col.color};font-size:20px;">${a.icono}</div>
+      <h4>${a.nombre[LANG]}</h4>
+      <p>${sub}</p>
+    </div>`;
+  }).join('') + `</div>`;
 }
 
 function showNecesidades(ambitoId, silent){
@@ -584,11 +604,13 @@ function showNecesidades(ambitoId, silent){
     if(ids.length === 1){
       const s = SERVICIOS.find(x => x.id === ids[0]);
       const desc = s && s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 90) : '';
+      const enlaceCaido = ENLACES_ESTADO[ids[0]] === false;
       return `
-        <div class="quick-card" onclick="showDetail('${ids[0]}')">
+        <div class="quick-card" style="position:relative;" onclick="showDetail('${ids[0]}')">
           <div class="icon-badge" style="background:var(--good-soft);color:var(--good);">📋</div>
           <h4>${n.nombre[LANG]}</h4>
           <p>${desc}</p>
+          ${enlaceCaido ? `<p style="margin-top:6px;color:var(--alert);font-size:11px;font-weight:700;">⚠️ ${LANG==='ca' ? 'Enllaç no disponible ara mateix' : 'Enlace no disponible ahora mismo'}</p>` : ''}
         </div>`;
     }
     // varios servicios reales para la misma necesidad: cada uno con su propia tarjeta
@@ -596,11 +618,13 @@ function showNecesidades(ambitoId, silent){
       const s = SERVICIOS.find(x => x.id === sid);
       if(!s) return '';
       const desc = s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 90) : (s.municipio || '');
+      const enlaceCaido = ENLACES_ESTADO[sid] === false;
       return `
-        <div class="quick-card" onclick="showDetail('${sid}')">
+        <div class="quick-card" style="position:relative;" onclick="showDetail('${sid}')">
           <div class="icon-badge" style="background:#E7ECFF;color:#33449E;">📋</div>
           <h4>${s.nombre[LANG]}</h4>
           <p>${desc}</p>
+          ${enlaceCaido ? `<p style="margin-top:6px;color:var(--alert);font-size:11px;font-weight:700;">⚠️ ${LANG==='ca' ? 'Enllaç no disponible ara mateix' : 'Enlace no disponible ahora mismo'}</p>` : ''}
         </div>`;
     }).join('');
   }).join('') + `</div>`;
