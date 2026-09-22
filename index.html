@@ -178,6 +178,15 @@
   .stat-icon-label{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.3;}
   .stats-mini-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
   .life-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ambitos-layout{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .ambitos-col{display:grid;grid-template-columns:1fr;gap:14px;width:100%;max-width:420px;}
+  .ambitos-centro-box{text-align:center;padding:26px 20px;max-width:340px;}
+  .ambitos-centro-box .emoji-grande{font-size:30px;margin-bottom:6px;}
+  @media (min-width: 900px){
+    .ambitos-layout{flex-direction:row;align-items:flex-start;justify-content:center;gap:28px;}
+    .ambitos-col{max-width:280px;}
+    .ambitos-centro-box{position:sticky;top:24px;flex-shrink:0;}
+  }
   .life-card{background:var(--paper);border:1.5px solid var(--line);border-top:3px solid var(--ochre);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .15s, box-shadow .15s;}
   .life-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,35,63,.08);}
   .life-card .emoji{font-size:22px;display:block;margin-bottom:6px;}
@@ -356,14 +365,7 @@
             <span id="trust-body">De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
           </div>
         </div>
-        <div class="life-grid" id="ambitos-grid"></div>
-        <div class="service-row" id="no-se-row" onclick="CURRENT_AMBITO=null;showProximamente(null)" style="margin-top:14px;background:var(--teal-dark);border:none;">
-          <div class="icon" style="background:rgba(255,255,255,.15);">🔎</div>
-          <div class="txt" style="flex:1;">
-            <strong style="color:#fff;" id="no-se-title">No sé exactamente qué necesito</strong>
-            <span style="color:rgba(255,255,255,.75);" id="no-se-sub">Cuéntanos tu situación y te ayudamos a encontrarlo</span>
-          </div>
-        </div>
+        <div id="ambitos-grid"></div>
       </div>
 
       <div class="home-mobile-extra">
@@ -550,8 +552,6 @@ function setLang(lang){
   document.getElementById('trust-title').textContent = T.trustTitle;
   document.getElementById('trust-body').textContent = T.trustBody;
   document.getElementById('back-to-home').innerHTML = T.backHome;
-  document.getElementById('no-se-title').textContent = T.noSeTitle;
-  document.getElementById('no-se-sub').textContent = T.noSeSub;
   renderAmbitos();
   if(CURRENT_AMBITO) showNecesidades(CURRENT_AMBITO, true);
 }
@@ -564,20 +564,41 @@ const COLORES_AMBITO = [
 ];
 
 function renderAmbitos(){
+  const esCA = LANG === 'ca';
   const grid = document.getElementById('ambitos-grid');
-  grid.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">` + TAXONOMIA.map((a, i) => {
+  const mitad = Math.ceil(TAXONOMIA.length / 2);
+  const izquierda = TAXONOMIA.slice(0, mitad);
+  const derecha = TAXONOMIA.slice(mitad);
+
+  const tarjeta = (a, i) => {
     const col = COLORES_AMBITO[i % COLORES_AMBITO.length];
     const numServicios = (a.necesidades || []).reduce((acc, n) => acc + (n.servicios_ids ? n.servicios_ids.length : 0), 0);
     const sub = numServicios > 0
-      ? (LANG==='ca' ? `${numServicios} servei(s) disponible(s)` : `${numServicios} servicio(s) disponible(s)`)
-      : (LANG==='ca' ? 'Properament' : 'Próximamente');
+      ? (esCA ? `${numServicios} servei(s) disponible(s)` : `${numServicios} servicio(s) disponible(s)`)
+      : (esCA ? 'Properament' : 'Próximamente');
     return `
     <div class="quick-card" onclick="showNecesidades('${a.id}')">
       <div class="icon-badge" style="background:${col.bg};color:${col.color};font-size:20px;">${a.icono}</div>
       <h4>${a.nombre[LANG]}</h4>
       <p>${sub}</p>
     </div>`;
-  }).join('') + `</div>`;
+  };
+
+  grid.innerHTML = `
+    <div class="ambitos-layout">
+      <div class="ambitos-col">${izquierda.map((a,i) => tarjeta(a,i)).join('')}</div>
+
+      <div class="panel-card ambitos-centro-box">
+        <img src="logo-lambda.png" alt="" style="width:34px;height:auto;opacity:.35;margin-bottom:10px;">
+        <div class="emoji-grande">🤔</div>
+        <h3 style="margin:0 0 6px;">${esCA ? 'Què et passa?' : '¿Qué te ocurre?'}</h3>
+        <p class="subtle" style="margin:0 0 12px;">${esCA ? 'Explica\'ns la teva situació i t\'ajudem a trobar-ho.' : 'Cuéntanos tu situación y te ayudamos a encontrarlo.'}</p>
+        <button class="link-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">${esCA ? 'Explicar-ho →' : 'Contarlo →'}</button>
+      </div>
+
+      <div class="ambitos-col">${derecha.map((a,i) => tarjeta(a, i+mitad)).join('')}</div>
+    </div>
+  `;
 }
 
 function showNecesidades(ambitoId, silent){
