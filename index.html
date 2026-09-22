@@ -311,6 +311,7 @@
       <button data-target="profile" onclick="showScreen('profile');renderDashboard()">Mi espacio</button>
       <button data-target="cv" onclick="showScreen('cv');renderCVScreen()">Mi currículum</button>
       <button data-target="encuesta" onclick="showScreen('encuesta');renderEncuestaForm()">Encuesta de satisfacción</button>
+      <button data-target="config" onclick="showScreen('config');renderConfigScreen()">⚙️ Configuración</button>
       <button class="nav-staff-btn" data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
       <button class="nav-staff-btn" data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
     </nav>
@@ -485,6 +486,11 @@
   <div class="screen" id="screen-webredes">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
     <div class="content" id="webredes-content"></div>
+  </div>
+
+  <div class="screen" id="screen-config">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="config-content"></div>
   </div>
 
   <div class="screen" id="screen-aulaciudadano">
@@ -954,9 +960,6 @@ function revelarCatalogo(){
 }
 
 async function initAuth(){
-  const { data } = await sb.auth.getSession();
-  CURRENT_USER = data.session ? data.session.user : null;
-  await checkStaff();
   sb.auth.onAuthStateChange(async (_event, session) => {
     CURRENT_USER = session ? session.user : null;
     await checkStaff();
@@ -964,7 +967,6 @@ async function initAuth(){
     if(document.getElementById('screen-panel').classList.contains('active')) renderPanel();
     renderEntradaPanel();
   });
-  await renderEntradaPanel();
 }
 
 async function marcarNotificacionLeida(id){
@@ -2981,6 +2983,51 @@ function renderQueOfrecemos(){
   `;
 }
 
+const COLORES_FONDO_DISPONIBLES = [
+  { id:'crema', nombre:'Crema (original)', valor:'#F5F3EC' },
+  { id:'blanco', nombre:'Blanco', valor:'#FFFFFF' },
+  { id:'azul', nombre:'Azul suave', valor:'#EAF1F8' },
+  { id:'verde', nombre:'Verde suave', valor:'#EAF5EC' },
+  { id:'lavanda', nombre:'Lavanda suave', valor:'#F0EAF8' },
+  { id:'melocoton', nombre:'Melocotón suave', valor:'#FBEEE3' }
+];
+
+function aplicarColorFondo(valor, guardar){
+  document.documentElement.style.setProperty('--bg', valor);
+  if(guardar){
+    try { localStorage.setItem('logos_color_fondo', valor); } catch(e){}
+  }
+}
+
+function cargarColorFondoGuardado(){
+  try {
+    const guardado = localStorage.getItem('logos_color_fondo');
+    if(guardado) aplicarColorFondo(guardado, false);
+  } catch(e){}
+}
+
+function renderConfigScreen(){
+  const esCA = LANG === 'ca';
+  const actual = (() => { try { return localStorage.getItem('logos_color_fondo') || '#F5F3EC'; } catch(e){ return '#F5F3EC'; } })();
+
+  document.getElementById('config-content').innerHTML = `
+    <h2 class="screen-title">⚙️ ${esCA ? 'Configuració' : 'Configuración'}</h2>
+    <div class="panel-card" style="margin-top:14px;">
+      <h3>🎨 ${esCA ? 'Color de fons' : 'Color de fondo'}</h3>
+      <p class="subtle" style="margin:0 0 12px;">${esCA
+        ? 'Tria el color de fons que et resulti més còmode. Es queda desat en aquest dispositiu.'
+        : 'Elige el color de fondo que te resulte más cómodo. Se queda guardado en este dispositivo.'}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;">
+        ${COLORES_FONDO_DISPONIBLES.map(c => `
+          <button onclick="aplicarColorFondo('${c.valor}', true); renderConfigScreen();" style="border:2px solid ${actual===c.valor ? 'var(--ochre)' : 'var(--line)'};border-radius:12px;padding:8px;background:var(--paper);cursor:pointer;text-align:center;">
+            <div style="width:100%;height:36px;border-radius:8px;background:${c.valor};border:1px solid var(--line);margin-bottom:6px;"></div>
+            <span style="font-size:11px;">${c.nombre}${actual===c.valor ? ' ✓' : ''}</span>
+          </button>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
 function renderVoluntariado(){
   if(bloquearSinConsentimiento()) return;
   const cont = document.getElementById('voluntariado-content');
@@ -4462,6 +4509,7 @@ async function subirDocumento(inputId, tipoDocumento){
   renderDashboard();
 }
 
+cargarColorFondoGuardado();
 initAuth();
 
 if('serviceWorker' in navigator){
