@@ -168,6 +168,11 @@
   .section-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:4px 0 8px;}
   .sidebar .section-label{color:#fff;opacity:.6;}
   .icon-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:8px;flex-shrink:0;}
+  .quick-card{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;display:flex;flex-direction:column;}
+  .quick-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px -8px rgba(0,0,0,.12);border-color:var(--ochre);}
+  .quick-card h4{margin:0 0 3px;font-size:14px;font-family:var(--font-display);font-weight:600;color:var(--ink);}
+  .quick-card p{margin:0;font-size:11.5px;color:var(--ink-soft);line-height:1.4;}
+  .quick-card .badge-num{position:absolute;top:14px;right:14px;background:var(--ochre);color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px;}
   .stat-icon-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;}
   .stat-icon-num{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--ink);line-height:1;}
   .stat-icon-label{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.3;}
@@ -566,42 +571,38 @@ function showNecesidades(ambitoId, silent){
     : 'Selecciona lo que te corresponda.';
   const list = document.getElementById('necesidades-list');
 
-  list.innerHTML = `<div class="crm-list">` + a.necesidades.map(n => {
+  list.innerHTML = `<div class="cards-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">` + a.necesidades.map(n => {
     const ids = n.servicios_ids || [];
     if(ids.length === 0){
       return `
-        <div class="crm-row" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
-          <span class="crm-dot" style="background:var(--ochre);"></span>
-          <div style="flex:1;min-width:0;"><div class="crm-name">${n.nombre[LANG]}</div></div>
-          <span class="crm-badge proximo">${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>
-          <span class="crm-chevron">›</span>
+        <div class="quick-card" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
+          <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;">🕓</div>
+          <h4>${n.nombre[LANG]}</h4>
+          <p>${LANG==='ca' ? 'Molt aviat disponible.' : 'Muy pronto disponible.'}</p>
         </div>`;
     }
     if(ids.length === 1){
+      const s = SERVICIOS.find(x => x.id === ids[0]);
+      const desc = s && s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 90) : '';
       return `
-        <div class="crm-row" onclick="showDetail('${ids[0]}')">
-          <span class="crm-dot" style="background:var(--good);"></span>
-          <div style="flex:1;min-width:0;"><div class="crm-name">${n.nombre[LANG]}</div></div>
-          <span class="crm-badge disponible">${LANG==='ca' ? 'Disponible' : 'Disponible'}</span>
-          <span class="crm-chevron">›</span>
+        <div class="quick-card" onclick="showDetail('${ids[0]}')">
+          <div class="icon-badge" style="background:var(--good-soft);color:var(--good);">📋</div>
+          <h4>${n.nombre[LANG]}</h4>
+          <p>${desc}</p>
         </div>`;
     }
-    // varios servicios reales para la misma necesidad: se listan por su nombre propio, no se elige uno solo
-    const subRows = ids.map(sid => {
+    // varios servicios reales para la misma necesidad: cada uno con su propia tarjeta
+    return ids.map(sid => {
       const s = SERVICIOS.find(x => x.id === sid);
       if(!s) return '';
+      const desc = s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 90) : (s.municipio || '');
       return `
-        <div class="crm-row" onclick="showDetail('${sid}')">
-          <span class="crm-dot" style="background:#33449E;"></span>
-          <div style="flex:1;min-width:0;">
-            <div class="crm-name">${s.nombre[LANG]}</div>
-            ${s.municipio ? `<div class="crm-sub">${s.municipio}</div>` : ''}
-          </div>
-          <span class="crm-badge disponible">${LANG==='ca' ? 'Disponible' : 'Disponible'}</span>
-          <span class="crm-chevron">›</span>
+        <div class="quick-card" onclick="showDetail('${sid}')">
+          <div class="icon-badge" style="background:#E7ECFF;color:#33449E;">📋</div>
+          <h4>${s.nombre[LANG]}</h4>
+          <p>${desc}</p>
         </div>`;
     }).join('');
-    return `<div class="crm-group-header">${n.nombre[LANG]}</div>${subRows}`;
   }).join('') + `</div>`;
 
   if(!silent) showScreen('necesidades');
@@ -3528,6 +3529,25 @@ async function renderDashboard(){
         </div>`).join('')
     : '';
 
+  const gridAccesos = [
+    { id:'recordatorios', icon:'🔔', bg:'var(--ochre-soft)', color:'#7A4A1F', titulo: LANG==='ca'?'Recordatoris':'Recordatorios', sub: LANG==='ca'?'Avisos i properes cites.':'Avisos y próximas citas.' },
+    { id:'emprendimiento', icon:'🚀', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'El meu emprenedoria':'Mi emprendimiento', sub: emprendimiento ? (LANG==='ca'?'Itinerari en marxa.':'Itinerario en marcha.') : (LANG==='ca'?'Encara no has començat.':'Aún no has empezado.') },
+    { id:'consulta', icon:'💬', bg:'#E7ECFF', color:'#33449E', titulo: LANG==='ca'?'La meva consulta d\'orientació':'Mi consulta de orientación', sub: (consultas && consultas.length) ? (LANG==='ca'?`${consultas.length} consulta(es).`:`${consultas.length} consulta(s).`) : (LANG==='ca'?'Sense consultes.':'Sin consultas.') },
+    { id:'citas', icon:'📅', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'Les meves cites':'Mis citas', sub: (citas && citas.length) ? (LANG==='ca'?`${citas.length} propera(es).`:`${citas.length} próxima(s).`) : (LANG==='ca'?'Sense cites.':'Sin citas.') },
+    { id:'tramites', icon:'🗂️', bg:'var(--ochre-soft)', color:'#7A4A1F', titulo: LANG==='ca'?'Els meus tràmits':'Mis trámites', sub: (tramites && tramites.length) ? (LANG==='ca'?`${tramites.length} en total.`:`${tramites.length} en total.`) : (LANG==='ca'?'Sense tràmits.':'Sin trámites.') },
+    { id:'consentimiento', icon:'✅', bg:'#EFEFEF', color:'var(--ink)', titulo: LANG==='ca'?'El meu consentiment':'Mi consentimiento', sub: (perfil && perfil.consentimiento_firmado) ? (LANG==='ca'?'Signat.':'Firmado.') : (LANG==='ca'?'Pendent.':'Pendiente.') },
+    { id:'documentos', icon:'📄', bg:'#E7ECFF', color:'#33449E', titulo: LANG==='ca'?'Els meus documents':'Mis documentos', sub: (documentos && documentos.length) ? (LANG==='ca'?`${documentos.length} arxiu(s).`:`${documentos.length} archivo(s).`) : (LANG==='ca'?'Sense documents.':'Sin documentos.') }
+  ];
+  const gridAccesosHtml = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:16px 0 20px;">
+      ${gridAccesos.map(a => `
+        <div class="quick-card" onclick="document.getElementById('sec-${a.id}').scrollIntoView({behavior:'smooth', block:'start'})">
+          <div class="icon-badge" style="background:${a.bg};color:${a.color};">${a.icon}</div>
+          <h4>${a.titulo}</h4>
+          <p>${a.sub}</p>
+        </div>`).join('')}
+    </div>`;
+
   document.getElementById('profile-content').innerHTML = `
     <div class="profile-head">
       <div class="avatar">${inicial}</div>
@@ -3537,7 +3557,11 @@ async function renderDashboard(){
       </div>
     </div>
 
+    ${gridAccesosHtml}
+
+    <div id="sec-recordatorios"></div>
     ${recordatoriosHtml}
+    <div id="sec-emprendimiento"></div>
     ${emprendimientoHtml}
 
     ${avisosProyecto.length ? `
@@ -3554,6 +3578,7 @@ async function renderDashboard(){
         </div>`).join('')}
     </div>` : ''}
 
+    <div id="sec-consulta"></div>
     ${consultasHtml ? `
     <div style="display:flex;align-items:center;gap:10px;margin:0 0 8px;">
       <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">💬</div>
@@ -3561,6 +3586,7 @@ async function renderDashboard(){
     </div>
     ${consultasHtml}` : ''}
 
+    <div id="sec-citas"></div>
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:var(--good-soft);color:var(--good);margin:0;">📅</div>
@@ -3570,6 +3596,7 @@ async function renderDashboard(){
       <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button>
     </div>
 
+    <div id="sec-tramites"></div>
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🗂️</div>
@@ -3578,6 +3605,7 @@ async function renderDashboard(){
       ${tramitesHtml}
     </div>
 
+    <div id="sec-consentimiento"></div>
     ${perfil && perfil.consentimiento_firmado ? `
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
@@ -3590,6 +3618,7 @@ async function renderDashboard(){
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
     </div>` : ''}
 
+    <div id="sec-documentos"></div>
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">📄</div>
