@@ -2144,9 +2144,17 @@ async function renderEmprendimientoScreen(){
   const esCA = LANG === 'ca';
   cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
 
-  let { data: emp } = await sb.from('emprendimiento').select('*').eq('usuario_id', CURRENT_USER.id).maybeSingle();
+  let { data: emp, error: errorSelect } = await sb.from('emprendimiento').select('*').eq('usuario_id', CURRENT_USER.id).maybeSingle();
+  if(errorSelect){
+    cont.innerHTML = `<div class="panel-card" style="background:var(--alert-soft);border-color:var(--alert);"><p style="margin:0;">Error al cargar: ${errorSelect.message}</p></div>`;
+    return;
+  }
   if(!emp){
-    const { data: nuevo } = await sb.from('emprendimiento').insert({ usuario_id: CURRENT_USER.id, etapa_actual: 'acogida', etapas_completadas: [] }).select().maybeSingle();
+    const { data: nuevo, error: errorInsert } = await sb.from('emprendimiento').insert({ usuario_id: CURRENT_USER.id, etapa_actual: 'acogida', etapas_completadas: [] }).select().maybeSingle();
+    if(errorInsert){
+      cont.innerHTML = `<div class="panel-card" style="background:var(--alert-soft);border-color:var(--alert);"><p style="margin:0;">Error al crear tu itinerario: ${errorInsert.message}</p></div>`;
+      return;
+    }
     emp = nuevo;
   }
   window.__emprendimientoActual = emp;
@@ -3378,7 +3386,8 @@ async function renderDashboard(){
   const { data: citas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').order('fecha', { ascending:true });
   const { data: consultas } = await sb.from('consultas_orientacion').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
   const { data: misProyectos } = await sb.from('proyecto_participantes').select('proyecto_id').eq('usuario_id', CURRENT_USER.id).eq('rol', 'beneficiario');
-  const { data: emprendimiento } = await sb.from('emprendimiento').select('*').eq('usuario_id', CURRENT_USER.id).maybeSingle();
+  const { data: emprendimiento, error: errorEmprendimiento } = await sb.from('emprendimiento').select('*').eq('usuario_id', CURRENT_USER.id).maybeSingle();
+  if(errorEmprendimiento) console.error('Error cargando emprendimiento en Mi espacio:', errorEmprendimiento.message);
   let avisosProyecto = [];
   if(misProyectos && misProyectos.length){
     const { data } = await sb.from('proyecto_avisos').select('*, proyectos(nombre)').in('proyecto_id', misProyectos.map(mp => mp.proyecto_id)).order('creado_en', { ascending:false }).limit(10);
