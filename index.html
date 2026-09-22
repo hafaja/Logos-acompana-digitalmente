@@ -3378,6 +3378,7 @@ async function renderDashboard(){
   const { data: citas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').order('fecha', { ascending:true });
   const { data: consultas } = await sb.from('consultas_orientacion').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
   const { data: misProyectos } = await sb.from('proyecto_participantes').select('proyecto_id').eq('usuario_id', CURRENT_USER.id).eq('rol', 'beneficiario');
+  const { data: emprendimiento } = await sb.from('emprendimiento').select('*').eq('usuario_id', CURRENT_USER.id).maybeSingle();
   let avisosProyecto = [];
   if(misProyectos && misProyectos.length){
     const { data } = await sb.from('proyecto_avisos').select('*, proyectos(nombre)').in('proyecto_id', misProyectos.map(mp => mp.proyecto_id)).order('creado_en', { ascending:false }).limit(10);
@@ -3387,6 +3388,31 @@ async function renderDashboard(){
   const nombre = (perfil && perfil.nombre_completo) ? perfil.nombre_completo : CURRENT_USER.email;
   const inicial = nombre.trim().charAt(0).toUpperCase();
   const municipio = (perfil && perfil.municipio) ? perfil.municipio : 'Tarragona';
+
+  const emprendimientoHtml = emprendimiento ? (() => {
+    const completadas = emprendimiento.etapas_completadas || [];
+    const idxActual = ETAPAS_EMPRENDIMIENTO.findIndex(e => e.key === (emprendimiento.etapa_actual || 'acogida'));
+    const stepperMini = ETAPAS_EMPRENDIMIENTO.map((e, i) => {
+      const completada = completadas.includes(e.key);
+      const esActual = i === idxActual;
+      const color = completada ? 'var(--good)' : esActual ? 'var(--ochre)' : 'var(--line)';
+      const bg = completada ? 'var(--good-soft)' : esActual ? 'var(--ochre-soft)' : 'var(--paper)';
+      return `<div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 5px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:${bg};border:2px solid ${color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:${color};">${completada ? '✓' : i+1}</div>
+      </div>`;
+    }).join('<div style="flex:1;height:2px;background:var(--line);margin-top:11px;min-width:6px;"></div>');
+    const etapaActualObj = ETAPAS_EMPRENDIMIENTO[idxActual] || ETAPAS_EMPRENDIMIENTO[0];
+    return `
+    <div class="panel-card" style="margin-top:16px;cursor:pointer;" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🚀</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'El meu emprenedoria' : 'Mi emprendimiento'}</h3>
+      </div>
+      <div style="display:flex;align-items:flex-start;overflow-x:auto;padding:2px 0 6px;">${stepperMini}</div>
+      <p style="margin:6px 0 0;font-size:13px;">${LANG==='ca' ? 'Etapa actual' : 'Etapa actual'}: <strong>${LANG==='ca' ? etapaActualObj.ca : etapaActualObj.es}</strong></p>
+      <span class="link-btn" style="font-size:12px;display:inline-block;margin-top:6px;">${LANG==='ca' ? 'Continuar →' : 'Continuar →'}</span>
+    </div>`;
+  })() : '';
 
   const tramitesHtml = (tramites && tramites.length)
     ? tramites.map(tr => {
@@ -3456,6 +3482,7 @@ async function renderDashboard(){
     </div>
 
     ${recordatoriosHtml}
+    ${emprendimientoHtml}
 
     ${avisosProyecto.length ? `
     <div class="panel-card" style="margin-bottom:16px;">
