@@ -98,6 +98,7 @@
     .main{order:1;}
     .main-content{padding:22px 18px 96px;}
     .home-mobile-extra{display:none;}
+    .traductor-grid{grid-template-columns:1fr !important;}
     .screen-title{font-size:21px;}
     .service-row{padding:16px 16px;gap:14px;margin-bottom:12px;min-height:48px;}
     .service-row .icon{width:42px;height:42px;font-size:20px;}
@@ -325,6 +326,7 @@
       <button data-target="profile" onclick="showScreen('profile');renderDashboard()">Mi espacio</button>
       <button data-target="cv" onclick="showScreen('cv');renderCVScreen()">Mi currículum</button>
       <button data-target="encuesta" onclick="showScreen('encuesta');renderEncuestaForm()">Encuesta de satisfacción</button>
+      <button data-target="traductor" onclick="showScreen('traductor');renderTraductorScreen()">🌐 Traductor en directo</button>
       <button data-target="config" onclick="showScreen('config');renderConfigScreen()">⚙️ Configuración</button>
       <button class="nav-staff-btn" data-target="panel" id="nav-panel-btn" onclick="showScreen('panel');renderPanel()" style="display:none;">Panel Logos</button>
       <button class="nav-staff-btn" data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
@@ -498,6 +500,11 @@
   <div class="screen" id="screen-config">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
     <div class="content" id="config-content"></div>
+  </div>
+
+  <div class="screen" id="screen-traductor">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="traductor-content"></div>
   </div>
 
   <div class="screen" id="screen-aulaciudadano">
@@ -2600,25 +2607,21 @@ function renderCuidadosCompania(){
         : 'Si cuidas de alguien, o vives solo/a y a veces te hace falta compañía, Logos ha colaborado en el desarrollo de dos aplicaciones pensadas exactamente para ti. Son gratuitas y las puedes probar ya mismo.'}</p>
     </div>
 
-    <div class="panel-card" style="margin-bottom:16px;">
-      <h3>💙 CuidarConSentido</h3>
-      <p class="subtle" style="margin:0 0 4px;font-weight:700;">${esCA ? "Per a qui cuida d'algú" : 'Para quien cuida de alguien'}</p>
-      <p style="font-size:13.5px;margin:0 0 12px;">${esCA
-        ? "Formació, orientació i suport per a cuidadors i cuidadores de persones grans o dependents. T'ajuda a saber què fer en el dia a dia i a cuidar-te també a tu mateix/a."
-        : 'Formación, orientación y apoyo para cuidadores y cuidadoras de personas mayores o dependientes. Te ayuda a saber qué hacer en el día a día, y a cuidarte también a ti mismo/a.'}</p>
-      <a href="https://play.google.com/store/apps/details?id=app.netlify.cuidarconsentido.twa" target="_blank" rel="noopener" class="official-link">
-        <div><div class="l1">${esCA?'Obrir a Google Play':'Abrir en Google Play'}</div><div class="l2">CuidarConSentido</div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">
+      <a href="https://play.google.com/store/apps/details?id=app.netlify.cuidarconsentido.twa" target="_blank" rel="noopener" class="quick-card" style="text-decoration:none;">
+        <img src="logo-cuidaapp.png" alt="CuidarConSentido" style="width:38px;height:38px;border-radius:11px;margin-bottom:8px;">
+        <h4>💙 CuidarConSentido</h4>
+        <p><strong>${esCA ? "Per a qui cuida d'algú" : 'Para quien cuida de alguien'}</strong><br>${esCA
+          ? "Formació i suport per a cuidadors i cuidadores de persones grans o dependents."
+          : 'Formación y apoyo para cuidadores y cuidadoras de personas mayores o dependientes.'}</p>
       </a>
-    </div>
 
-    <div class="panel-card">
-      <h3>🤝 ABBAcompanyarte</h3>
-      <p class="subtle" style="margin:0 0 4px;font-weight:700;">${esCA ? 'Per a qui viu sol/a' : 'Para quien vive solo/a'}</p>
-      <p style="font-size:13.5px;margin:0 0 12px;">${esCA
-        ? "Una aplicació de companyia pensada per a persones que viuen soles, especialment gent gran. Amb la veu, com si parlessis amb algú de confiança."
-        : 'Una aplicación de compañía pensada para personas que viven solas, especialmente personas mayores. Con la voz, como si hablaras con alguien de confianza.'}</p>
-      <a href="https://abbaacompanarte.netlify.app/" target="_blank" rel="noopener" class="official-link">
-        <div><div class="l1">${esCA?'Obrir ABBAcompanyarte':'Abrir ABBAcompañarte'}</div><div class="l2">abbaacompanarte.netlify.app</div></div>
+      <a href="https://abbaacompanarte.netlify.app/" target="_blank" rel="noopener" class="quick-card" style="text-decoration:none;">
+        <img src="logo-abbacompanarte.png" alt="ABBAcompanyarte" style="width:38px;height:38px;border-radius:11px;margin-bottom:8px;">
+        <h4>ABBAcompanyarte</h4>
+        <p><strong>${esCA ? 'Per a qui viu sol/a' : 'Para quien vive solo/a'}</strong><br>${esCA
+          ? "Aplicació de companyia per veu, per a persones que viuen soles."
+          : 'Aplicación de compañía por voz, para personas que viven solas.'}</p>
       </a>
     </div>
   `;
@@ -3077,6 +3080,149 @@ function renderConfigScreen(){
       </div>
     </div>
   `;
+}
+
+const IDIOMAS_TRADUCTOR = [
+  { code:'es-ES', label:'Español' },
+  { code:'ca-ES', label:'Català' },
+  { code:'en-US', label:'English (Inglés)' },
+  { code:'fr-FR', label:'Français (Francés)' },
+  { code:'ar-SA', label:'العربية (Árabe)' },
+  { code:'pt-PT', label:'Português (Portugués)' },
+  { code:'pl-PL', label:'Polski (Polaco)' },
+  { code:'ru-RU', label:'Русский (Ruso)' },
+  { code:'hi-IN', label:'हिन्दी (Hindi)' },
+  { code:'zh-CN', label:'中文 (Chino)' },
+  { code:'de-DE', label:'Deutsch (Alemán)' },
+  { code:'it-IT', label:'Italiano' },
+  { code:'ro-RO', label:'Română (Rumano)' },
+  { code:'uk-UA', label:'Українська (Ucraniano)' },
+  { code:'ur-PK', label:'اردو (Urdu)' },
+  { code:'bn-BD', label:'বাংলা (Bengalí)' },
+  { code:'fil-PH', label:'Filipino (Tagalo)' },
+  { code:'wo-SN', label:'Wolof' }
+];
+
+function renderTraductorScreen(){
+  const esCA = LANG === 'ca';
+  document.getElementById('traductor-content').innerHTML = `
+    <h2 class="screen-title">🌐 ${esCA?'Traductor en directe':'Traductor en directo'}</h2>
+    <p class="subtle">${esCA
+      ? "Cadascú tria el seu idioma i prem el micròfon per parlar. La traducció apareix escrita i també es llegeix en veu alta a l'altra banda. Funciona millor amb Chrome."
+      : 'Cada uno elige su idioma y pulsa el micrófono para hablar. La traducción aparece escrita y también se lee en voz alta en el otro lado. Funciona mejor con Chrome.'}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="traductor-grid">
+      ${panelTraductor('tecnico', esCA?'Tècnic/a de Logos':'Técnico/a de Logos', 'es-ES')}
+      ${panelTraductor('persona', esCA?'Persona':'Persona', 'en-US')}
+    </div>
+  `;
+}
+
+function panelTraductor(lado, titulo, idiomaDefecto){
+  const esCA = LANG === 'ca';
+  const opciones = IDIOMAS_TRADUCTOR.map(i => `<option value="${i.code}" ${i.code===idiomaDefecto?'selected':''}>${i.label}</option>`).join('');
+  return `
+    <div class="panel-card">
+      <h3>${titulo}</h3>
+      <div class="field"><select id="traductor-idioma-${lado}">${opciones}</select></div>
+      <button class="primary-btn" id="traductor-btn-${lado}" onclick="toggleGrabacionTraductor('${lado}')">🎤 ${esCA?'Parlar':'Hablar'}</button>
+      <div class="field" style="margin-top:10px;display:flex;gap:6px;">
+        <input type="text" id="traductor-texto-${lado}" placeholder="${esCA?'O escriu aquí…':'O escribe aquí…'}" onkeydown="if(event.key==='Enter')enviarTextoTraductor('${lado}')" style="flex:1;">
+        <button class="link-btn" onclick="enviarTextoTraductor('${lado}')">✍️ ${esCA?'Enviar':'Enviar'}</button>
+      </div>
+      <div class="detail-block" style="margin-top:10px;min-height:44px;">
+        <h4>${esCA?'Has dit':'Has dicho'}</h4>
+        <p id="traductor-original-${lado}" style="margin:0;">—</p>
+      </div>
+      <div class="detail-block" style="background:var(--good-soft);border-color:var(--good);min-height:44px;">
+        <h4>${esCA?'Traducció rebuda':'Traducción recibida'}</h4>
+        <p id="traductor-traduccion-${lado}" style="margin:0;">—</p>
+      </div>
+    </div>`;
+}
+
+let __traductorRecognition = null;
+let __traductorGrabando = null;
+
+function toggleGrabacionTraductor(lado){
+  const esCA = LANG === 'ca';
+  if(__traductorGrabando === lado){
+    if(__traductorRecognition) __traductorRecognition.stop();
+    return;
+  }
+  if(__traductorGrabando){
+    alert(esCA ? "Espera que acabi l'altra gravació." : 'Espera a que termine la otra grabación.');
+    return;
+  }
+  const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognitionCtor){
+    alert(esCA ? 'Aquest navegador no admet reconeixement de veu. Prova amb Chrome.' : 'Este navegador no admite reconocimiento de voz. Prueba con Chrome.');
+    return;
+  }
+  const idiomaOrigen = document.getElementById(`traductor-idioma-${lado}`).value;
+  const rec = new SpeechRecognitionCtor();
+  rec.lang = idiomaOrigen;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+
+  const btn = document.getElementById(`traductor-btn-${lado}`);
+  __traductorGrabando = lado;
+  btn.textContent = '🔴 ' + (esCA?'Escoltant… (prem per parar)':'Escuchando… (pulsa para parar)');
+
+  rec.onresult = async (event) => {
+    const texto = event.results[0][0].transcript;
+    document.getElementById(`traductor-original-${lado}`).textContent = texto;
+    const otroLado = lado === 'tecnico' ? 'persona' : 'tecnico';
+    const idiomaDestino = document.getElementById(`traductor-idioma-${otroLado}`).value;
+    await traducirYMostrar(texto, idiomaOrigen, idiomaDestino, otroLado);
+  };
+  rec.onerror = () => {
+    __traductorGrabando = null;
+    btn.textContent = '🎤 ' + (esCA?'Parlar':'Hablar');
+  };
+  rec.onend = () => {
+    __traductorGrabando = null;
+    btn.textContent = '🎤 ' + (esCA?'Parlar':'Hablar');
+  };
+  __traductorRecognition = rec;
+  rec.start();
+}
+
+async function enviarTextoTraductor(lado){
+  const texto = document.getElementById(`traductor-texto-${lado}`).value.trim();
+  if(!texto) return;
+  document.getElementById(`traductor-texto-${lado}`).value = '';
+  document.getElementById(`traductor-original-${lado}`).textContent = texto;
+  const idiomaOrigen = document.getElementById(`traductor-idioma-${lado}`).value;
+  const otroLado = lado === 'tecnico' ? 'persona' : 'tecnico';
+  const idiomaDestino = document.getElementById(`traductor-idioma-${otroLado}`).value;
+  await traducirYMostrar(texto, idiomaOrigen, idiomaDestino, otroLado);
+}
+
+async function traducirYMostrar(texto, idiomaOrigen, idiomaDestino, ladoDestino){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById(`traductor-traduccion-${ladoDestino}`);
+  cont.textContent = '…';
+  try {
+    const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/traducir', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY },
+      body: JSON.stringify({ texto, idioma_origen: idiomaOrigen, idioma_destino: idiomaDestino })
+    });
+    const data = await res.json();
+    const traduccion = data.traduccion || (esCA ? 'No s\'ha pogut traduir.' : 'No se pudo traducir.');
+    cont.textContent = traduccion;
+    hablarTraductor(traduccion, idiomaDestino);
+  } catch(e){
+    cont.textContent = esCA ? 'Error de connexió.' : 'Error de conexión.';
+  }
+}
+
+function hablarTraductor(texto, idioma){
+  if(!window.speechSynthesis || !texto) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(texto);
+  utter.lang = idioma;
+  window.speechSynthesis.speak(utter);
 }
 
 function renderVoluntariado(){
@@ -3807,106 +3953,180 @@ async function reservarCita(fecha, hora){
 
 // --- Generar CV ---
 
+function formatMesAno(iso, esCA){
+  if(!iso) return '';
+  const [anio, mes] = iso.split('-');
+  const meses = esCA
+    ? ['Gen','Feb','Mar','Abr','Mai','Jun','Jul','Ago','Set','Oct','Nov','Des']
+    : ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const idx = parseInt(mes, 10) - 1;
+  return (meses[idx] || '') + ' ' + anio;
+}
+
 function renderCVScreen(){
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
   const p = window.__perfilActual || {};
 
-  const nivelEstudiosTexto = {
-    sin_estudios: esCA ? 'Sense estudis' : 'Sin estudios',
-    primaria: esCA ? 'Primària' : 'Primaria',
-    eso: 'ESO',
-    bachillerato_fp: esCA ? 'Batxillerat / FP' : 'Bachillerato / FP',
-    universitarios: esCA ? 'Universitaris' : 'Universitarios'
-  }[p.nivel_estudios] || '';
-
-  const interesesTexto = {
-    recerca_feina: esCA ? 'Recerca de feina' : 'Búsqueda de empleo',
-    catala: esCA ? 'Català' : 'Catalán',
-    castella: esCA ? 'Castellà' : 'Castellano',
-    tic: 'TIC',
-    vida_saludable: 'Vida saludable',
-    manualitats: esCA ? 'Manualitats' : 'Manualidades'
-  };
-  const intereses = (p.intereses_formativos || []).map(i => interesesTexto[i] || i).join(', ');
+  window.__cvExperiencias = (p.cv_experiencias && p.cv_experiencias.length) ? JSON.parse(JSON.stringify(p.cv_experiencias)) : [{puesto:'',empresa:'',desde:'',hasta:'',actual:false,descripcion:''}];
+  window.__cvEstudios = (p.cv_estudios && p.cv_estudios.length) ? JSON.parse(JSON.stringify(p.cv_estudios)) : [{titulo:'',centro:'',desde:'',hasta:''}];
 
   document.getElementById('cv-content').innerHTML = `
-    <h2 class="screen-title">${esCA ? 'El meu currículum' : 'Mi currículum'}</h2>
-    <p class="subtle">${esCA
-      ? 'Generat a partir de les dades que ja tens a "Les meves dades". Revisa-ho i exporta-ho en PDF.'
-      : 'Generado a partir de los datos que ya tienes en "Mis datos". Revísalo y expórtalo en PDF.'}</p>
+    <h2 class="screen-title no-print">${esCA ? 'El meu currículum' : 'Mi currículum'}</h2>
+    <p class="subtle no-print">${esCA ? 'Omple les teves dades aquí sota — la vista de dalt es va actualitzant sola.' : 'Rellena tus datos aquí abajo — la vista de arriba se va actualizando sola.'}</p>
 
-    <div class="detail-block" id="cv-documento">
-      <h2 style="font-family:var(--font-display);font-size:24px;margin:0 0 4px;">${p.nombre_completo || CURRENT_USER.email}</h2>
-      <p style="margin:0 0 14px;color:var(--ink-soft);font-size:13px;">
-        ${[p.telefono, p.municipio].filter(Boolean).join(' · ')}
-      </p>
+    <div class="detail-block" id="cv-documento" style="padding:24px;"></div>
 
-      ${nivelEstudiosTexto || p.titulaciones_cursos ? `
-      <h4>${esCA ? 'Formació' : 'Formación'}</h4>
-      <p>${[nivelEstudiosTexto, p.titulaciones_cursos].filter(Boolean).join(' — ')}</p>` : ''}
+    <button class="primary-btn no-print" onclick="window.print()" style="margin:14px 0;">📄 ${esCA ? 'Exportar a PDF' : 'Exportar a PDF'}</button>
 
-      ${p.experiencia_laboral ? `
-      <h4>${esCA ? 'Experiència laboral' : 'Experiencia laboral'}</h4>
-      <p>${p.experiencia_laboral}</p>` : ''}
+    <div class="section-label no-print" style="margin-top:10px;">${esCA ? 'Edita el teu currículum' : 'Edita tu currículum'}</div>
 
-      ${intereses ? `
-      <h4>${esCA ? 'Interès per formar-se en' : 'Interés en formarse en'}</h4>
-      <p>${intereses}</p>` : ''}
+    <input type="text" class="cv-editable-header no-print" id="cv-edit-nombre" placeholder="${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'}" value="${p.cv_nombre || p.nombre_completo || ''}" style="font-size:20px;" oninput="renderPreviewCV()">
+    <div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap;">
+      <input type="text" class="cv-editable-header" id="cv-edit-telefono" placeholder="${esCA ? 'Telèfon' : 'Teléfono'}" value="${p.cv_telefono || p.telefono || ''}" style="flex:1;min-width:140px;font-size:13px;font-weight:400;" oninput="renderPreviewCV()">
+      <input type="text" class="cv-editable-header" id="cv-edit-correo" placeholder="${esCA ? 'Correu' : 'Correo'}" value="${p.cv_correo || (CURRENT_USER && CURRENT_USER.email) || ''}" style="flex:1;min-width:180px;font-size:13px;font-weight:400;" oninput="renderPreviewCV()">
+    </div>
+    <input type="text" class="cv-editable-header no-print" id="cv-edit-titulo" placeholder="${esCA ? 'Títol professional / lloc que busques' : 'Título profesional / puesto que buscas'}" value="${p.cv_titulo_profesional || ''}" oninput="renderPreviewCV()">
 
-      ${p.situacion_laboral ? `
-      <h4>${esCA ? 'Situació laboral actual' : 'Situación laboral actual'}</h4>
-      <p>${p.situacion_laboral}</p>` : ''}
+    <details open class="no-print">
+      <summary>💡 ${esCA ? 'Motivació i perfil professional' : 'Motivación y perfil profesional'}</summary>
+      <p class="subtle" style="margin:6px 0;">${esCA ? 'Per què vols aquesta feina, què t\'hi porta, quines són les teves fortaleses.' : 'Por qué quieres este trabajo, qué te motiva, cuáles son tus fortalezas.'}</p>
+      <div class="cv-editable-area" contenteditable="true" id="cv-edit-perfil" oninput="renderPreviewCV()">${p.cv_perfil || ''}</div>
+    </details>
+
+    <details open class="no-print">
+      <summary>💼 ${esCA ? 'Experiència laboral' : 'Experiencia laboral'}</summary>
+      <div id="cv-lista-experiencias"></div>
+      <button class="link-btn" onclick="agregarExperienciaCV()">➕ ${esCA ? 'Afegir una altra experiència' : 'Añadir otra experiencia'}</button>
+    </details>
+
+    <details open class="no-print">
+      <summary>🎓 ${esCA ? 'Formació i estudis' : 'Formación y estudios'}</summary>
+      <div id="cv-lista-estudios"></div>
+      <button class="link-btn" onclick="agregarEstudioCV()">➕ ${esCA ? 'Afegir un altre estudi' : 'Añadir otro estudio'}</button>
+    </details>
+
+    <details class="no-print">
+      <summary>🛠️ ${esCA ? 'Habilitats' : 'Habilidades'}</summary>
+      <div class="cv-editable-area" contenteditable="true" id="cv-edit-habilidades" oninput="renderPreviewCV()">${p.cv_habilidades || (esCA ? '• Habilitat tècnica 1<br>• Idiomes<br>• Programari / Eines' : '• Habilidad técnica 1<br>• Idiomas<br>• Software / Herramientas')}</div>
+    </details>
+
+    <button class="primary-btn no-print" onclick="guardarCVEditable()">💾 ${esCA ? 'Desar el meu currículum' : 'Guardar mi currículum'}</button>
+  `;
+
+  renderExperienciasCV();
+  renderEstudiosCV();
+  renderPreviewCV();
+}
+
+function renderExperienciasCV(){
+  const esCA = LANG === 'ca';
+  document.getElementById('cv-lista-experiencias').innerHTML = window.__cvExperiencias.map((ex, i) => `
+    <div class="panel-card" style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <strong style="font-size:12.5px;color:var(--ink-soft);">${esCA?'Experiència':'Experiencia'} ${i+1}</strong>
+        ${window.__cvExperiencias.length > 1 ? `<button class="link-btn" style="color:var(--alert);font-size:12px;" onclick="quitarExperienciaCV(${i})">✕ ${esCA?'Treure':'Quitar'}</button>` : ''}
+      </div>
+      <div class="field"><label>${esCA?'Lloc / Càrrec':'Puesto / Cargo'}</label><input type="text" value="${ex.puesto||''}" oninput="actualizarExperienciaCV(${i},'puesto',this.value)"></div>
+      <div class="field"><label>${esCA?'Empresa':'Empresa'}</label><input type="text" value="${ex.empresa||''}" oninput="actualizarExperienciaCV(${i},'empresa',this.value)"></div>
+      <div style="display:flex;gap:10px;">
+        <div class="field" style="flex:1;"><label>${esCA?'Des de':'Desde'}</label><input type="month" value="${ex.desde||''}" oninput="actualizarExperienciaCV(${i},'desde',this.value)"></div>
+        <div class="field" style="flex:1;"><label>${esCA?'Fins a':'Hasta'}</label><input type="month" value="${ex.hasta||''}" ${ex.actual?'disabled':''} oninput="actualizarExperienciaCV(${i},'hasta',this.value)"></div>
+      </div>
+      <label class="checkbox-row"><input type="checkbox" ${ex.actual?'checked':''} onchange="actualizarExperienciaCV(${i},'actual',this.checked)">${esCA?'Hi treballo actualment':'Trabajo aquí actualmente'}</label>
+      <div class="field"><label>${esCA?'Descripció (opcional)':'Descripción (opcional)'}</label><textarea rows="2" oninput="actualizarExperienciaCV(${i},'descripcion',this.value)">${ex.descripcion||''}</textarea></div>
+    </div>`).join('');
+}
+
+function actualizarExperienciaCV(i, campo, valor){
+  window.__cvExperiencias[i][campo] = valor;
+  if(campo === 'actual' && valor) window.__cvExperiencias[i].hasta = '';
+  if(campo === 'actual') renderExperienciasCV();
+  renderPreviewCV();
+}
+function agregarExperienciaCV(){
+  window.__cvExperiencias.push({puesto:'',empresa:'',desde:'',hasta:'',actual:false,descripcion:''});
+  renderExperienciasCV();
+  renderPreviewCV();
+}
+function quitarExperienciaCV(i){
+  window.__cvExperiencias.splice(i,1);
+  renderExperienciasCV();
+  renderPreviewCV();
+}
+
+function renderEstudiosCV(){
+  const esCA = LANG === 'ca';
+  document.getElementById('cv-lista-estudios').innerHTML = window.__cvEstudios.map((es, i) => `
+    <div class="panel-card" style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <strong style="font-size:12.5px;color:var(--ink-soft);">${esCA?'Estudi':'Estudio'} ${i+1}</strong>
+        ${window.__cvEstudios.length > 1 ? `<button class="link-btn" style="color:var(--alert);font-size:12px;" onclick="quitarEstudioCV(${i})">✕ ${esCA?'Treure':'Quitar'}</button>` : ''}
+      </div>
+      <div class="field"><label>${esCA?'Títol / Estudis (ex: Batxillerat)':'Título / Estudios (ej: Bachillerato)'}</label><input type="text" value="${es.titulo||''}" oninput="actualizarEstudioCV(${i},'titulo',this.value)"></div>
+      <div class="field"><label>${esCA?'Centre / Escola':'Centro / Escuela'}</label><input type="text" value="${es.centro||''}" oninput="actualizarEstudioCV(${i},'centro',this.value)"></div>
+      <div style="display:flex;gap:10px;">
+        <div class="field" style="flex:1;"><label>${esCA?'Des de':'Desde'}</label><input type="month" value="${es.desde||''}" oninput="actualizarEstudioCV(${i},'desde',this.value)"></div>
+        <div class="field" style="flex:1;"><label>${esCA?'Fins a':'Hasta'}</label><input type="month" value="${es.hasta||''}" oninput="actualizarEstudioCV(${i},'hasta',this.value)"></div>
+      </div>
+    </div>`).join('');
+}
+
+function actualizarEstudioCV(i, campo, valor){
+  window.__cvEstudios[i][campo] = valor;
+  renderPreviewCV();
+}
+function agregarEstudioCV(){
+  window.__cvEstudios.push({titulo:'',centro:'',desde:'',hasta:''});
+  renderEstudiosCV();
+  renderPreviewCV();
+}
+function quitarEstudioCV(i){
+  window.__cvEstudios.splice(i,1);
+  renderEstudiosCV();
+  renderPreviewCV();
+}
+
+function renderPreviewCV(){
+  const esCA = LANG === 'ca';
+  const nombre = document.getElementById('cv-edit-nombre') ? document.getElementById('cv-edit-nombre').value : '';
+  const telefono = document.getElementById('cv-edit-telefono') ? document.getElementById('cv-edit-telefono').value : '';
+  const correo = document.getElementById('cv-edit-correo') ? document.getElementById('cv-edit-correo').value : '';
+  const titulo = document.getElementById('cv-edit-titulo') ? document.getElementById('cv-edit-titulo').value : '';
+  const perfil = document.getElementById('cv-edit-perfil') ? document.getElementById('cv-edit-perfil').innerHTML : '';
+  const habilidades = document.getElementById('cv-edit-habilidades') ? document.getElementById('cv-edit-habilidades').innerHTML : '';
+
+  const experienciasHtml = window.__cvExperiencias.filter(ex => ex.puesto || ex.empresa).map(ex => `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+        <strong style="font-size:14px;">${ex.puesto || ''}${ex.empresa ? ' — ' + ex.empresa : ''}</strong>
+        <span style="font-size:12px;color:var(--ink-soft);white-space:nowrap;">${formatMesAno(ex.desde, esCA)} – ${ex.actual ? (esCA?'Actualitat':'Actualidad') : formatMesAno(ex.hasta, esCA)}</span>
+      </div>
+      ${ex.descripcion ? `<p style="margin:4px 0 0;font-size:13px;color:var(--ink);">${ex.descripcion}</p>` : ''}
+    </div>`).join('');
+
+  const estudiosHtml = window.__cvEstudios.filter(es => es.titulo || es.centro).map(es => `
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+        <strong style="font-size:14px;">${es.titulo || ''}${es.centro ? ' — ' + es.centro : ''}</strong>
+        <span style="font-size:12px;color:var(--ink-soft);white-space:nowrap;">${formatMesAno(es.desde, esCA)} – ${formatMesAno(es.hasta, esCA)}</span>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('cv-documento').innerHTML = `
+    <div style="border-bottom:2px solid var(--ochre);padding-bottom:12px;margin-bottom:16px;">
+      <h1 style="font-family:var(--font-display);font-size:26px;margin:0 0 2px;color:var(--teal-dark);">${nombre || (esCA?'El teu nom':'Tu nombre')}</h1>
+      ${titulo ? `<p style="margin:0 0 6px;font-size:14px;color:var(--ochre);font-weight:700;">${titulo}</p>` : ''}
+      <p style="margin:0;font-size:12.5px;color:var(--ink-soft);">${[telefono, correo].filter(Boolean).join(' · ')}</p>
     </div>
 
-    ${!nivelEstudiosTexto && !p.experiencia_laboral && !intereses ? `
-    <div class="warning-block"><div><strong>${esCA ? 'Falten dades' : 'Faltan datos'}</strong>
-    <span>${esCA ? 'Completa formació, experiència o interessos a "Les meves dades" per tenir un currículum més complet.' : 'Completa formación, experiencia o intereses en "Mis datos" para tener un currículum más completo.'}</span></div></div>` : ''}
+    ${perfil ? `<div style="margin-bottom:16px;"><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 6px;">${esCA?'Motivació i perfil':'Motivación y perfil'}</h4><p style="margin:0;font-size:13px;line-height:1.5;">${perfil}</p></div>` : ''}
 
-    <button class="primary-btn" onclick="window.print()" style="margin-top:16px;">📄 ${esCA ? 'Exportar a PDF' : 'Exportar a PDF'}</button>
+    ${experienciasHtml ? `<div style="margin-bottom:16px;"><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 10px;">${esCA?'Experiència laboral':'Experiencia laboral'}</h4>${experienciasHtml}</div>` : ''}
 
-    <div class="info-box info-box-gold" style="margin-top:14px;">
-      <div class="info-box-title">${esCA ? 'Un consell' : 'Un consejo'}</div>
-      <p>${esCA
-        ? 'Aquest currículum és un primer esborrany senzill. Si ja en tens un de fet, o vols que un tècnic de Logos t\'ajudi a millorar-lo, pots pujar-lo directament a "El meu espai".'
-        : 'Este currículum es un primer borrador sencillo. Si ya tienes uno hecho, o quieres que un técnico de Logos te ayude a mejorarlo, puedes subirlo directamente en "Mi espacio".'}</p>
-    </div>
+    ${estudiosHtml ? `<div style="margin-bottom:16px;"><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 10px;">${esCA?'Formació i estudis':'Formación y estudios'}</h4>${estudiosHtml}</div>` : ''}
 
-    <div class="section-label" style="margin-top:24px;">${esCA ? 'O escriu el teu propi currículum' : 'O escribe tu propio currículum'}</div>
-    <p class="subtle">${esCA ? 'Si prefereixes redactar-lo tu mateix amb més detall, fes-ho aquí. Es desa al teu compte i el pots editar quan vulguis.' : 'Si prefieres redactarlo tú mismo con más detalle, hazlo aquí. Se guarda en tu cuenta y puedes editarlo cuando quieras.'}</p>
-
-    <input type="text" class="cv-editable-header" id="cv-edit-nombre" placeholder="${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'}" value="${p.cv_nombre || p.nombre_completo || ''}" style="font-size:20px;">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <input type="text" class="cv-editable-header" id="cv-edit-telefono" placeholder="${esCA ? 'Telèfon' : 'Teléfono'}" value="${p.cv_telefono || p.telefono || ''}" style="flex:1;min-width:140px;font-size:13px;font-weight:400;">
-      <input type="text" class="cv-editable-header" id="cv-edit-correo" placeholder="${esCA ? 'Correu' : 'Correo'}" value="${p.cv_correo || (CURRENT_USER && CURRENT_USER.email) || ''}" style="flex:1;min-width:180px;font-size:13px;font-weight:400;">
-    </div>
-    <input type="text" class="cv-editable-header" id="cv-edit-titulo" placeholder="${esCA ? 'Títol professional / lloc que busques' : 'Título profesional / puesto que buscas'}" value="${p.cv_titulo_profesional || ''}">
-
-    <details open>
-      <summary>${esCA ? 'Perfil professional' : 'Perfil profesional'}</summary>
-      <div class="cv-editable-area" contenteditable="true" id="cv-edit-perfil">${p.cv_perfil || (esCA ? 'Escriu aquí un breu resum de la teva experiència i fortaleses...' : 'Escribe aquí un breve resumen de tu experiencia y fortalezas...')}</div>
-    </details>
-
-    <details>
-      <summary>${esCA ? 'Experiència laboral' : 'Experiencia laboral'}</summary>
-      <div class="cv-editable-area" contenteditable="true" id="cv-edit-experiencia">${p.cv_experiencia || (esCA
-        ? '<strong>Lloc — Empresa</strong> (Any - Actualitat)<br>• Assoliment o responsabilitat principal 1<br>• Assoliment o responsabilitat principal 2'
-        : '<strong>Puesto — Empresa</strong> (Año - Presente)<br>• Logro o responsabilidad principal 1<br>• Logro o responsabilidad principal 2')}</div>
-    </details>
-
-    <details>
-      <summary>${esCA ? 'Educació i formació' : 'Educación y formación'}</summary>
-      <div class="cv-editable-area" contenteditable="true" id="cv-edit-educacion">${p.cv_educacion || (esCA ? '<strong>Títol / Grau</strong> — Universitat o Institució (Any)' : '<strong>Título / Grado</strong> — Universidad o Institución (Año)')}</div>
-    </details>
-
-    <details>
-      <summary>${esCA ? 'Habilitats' : 'Habilidades'}</summary>
-      <div class="cv-editable-area" contenteditable="true" id="cv-edit-habilidades">${p.cv_habilidades || (esCA ? '• Habilitat tècnica 1<br>• Idiomes<br>• Programari / Eines' : '• Habilidad técnica 1<br>• Idiomas<br>• Software / Herramientas')}</div>
-    </details>
-
-    <button class="primary-btn" onclick="guardarCVEditable()">${esCA ? 'Desar el meu currículum' : 'Guardar mi currículum'}</button>
-    <button class="link-btn" style="display:block;margin:10px auto 0;" onclick="window.print()">📄 ${esCA ? 'Exportar aquesta versió a PDF' : 'Exportar esta versión a PDF'}</button>
-
+    ${habilidades ? `<div><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 6px;">${esCA?'Habilitats':'Habilidades'}</h4><p style="margin:0;font-size:13px;line-height:1.6;">${habilidades}</p></div>` : ''}
   `;
 }
 
@@ -3919,13 +4139,14 @@ async function guardarCVEditable(){
     cv_correo: document.getElementById('cv-edit-correo').value.trim() || null,
     cv_titulo_profesional: document.getElementById('cv-edit-titulo').value.trim() || null,
     cv_perfil: document.getElementById('cv-edit-perfil').innerHTML.trim() || null,
-    cv_experiencia: document.getElementById('cv-edit-experiencia').innerHTML.trim() || null,
-    cv_educacion: document.getElementById('cv-edit-educacion').innerHTML.trim() || null,
+    cv_experiencias: window.__cvExperiencias.filter(ex => ex.puesto || ex.empresa),
+    cv_estudios: window.__cvEstudios.filter(es => es.titulo || es.centro),
     cv_habilidades: document.getElementById('cv-edit-habilidades').innerHTML.trim() || null
   };
   const { error } = await sb.from('perfiles').upsert(payload);
   if(error){ alert(error.message); return; }
   window.__perfilActual = { ...window.__perfilActual, ...payload };
+  renderPreviewCV();
   alert(esCA ? 'Currículum desat correctament.' : 'Currículum guardado correctamente.');
 }
 
