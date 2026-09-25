@@ -3825,8 +3825,12 @@ async function renderDashboard(){
         <input type="file" id="doc-file-input">
         <button class="link-btn" style="margin-top:8px;" onclick="subirDocumento('doc-file-input')">${t.subirDocumento}</button>
       </div>
-      <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="primary-btn" style="background:var(--ochre);margin:0;flex:1;" onclick="document.getElementById('doc-photo-input').click()">${t.tomarFoto}</button>
+        <button class="primary-btn" style="background:var(--teal);margin:0;flex:1;" onclick="document.getElementById('doc-scan-input').click()">📄 ${LANG==='ca'?'Escanejar':'Escanear'}</button>
+      </div>
       <input type="file" id="doc-photo-input" accept="image/*" capture="environment" style="display:none;">
+      <input type="file" id="doc-scan-input" accept="image/*" capture="environment" style="display:none;">
 
       <div class="doc-upload-row" style="border-color:var(--ochre);margin-top:14px;">
         <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Ja tens un currículum fet? Puja\'l aquí.' : '¿Ya tienes un currículum hecho? Súbelo aquí.'}</p>
@@ -3839,6 +3843,7 @@ async function renderDashboard(){
   `;
 
   document.getElementById('doc-photo-input').addEventListener('change', () => subirDocumento('doc-photo-input'));
+  document.getElementById('doc-scan-input').addEventListener('change', () => subirDocumentoEscaneado('doc-scan-input'));
 
   window.__perfilActual = perfil || null;
   window.__documentosActuales = documentos || [];
@@ -3970,6 +3975,8 @@ function renderCVScreen(){
 
   window.__cvExperiencias = (p.cv_experiencias && p.cv_experiencias.length) ? JSON.parse(JSON.stringify(p.cv_experiencias)) : [{puesto:'',empresa:'',desde:'',hasta:'',actual:false,descripcion:''}];
   window.__cvEstudios = (p.cv_estudios && p.cv_estudios.length) ? JSON.parse(JSON.stringify(p.cv_estudios)) : [{titulo:'',centro:'',desde:'',hasta:''}];
+  window.__cvHabilidades = (p.cv_habilidades_lista && p.cv_habilidades_lista.length) ? [...p.cv_habilidades_lista] : [];
+  window.__cvFoto = p.cv_foto || null;
 
   document.getElementById('cv-content').innerHTML = `
     <h2 class="screen-title no-print">${esCA ? 'El meu currículum' : 'Mi currículum'}</h2>
@@ -3980,6 +3987,15 @@ function renderCVScreen(){
     <button class="primary-btn no-print" onclick="window.print()" style="margin:14px 0;">📄 ${esCA ? 'Exportar a PDF' : 'Exportar a PDF'}</button>
 
     <div class="section-label no-print" style="margin-top:10px;">${esCA ? 'Edita el teu currículum' : 'Edita tu currículum'}</div>
+
+    <div class="panel-card no-print" style="text-align:center;">
+      <div id="cv-foto-preview" style="width:90px;height:90px;border-radius:50%;margin:0 auto 10px;overflow:hidden;background:var(--bg);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;">
+        ${window.__cvFoto ? `<img src="${window.__cvFoto}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:26px;">🙂</span>`}
+      </div>
+      <input type="file" id="cv-foto-input" accept="image/*" style="display:none;" onchange="subirFotoCV(this)">
+      <button class="link-btn" onclick="document.getElementById('cv-foto-input').click()">📷 ${esCA ? (window.__cvFoto ? 'Canviar foto' : 'Afegir foto') : (window.__cvFoto ? 'Cambiar foto' : 'Añadir foto')}</button>
+      ${window.__cvFoto ? `<button class="link-btn" style="color:var(--alert);margin-left:10px;" onclick="quitarFotoCV()">${esCA?'Treure':'Quitar'}</button>` : ''}
+    </div>
 
     <input type="text" class="cv-editable-header no-print" id="cv-edit-nombre" placeholder="${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'}" value="${p.cv_nombre || p.nombre_completo || ''}" style="font-size:20px;" oninput="renderPreviewCV()">
     <div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -4006,9 +4022,13 @@ function renderCVScreen(){
       <button class="link-btn" onclick="agregarEstudioCV()">➕ ${esCA ? 'Afegir un altre estudi' : 'Añadir otro estudio'}</button>
     </details>
 
-    <details class="no-print">
+    <details open class="no-print">
       <summary>🛠️ ${esCA ? 'Habilitats' : 'Habilidades'}</summary>
-      <div class="cv-editable-area" contenteditable="true" id="cv-edit-habilidades" oninput="renderPreviewCV()">${p.cv_habilidades || (esCA ? '• Habilitat tècnica 1<br>• Idiomes<br>• Programari / Eines' : '• Habilidad técnica 1<br>• Idiomas<br>• Software / Herramientas')}</div>
+      <div id="cv-lista-habilidades"></div>
+      <div style="display:flex;gap:6px;margin-top:6px;">
+        <input type="text" id="cv-nueva-habilidad" placeholder="${esCA?'Ex: Word, anglès, carnet de conduir…':'Ej: Word, inglés, carnet de conducir…'}" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarHabilidadCV();}" style="flex:1;">
+        <button class="link-btn" onclick="agregarHabilidadCV()">➕ ${esCA?'Afegir':'Añadir'}</button>
+      </div>
     </details>
 
     <button class="primary-btn no-print" onclick="guardarCVEditable()">💾 ${esCA ? 'Desar el meu currículum' : 'Guardar mi currículum'}</button>
@@ -4016,6 +4036,7 @@ function renderCVScreen(){
 
   renderExperienciasCV();
   renderEstudiosCV();
+  renderHabilidadesCV();
   renderPreviewCV();
 }
 
@@ -4087,6 +4108,52 @@ function quitarEstudioCV(i){
   renderPreviewCV();
 }
 
+function renderHabilidadesCV(){
+  const esCA = LANG === 'ca';
+  const cont = document.getElementById('cv-lista-habilidades');
+  cont.innerHTML = window.__cvHabilidades.length
+    ? `<div style="display:flex;flex-wrap:wrap;gap:6px;">${window.__cvHabilidades.map((h, i) => `
+        <span class="chip en-curso" style="display:inline-flex;align-items:center;gap:6px;">${h}<button onclick="quitarHabilidadCV(${i})" style="background:none;border:none;cursor:pointer;color:inherit;font-weight:800;">✕</button></span>`).join('')}</div>`
+    : `<p class="subtle" style="margin:0;">${esCA?'Encara no has afegit cap habilitat.':'Todavía no has añadido ninguna habilidad.'}</p>`;
+}
+function agregarHabilidadCV(){
+  const input = document.getElementById('cv-nueva-habilidad');
+  const valor = input.value.trim();
+  if(!valor) return;
+  window.__cvHabilidades.push(valor);
+  input.value = '';
+  renderHabilidadesCV();
+  renderPreviewCV();
+}
+function quitarHabilidadCV(i){
+  window.__cvHabilidades.splice(i, 1);
+  renderHabilidadesCV();
+  renderPreviewCV();
+}
+
+function subirFotoCV(input){
+  const esCA = LANG === 'ca';
+  if(!input.files.length) return;
+  const file = input.files[0];
+  const img = new Image();
+  img.onload = () => {
+    const tam = 300; // se reduce para que quepa bien guardada
+    const canvas = document.createElement('canvas');
+    canvas.width = tam; canvas.height = tam;
+    const ctx = canvas.getContext('2d');
+    const lado = Math.min(img.width, img.height);
+    ctx.drawImage(img, (img.width-lado)/2, (img.height-lado)/2, lado, lado, 0, 0, tam, tam);
+    window.__cvFoto = canvas.toDataURL('image/jpeg', 0.85);
+    document.getElementById('cv-foto-preview').innerHTML = `<img src="${window.__cvFoto}" style="width:100%;height:100%;object-fit:cover;">`;
+    renderPreviewCV();
+  };
+  img.src = URL.createObjectURL(file);
+}
+function quitarFotoCV(){
+  window.__cvFoto = null;
+  renderCVScreen();
+}
+
 function renderPreviewCV(){
   const esCA = LANG === 'ca';
   const nombre = document.getElementById('cv-edit-nombre') ? document.getElementById('cv-edit-nombre').value : '';
@@ -4094,7 +4161,6 @@ function renderPreviewCV(){
   const correo = document.getElementById('cv-edit-correo') ? document.getElementById('cv-edit-correo').value : '';
   const titulo = document.getElementById('cv-edit-titulo') ? document.getElementById('cv-edit-titulo').value : '';
   const perfil = document.getElementById('cv-edit-perfil') ? document.getElementById('cv-edit-perfil').innerHTML : '';
-  const habilidades = document.getElementById('cv-edit-habilidades') ? document.getElementById('cv-edit-habilidades').innerHTML : '';
 
   const experienciasHtml = window.__cvExperiencias.filter(ex => ex.puesto || ex.empresa).map(ex => `
     <div style="margin-bottom:12px;">
@@ -4113,11 +4179,18 @@ function renderPreviewCV(){
       </div>
     </div>`).join('');
 
+  const habilidadesHtml = window.__cvHabilidades.length
+    ? `<div style="display:flex;flex-wrap:wrap;gap:6px;">${window.__cvHabilidades.map(h => `<span style="background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;">${h}</span>`).join('')}</div>`
+    : '';
+
   document.getElementById('cv-documento').innerHTML = `
-    <div style="border-bottom:2px solid var(--ochre);padding-bottom:12px;margin-bottom:16px;">
-      <h1 style="font-family:var(--font-display);font-size:26px;margin:0 0 2px;color:var(--teal-dark);">${nombre || (esCA?'El teu nom':'Tu nombre')}</h1>
-      ${titulo ? `<p style="margin:0 0 6px;font-size:14px;color:var(--ochre);font-weight:700;">${titulo}</p>` : ''}
-      <p style="margin:0;font-size:12.5px;color:var(--ink-soft);">${[telefono, correo].filter(Boolean).join(' · ')}</p>
+    <div style="display:flex;gap:16px;align-items:center;border-bottom:2px solid var(--ochre);padding-bottom:12px;margin-bottom:16px;">
+      ${window.__cvFoto ? `<img src="${window.__cvFoto}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;">` : ''}
+      <div>
+        <h1 style="font-family:var(--font-display);font-size:26px;margin:0 0 2px;color:var(--teal-dark);">${nombre || (esCA?'El teu nom':'Tu nombre')}</h1>
+        ${titulo ? `<p style="margin:0 0 6px;font-size:14px;color:var(--ochre);font-weight:700;">${titulo}</p>` : ''}
+        <p style="margin:0;font-size:12.5px;color:var(--ink-soft);">${[telefono, correo].filter(Boolean).join(' · ')}</p>
+      </div>
     </div>
 
     ${perfil ? `<div style="margin-bottom:16px;"><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 6px;">${esCA?'Motivació i perfil':'Motivación y perfil'}</h4><p style="margin:0;font-size:13px;line-height:1.5;">${perfil}</p></div>` : ''}
@@ -4126,7 +4199,7 @@ function renderPreviewCV(){
 
     ${estudiosHtml ? `<div style="margin-bottom:16px;"><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 10px;">${esCA?'Formació i estudis':'Formación y estudios'}</h4>${estudiosHtml}</div>` : ''}
 
-    ${habilidades ? `<div><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 6px;">${esCA?'Habilitats':'Habilidades'}</h4><p style="margin:0;font-size:13px;line-height:1.6;">${habilidades}</p></div>` : ''}
+    ${habilidadesHtml ? `<div><h4 style="text-transform:uppercase;font-size:11.5px;letter-spacing:.03em;color:var(--ochre);margin:0 0 6px;">${esCA?'Habilitats':'Habilidades'}</h4>${habilidadesHtml}</div>` : ''}
   `;
 }
 
@@ -4141,7 +4214,8 @@ async function guardarCVEditable(){
     cv_perfil: document.getElementById('cv-edit-perfil').innerHTML.trim() || null,
     cv_experiencias: window.__cvExperiencias.filter(ex => ex.puesto || ex.empresa),
     cv_estudios: window.__cvEstudios.filter(es => es.titulo || es.centro),
-    cv_habilidades: document.getElementById('cv-edit-habilidades').innerHTML.trim() || null
+    cv_habilidades_lista: window.__cvHabilidades,
+    cv_foto: window.__cvFoto || null
   };
   const { error } = await sb.from('perfiles').upsert(payload);
   if(error){ alert(error.message); return; }
@@ -4805,6 +4879,58 @@ async function subirDocumento(inputId, tipoDocumento){
     nombre_archivo: file.name,
     ruta_storage: path,
     tipo_documento: tipoDocumento || null
+  });
+  renderDashboard();
+}
+
+function procesarImagenComoEscaneo(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const datos = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const d = datos.data;
+      const contraste = 1.55; // realza el texto y apaga el fondo, como un escáner
+      for(let i = 0; i < d.length; i += 4){
+        const gris = d[i]*0.34 + d[i+1]*0.5 + d[i+2]*0.16;
+        const valor = Math.min(255, Math.max(0, (gris - 128) * contraste + 128 + 18));
+        d[i] = d[i+1] = d[i+2] = valor;
+      }
+      ctx.putImageData(datos, 0, 0);
+      canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.9);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+async function subirDocumentoEscaneado(inputId){
+  const esCA = LANG === 'ca';
+  const input = document.getElementById(inputId);
+  if(!input.files.length) return;
+  const fileOriginal = input.files[0];
+
+  let blobEscaneado;
+  try { blobEscaneado = await procesarImagenComoEscaneo(fileOriginal); }
+  catch(e){ blobEscaneado = fileOriginal; } // si algo falla, se sube la foto tal cual
+
+  const nombreArchivo = 'escaneo_' + Date.now() + '.jpg';
+  const path = `${CURRENT_USER.id}/${Date.now()}_${nombreArchivo}`;
+
+  const { error: uploadError } = await sb.storage.from('documentos').upload(path, blobEscaneado, { contentType: 'image/jpeg' });
+  if(uploadError){
+    document.getElementById('profile-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${uploadError.message}</div>`);
+    return;
+  }
+  await sb.from('documentos').insert({
+    usuario_id: CURRENT_USER.id,
+    nombre_archivo: nombreArchivo,
+    ruta_storage: path,
+    tipo_documento: null
   });
   renderDashboard();
 }
