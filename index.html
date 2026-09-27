@@ -3123,6 +3123,7 @@ function panelTraductor(lado, titulo, idiomaDefecto){
   return `
     <div class="panel-card">
       <h3>${titulo}</h3>
+      ${lado === 'persona' ? `<div class="field"><input type="text" id="traductor-nombre-persona" placeholder="${esCA?'Nom de la persona (opcional)':'Nombre de la persona (opcional)'}"></div>` : ''}
       <div class="field"><select id="traductor-idioma-${lado}">${opciones}</select></div>
       <button class="primary-btn" id="traductor-btn-${lado}" onclick="toggleGrabacionTraductor('${lado}')">🎤 ${esCA?'Parlar':'Hablar'}</button>
       <div class="field" style="margin-top:10px;display:flex;gap:6px;">
@@ -3212,9 +3213,25 @@ async function traducirYMostrar(texto, idiomaOrigen, idiomaDestino, ladoDestino)
     const traduccion = data.traduccion || (esCA ? 'No s\'ha pogut traduir.' : 'No se pudo traducir.');
     cont.textContent = traduccion;
     hablarTraductor(traduccion, idiomaDestino);
+    registrarTraductorHistorial();
   } catch(e){
     cont.textContent = esCA ? 'Error de connexió.' : 'Error de conexión.';
   }
+}
+
+async function registrarTraductorHistorial(){
+  if(!CURRENT_USER) return; // el historial se guarda por técnico; sin sesión, no hay a quién asociarlo
+  try {
+    const nombrePersona = document.getElementById('traductor-nombre-persona') ? document.getElementById('traductor-nombre-persona').value.trim() : '';
+    const idiomaTecnico = document.getElementById('traductor-idioma-tecnico') ? document.getElementById('traductor-idioma-tecnico').value : '';
+    const idiomaPersona = document.getElementById('traductor-idioma-persona') ? document.getElementById('traductor-idioma-persona').value : '';
+    await sb.from('traductor_historial').insert({
+      tecnico_email: CURRENT_USER.email,
+      nombre_persona: nombrePersona || null,
+      idioma_tecnico: idiomaTecnico,
+      idioma_persona: idiomaPersona
+    });
+  } catch(e){ /* no bloquear la conversación si falla el registro */ }
 }
 
 function hablarTraductor(texto, idioma){
