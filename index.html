@@ -4885,7 +4885,7 @@ async function guardarPerfil(){
     });
   } catch(e) { /* no bloquear el guardado si falla la notificación */ }
 
-  window.__perfilActual = payload;
+  window.__perfilActual = { ...window.__perfilActual, ...payload };
   ACCESO_COMPLETO = true;
   renderResumenStep();
 }
