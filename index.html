@@ -2631,19 +2631,27 @@ function renderBusquedaEmpleo(){
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
   const portales = [
-    { nombre: 'Empléate (SEPE)', desc: esCA ? 'El portal oficial del Servei Públic d\'Ocupació estatal.' : 'El portal oficial del Servicio Público de Empleo estatal.', url: 'https://www.empleate.gob.es/empleo/#/' },
     { nombre: 'Feina Activa (Generalitat)', desc: esCA ? 'Ofertes de feina de Catalunya, gestionades pel SOC.' : 'Ofertas de trabajo de Cataluña, gestionadas por el SOC.', url: 'https://feinaactiva.gencat.cat/es/home' },
-    { nombre: 'Barcelona Activa', desc: esCA ? 'Orientació i ofertes de l\'àrea de Barcelona.' : 'Orientación y ofertas del área de Barcelona.', url: 'https://treball.barcelonactiva.cat/ca/' },
     { nombre: 'InfoJobs', desc: esCA ? 'El portal d\'ofertes més gran d\'Espanya.' : 'El portal de ofertas más grande de España.', url: 'https://www.infojobs.net/' },
-    { nombre: 'Indeed', desc: esCA ? 'Cerca ofertes de moltes fonts diferents alhora.' : 'Busca ofertas de muchas fuentes diferentes a la vez.', url: 'https://es.indeed.com/' },
-    { nombre: 'InfoEmpleo', desc: esCA ? 'Ofertes i consells per fer el currículum.' : 'Ofertas y consejos para hacer el currículum.', url: 'https://www.infoempleo.com/' },
-    { nombre: 'Randstad', desc: esCA ? 'Empresa de treball temporal, amb moltes ofertes actives.' : 'Empresa de trabajo temporal, con muchas ofertas activas.', url: 'https://www.randstad.es/' },
-    { nombre: 'Michael Page', desc: esCA ? 'Enfocada a perfils amb experiència i llocs qualificats.' : 'Enfocada a perfiles con experiencia y puestos cualificados.', url: 'https://www.michaelpage.es/' }
+    { nombre: 'Indeed', desc: esCA ? 'Cerca ofertes de moltes fonts diferents alhora.' : 'Busca ofertas de muchas fuentes diferentes a la vez.', url: 'https://es.indeed.com/' }
+  ];
+
+  // Grandes empleadores del territorio, con su propia página oficial de empleo
+  const empresasLocales = [
+    { nombre: 'PortAventura World', desc: esCA ? 'Ofertes de feina i enviament de currículum directament al parc (Vila-seca).' : 'Ofertas de trabajo y envío de currículum directamente al parque (Vila-seca).', url: 'https://www.portaventuraworld.com/nosotros/trabaja-con-nosotros' },
+    { nombre: 'Xarxa Santa Tecla', desc: esCA ? 'Xarxa sanitària, social i docent de Tarragona: ofertes de feina als seus centres.' : 'Red sanitaria, social y docente de Tarragona: ofertas de trabajo en sus centros.', url: 'https://www.xarxatecla.cat/es/treballa-amb-nosaltres' }
   ];
 
   const portalesHtml = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">` + portales.map(p => `
     <a href="${p.url}" target="_blank" rel="noopener" class="quick-card" style="text-decoration:none;">
       <div class="icon-badge" style="background:var(--sidebar-green);color:var(--sidebar-yellow);">💼</div>
+      <h4>${p.nombre}</h4>
+      <p>${p.desc}</p>
+    </a>`).join('') + `</div>`;
+
+  const empresasHtml = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">` + empresasLocales.map(p => `
+    <a href="${p.url}" target="_blank" rel="noopener" class="quick-card" style="text-decoration:none;">
+      <div class="icon-badge" style="background:var(--sidebar-green);color:var(--sidebar-yellow);">📍</div>
       <h4>${p.nombre}</h4>
       <p>${p.desc}</p>
     </a>`).join('') + `</div>`;
@@ -2657,6 +2665,8 @@ function renderBusquedaEmpleo(){
     </div>
     <div class="section-label">${esCA ? 'Portals de feina' : 'Portales de empleo'}</div>
     ${portalesHtml}
+    <div class="section-label" style="margin-top:22px;">${esCA ? 'Empreses de la zona que contracten' : 'Empresas de la zona que contratan'}</div>
+    ${empresasHtml}
   `;
 }
 
