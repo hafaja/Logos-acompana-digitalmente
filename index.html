@@ -672,7 +672,10 @@ function showProximamente(nombre){
     <h2 class="screen-title">${t.title}</h2>
     <span class="pending-stamp">🕓 ${LANG==='ca' ? 'Properament' : 'Próximamente'}</span>
     <div class="detail-block" style="margin-top:14px;"><p>${t.body}</p></div>
-    <button style="width:100%;background:var(--ochre);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;">${t.cta}</button>
+    <div style="display:flex;gap:10px;">
+      <a href="tel:+34630461560" style="flex:1;text-align:center;text-decoration:none;background:var(--ochre);color:#fff;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;">📞 ${LANG==='ca'?'Trucar':'Llamar'}</a>
+      <a href="https://wa.me/34630461560" target="_blank" rel="noopener" style="flex:1;text-align:center;text-decoration:none;background:#25D366;color:#fff;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;">💬 WhatsApp</a>
+    </div>
   `;
   showScreen('detail');
 }
@@ -3979,6 +3982,18 @@ async function reservarCita(fecha, hora){
     seleccionarDiaCita(fecha);
     return;
   }
+
+  try {
+    const p = window.__perfilActual || {};
+    const nombreAviso = p.nombre_completo || CURRENT_USER.email;
+    const fechaFmt = new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' });
+    await sb.from('notificaciones').insert({
+      usuario_id: CURRENT_USER.id,
+      tipo: 'cita_nueva',
+      mensaje: `${nombreAviso} ha pedido cita para el ${fechaFmt} a las ${hora}.`
+    });
+  } catch(e) { /* no bloquear la reserva si falla el aviso */ }
+
   showScreen('profile');
   renderDashboard();
 }
