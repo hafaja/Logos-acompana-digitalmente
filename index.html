@@ -732,12 +732,39 @@ async function guardarConsultaOrientacion(){
   `;
 }
 
-function showDetail(id){
+async function crearTramiteDesdeServicio(servicioId){
+  const esCA = LANG === 'ca';
+  const s = SERVICIOS.find(x => x.id === servicioId);
+  if(!s) return;
+
+  const { error } = await sb.from('tramites').insert({
+    usuario_id: CURRENT_USER.id,
+    nombre_servicio: s.nombre.es,
+    estado: 'en_curso',
+    fecha_inicio: new Date().toISOString().slice(0,10)
+  });
+  if(error){ alert(error.message); return; }
+
+  try {
+    const p = window.__perfilActual || {};
+    await sb.from('notificaciones').insert({
+      usuario_id: CURRENT_USER.id,
+      tipo: 'tramite_nuevo',
+      mensaje: `${p.nombre_completo || CURRENT_USER.email} ha empezado a hacer seguimiento del trámite "${s.nombre.es}" desde la app.`
+    });
+  } catch(e) { /* no bloquear si falla el aviso */ }
+
+  showDetail(servicioId);
+}
+
+async function showDetail(id){
   const s = SERVICIOS.find(x => x.id === id);
   if(!s) return;
   const t = LANG === 'ca'
-    ? { sirve:'Per a què serveix', req:'Requisits', doc:'Documentació', coste:'Cost', cuantia:'Import', link:'Anar a la font oficial', pending:"Aquest enllaç encara no està confirmat. Contacta amb Logos per tramitar aquest servei mentrestant.", warnT:"Aquest enllaç és l'únic oficial", warn:"No comparteixis dades bancàries amb ningú que et contacti oferint-te aquest tràmit per telèfon, WhatsApp o a domicili.", verif:'Verificat per Logos', pendStamp:"Enllaç pendent de confirmar" }
-    : { sirve:'Para qué sirve', req:'Requisitos', doc:'Documentación', coste:'Coste', cuantia:'Importe', link:'Ir a la fuente oficial', pending:"Este enlace todavía no está confirmado. Contacta con Logos para tramitar este servicio mientras tanto.", warnT:'Este enlace es el único oficial', warn:'No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.', verif:'Verificado por Logos', pendStamp:'Enlace pendiente de confirmar' };
+    ? { sirve:'Per a què serveix', req:'Requisits', doc:'Documentació', coste:'Cost', cuantia:'Import', link:'Anar a la font oficial', pending:"Aquest enllaç encara no està confirmat. Contacta amb Logos per tramitar aquest servei mentrestant.", warnT:"Aquest enllaç és l'únic oficial", warn:"No comparteixis dades bancàries amb ningú que et contacti oferint-te aquest tràmit per telèfon, WhatsApp o a domicili.", verif:'Verificat per Logos', pendStamp:"Enllaç pendent de confirmar",
+        esTramiteTxt:'Això és un tràmit real que es fa amb una administració o entitat.', empezar:'➕ Vull començar aquest tràmit', yaEnCurso:'✓ Ja el tens a "Els meus tràmits"' }
+    : { sirve:'Para qué sirve', req:'Requisitos', doc:'Documentación', coste:'Coste', cuantia:'Importe', link:'Ir a la fuente oficial', pending:"Este enlace todavía no está confirmado. Contacta con Logos para tramitar este servicio mientras tanto.", warnT:'Este enlace es el único oficial', warn:'No compartas datos bancarios con nadie que te contacte ofreciéndote este trámite por teléfono, WhatsApp o a domicilio.', verif:'Verificado por Logos', pendStamp:'Enlace pendiente de confirmar',
+        esTramiteTxt:'Esto es un trámite real que se hace con una administración o entidad.', empezar:'➕ Quiero empezar este trámite', yaEnCurso:'✓ Ya lo tienes en "Mis trámites"' };
 
   const stamp = s.estado_enlace === 'verificado'
     ? `<span class="verified-stamp">✓ ${t.verif} · ${s.ultima_verificacion}</span>`
@@ -749,10 +776,26 @@ function showDetail(id){
        </a>`
     : `<div class="link-unavailable">${t.pending}</div>`;
 
+  // Si ya tiene este trámite en curso, no se vuelve a ofrecer el botón de empezarlo.
+  let yaEnCurso = false;
+  if(CURRENT_USER){
+    const { data: tramiteExistente } = await sb.from('tramites').select('id').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', s.nombre.es).eq('estado', 'en_curso').maybeSingle();
+    yaEnCurso = !!tramiteExistente;
+  }
+  const botonTramiteHtml = CURRENT_USER
+    ? `<div class="detail-block" style="background:var(--gold-soft);border-color:var(--gold);">
+        <p style="margin:0 0 10px;font-size:13px;">${t.esTramiteTxt}</p>
+        ${yaEnCurso
+          ? `<p style="margin:0;font-weight:700;color:var(--good);">${t.yaEnCurso}</p>`
+          : `<button class="primary-btn" style="margin:0;" onclick="crearTramiteDesdeServicio('${s.id}')">${t.empezar}</button>`}
+      </div>`
+    : '';
+
   document.getElementById('detail-content').innerHTML = `
     <h2 class="screen-title">${s.nombre[LANG]}</h2>
     <p class="subtle" style="margin-bottom:8px;">${LANG==='ca' ? s.nombre.es : s.nombre.ca}</p>
     ${stamp}
+    ${botonTramiteHtml}
     <div class="detail-block" style="margin-top:14px;">
       <h4>${t.sirve}</h4><p>${s.para_que_sirve[LANG]}</p>
     </div>
