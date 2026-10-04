@@ -1979,7 +1979,7 @@ function buscarUsuarioAtencion(texto){
       return;
     }
     cont.innerHTML = data.map(p => `
-      <div class="list-row" style="cursor:pointer;" onclick="vincularUsuarioAtencion('${p.id}', ${JSON.stringify(p.nombre_completo || '')})">
+      <div class="list-row" style="cursor:pointer;" data-id="${p.id}" data-nombre="${escAttr(p.nombre_completo || '')}" onclick="vincularUsuarioAtencion(this.dataset.id, this.dataset.nombre)">
         <span>${p.nombre_completo}</span><span class="subtle">${p.municipio || ''}</span>
       </div>`).join('');
   }, 300);
@@ -3296,6 +3296,10 @@ function hablarTraductor(texto, idioma){
   const utter = new SpeechSynthesisUtterance(texto);
   utter.lang = idioma;
   window.speechSynthesis.speak(utter);
+}
+
+function escAttr(txt){
+  return String(txt == null ? '' : txt).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 function renderVoluntariado(){
