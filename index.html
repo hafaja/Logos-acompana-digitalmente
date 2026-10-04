@@ -333,6 +333,8 @@
     </nav>
     <div class="sidebar-public-nav">
       <div class="section-label" style="margin-top:6px;">¿Qué más te ofrecemos?</div>
+      <button data-target="jovenes" onclick="showScreen('jovenes');renderJovenesEnAccion()" id="sidebar-jovenes-btn">🌱 Jóvenes en acción</button>
+      <button data-target="familias" onclick="showScreen('familias');renderFamilias()" id="sidebar-familias-btn">👨‍👩‍👧 Familias</button>
       <button data-target="aulaciudadano" onclick="showScreen('aulaciudadano');renderAulaCiudadano()" id="sidebar-aula-btn">🎓 Aula Virtual</button>
       <button data-target="voluntariado" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🤝 Voluntariado</button>
       <button data-target="empleo" onclick="showScreen('empleo');renderBusquedaEmpleo()" id="sidebar-empleo-btn">💼 Búsqueda de empleo</button>
@@ -445,6 +447,16 @@
   <div class="screen" id="screen-cv">
     <div class="topbar"><button class="back-btn" onclick="showScreen('profile');renderDashboard()">← Mi espacio</button></div>
     <div class="content" id="cv-content"></div>
+  </div>
+
+  <div class="screen" id="screen-jovenes">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="jovenes-content"></div>
+  </div>
+
+  <div class="screen" id="screen-familias">
+    <div class="topbar"><button class="back-btn" onclick="showScreen('home')">← Inicio</button></div>
+    <div class="content" id="familias-content"></div>
   </div>
 
   <div class="screen" id="screen-voluntariado">
@@ -3301,6 +3313,702 @@ function hablarTraductor(texto, idioma){
 function escAttr(txt){
   return String(txt == null ? '' : txt).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
+
+// ================= JÓVENES EN ACCIÓN · FAMILIAS (bloque común a Acompanya e Intranet) =================
+// Si Logos cambia el modelo de autorización, solo hay que tocar JA_DOC (textos) y autorizacionDocHtml() (maquetación).
+
+const JA_TIPOS = [
+  { id:'playa',      es:`Salida a la playa`,          ca:`Sortida a la platja` },
+  { id:'campamento', es:`Campamento`,                 ca:`Campament` },
+  { id:'excursion',  es:`Excursión`,                  ca:`Excursió` },
+  { id:'cultural',   es:`Visita cultural`,            ca:`Visita cultural` },
+  { id:'deportiva',  es:`Acto o actividad deportiva`, ca:`Acte o activitat esportiva` },
+  { id:'turistica',  es:`Visita turística`,           ca:`Visita turística` },
+  { id:'otra',       es:`Otra`,                       ca:`Una altra` }
+];
+
+const JA_TEXTOS = {
+  es: {
+    jovenesTitulo: `Jóvenes en acción`,
+    jovenesTexto: `Jóvenes en acción es un espacio donde los jóvenes participan, aprenden y desarrollan habilidades para su crecimiento personal y social. A través de actividades, formación, convivencia y experiencias educativas, se preparan para construir un futuro mejor, con responsabilidad, autonomía y compromiso con los demás.`,
+    enPocas: `En pocas palabras`,
+    lema: `Aprender, participar, convivir y crecer para construir un futuro mejor.`,
+    familiasTitulo: `Familias`,
+    familiasTexto: `Familias es el espacio donde los padres, madres y tutores pueden consultar y autorizar las actividades en las que participan sus hijos, así como acceder a la información necesaria sobre salidas, excursiones, campamentos, actividades culturales y deportivas.`
+  },
+  ca: {
+    jovenesTitulo: `Joves en acció`,
+    jovenesTexto: `Joves en acció és un espai on els joves participen, aprenen i desenvolupen habilitats per al seu creixement personal i social. A través d'activitats, formació, convivència i experiències educatives, es preparen per construir un futur millor, amb responsabilitat, autonomia i compromís amb els altres.`,
+    enPocas: `En poques paraules`,
+    lema: `Aprendre, participar, conviure i créixer per construir un futur millor.`,
+    familiasTitulo: `Famílies`,
+    familiasTexto: `Famílies és l'espai on els pares, mares i tutors poden consultar i autoritzar les activitats en què participen els seus fills, així com accedir a la informació necessària sobre sortides, excursions, campaments, activitats culturals i esportives.`
+  }
+};
+
+const JA_DOC = {
+  es: {
+    entidad: `Logos Acompanya – Jóvenes en acción`,
+    titulo: `AUTORIZACIÓN FAMILIAR PARA ACTIVIDAD O SALIDA`,
+    tituloCompleto: `AUTORIZACIÓN FAMILIAR`, subtituloCompleto: `Salidas, excursiones y campamentos`,
+    yo: `Yo, D./D.ª`, dniNie: `DNI/NIE`, enCalidad: `en calidad de`,
+    padre: `Padre`, madre: `Madre`, tutor: `Tutor/a legal`,
+    delMenor: `del/de la menor`, autorizoSimple: `AUTORIZO su participación en la siguiente actividad:`,
+    tipoAct: `Tipo de actividad`, lugar: `Lugar`, fecha: `Fecha`, horario: `Horario aproximado`, de: `de`, a: `a`,
+    puntoSalida: `Punto de salida`, puntoRegreso: `Punto de regreso`,
+    declaro: `Declaro que he sido informado/a sobre la actividad y autorizo al menor a participar en ella.`,
+    contactoIntro: `Asimismo, facilito los siguientes datos de contacto para cualquier comunicación necesaria durante la actividad:`,
+    telefono: `Teléfono del padre/madre/tutor`, telAlt: `Teléfono alternativo`, observaciones: `Observaciones o información relevante`,
+    firmaDe: `Firma del padre/madre/tutor/a`, firma: `Firma`,
+    datosMenor: `Datos del menor`, nombreApellidos: `Nombre y apellidos`, fechaNac: `Fecha de nacimiento`, dniSiProcede: `DNI/NIE (si procede)`,
+    datosTutor: `Datos del padre, madre o tutor/a`, correo: `Correo electrónico`, telContacto: `Teléfono de contacto`,
+    datosActividad: `Datos de la actividad`, actividad: `Actividad`, destino: `Lugar/destino`,
+    fechaSalida: `Fecha de salida`, fechaRegreso: `Fecha de regreso`, horaSalida: `Hora aproximada de salida`, horaRegreso: `Hora aproximada de regreso`, transporte: `Medio de transporte`,
+    autorizacion: `Autorización`,
+    textoAut: `Yo, como padre, madre o tutor/a legal del/de la menor indicado/a, autorizo su participación en la actividad descrita anteriormente, organizada dentro del programa Jóvenes en acción de Logos Acompanya.`,
+    textoDecl2: `Declaro haber recibido la información necesaria sobre la actividad y me comprometo a comunicar cualquier circunstancia que deba ser tenida en cuenta para la participación del menor.`,
+    infoImportante: `Información importante sobre el menor`, infoImportanteDet: `(alergias, alimentación, medicación, necesidades especiales u otras observaciones)`,
+    emergencia: `Persona de contacto en caso de emergencia`, nombre: `Nombre`, tel: `Teléfono`,
+    en: `En`, nombreCompleto: `Nombre completo`,
+    firmadoDigital: `Firmado digitalmente desde Logos Acompanya el`, revocada: `AUTORIZACIÓN REVOCADA el`
+  },
+  ca: {
+    entidad: `Logos Acompanya – Joves en acció`,
+    titulo: `AUTORITZACIÓ FAMILIAR PER A ACTIVITAT O SORTIDA`,
+    tituloCompleto: `AUTORITZACIÓ FAMILIAR`, subtituloCompleto: `Sortides, excursions i campaments`,
+    yo: `Jo, Sr./Sra.`, dniNie: `DNI/NIE`, enCalidad: `en qualitat de`,
+    padre: `Pare`, madre: `Mare`, tutor: `Tutor/a legal`,
+    delMenor: `del/de la menor`, autorizoSimple: `AUTORITZO la seva participació en la següent activitat:`,
+    tipoAct: `Tipus d'activitat`, lugar: `Lloc`, fecha: `Data`, horario: `Horari aproximat`, de: `de`, a: `a`,
+    puntoSalida: `Punt de sortida`, puntoRegreso: `Punt de tornada`,
+    declaro: `Declaro que he estat informat/da sobre l'activitat i autoritzo el menor a participar-hi.`,
+    contactoIntro: `Així mateix, facilito les següents dades de contacte per a qualsevol comunicació necessària durant l'activitat:`,
+    telefono: `Telèfon del pare/mare/tutor`, telAlt: `Telèfon alternatiu`, observaciones: `Observacions o informació rellevant`,
+    firmaDe: `Signatura del pare/mare/tutor/a`, firma: `Signatura`,
+    datosMenor: `Dades del menor`, nombreApellidos: `Nom i cognoms`, fechaNac: `Data de naixement`, dniSiProcede: `DNI/NIE (si escau)`,
+    datosTutor: `Dades del pare, mare o tutor/a`, correo: `Correu electrònic`, telContacto: `Telèfon de contacte`,
+    datosActividad: `Dades de l'activitat`, actividad: `Activitat`, destino: `Lloc/destinació`,
+    fechaSalida: `Data de sortida`, fechaRegreso: `Data de tornada`, horaSalida: `Hora aproximada de sortida`, horaRegreso: `Hora aproximada de tornada`, transporte: `Mitjà de transport`,
+    autorizacion: `Autorització`,
+    textoAut: `Jo, com a pare, mare o tutor/a legal del/de la menor indicat/da, autoritzo la seva participació en l'activitat descrita anteriorment, organitzada dins del programa Joves en acció de Logos Acompanya.`,
+    textoDecl2: `Declaro haver rebut la informació necessària sobre l'activitat i em comprometo a comunicar qualsevol circumstància que s'hagi de tenir en compte per a la participació del menor.`,
+    infoImportante: `Informació important sobre el menor`, infoImportanteDet: `(al·lèrgies, alimentació, medicació, necessitats especials o altres observacions)`,
+    emergencia: `Persona de contacte en cas d'emergència`, nombre: `Nom`, tel: `Telèfon`,
+    en: `A`, nombreCompleto: `Nom complet`,
+    firmadoDigital: `Signat digitalment des de Logos Acompanya el`, revocada: `AUTORITZACIÓ REVOCADA el`
+  }
+};
+
+function jaTipoLabel(tipo, otro, esCA){
+  const t = JA_TIPOS.find(x => x.id === tipo);
+  if(!t) return tipo || '';
+  return (tipo === 'otra' && otro) ? (esCA ? t.ca : t.es) + ': ' + otro : (esCA ? t.ca : t.es);
+}
+function jaFecha(d, esCA){
+  if(!d) return '';
+  return new Date(String(d).slice(0,10) + 'T00:00:00').toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+function jaFechaLarga(iso, esCA){
+  return new Date(iso).toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { day:'numeric', month:'long', year:'numeric' });
+}
+function jaEdad(fechaNac){
+  if(!fechaNac) return '';
+  const n = new Date(String(fechaNac).slice(0,10) + 'T00:00:00'), h = new Date();
+  let e = h.getFullYear() - n.getFullYear();
+  if(h.getMonth() < n.getMonth() || (h.getMonth() === n.getMonth() && h.getDate() < n.getDate())) e--;
+  return e;
+}
+function jaActividadFechas(a, esCA){
+  const s = jaFecha(a.fecha_salida, esCA), r = jaFecha(a.fecha_regreso, esCA);
+  if(s && r && s !== r) return s + ' → ' + r;
+  return s || r || '';
+}
+
+// Resumen de la actividad que se guarda dentro de cada autorización (lo firmado no cambia aunque luego se edite la actividad)
+function jaSnapshotActividad(a){
+  return { id:a.id, titulo:a.titulo, tipo:a.tipo, tipo_otro:a.tipo_otro || null, lugar:a.lugar || null,
+    fecha_salida:a.fecha_salida || null, fecha_regreso:a.fecha_regreso || null, hora_salida:a.hora_salida || null, hora_regreso:a.hora_regreso || null,
+    punto_salida:a.punto_salida || null, punto_regreso:a.punto_regreso || null, transporte:a.transporte || null, formulario_completo: !!a.formulario_completo };
+}
+
+// Documento de la autorización (HTML para el PDF). `a` es una fila de autorizaciones_familiares.
+function autorizacionDocHtml(a, esCA){
+  const D = JA_DOC[esCA ? 'ca' : 'es'];
+  const s = a.actividad_snapshot || {};
+  const e = escAttr;
+  const linea = (etiqueta, valor) => `<p style="margin:4px 0;font-size:13px;line-height:1.5;"><strong>${e(etiqueta)}:</strong> ${valor ? e(valor) : '<span style="display:inline-block;min-width:260px;border-bottom:1px solid #999;">&nbsp;</span>'}</p>`;
+  const casilla = (marcada, texto) => `<span style="display:inline-block;margin-right:14px;">${marcada ? '☒' : '☐'} ${e(texto)}</span>`;
+  const parentescos = [['padre', D.padre], ['madre', D.madre], ['tutor', D.tutor]].map(([k, t]) => casilla(a.parentesco === k, t)).join('');
+  const tipos = JA_TIPOS.map(t => casilla(s.tipo === t.id, t.id === 'otra' && s.tipo === 'otra' && s.tipo_otro ? (esCA ? t.ca : t.es) + ': ' + s.tipo_otro : (esCA ? t.ca : t.es))).join('<br>');
+  const fechaFirma = a.firmado_en ? jaFechaLarga(a.firmado_en, esCA) : '';
+  const horaFirma = a.firmado_en ? new Date(a.firmado_en).toLocaleTimeString(esCA ? 'ca-ES' : 'es-ES', { hour:'2-digit', minute:'2-digit' }) : '';
+  const completo = !!s.formulario_completo;
+  const revocada = a.estado === 'revocada'
+    ? `<div style="border:2px solid #B3261E;color:#B3261E;padding:8px;text-align:center;font-weight:700;margin-bottom:14px;">${e(D.revocada)} ${a.revocado_en ? e(jaFecha(a.revocado_en, esCA)) : ''}</div>` : '';
+  const firmaBloque = `
+    <div style="margin-top:28px;text-align:center;">
+      ${a.firma_imagen ? `<img src="${a.firma_imagen}" style="max-width:260px;max-height:90px;display:block;margin:0 auto 4px;">` : '<div style="height:70px;"></div>'}
+      <div style="border-top:1px solid #333;max-width:300px;margin:0 auto;padding-top:6px;font-size:11px;">${e(D.firmaDe)}<br>${e(a.familiar_nombre)}</div>
+      <p style="font-size:10px;color:#666;margin:10px 0 0;">${e(D.firmadoDigital)} ${e(fechaFirma)} ${e(horaFirma)}</p>
+    </div>`;
+  const cabecera = `
+    <div style="text-align:center;margin-bottom:16px;">
+      <p style="font-size:12px;color:#666;margin:0 0 6px;">${e(D.entidad)}</p>
+      <h1 style="font-size:17px;margin:0;border-bottom:2px solid #C99A2E;padding-bottom:10px;">${e(completo ? D.tituloCompleto : D.titulo)}</h1>
+      ${completo ? `<p style="font-size:13px;margin:6px 0 0;">${e(D.subtituloCompleto)}</p>` : ''}
+    </div>${revocada}`;
+  const lugarFecha = `<p style="margin:22px 0 0;font-size:13px;">${e(D.en)} ${e(a.lugar_firma || '______________')}, ${e(D.a)} ${e(fechaFirma)}</p>`;
+
+  if(!completo){
+    const f = jaActividadFechas(s, esCA);
+    const horario = (s.hora_salida || s.hora_regreso) ? `${D.de} ${s.hora_salida || '____'} ${D.a} ${s.hora_regreso || '____'}` : '';
+    return `<div style="font-family:Georgia,serif;color:#16233F;">${cabecera}
+      <p style="font-size:13px;line-height:1.7;">${e(D.yo)} <strong>${e(a.familiar_nombre)}</strong>, ${e(D.dniNie)} <strong>${e(a.familiar_dni_nie)}</strong>, ${e(D.enCalidad)}:</p>
+      <p style="font-size:13px;margin:4px 0 10px;">${parentescos}</p>
+      <p style="font-size:13px;line-height:1.7;">${e(D.delMenor)} <strong>${e(a.menor_nombre)}</strong>${a.menor_dni_nie ? `, ${e(D.dniNie)} <strong>${e(a.menor_dni_nie)}</strong>` : ''}, <strong>${e(D.autorizoSimple)}</strong></p>
+      <p style="font-size:13px;margin:12px 0 4px;"><strong>${e(D.tipoAct)}:</strong></p>
+      <p style="font-size:13px;line-height:1.6;margin:0 0 8px;">${tipos}</p>
+      ${linea(D.actividad, s.titulo)}${linea(D.lugar, s.lugar)}${linea(D.fecha, f)}${linea(D.horario, horario)}${linea(D.puntoSalida, s.punto_salida)}${linea(D.puntoRegreso, s.punto_regreso)}
+      <p style="font-size:13px;margin:14px 0 6px;">${e(D.declaro)}</p>
+      <p style="font-size:13px;margin:6px 0;">${e(D.contactoIntro)}</p>
+      ${linea(D.telefono, a.telefono)}${linea(D.telAlt, a.telefono_alternativo)}${linea(D.observaciones, a.observaciones)}
+      ${lugarFecha}${firmaBloque}</div>`;
+  }
+  return `<div style="font-family:Georgia,serif;color:#16233F;">${cabecera}
+    <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.datosMenor)}</h3>
+    ${linea(D.nombreApellidos, a.menor_nombre)}${linea(D.fechaNac, jaFecha(a.menor_fecha_nacimiento, esCA))}${linea(D.dniSiProcede, a.menor_dni_nie)}
+    <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.datosTutor)}</h3>
+    <p style="font-size:13px;margin:4px 0;">${parentescos}</p>
+    ${linea(D.nombreApellidos, a.familiar_nombre)}${linea(D.dniNie, a.familiar_dni_nie)}${linea(D.telContacto, a.telefono)}${linea(D.telAlt, a.telefono_alternativo)}${linea(D.correo, a.correo)}
+    <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.datosActividad)}</h3>
+    <p style="font-size:13px;line-height:1.6;margin:4px 0 8px;">${tipos}</p>
+    ${linea(D.actividad, s.titulo)}${linea(D.destino, s.lugar)}${linea(D.fechaSalida, jaFecha(s.fecha_salida, esCA))}${linea(D.fechaRegreso, jaFecha(s.fecha_regreso, esCA))}${linea(D.horaSalida, s.hora_salida)}${linea(D.horaRegreso, s.hora_regreso)}${linea(D.transporte, s.transporte)}
+    <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.autorizacion)}</h3>
+    <p style="font-size:13px;line-height:1.6;margin:4px 0;">${e(D.textoAut)}</p>
+    <p style="font-size:13px;line-height:1.6;margin:8px 0;">${e(D.textoDecl2)}</p>
+    <h3 style="font-size:14px;margin:14px 0 2px;">${e(D.infoImportante)}</h3>
+    <p style="font-size:11px;color:#666;margin:0 0 4px;">${e(D.infoImportanteDet)}</p>
+    <p style="font-size:13px;line-height:1.5;margin:0 0 6px;min-height:34px;border-bottom:1px solid #999;">${e(a.info_menor || '')}</p>
+    <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.emergencia)}</h3>
+    ${linea(D.nombre, a.emergencia_nombre)}${linea(D.tel, a.emergencia_telefono)}
+    ${a.observaciones ? linea(D.observaciones, a.observaciones) : ''}
+    ${lugarFecha}${firmaBloque}</div>`;
+}
+
+async function descargarAutorizacionPDF(a, esCA){
+  const contenedor = document.createElement('div');
+  contenedor.style.cssText = 'position:absolute;left:0;top:-10000px;width:700px;background:#fff;padding:36px;';
+  contenedor.innerHTML = autorizacionDocHtml(a, esCA);
+  document.body.appendChild(contenedor);
+  try {
+    const limpio = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const nombre = 'autorizacion-' + limpio(a.menor_nombre) + '-' + limpio((a.actividad_snapshot || {}).titulo) + '.pdf';
+    await generarPdfMultipagina(contenedor, nombre);
+  } catch(err) {
+    alert((esCA ? 'No s\'ha pogut generar el PDF: ' : 'No se pudo generar el PDF: ') + err.message);
+  } finally {
+    document.body.removeChild(contenedor);
+  }
+}
+
+function tarjetaActividadHtml(a, esCA){
+  const D = JA_DOC[esCA ? 'ca' : 'es'];
+  const dato = (etq, val) => val ? `<div style="font-size:13px;margin:2px 0;"><span style="color:var(--ink-soft);">${escAttr(etq)}:</span> ${escAttr(val)}</div>` : '';
+  const horario = (a.hora_salida || a.hora_regreso) ? `${a.hora_salida || '—'} → ${a.hora_regreso || '—'}` : '';
+  return `
+    <div style="margin-bottom:6px;">
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;">
+        <strong style="font-size:15px;">${escAttr(a.titulo)}</strong>
+        <span style="background:var(--ochre-soft);color:#7A4A1F;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:700;">${escAttr(jaTipoLabel(a.tipo, a.tipo_otro, esCA))}</span>
+      </div>
+      ${dato(D.lugar, a.lugar)}${dato(D.fecha, jaActividadFechas(a, esCA))}${dato(D.horario, horario)}
+      ${dato(D.puntoSalida, a.punto_salida)}${dato(D.puntoRegreso, a.punto_regreso)}${dato(D.transporte, a.transporte)}
+      ${a.descripcion ? `<div style="font-size:13px;margin-top:6px;">${escAttr(a.descripcion)}</div>` : ''}
+    </div>`;
+}
+
+// ================= AUTORIZACIÓN PARA SALIR SOLO/A DEL CENTRO =================
+// Texto tomado del formulario en papel de Logos. Es una autorización permanente por menor (no va ligada a una actividad).
+const JA_SALIDA = {
+  es: {
+    titulo: `AUTORIZACIÓN PARA SALIR SOLO/A DEL CENTRO`,
+    yo: `Yo, D./D.ª`, conDni: `con DNI/NIE`, padreMadre: `padre, madre o tutor/a legal del menor`, delCurso: `del curso/grupo`,
+    autorizo: `AUTORIZO`, texto1: `a mi hijo/a a salir del centro y regresar solo/a a casa, sin acompañamiento de un adulto, a partir del día`,
+    declaro: `Declaro que asumo la responsabilidad correspondiente desde el momento en que el menor abandone el centro y dejo constancia de que esta autorización permanecerá vigente hasta que comunique por escrito su modificación o revocación.`,
+    en: `En`, a: `a`, de: `de`, firma: `Firma del padre, madre o tutor/a legal`, nombre: `Nombre y apellidos`, tel: `Teléfono de contacto`,
+    firmadoDigital: `Firmado digitalmente desde Logos Acompanya el`, revocada: `AUTORIZACIÓN REVOCADA el`, sustituida: `SUSTITUIDA POR UNA NUEVA el`,
+    etiqueta: `Salir solo/a del centro`
+  },
+  ca: {
+    titulo: `AUTORITZACIÓ PER SORTIR SOL/A DEL CENTRE`,
+    yo: `Jo, Sr./Sra.`, conDni: `amb DNI/NIE`, padreMadre: `pare, mare o tutor/a legal del menor`, delCurso: `del curs/grup`,
+    autorizo: `AUTORITZO`, texto1: `el meu fill/a a sortir del centre i tornar sol/a a casa, sense acompanyament d'un adult, a partir del dia`,
+    declaro: `Declaro que assumeixo la responsabilitat corresponent des del moment en què el menor abandoni el centre i deixo constància que aquesta autorització romandrà vigent fins que comuniqui per escrit la seva modificació o revocació.`,
+    en: `A`, a: `a`, de: `de`, firma: `Signatura del pare, mare o tutor/a legal`, nombre: `Nom i cognoms`, tel: `Telèfon de contacte`,
+    firmadoDigital: `Signat digitalment des de Logos Acompanya el`, revocada: `AUTORITZACIÓ REVOCADA el`, sustituida: `SUBSTITUÏDA PER UNA DE NOVA el`,
+    etiqueta: `Sortir sol/a del centre`
+  }
+};
+
+// vigente = ya puede salir solo/a; futura = empieza otro día; revocada = ya no vale
+function jaSalidaEstado(a){
+  if(a.estado === 'revocada') return 'revocada';
+  const hoy = new Date().toISOString().slice(0,10);
+  return String(a.fecha_inicio).slice(0,10) > hoy ? 'futura' : 'vigente';
+}
+
+function autorizacionSalidaDocHtml(a, esCA){
+  const S = JA_SALIDA[esCA ? 'ca' : 'es'];
+  const e = escAttr;
+  const rel = (txt, ancho) => `<span style="display:inline-block;min-width:${ancho || 120}px;border-bottom:1px solid #333;padding:0 4px;font-weight:700;">${txt ? e(txt) : '&nbsp;'}</span>`;
+  const f = a.firmado_en ? new Date(a.firmado_en) : new Date();
+  const loc = esCA ? 'ca-ES' : 'es-ES';
+  const dia = f.getDate(), mes = f.toLocaleDateString(loc, { month:'long' }), anyo = f.getFullYear();
+  const fechaFirma = f.toLocaleDateString(loc, { day:'numeric', month:'long', year:'numeric' });
+  const horaFirma = f.toLocaleTimeString(loc, { hour:'2-digit', minute:'2-digit' });
+  const banner = a.estado === 'revocada'
+    ? `<div style="border:2px solid #B3261E;color:#B3261E;padding:8px;text-align:center;font-weight:700;margin-bottom:16px;">${e(a.revocacion_motivo === 'sustituida' ? S.sustituida : S.revocada)} ${a.revocado_en ? e(jaFecha(a.revocado_en, esCA)) : ''}</div>` : '';
+  return `<div style="font-family:Georgia,serif;color:#16233F;font-size:14px;line-height:2;">
+    <p style="font-size:11px;color:#666;margin:0 0 4px;">${e(JA_DOC[esCA ? 'ca' : 'es'].entidad)}</p>
+    <h1 style="font-size:17px;margin:0 0 18px;border-bottom:2px solid #C99A2E;padding-bottom:8px;">${e(S.titulo)}</h1>
+    ${banner}
+    <p style="margin:0 0 10px;">${e(S.yo)} ${rel(a.familiar_nombre, 230)}, ${e(S.conDni)} ${rel(a.familiar_dni_nie, 110)}, ${e(S.padreMadre)} ${rel(a.menor_nombre, 210)}, ${e(S.delCurso)} ${rel(a.curso_grupo, 130)},</p>
+    <p style="margin:0 0 10px;"><strong>${e(S.autorizo)}</strong> ${e(S.texto1)} ${rel(jaFecha(a.fecha_inicio, esCA), 90)}</p>
+    <p style="margin:0 0 14px;">${e(S.declaro)}</p>
+    <p style="margin:0 0 6px;">${e(S.en)} ${rel(a.lugar_firma, 160)}, ${e(S.a)} ${rel(dia, 28)} ${e(S.de)} ${rel(mes, 90)} ${e(S.de)} ${rel(anyo, 50)}</p>
+    <p style="margin:14px 0 0;">${e(S.firma)}:</p>
+    <div style="margin:2px 0 0;">${a.firma_imagen ? `<img src="${a.firma_imagen}" style="max-width:260px;max-height:90px;display:block;">` : '<div style="height:70px;"></div>'}<div style="border-top:1px solid #333;width:100%;"></div></div>
+    <p style="margin:8px 0 0;">${e(S.nombre)}: ${rel(a.familiar_nombre, 260)}</p>
+    <p style="margin:0;">${e(S.tel)}: ${rel(a.telefono, 160)}</p>
+    <p style="font-size:10px;color:#666;margin:18px 0 0;line-height:1.4;">${e(S.firmadoDigital)} ${e(fechaFirma)} ${e(horaFirma)}</p>
+  </div>`;
+}
+
+async function descargarAutorizacionSalidaPDF(a, esCA){
+  const contenedor = document.createElement('div');
+  contenedor.style.cssText = 'position:absolute;left:0;top:-10000px;width:700px;background:#fff;padding:40px;';
+  contenedor.innerHTML = autorizacionSalidaDocHtml(a, esCA);
+  document.body.appendChild(contenedor);
+  try {
+    const limpio = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    await generarPdfMultipagina(contenedor, 'autorizacion-salida-sola-' + limpio(a.menor_nombre) + '.pdf');
+  } catch(err) {
+    alert((esCA ? 'No s\'ha pogut generar el PDF: ' : 'No se pudo generar el PDF: ') + err.message);
+  } finally {
+    document.body.removeChild(contenedor);
+  }
+}
+
+// ---------- Firma digital (lienzo propio, independiente del lienzo del consentimiento) ----------
+function crearPadFirma(canvasId){
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.strokeStyle = '#16233F';
+  let dibujando = false, hayTrazo = false;
+  const pos = ev => {
+    const r = canvas.getBoundingClientRect();
+    const p = ev.touches ? ev.touches[0] : ev;
+    return { x:(p.clientX - r.left) * canvas.width / r.width, y:(p.clientY - r.top) * canvas.height / r.height };
+  };
+  const ini = ev => { ev.preventDefault(); dibujando = true; const p = pos(ev); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+  const mov = ev => { if(!dibujando) return; ev.preventDefault(); const p = pos(ev); ctx.lineTo(p.x, p.y); ctx.stroke(); hayTrazo = true; };
+  const fin = () => { dibujando = false; };
+  canvas.addEventListener('mousedown', ini); canvas.addEventListener('mousemove', mov);
+  canvas.addEventListener('mouseup', fin); canvas.addEventListener('mouseleave', fin);
+  canvas.addEventListener('touchstart', ini, { passive:false }); canvas.addEventListener('touchmove', mov, { passive:false });
+  canvas.addEventListener('touchend', fin);
+  return {
+    limpiar(){ ctx.clearRect(0, 0, canvas.width, canvas.height); hayTrazo = false; },
+    vacia(){ return !hayTrazo; },
+    dataUrl(){ return canvas.toDataURL('image/png'); }
+  };
+}
+
+let __JA = { menores:[], actividades:[], autorizaciones:[], salidas:[] };
+let __jaPad = null;
+let __jaFlash = '';
+
+// Solo actividades abiertas y que todavía no han pasado
+function jaActividadesVigentes(lista){
+  const hoy = new Date().toISOString().slice(0,10);
+  return (lista || []).filter(a => !(a.fecha_regreso || a.fecha_salida) || String(a.fecha_regreso || a.fecha_salida).slice(0,10) >= hoy);
+}
+
+async function renderJovenesEnAccion(){
+  const esCA = LANG === 'ca'; const T = JA_TEXTOS[esCA ? 'ca' : 'es'];
+  const cont = document.getElementById('jovenes-content');
+  cont.innerHTML = `
+    <h2 class="screen-title">🌱 ${T.jovenesTitulo}</h2>
+    <div class="panel-card"><p style="margin:0;font-size:14.5px;line-height:1.6;">${T.jovenesTexto}</p></div>
+    <div class="info-box info-box-gold" style="margin-top:14px;"><div class="info-box-title">${T.enPocas}</div><p>${T.lema}</p></div>
+    <div id="jovenes-actividades"></div>
+    <button class="primary-btn" style="margin-top:16px;" onclick="showScreen('familias');renderFamilias()">👨‍👩‍👧 ${esCA ? 'Anar a Famílies' : 'Ir a Familias'}</button>`;
+  if(!CURRENT_USER) return;
+  const { data } = await sb.from('actividades_jovenes').select('*').eq('estado', 'abierta').order('fecha_salida', { ascending:true });
+  const activas = jaActividadesVigentes(data);
+  if(!activas.length) return;
+  document.getElementById('jovenes-actividades').innerHTML =
+    `<div class="section-label" style="margin-top:18px;">${esCA ? 'Propers activitats' : 'Próximas actividades'}</div>` +
+    activas.map(a => `<div class="panel-card" style="margin-bottom:10px;">${tarjetaActividadHtml(a, esCA)}</div>`).join('');
+}
+
+async function renderFamilias(){
+  const esCA = LANG === 'ca'; const T = JA_TEXTOS[esCA ? 'ca' : 'es']; const D = JA_DOC[esCA ? 'ca' : 'es'];
+  const cont = document.getElementById('familias-content');
+  const cabecera = `
+    <h2 class="screen-title">👨‍👩‍👧 ${T.familiasTitulo}</h2>
+    <div class="panel-card"><p style="margin:0;font-size:14.5px;line-height:1.6;">${T.familiasTexto}</p></div>`;
+  if(!CURRENT_USER){
+    cont.innerHTML = cabecera + `<div class="info-box info-box-gold" style="margin-top:14px;"><p>${esCA ? 'Inicia sessió per gestionar les autoritzacions dels teus fills.' : 'Inicia sesión para gestionar las autorizaciones de tus hijos.'}</p></div>
+      <button class="primary-btn" onclick="showScreen('home')">${esCA ? 'Iniciar sessió' : 'Iniciar sesión'}</button>`;
+    return;
+  }
+  if(bloquearSinConsentimiento()) return;
+  cont.innerHTML = cabecera + `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+
+  const [m, ac, au, sa] = await Promise.all([
+    sb.from('menores_familia').select('*').eq('familiar_usuario_id', CURRENT_USER.id).order('creado_en', { ascending:true }),
+    sb.from('actividades_jovenes').select('*').eq('estado', 'abierta').order('fecha_salida', { ascending:true }),
+    sb.from('autorizaciones_familiares').select('*').eq('familiar_usuario_id', CURRENT_USER.id).order('firmado_en', { ascending:false }),
+    sb.from('autorizaciones_salida').select('*').eq('familiar_usuario_id', CURRENT_USER.id).order('firmado_en', { ascending:false })
+  ]);
+  const err = m.error || ac.error || au.error || sa.error;
+  if(err){
+    cont.innerHTML = cabecera + `<div class="auth-error">${esCA ? 'No s\'ha pogut carregar:' : 'No se pudo cargar:'} ${escAttr(err.message)}<br><span style="font-size:12px;">${esCA ? 'Si el missatge diu que falta una taula, cal crear-la a la base de dades.' : 'Si el mensaje dice que falta una tabla, hay que crearla en la base de datos.'}</span></div>`;
+    return;
+  }
+  __JA.menores = m.data || [];
+  __JA.actividades = jaActividadesVigentes(ac.data);
+  __JA.autorizaciones = au.data || [];
+  __JA.salidas = sa.data || [];
+
+  const autVigente = (actId, menorId) => __JA.autorizaciones.find(x => x.actividad_id === actId && x.menor_id === menorId && x.estado === 'autorizada');
+
+  const flash = __jaFlash ? `<div class="info-box" style="margin-top:14px;border-color:var(--good);background:var(--good-soft);"><p style="margin:0;">✓ ${escAttr(__jaFlash)}</p></div>` : '';
+  __jaFlash = '';
+
+  const menoresHtml = `
+    <div class="section-label" style="margin-top:18px;">${esCA ? 'Els meus fills/filles i menors al meu càrrec' : 'Mis hijos/as y menores a mi cargo'}</div>
+    <div class="panel-card">
+      ${__JA.menores.length ? __JA.menores.map(x => `
+        <div class="panel-stat-row">
+          <span><strong>${escAttr(x.nombre_completo)}</strong>${x.fecha_nacimiento ? `<br><span class="subtle" style="font-size:11.5px;margin:0;">${jaEdad(x.fecha_nacimiento)} ${esCA ? 'anys' : 'años'} · ${jaFecha(x.fecha_nacimiento, esCA)}</span>` : ''}</span>
+          <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="quitarMenor('${x.id}')">${esCA ? 'Treure' : 'Quitar'}</button>
+        </div>`).join('') : `<p class="subtle" style="margin:0 0 8px;">${esCA ? 'Encara no has afegit ningú. Afegeix el teu fill/filla per poder autoritzar activitats.' : 'Todavía no has añadido a nadie. Añade a tu hijo/a para poder autorizar actividades.'}</p>`}
+      <details ${__JA.menores.length ? '' : 'open'} style="margin-top:10px;">
+        <summary style="cursor:pointer;font-weight:700;font-size:13.5px;">➕ ${esCA ? 'Afegir un menor' : 'Añadir un menor'}</summary>
+        <div class="field" style="margin-top:10px;"><label>${D.nombreApellidos}</label><input type="text" id="fam-menor-nombre"></div>
+        <div class="field"><label>${D.fechaNac}</label><input type="date" id="fam-menor-nac"></div>
+        <div class="field"><label>${D.dniSiProcede}</label><input type="text" id="fam-menor-dni"></div>
+        <button class="primary-btn" style="margin:0;" onclick="anadirMenor()">${esCA ? 'Desar' : 'Guardar'}</button>
+      </details>
+    </div>`;
+
+  const salidaVigente = menorId => __JA.salidas.find(s => s.menor_id === menorId && s.estado === 'vigente');
+  const salidaHtml = __JA.menores.length ? `
+    <div class="section-label" style="margin-top:18px;">🚪 ${esCA ? 'Sortir sol/a del centre' : 'Salir solo/a del centro'}</div>
+    <div class="panel-card">
+      <p class="subtle" style="margin:0 0 8px;">${esCA ? 'Autoritza que el teu fill/a surti del centre i torni sol/a a casa, sense acompanyament d\'un adult. Continua vigent fins que la modifiquis o la revoquis.' : 'Autoriza que tu hijo/a salga del centro y vuelva solo/a a casa, sin acompañamiento de un adulto. Sigue vigente hasta que la modifiques o la revoques.'}</p>
+      ${__JA.menores.map(x => {
+        const s = salidaVigente(x.id);
+        const est = s ? jaSalidaEstado(s) : null;
+        return `<div class="panel-stat-row" style="align-items:center;">
+          <span><strong>${escAttr(x.nombre_completo)}</strong><br>${s
+            ? `<span style="font-size:12px;color:${est === 'futura' ? '#7A4A1F' : 'var(--good)'};font-weight:700;">${est === 'futura' ? (esCA ? '⏳ Podrà sortir sol/a a partir del ' : '⏳ Podrá salir solo/a a partir del ') : (esCA ? '✓ Pot sortir sol/a des del ' : '✓ Puede salir solo/a desde el ')}${jaFecha(s.fecha_inicio, esCA)}</span>`
+            : `<span class="subtle" style="font-size:12px;margin:0;">${esCA ? 'Sense autorització: ha de ser recollit/da' : 'Sin autorización: debe ser recogido/a'}</span>`}</span>
+          ${s
+            ? `<span style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;"><button class="link-btn" style="font-size:12px;" onclick="descargarSalidaPorId('${s.id}')">📄 PDF</button><button class="link-btn" style="font-size:12px;" onclick="abrirSalidaSola('${x.id}')">${esCA ? 'Canviar' : 'Cambiar'}</button><button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="revocarSalidaSola('${s.id}')">${esCA ? 'Revocar' : 'Revocar'}</button></span>`
+            : `<button class="primary-btn" style="margin:0;width:auto;padding:8px 16px;font-size:13px;" onclick="abrirSalidaSola('${x.id}')">✍️ ${esCA ? 'Autoritzar' : 'Autorizar'}</button>`}
+        </div>`;
+      }).join('')}
+    </div>` : '';
+
+  const actividadesHtml = `
+    <div class="section-label" style="margin-top:18px;">${esCA ? 'Activitats per autoritzar' : 'Actividades para autorizar'}</div>
+    ${__JA.actividades.length ? __JA.actividades.map(a => `
+      <div class="panel-card" style="margin-bottom:12px;">
+        ${tarjetaActividadHtml(a, esCA)}
+        <div style="margin-top:8px;border-top:1px solid var(--line);padding-top:6px;">
+          ${__JA.menores.length ? __JA.menores.map(x => {
+            const aut = autVigente(a.id, x.id);
+            return `<div class="panel-stat-row" style="align-items:center;">
+              <span>${escAttr(x.nombre_completo)}</span>
+              ${aut
+                ? `<span style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;"><span style="color:var(--good);font-weight:700;font-size:12.5px;">✓ ${esCA ? 'Autoritzada' : 'Autorizada'} ${jaFecha(aut.firmado_en, esCA)}</span><button class="link-btn" style="font-size:12px;" onclick="descargarAutorizacionPorId('${aut.id}')">📄 PDF</button><button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="revocarAutorizacion('${aut.id}')">${esCA ? 'Revocar' : 'Revocar'}</button></span>`
+                : `<button class="primary-btn" style="margin:0;width:auto;padding:8px 16px;font-size:13px;" onclick="abrirAutorizacion('${a.id}','${x.id}')">✍️ ${esCA ? 'Autoritzar' : 'Autorizar'}</button>`}
+            </div>`;
+          }).join('') : `<p class="subtle" style="margin:0;">${esCA ? 'Afegeix primer un menor més amunt.' : 'Añade primero a un menor más arriba.'}</p>`}
+        </div>
+      </div>`).join('') : `<div class="panel-card"><p class="subtle" style="margin:0;">${esCA ? 'Ara mateix no hi ha activitats obertes.' : 'Ahora mismo no hay actividades abiertas.'}</p></div>`}`;
+
+  const historial = [
+    ...__JA.autorizaciones.map(x => ({ f:x.firmado_en, menor:x.menor_nombre, titulo:(x.actividad_snapshot || {}).titulo || '', ok:x.estado === 'autorizada', pdf:`descargarAutorizacionPorId('${x.id}')` })),
+    ...__JA.salidas.map(x => ({ f:x.firmado_en, menor:x.menor_nombre, titulo:JA_SALIDA[esCA ? 'ca' : 'es'].etiqueta, ok:x.estado === 'vigente', pdf:`descargarSalidaPorId('${x.id}')` }))
+  ].sort((p, q) => new Date(q.f) - new Date(p.f));
+  const historialHtml = historial.length ? `
+    <div class="section-label" style="margin-top:18px;">${esCA ? 'Les meves autoritzacions' : 'Mis autorizaciones'}</div>
+    <div class="panel-card">
+      ${historial.map(x => `
+        <div class="panel-stat-row" style="align-items:center;">
+          <span><strong>${escAttr(x.menor)}</strong> — ${escAttr(x.titulo)}<br><span class="subtle" style="font-size:11.5px;margin:0;">${jaFecha(x.f, esCA)} · ${x.ok ? (esCA ? 'Vigent' : 'Vigente') : (esCA ? 'Revocada' : 'Revocada')}</span></span>
+          <button class="link-btn" style="font-size:12px;" onclick="${x.pdf}">📄 PDF</button>
+        </div>`).join('')}
+    </div>` : '';
+
+  cont.innerHTML = cabecera + flash + menoresHtml + salidaHtml + actividadesHtml + historialHtml;
+}
+
+async function anadirMenor(){
+  const esCA = LANG === 'ca';
+  const nombre = document.getElementById('fam-menor-nombre').value.trim();
+  const nac = document.getElementById('fam-menor-nac').value;
+  const dni = document.getElementById('fam-menor-dni').value.trim();
+  if(!nombre || !nac){ alert(esCA ? 'Cal el nom i la data de naixement.' : 'Hacen falta el nombre y la fecha de nacimiento.'); return; }
+  const { error } = await sb.from('menores_familia').insert({ familiar_usuario_id: CURRENT_USER.id, nombre_completo: nombre, fecha_nacimiento: nac, dni_nie: dni || null });
+  if(error){ alert((esCA ? 'No s\'ha pogut desar: ' : 'No se pudo guardar: ') + error.message); return; }
+  renderFamilias();
+}
+
+async function quitarMenor(id){
+  const esCA = LANG === 'ca';
+  if(!confirm(esCA ? 'Segur que vols treure aquest menor? Les autoritzacions ja signades es conserven.' : '¿Seguro que quieres quitar a este menor? Las autorizaciones ya firmadas se conservan.')) return;
+  const { error } = await sb.from('menores_familia').delete().eq('id', id);
+  if(error){ alert(error.message); return; }
+  renderFamilias();
+}
+
+function cerrarAutorizacionOverlay(){ const o = document.getElementById('aut-overlay'); if(o) o.remove(); __jaPad = null; }
+
+function abrirAutorizacion(actividadId, menorId){
+  const esCA = LANG === 'ca'; const D = JA_DOC[esCA ? 'ca' : 'es'];
+  const a = __JA.actividades.find(x => x.id === actividadId);
+  const m = __JA.menores.find(x => x.id === menorId);
+  if(!a || !m) return;
+  const p = window.__perfilActual || {};
+  const completo = !!a.formulario_completo;
+  cerrarAutorizacionOverlay();
+  const ov = document.createElement('div');
+  ov.id = 'aut-overlay';
+  ov.dataset.actividad = actividadId; ov.dataset.menor = menorId;
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(15,15,20,.55);z-index:400;display:flex;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto;';
+  ov.innerHTML = `
+    <div class="panel-card" style="background:var(--paper);width:100%;max-width:520px;margin:auto;opacity:1;transform:none;animation:none;">
+      <h3 style="margin-top:0;">✍️ ${esCA ? 'Autorització familiar' : 'Autorización familiar'}</h3>
+      <div class="detail-block">${tarjetaActividadHtml(a, esCA)}</div>
+
+      <div class="section-label" style="margin-top:12px;">${D.datosMenor}</div>
+      <div style="font-size:13.5px;"><strong>${escAttr(m.nombre_completo)}</strong>${m.fecha_nacimiento ? ' · ' + jaFecha(m.fecha_nacimiento, esCA) : ''}${m.dni_nie ? ' · ' + escAttr(m.dni_nie) : ''}</div>
+
+      <div class="section-label" style="margin-top:14px;">${D.datosTutor}</div>
+      <div class="field"><label>${D.nombreApellidos} *</label><input type="text" id="aut-familiar-nombre" value="${escAttr(p.nombre_completo || '')}"></div>
+      <div class="field"><label>${D.dniNie} *</label><input type="text" id="aut-familiar-dni" value="${escAttr(p.dni_nie || '')}"></div>
+      <div class="field"><label>${D.enCalidad} *</label>
+        <select id="aut-parentesco"><option value="">—</option><option value="padre">${D.padre}</option><option value="madre">${D.madre}</option><option value="tutor">${D.tutor}</option></select></div>
+      <div class="field"><label>${D.telContacto} *</label><input type="tel" id="aut-telefono" value="${escAttr(p.telefono || '')}"></div>
+      <div class="field"><label>${D.telAlt}</label><input type="tel" id="aut-telefono-alt"></div>
+      <div class="field"><label>${D.correo}</label><input type="email" id="aut-correo" value="${escAttr((CURRENT_USER && CURRENT_USER.email) || '')}"></div>
+
+      ${completo ? `
+      <div class="section-label" style="margin-top:14px;">${D.infoImportante}</div>
+      <div class="field"><label>${D.infoImportanteDet}</label><textarea id="aut-info-menor" rows="3"></textarea></div>
+      <div class="section-label" style="margin-top:6px;">${D.emergencia} *</div>
+      <div class="field"><label>${D.nombre}</label><input type="text" id="aut-emerg-nombre"></div>
+      <div class="field"><label>${D.tel}</label><input type="tel" id="aut-emerg-tel"></div>` : ''}
+
+      <div class="field"><label>${D.observaciones}</label><textarea id="aut-observaciones" rows="2"></textarea></div>
+
+      <div class="detail-block" style="font-size:12.5px;line-height:1.6;">
+        <p style="margin:0 0 6px;">${completo ? D.textoAut : D.declaro}</p>
+        ${completo ? `<p style="margin:0;">${D.textoDecl2}</p>` : ''}
+      </div>
+      <label class="checkbox-row"><input type="checkbox" id="aut-declaro"> ${esCA ? 'He llegit i accepto aquesta autorització' : 'He leído y acepto esta autorización'} *</label>
+
+      <div class="section-label" style="margin-top:12px;">${D.firma} *</div>
+      <p class="subtle" style="margin:0 0 6px;">${esCA ? 'Dibuixa la teva signatura amb el dit o el ratolí.' : 'Dibuja tu firma con el dedo o el ratón.'}</p>
+      <canvas id="aut-firma-canvas" width="500" height="150" style="border:1.5px dashed var(--line);border-radius:8px;width:100%;max-width:500px;display:block;touch-action:none;background:#fff;"></canvas>
+      <button class="link-btn" type="button" style="margin-top:6px;" onclick="if(__jaPad) __jaPad.limpiar()">🗑️ ${esCA ? 'Esborrar signatura' : 'Borrar firma'}</button>
+
+      <div id="aut-error"></div>
+      <button class="primary-btn" id="aut-btn-firmar" style="margin-top:12px;" onclick="firmarAutorizacion()">${esCA ? 'Signar i autoritzar' : 'Firmar y autorizar'}</button>
+      <button class="link-btn" style="display:block;margin:10px auto 0;" onclick="cerrarAutorizacionOverlay()">${esCA ? 'Cancel·lar' : 'Cancelar'}</button>
+    </div>`;
+  document.body.appendChild(ov);
+  __jaPad = crearPadFirma('aut-firma-canvas');
+}
+
+async function firmarAutorizacion(){
+  const esCA = LANG === 'ca';
+  const ov = document.getElementById('aut-overlay');
+  const errBox = document.getElementById('aut-error');
+  const falla = msg => { errBox.innerHTML = `<div class="auth-error" style="margin-top:10px;">${msg}</div>`; };
+  const v = id => (document.getElementById(id) ? document.getElementById(id).value.trim() : '');
+  const a = __JA.actividades.find(x => x.id === ov.dataset.actividad);
+  const m = __JA.menores.find(x => x.id === ov.dataset.menor);
+  if(!a || !m) return;
+  const completo = !!a.formulario_completo;
+
+  if(!v('aut-familiar-nombre') || !v('aut-familiar-dni')) return falla(esCA ? 'Cal el teu nom i DNI/NIE.' : 'Hacen falta tu nombre y DNI/NIE.');
+  if(!v('aut-parentesco')) return falla(esCA ? 'Indica si ets pare, mare o tutor/a legal.' : 'Indica si eres padre, madre o tutor/a legal.');
+  if(!v('aut-telefono')) return falla(esCA ? 'Cal un telèfon de contacte.' : 'Hace falta un teléfono de contacto.');
+  if(completo && (!v('aut-emerg-nombre') || !v('aut-emerg-tel'))) return falla(esCA ? 'Cal una persona de contacte per a emergències (nom i telèfon).' : 'Hace falta una persona de contacto para emergencias (nombre y teléfono).');
+  if(!document.getElementById('aut-declaro').checked) return falla(esCA ? 'Cal marcar que has llegit i acceptes l\'autorització.' : 'Debes marcar que has leído y aceptas la autorización.');
+  if(!__jaPad || __jaPad.vacia()) return falla(esCA ? 'Cal signar amb el dit o el ratolí.' : 'Debes firmar con el dedo o el ratón.');
+
+  const btn = document.getElementById('aut-btn-firmar');
+  btn.disabled = true;
+  const p = window.__perfilActual || {};
+  const fila = {
+    actividad_id: a.id, menor_id: m.id, familiar_usuario_id: CURRENT_USER.id,
+    menor_nombre: m.nombre_completo, menor_fecha_nacimiento: m.fecha_nacimiento || null, menor_dni_nie: m.dni_nie || null,
+    familiar_nombre: v('aut-familiar-nombre'), familiar_dni_nie: v('aut-familiar-dni'), parentesco: v('aut-parentesco'),
+    telefono: v('aut-telefono'), telefono_alternativo: v('aut-telefono-alt') || null, correo: v('aut-correo') || null,
+    info_menor: completo ? (v('aut-info-menor') || null) : null,
+    emergencia_nombre: completo ? v('aut-emerg-nombre') : null, emergencia_telefono: completo ? v('aut-emerg-tel') : null,
+    observaciones: v('aut-observaciones') || null,
+    firma_imagen: __jaPad.dataUrl(), actividad_snapshot: jaSnapshotActividad(a), lugar_firma: p.municipio || null,
+    estado: 'autorizada'
+  };
+  const { error } = await sb.from('autorizaciones_familiares').insert(fila);
+  if(error){
+    btn.disabled = false;
+    const dup = /duplicate|unique|aut_unica/i.test(error.message);
+    return falla(dup ? (esCA ? 'Ja hi ha una autorització signada per a aquest menor i aquesta activitat.' : 'Ya hay una autorización firmada para este menor y esta actividad.') : (esCA ? 'No s\'ha pogut desar: ' : 'No se pudo guardar: ') + escAttr(error.message));
+  }
+  try {
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'autorizacion_nueva',
+      mensaje: `${fila.familiar_nombre} ha autorizado a ${fila.menor_nombre} para la actividad "${a.titulo}".` });
+  } catch(e) { /* no bloquear la firma si falla el aviso */ }
+  __jaFlash = esCA ? 'Autorització signada i desada. Pots descarregar la teva còpia en PDF.' : 'Autorización firmada y guardada. Puedes descargar tu copia en PDF.';
+  cerrarAutorizacionOverlay();
+  renderFamilias();
+}
+
+async function revocarAutorizacion(id){
+  const esCA = LANG === 'ca';
+  if(!confirm(esCA ? 'Segur que vols revocar aquesta autorització?' : '¿Seguro que quieres revocar esta autorización?')) return;
+  const { error } = await sb.from('autorizaciones_familiares').update({ estado:'revocada', revocado_en: new Date().toISOString() }).eq('id', id);
+  if(error){ alert(error.message); return; }
+  __jaFlash = esCA ? 'Autorització revocada.' : 'Autorización revocada.';
+  renderFamilias();
+}
+
+function descargarAutorizacionPorId(id){
+  const x = __JA.autorizaciones.find(z => z.id === id);
+  if(x) descargarAutorizacionPDF(x, LANG === 'ca');
+}
+
+// ---------- Salir solo/a del centro ----------
+function cerrarSalidaOverlay(){ const o = document.getElementById('sal-overlay'); if(o) o.remove(); __jaPad = null; }
+
+function abrirSalidaSola(menorId){
+  const esCA = LANG === 'ca'; const S = JA_SALIDA[esCA ? 'ca' : 'es'];
+  const m = __JA.menores.find(x => x.id === menorId);
+  if(!m) return;
+  const p = window.__perfilActual || {};
+  const previa = __JA.salidas.find(s => s.menor_id === menorId && s.estado === 'vigente');
+  const hoy = new Date().toISOString().slice(0,10);
+  cerrarSalidaOverlay();
+  const ov = document.createElement('div');
+  ov.id = 'sal-overlay'; ov.dataset.menor = menorId;
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(15,15,20,.55);z-index:400;display:flex;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto;';
+  ov.innerHTML = `
+    <div class="panel-card" style="background:var(--paper);width:100%;max-width:520px;margin:auto;opacity:1;transform:none;animation:none;">
+      <h3 style="margin-top:0;">🚪 ${escAttr(S.titulo)}</h3>
+      ${previa ? `<div class="detail-block" style="font-size:12.5px;">${esCA ? 'Ja tens una autorització vigent. En signar aquesta, la substituirà.' : 'Ya tienes una autorización vigente. Al firmar esta, la sustituirá.'}</div>` : ''}
+
+      <div class="field"><label>${S.yo} *</label><input type="text" id="sal-nombre" value="${escAttr((previa && previa.familiar_nombre) || p.nombre_completo || '')}"></div>
+      <div class="field"><label>${S.conDni} *</label><input type="text" id="sal-dni" value="${escAttr((previa && previa.familiar_dni_nie) || p.dni_nie || '')}"></div>
+      <div class="field"><label>${S.padreMadre}</label><input type="text" value="${escAttr(m.nombre_completo)}" disabled></div>
+      <div class="field"><label>${S.delCurso} *</label><input type="text" id="sal-curso" value="${escAttr((previa && previa.curso_grupo) || '')}" placeholder="${esCA ? 'Ex: 2n ESO / grup dels dimarts' : 'Ej: 2º ESO / grupo de los martes'}"></div>
+
+      <div class="detail-block" style="font-size:13px;line-height:1.65;">
+        <p style="margin:0 0 8px;"><strong>${S.autorizo}</strong> ${S.texto1}:</p>
+        <input type="date" id="sal-fecha" value="${hoy}" min="${hoy}" style="max-width:200px;">
+        <p style="margin:10px 0 0;">${S.declaro}</p>
+      </div>
+
+      <div class="field"><label>${S.en} (${esCA ? 'població' : 'localidad'})</label><input type="text" id="sal-lugar" value="${escAttr((previa && previa.lugar_firma) || p.municipio || '')}"></div>
+      <div class="field"><label>${S.tel} *</label><input type="tel" id="sal-tel" value="${escAttr((previa && previa.telefono) || p.telefono || '')}"></div>
+
+      <label class="checkbox-row"><input type="checkbox" id="sal-declaro"> ${esCA ? 'He llegit i accepto aquesta autorització' : 'He leído y acepto esta autorización'} *</label>
+
+      <div class="section-label" style="margin-top:12px;">${S.firma} *</div>
+      <p class="subtle" style="margin:0 0 6px;">${esCA ? 'Dibuixa la teva signatura amb el dit o el ratolí.' : 'Dibuja tu firma con el dedo o el ratón.'}</p>
+      <canvas id="sal-firma-canvas" width="500" height="150" style="border:1.5px dashed var(--line);border-radius:8px;width:100%;max-width:500px;display:block;touch-action:none;background:#fff;"></canvas>
+      <button class="link-btn" type="button" style="margin-top:6px;" onclick="if(__jaPad) __jaPad.limpiar()">🗑️ ${esCA ? 'Esborrar signatura' : 'Borrar firma'}</button>
+
+      <div id="sal-error"></div>
+      <button class="primary-btn" id="sal-btn-firmar" style="margin-top:12px;" onclick="firmarSalidaSola()">${esCA ? 'Signar i autoritzar' : 'Firmar y autorizar'}</button>
+      <button class="link-btn" style="display:block;margin:10px auto 0;" onclick="cerrarSalidaOverlay()">${esCA ? 'Cancel·lar' : 'Cancelar'}</button>
+    </div>`;
+  document.body.appendChild(ov);
+  __jaPad = crearPadFirma('sal-firma-canvas');
+}
+
+async function firmarSalidaSola(){
+  const esCA = LANG === 'ca';
+  const ov = document.getElementById('sal-overlay');
+  const errBox = document.getElementById('sal-error');
+  const falla = msg => { errBox.innerHTML = `<div class="auth-error" style="margin-top:10px;">${msg}</div>`; };
+  const v = id => document.getElementById(id).value.trim();
+  const m = __JA.menores.find(x => x.id === ov.dataset.menor);
+  if(!m) return;
+  const hoy = new Date().toISOString().slice(0,10);
+
+  if(!v('sal-nombre') || !v('sal-dni')) return falla(esCA ? 'Cal el teu nom i DNI/NIE.' : 'Hacen falta tu nombre y DNI/NIE.');
+  if(!v('sal-curso')) return falla(esCA ? 'Indica el curs o grup.' : 'Indica el curso o grupo.');
+  if(!v('sal-fecha') || v('sal-fecha') < hoy) return falla(esCA ? 'La data d\'inici no pot ser anterior a avui.' : 'La fecha de inicio no puede ser anterior a hoy.');
+  if(!v('sal-tel')) return falla(esCA ? 'Cal un telèfon de contacte.' : 'Hace falta un teléfono de contacto.');
+  if(!document.getElementById('sal-declaro').checked) return falla(esCA ? 'Cal marcar que has llegit i acceptes l\'autorització.' : 'Debes marcar que has leído y aceptas la autorización.');
+  if(!__jaPad || __jaPad.vacia()) return falla(esCA ? 'Cal signar amb el dit o el ratolí.' : 'Debes firmar con el dedo o el ratón.');
+
+  const btn = document.getElementById('sal-btn-firmar');
+  btn.disabled = true;
+  const previa = __JA.salidas.find(s => s.menor_id === m.id && s.estado === 'vigente');
+  // Si ya había una vigente, se sustituye (la anterior queda guardada como "sustituida")
+  if(previa){
+    const { error: e1 } = await sb.from('autorizaciones_salida').update({ estado:'revocada', revocado_en:new Date().toISOString(), revocacion_motivo:'sustituida' }).eq('id', previa.id);
+    if(e1){ btn.disabled = false; return falla((esCA ? 'No s\'ha pogut actualitzar l\'anterior: ' : 'No se pudo actualizar la anterior: ') + escAttr(e1.message)); }
+  }
+  const fila = {
+    menor_id: m.id, familiar_usuario_id: CURRENT_USER.id, menor_nombre: m.nombre_completo, menor_fecha_nacimiento: m.fecha_nacimiento || null,
+    curso_grupo: v('sal-curso'), familiar_nombre: v('sal-nombre'), familiar_dni_nie: v('sal-dni'), telefono: v('sal-tel'),
+    fecha_inicio: v('sal-fecha'), lugar_firma: v('sal-lugar') || null, firma_imagen: __jaPad.dataUrl(), estado: 'vigente'
+  };
+  const { error } = await sb.from('autorizaciones_salida').insert(fila);
+  if(error){
+    if(previa) await sb.from('autorizaciones_salida').update({ estado:'vigente', revocado_en:null, revocacion_motivo:null }).eq('id', previa.id);  // se deshace
+    btn.disabled = false;
+    return falla((esCA ? 'No s\'ha pogut desar: ' : 'No se pudo guardar: ') + escAttr(error.message));
+  }
+  try {
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'autorizacion_salida',
+      mensaje: `${fila.familiar_nombre} ha autorizado que ${fila.menor_nombre} salga solo/a del centro a partir del ${jaFecha(fila.fecha_inicio, false)}.` });
+  } catch(e) { /* el aviso no debe bloquear la firma */ }
+  __jaFlash = esCA ? 'Autorització de sortida signada i desada. Pots descarregar la teva còpia en PDF.' : 'Autorización de salida firmada y guardada. Puedes descargar tu copia en PDF.';
+  cerrarSalidaOverlay();
+  renderFamilias();
+}
+
+async function revocarSalidaSola(id){
+  const esCA = LANG === 'ca';
+  if(!confirm(esCA ? 'Segur que vols revocar aquesta autorització? A partir d\'ara el menor haurà de ser recollit per un adult.' : '¿Seguro que quieres revocar esta autorización? A partir de ahora el menor deberá ser recogido por un adulto.')) return;
+  const { error } = await sb.from('autorizaciones_salida').update({ estado:'revocada', revocado_en:new Date().toISOString(), revocacion_motivo:'revocada' }).eq('id', id);
+  if(error){ alert(error.message); return; }
+  const s = __JA.salidas.find(z => z.id === id);
+  try {
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'autorizacion_salida',
+      mensaje: `${(s && s.familiar_nombre) || 'Una familia'} ha REVOCADO la autorización para que ${(s && s.menor_nombre) || 'el menor'} salga solo/a del centro.` });
+  } catch(e) { /* idem */ }
+  __jaFlash = esCA ? 'Autorització revocada. El menor haurà de ser recollit per un adult.' : 'Autorización revocada. El menor deberá ser recogido por un adulto.';
+  renderFamilias();
+}
+
+function descargarSalidaPorId(id){
+  const x = __JA.salidas.find(z => z.id === id);
+  if(x) descargarAutorizacionSalidaPDF(x, LANG === 'ca');
+}
+
 
 function renderVoluntariado(){
   if(bloquearSinConsentimiento()) return;
