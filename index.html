@@ -3355,7 +3355,7 @@ const JA_DOC = {
     padre: `Padre`, madre: `Madre`, tutor: `Tutor/a legal`,
     delMenor: `del/de la menor`, autorizoSimple: `AUTORIZO su participación en la siguiente actividad:`,
     tipoAct: `Tipo de actividad`, lugar: `Lugar`, fecha: `Fecha`, horario: `Horario aproximado`, de: `de`, a: `a`,
-    puntoSalida: `Punto de salida`, puntoRegreso: `Punto de regreso`,
+    puntoSalida: `Punto de salida`, puntoRegreso: `Punto de regreso`, queLlevar: `Qué hay que llevar`, plazoAut: `Plazo para autorizar`,
     declaro: `Declaro que he sido informado/a sobre la actividad y autorizo al menor a participar en ella.`,
     contactoIntro: `Asimismo, facilito los siguientes datos de contacto para cualquier comunicación necesaria durante la actividad:`,
     telefono: `Teléfono del padre/madre/tutor`, telAlt: `Teléfono alternativo`, observaciones: `Observaciones o información relevante`,
@@ -3380,7 +3380,7 @@ const JA_DOC = {
     padre: `Pare`, madre: `Mare`, tutor: `Tutor/a legal`,
     delMenor: `del/de la menor`, autorizoSimple: `AUTORITZO la seva participació en la següent activitat:`,
     tipoAct: `Tipus d'activitat`, lugar: `Lloc`, fecha: `Data`, horario: `Horari aproximat`, de: `de`, a: `a`,
-    puntoSalida: `Punt de sortida`, puntoRegreso: `Punt de tornada`,
+    puntoSalida: `Punt de sortida`, puntoRegreso: `Punt de tornada`, queLlevar: `Què cal portar`, plazoAut: `Termini per autoritzar`,
     declaro: `Declaro que he estat informat/da sobre l'activitat i autoritzo el menor a participar-hi.`,
     contactoIntro: `Així mateix, facilito les següents dades de contacte per a qualsevol comunicació necessària durant l'activitat:`,
     telefono: `Telèfon del pare/mare/tutor`, telAlt: `Telèfon alternatiu`, observaciones: `Observacions o informació rellevant`,
@@ -3522,7 +3522,7 @@ function tarjetaActividadHtml(a, esCA){
         <span style="background:var(--ochre-soft);color:#7A4A1F;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:700;">${escAttr(jaTipoLabel(a.tipo, a.tipo_otro, esCA))}</span>
       </div>
       ${dato(D.lugar, a.lugar)}${dato(D.fecha, jaActividadFechas(a, esCA))}${dato(D.horario, horario)}
-      ${dato(D.puntoSalida, a.punto_salida)}${dato(D.puntoRegreso, a.punto_regreso)}${dato(D.transporte, a.transporte)}
+      ${dato(D.puntoSalida, a.punto_salida)}${dato(D.puntoRegreso, a.punto_regreso)}${dato(D.transporte, a.transporte)}${dato(D.queLlevar, a.que_llevar)}${dato(D.plazoAut, a.plazo_autorizacion ? jaFecha(a.plazo_autorizacion, esCA) : '')}
       ${a.descripcion ? `<div style="font-size:13px;margin-top:6px;">${escAttr(a.descripcion)}</div>` : ''}
     </div>`;
 }
@@ -3684,6 +3684,23 @@ async function renderFamilias(){
 
   const autVigente = (actId, menorId) => __JA.autorizaciones.find(x => x.actividad_id === actId && x.menor_id === menorId && x.estado === 'autorizada');
 
+  // Mensajes de Logos para esta familia (solo los suyos y solo los que ya les toca ver)
+  const msgR = await sb.from('jovenes_mensajes').select('*').eq('familiar_usuario_id', CURRENT_USER.id).eq('en_app', true).lte('visible_desde', new Date().toISOString()).order('creado_en', { ascending:false }).limit(40);
+  const mensajes = msgR.error ? [] : (msgR.data || []);
+  const nuevos = mensajes.filter(x => !x.leido_en);
+  const tarjetaMensaje = x => `
+    <div class="panel-card" style="margin-bottom:8px;${x.leido_en ? '' : 'border-color:var(--gold);background:var(--gold-soft);'}">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><strong>${escAttr(x.asunto)}</strong>${x.leido_en ? '' : `<span class="chip gold" style="font-size:10.5px;">${esCA ? 'Nou' : 'Nuevo'}</span>`}</div>
+      <div class="subtle" style="font-size:11px;margin:2px 0 6px;">${jaFecha(x.creado_en, esCA)}</div>
+      <div style="font-size:13.5px;white-space:pre-line;line-height:1.55;">${escAttr(x.mensaje)}</div>
+    </div>`;
+  const mensajesHtml = mensajes.length ? `
+    <div class="section-label" style="margin-top:18px;">💬 ${esCA ? 'Missatges de Logos' : 'Mensajes de Logos'}${nuevos.length ? ` · ${nuevos.length} ${esCA ? (nuevos.length === 1 ? 'nou' : 'nous') : (nuevos.length === 1 ? 'nuevo' : 'nuevos')}` : ''}</div>
+    ${mensajes.slice(0, 5).map(tarjetaMensaje).join('')}
+    ${mensajes.length > 5 ? `<details style="margin-bottom:8px;"><summary class="link-btn" style="cursor:pointer;">${esCA ? 'Veure anteriors' : 'Ver anteriores'} (${mensajes.length - 5})</summary><div style="margin-top:8px;">${mensajes.slice(5).map(tarjetaMensaje).join('')}</div></details>` : ''}` : '';
+  // Se marcan como leídos justo después de enseñárselos
+  if(nuevos.length) setTimeout(async () => { await sb.from('jovenes_mensajes').update({ leido_en: new Date().toISOString() }).in('id', nuevos.map(x => x.id)); }, 1200);
+
   const flash = __jaFlash ? `<div class="info-box" style="margin-top:14px;border-color:var(--good);background:var(--good-soft);"><p style="margin:0;">✓ ${escAttr(__jaFlash)}</p></div>` : '';
   __jaFlash = '';
 
@@ -3755,7 +3772,7 @@ async function renderFamilias(){
         </div>`).join('')}
     </div>` : '';
 
-  cont.innerHTML = cabecera + flash + menoresHtml + salidaHtml + actividadesHtml + historialHtml;
+  cont.innerHTML = cabecera + flash + mensajesHtml + menoresHtml + salidaHtml + actividadesHtml + historialHtml;
 }
 
 async function anadirMenor(){
@@ -4422,6 +4439,15 @@ async function renderDashboard(){
     const { data } = await sb.from('proyecto_avisos').select('*, proyectos(nombre)').in('proyecto_id', misProyectos.map(mp => mp.proyecto_id)).order('creado_en', { ascending:false }).limit(10);
     avisosProyecto = data || [];
   }
+  // Mensajes personales que el equipo ha añadido a cada aviso para esta persona (nadie más los ve)
+  const avisosPersonales = {};
+  if(avisosProyecto.length){
+    const { data: pers } = await sb.from('proyecto_avisos_personales').select('aviso_id, mensaje').eq('usuario_id', CURRENT_USER.id).in('aviso_id', avisosProyecto.map(x => x.id));
+    (pers || []).forEach(x => { avisosPersonales[x.aviso_id] = x.mensaje; });
+  }
+
+  let mensajesNuevos = 0;
+  { const rm = await sb.from('jovenes_mensajes').select('id').eq('familiar_usuario_id', CURRENT_USER.id).eq('en_app', true).is('leido_en', null).lte('visible_desde', new Date().toISOString()); mensajesNuevos = rm.error ? 0 : (rm.data || []).length; }
 
   const nombre = (perfil && perfil.nombre_completo) ? perfil.nombre_completo : CURRENT_USER.email;
   const inicial = nombre.trim().charAt(0).toUpperCase();
@@ -4545,6 +4571,11 @@ async function renderDashboard(){
     <div id="sec-emprendimiento"></div>
     ${emprendimientoHtml}
 
+    ${mensajesNuevos ? `
+    <div class="info-box info-box-gold" style="margin-bottom:16px;cursor:pointer;" onclick="showScreen('familias');renderFamilias()">
+      <p style="margin:0;"><strong>💬 ${mensajesNuevos} ${LANG==='ca' ? (mensajesNuevos === 1 ? 'missatge nou' : 'missatges nous') + ' de Joves en acció' : (mensajesNuevos === 1 ? 'mensaje nuevo' : 'mensajes nuevos') + ' de Jóvenes en acción'}</strong> →</p>
+    </div>` : ''}
+
     ${avisosProyecto.length ? `
     <div class="panel-card" style="margin-bottom:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
@@ -4555,7 +4586,8 @@ async function renderDashboard(){
         <div style="padding:8px 0;border-bottom:1px solid var(--line);">
           <p class="subtle" style="margin:0 0 2px;font-size:11px;">${av.proyectos ? av.proyectos.nombre : ''} · ${new Date(av.creado_en).toLocaleDateString(LANG==='ca'?'ca-ES':'es-ES')}</p>
           <p style="margin:0;font-weight:700;font-size:13.5px;">${av.titulo}</p>
-          <p style="margin:2px 0 0;font-size:13px;">${av.mensaje}</p>
+          <p style="margin:2px 0 0;font-size:13px;white-space:pre-line;">${escAttr(av.mensaje)}</p>
+          ${avisosPersonales[av.id] ? `<p style="margin:6px 0 0;padding:7px 10px;background:var(--gold-soft);border-radius:8px;font-size:13px;white-space:pre-line;"><strong>${LANG==='ca' ? 'Per a tu:' : 'Para ti:'}</strong> ${escAttr(avisosPersonales[av.id])}</p>` : ''}
         </div>`).join('')}
     </div>` : ''}
 
