@@ -921,6 +921,13 @@ const T1 = {
 let IS_STAFF = false;
 let IS_ADMIN = false;
 
+let REPARTO_OK = false;
+// El equipo ve las alertas suyas, las de "todo el equipo" y las sin asignar; la administración ve todas
+function filtrarAlertas(consulta){
+  if(!REPARTO_OK || IS_ADMIN) return consulta;
+  return consulta.or(`asignada_a_email.eq."${CURRENT_USER.email}",para_todos.eq.true,asignada_a_email.is.null`);
+}
+
 async function checkStaff(){
   if(!CURRENT_USER){
     IS_STAFF = false;
@@ -929,9 +936,11 @@ async function checkStaff(){
     document.getElementById('nav-admin-btn').style.display = 'none';
     return;
   }
-  const { data } = await sb.from('staff').select('email, es_admin').eq('email', CURRENT_USER.email).maybeSingle();
-  IS_STAFF = !!data;
-  IS_ADMIN = !!(data && data.es_admin);
+  const { data } = await sb.from('staff').select('email, es_admin, activo').eq('email', CURRENT_USER.email).maybeSingle();
+  IS_STAFF = !!(data && data.activo !== false);       // una persona desactivada ya no entra al panel de personal
+  IS_ADMIN = !!(data && data.es_admin && data.activo !== false);
+  REPARTO_OK = false;
+  if(IS_STAFF){ try { const r = await sb.from('notificaciones').select('asignada_a_email').limit(1); REPARTO_OK = !r.error; } catch(e) { REPARTO_OK = false; } }
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
   document.getElementById('nav-admin-btn').style.display = IS_ADMIN ? '' : 'none';
 }
@@ -1597,7 +1606,7 @@ async function renderPanel(){
     sb.from('stats_situaciones_familiares').select('*').maybeSingle(),
     sb.from('stats_tramites_por_estado').select('*'),
     sb.from('stats_intereses_formativos').select('*'),
-    sb.from('notificaciones').select('*').eq('leida', false).order('creado_en', { ascending:false }),
+    filtrarAlertas(sb.from('notificaciones').select('*').eq('leida', false).order('creado_en', { ascending:false })),
     sb.from('stats_satisfaccion').select('*').maybeSingle(),
     sb.from('consultas_orientacion').select('*').eq('estado', 'pendiente').order('creado_en', { ascending:true }),
     sb.from('stats_prestaciones').select('*'),
