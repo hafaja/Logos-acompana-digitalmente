@@ -922,9 +922,12 @@ let IS_STAFF = false;
 let IS_ADMIN = false;
 
 let REPARTO_OK = false;
+let JOVENES_OK = false;
 // El equipo ve las alertas suyas, las de "todo el equipo" y las sin asignar; la administración ve todas
 function filtrarAlertas(consulta){
   if(!REPARTO_OK || IS_ADMIN) return consulta;
+  // Las alertas de Jóvenes en acción van al panel de sus profesionales, no al reparto del equipo general
+  if(JOVENES_OK) return consulta.or(`asignada_a_email.eq."${CURRENT_USER.email}",para_todos.eq.true,and(asignada_a_email.is.null,para_jovenes.eq.false)`);
   return consulta.or(`asignada_a_email.eq."${CURRENT_USER.email}",para_todos.eq.true,asignada_a_email.is.null`);
 }
 
@@ -936,11 +939,12 @@ async function checkStaff(){
     document.getElementById('nav-admin-btn').style.display = 'none';
     return;
   }
-  const { data } = await sb.from('staff').select('email, es_admin, activo').eq('email', CURRENT_USER.email).maybeSingle();
-  IS_STAFF = !!(data && data.activo !== false);       // una persona desactivada ya no entra al panel de personal
+  const { data } = await sb.from('staff').select('*').eq('email', CURRENT_USER.email).maybeSingle();
   IS_ADMIN = !!(data && data.es_admin && data.activo !== false);
-  REPARTO_OK = false;
-  if(IS_STAFF){ try { const r = await sb.from('notificaciones').select('asignada_a_email').limit(1); REPARTO_OK = !r.error; } catch(e) { REPARTO_OK = false; } }
+  // una persona desactivada ya no entra al panel de personal; las profesionales de Jóvenes en acción trabajan en la Intranet, no aquí
+  IS_STAFF = !!(data && data.activo !== false && (IS_ADMIN || data.ambito !== 'jovenes'));
+  REPARTO_OK = false; JOVENES_OK = false;
+  if(IS_STAFF){ try { const r = await sb.from('notificaciones').select('asignada_a_email').limit(1); REPARTO_OK = !r.error; const j = await sb.from('notificaciones').select('para_jovenes').limit(1); JOVENES_OK = !j.error; } catch(e) { REPARTO_OK = false; JOVENES_OK = false; } }
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
   document.getElementById('nav-admin-btn').style.display = IS_ADMIN ? '' : 'none';
 }
