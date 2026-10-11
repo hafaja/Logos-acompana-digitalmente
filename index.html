@@ -920,12 +920,13 @@ const T1 = {
 
 let IS_STAFF = false;
 let IS_ADMIN = false;
+let IS_GESTOR = false;
 
 let REPARTO_OK = false;
 let JOVENES_OK = false;
 // El equipo ve las alertas suyas, las de "todo el equipo" y las sin asignar; la administración ve todas
 function filtrarAlertas(consulta){
-  if(!REPARTO_OK || IS_ADMIN) return consulta;
+  if(!REPARTO_OK || IS_ADMIN || IS_GESTOR) return consulta;
   // Las alertas de Jóvenes en acción van al panel de sus profesionales, no al reparto del equipo general
   if(JOVENES_OK) return consulta.or(`asignada_a_email.eq."${CURRENT_USER.email}",para_todos.eq.true,and(asignada_a_email.is.null,para_jovenes.eq.false)`);
   return consulta.or(`asignada_a_email.eq."${CURRENT_USER.email}",para_todos.eq.true,asignada_a_email.is.null`);
@@ -934,13 +935,14 @@ function filtrarAlertas(consulta){
 async function checkStaff(){
   if(!CURRENT_USER){
     IS_STAFF = false;
-    IS_ADMIN = false;
+    IS_ADMIN = false; IS_GESTOR = false;
     document.getElementById('nav-panel-btn').style.display = 'none';
     document.getElementById('nav-admin-btn').style.display = 'none';
     return;
   }
   const { data } = await sb.from('staff').select('*').eq('email', CURRENT_USER.email).maybeSingle();
   IS_ADMIN = !!(data && data.es_admin && data.activo !== false);
+  IS_GESTOR = !!(data && data.gestiona_alertas && data.activo !== false && data.ambito !== 'jovenes');
   // una persona desactivada ya no entra al panel de personal; las profesionales de Jóvenes en acción trabajan en la Intranet, no aquí
   IS_STAFF = !!(data && data.activo !== false && (IS_ADMIN || data.ambito !== 'jovenes'));
   REPARTO_OK = false; JOVENES_OK = false;
