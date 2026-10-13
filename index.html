@@ -830,6 +830,12 @@ async function showDetail(id){
   showScreen('detail');
 }
 
+// Las funciones del servidor comprueban quién llama a partir de la sesión: se envía el token de la persona.
+// Sin sesión (modo anónimo) se envía la clave pública.
+async function tokenParaFunciones(){
+  try { const { data } = await sb.auth.getSession(); return (data && data.session && data.session.access_token) || SUPABASE_KEY; }
+  catch(e){ return SUPABASE_KEY; }
+}
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
@@ -3289,7 +3295,7 @@ async function traducirYMostrar(texto, idiomaOrigen, idiomaDestino, ladoDestino)
   try {
     const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/traducir', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await tokenParaFunciones()), 'apikey': SUPABASE_KEY },
       body: JSON.stringify({ texto, idioma_origen: idiomaOrigen, idioma_destino: idiomaDestino })
     });
     const data = await res.json();
@@ -5816,12 +5822,11 @@ async function enviarMensajeAsistente(){
   try {
     const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/asistente', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await tokenParaFunciones()), 'apikey': SUPABASE_KEY },
       body: JSON.stringify({
         mensaje,
         historial: historialPrevio,
-        ambito: 'ciudadania',
-        usuario_id: CURRENT_USER ? CURRENT_USER.id : null
+        ambito: 'ciudadania'
       })
     });
     const data = await res.json();
