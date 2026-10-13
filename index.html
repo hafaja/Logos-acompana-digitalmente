@@ -594,6 +594,8 @@ async function loadData(){
     SERVICIOS = (await resServ.json()).servicios;
     TAXONOMIA = (await resTax.json()).ambitos;
     ajustarTaxonomia();
+    TAXONOMIA_BASE = TAXONOMIA;
+    try { await cargarAjustesCatalogo(); } catch(e) {}
     renderAmbitos();
   }catch(err){
     document.getElementById('ambitos-grid').innerHTML =
@@ -638,12 +640,13 @@ function renderAmbitos(){
 
   const tarjeta = (a, i) => {
     const col = COLORES_AMBITO[i % COLORES_AMBITO.length];
-    const numServicios = (a.necesidades || []).reduce((acc, n) => acc + (n.servicios_ids ? n.servicios_ids.length : 0), 0);
-    const sub = numServicios > 0
-      ? (esCA ? `${numServicios} servei(s) disponible(s)` : `${numServicios} servicio(s) disponible(s)`)
+    const numPrest = (a.necesidades || []).length;
+    const sub = numPrest > 0
+      ? (esCA ? `${numPrest} prestació(ns)` : `${numPrest} prestación(es)`)
       : (esCA ? 'Properament' : 'Próximamente');
     return `
-    <div class="quick-card" onclick="showNecesidades('${a.id}')">
+    <div class="quick-card" style="position:relative;" onclick="showNecesidades('${escAttr(a.id)}')">
+      ${IS_ADMIN ? `<button class="nec-x" title="${esCA ? 'Treure aquesta àrea' : 'Quitar esta área'}" onclick="event.stopPropagation();quitarAreaCatalogo('${escAttr(a.id)}')">✕</button>` : ''}
       <div class="icon-badge" style="background:${col.bg};color:${col.color};font-size:20px;">${a.icono}</div>
       <h4>${a.nombre[LANG]}</h4>
       <p>${sub}</p>
@@ -664,6 +667,7 @@ function renderAmbitos(){
 
       <div class="ambitos-col">${derecha.map((a,i) => tarjeta(a, i+mitad)).join('')}</div>
     </div>
+    ${IS_ADMIN ? adminControlesAreas() : ''}
   `;
 }
 
@@ -743,15 +747,37 @@ const ACCESOS_CITAS = [
   { i: '📑', es: 'Trámites del Ajuntament de Tarragona', ca: 'Tràmits de l\'Ajuntament de Tarragona', d_es: 'Catálogo de trámites de la sede electrónica.', d_ca: 'Catàleg de tràmits de la seu electrònica.', u: 'https://seu.tarragona.cat/sta/CarpetaPublic/doEvent?APP_CODE=STA&PAGE_CODE=CATALOGO' }
 ];
 let __NEC_ITEMS = [];
+const APP_VERSION_ACOMP = '2026-10-14 · v45 (áreas y prestaciones editables por administración)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
+let CATALOGO_V13 = false;   // la base de datos ya admite editar áreas y prestaciones (SQL 13)
+let TAXONOMIA_BASE = null;   // áreas y prestaciones tal como vienen del catálogo, sin los cambios de la administración
+const esTramiteAj = x => !x.tipo || x.tipo === 'tramite';
 async function cargarAjustesCatalogo(){
   try {
     const r = await sb.from('catalogo_ajustes').select('*').order('id', { ascending: true });
     if(r.error){ CATALOGO_AJUSTES_OK = false; CATALOGO_AJUSTES = []; return; }
     CATALOGO_AJUSTES = r.data || []; CATALOGO_AJUSTES_OK = true;
+    try { const q = await sb.from('catalogo_ajustes').select('tipo').limit(1); CATALOGO_V13 = !q.error; } catch(e){ CATALOGO_V13 = false; }
   } catch(e){ CATALOGO_AJUSTES_OK = false; CATALOGO_AJUSTES = []; }
+  aplicarAjustesTaxonomia();
+}
+// Áreas y prestaciones: la administración puede quitarlas (ocultarlas) y añadir otras
+function aplicarAjustesTaxonomia(){
+  if(!TAXONOMIA_BASE) return;
+  const aj = CATALOGO_AJUSTES;
+  const ambOcultos = new Set(aj.filter(x => x.tipo === 'ambito' && x.oculto).map(x => x.clave));
+  const necOcultas = new Set(aj.filter(x => x.tipo === 'necesidad' && x.oculto).map(x => x.necesidad_id));
+  const lista = TAXONOMIA_BASE.filter(a => !ambOcultos.has(a.id)).map(a => {
+    const extra = aj.filter(x => x.tipo === 'necesidad' && !x.oculto && x.ambito_id === a.id).map(x => ({ id: x.clave, nombre: { es: x.titulo_es, ca: x.titulo_ca || x.titulo_es }, servicios_ids: [], __custom: true, __ajusteId: x.id }));
+    return Object.assign({}, a, { necesidades: a.necesidades.filter(n => !necOcultas.has(n.id)).concat(extra) });
+  });
+  aj.filter(x => x.tipo === 'ambito' && !x.oculto).forEach(x => {
+    const extra = aj.filter(y => y.tipo === 'necesidad' && !y.oculto && y.ambito_id === x.clave).map(y => ({ id: y.clave, nombre: { es: y.titulo_es, ca: y.titulo_ca || y.titulo_es }, servicios_ids: [], __custom: true, __ajusteId: y.id }));
+    lista.push({ id: x.clave, icono: x.icono || '📌', nombre: { es: x.titulo_es, ca: x.titulo_ca || x.titulo_es }, necesidades: extra, __custom: true, __ajusteId: x.id });
+  });
+  TAXONOMIA = lista;
 }
 
 function enlaceDeTramite(nombre){
@@ -835,7 +861,8 @@ function adminControlesNecesidad(n, ocultas){
     <input id="adm-t-${n.id}" type="text" maxlength="160" placeholder="${esCA ? 'Nom del tràmit' : 'Nombre del trámite'}">
     <input id="adm-u-${n.id}" type="url" inputmode="url" placeholder="https://…">
     <button class="nec-btn nec-btn-yo" onclick="anadirItemCatalogo('${n.id}')">➕ ${esCA ? 'Afegir' : 'Añadir'}</button>
-    <div class="nec-item-d" style="margin-top:6px;">${esCA ? 'Només enllaços oficials. Si una prestació es queda sense tràmits, apareix sola «Adreça\'t a Logos».' : 'Solo enlaces oficiales. Si una prestación se queda sin trámites, aparece sola «Dirígete a Logos».'}</div>${rest}</div>`;
+    <div class="nec-item-d" style="margin-top:6px;">${esCA ? 'Només enllaços oficials. Si una prestació es queda sense tràmits, apareix sola «Adreça\'t a Logos».' : 'Solo enlaces oficiales. Si una prestación se queda sin trámites, aparece sola «Dirígete a Logos».'}</div>${rest}
+    <div style="margin-top:10px;"><button class="nec-btn" style="color:#B0392F;border-color:#E6B8B3;" onclick="quitarPrestacionCatalogo('${escAttr(n.id)}')">🗑️ ${esCA ? 'Treure aquesta prestació' : 'Quitar esta prestación'}</button></div></div>`;
 }
 async function quitarItemCatalogo(i){
   const it = __NEC_ITEMS[i]; if(!it || !IS_ADMIN) return;
@@ -847,11 +874,12 @@ async function quitarItemCatalogo(i){
   if(error){ alert(error.message); return; }
   await recargarNecesidadesAdmin(it.necId);
 }
-async function restaurarItemCatalogo(id){
+async function restaurarItemCatalogo(id, general){
   if(!IS_ADMIN) return;
   const fila = CATALOGO_AJUSTES.find(x => String(x.id) === String(id));
   const { error } = await sb.from('catalogo_ajustes').delete().eq('id', id);
   if(error){ alert(error.message); return; }
+  if(general){ await cargarAjustesCatalogo(); if(fila && fila.tipo === 'ambito') renderAmbitos(); else if(CURRENT_AMBITO) await showNecesidades(CURRENT_AMBITO, true); return; }
   await recargarNecesidadesAdmin(fila ? fila.necesidad_id : null);
 }
 async function anadirItemCatalogo(necId){
@@ -865,6 +893,88 @@ async function anadirItemCatalogo(necId){
   const { error } = await sb.from('catalogo_ajustes').insert({ necesidad_id: necId, titulo_es: t, titulo_ca: t, url: u, oculto: false, creado_por: CURRENT_USER.email });
   if(error){ alert(error.message); return; }
   await recargarNecesidadesAdmin(necId);
+}
+function adminSqlFalta(){
+  const esCA = LANG === 'ca';
+  return `<div class="nec-admin" style="margin-top:12px;"><h5>🛠️ ${esCA ? 'Administració' : 'Administración'}</h5><div class="nec-item-d">${esCA ? 'Falta executar l\'SQL 12 i 13 a Supabase per poder editar àrees i prestacions.' : 'Falta ejecutar el SQL 12 y el 13 en Supabase para poder editar áreas y prestaciones.'}</div></div>`;
+}
+function filasRestaurar(lista, etiqueta){
+  const esCA = LANG === 'ca';
+  if(!lista.length) return '';
+  return `<div style="margin-top:8px;"><div class="nec-item-d" style="margin:0 0 4px;">${etiqueta}:</div>${lista.map(o => `<div class="rest"><span>${escAttr(o.titulo_es || o.clave || o.necesidad_id)}</span><button class="nec-btn" style="padding:4px 10px;font-size:12px;" onclick="restaurarItemCatalogo('${escAttr(o.id)}', true)">↩ ${esCA ? 'Restaurar' : 'Restaurar'}</button></div>`).join('')}</div>`;
+}
+function nombreDeBase(tipo, id){
+  if(!TAXONOMIA_BASE) return id;
+  if(tipo === 'ambito'){ const a = TAXONOMIA_BASE.find(x => x.id === id); return a ? a.nombre.es : id; }
+  for(const a of TAXONOMIA_BASE){ const n = a.necesidades.find(x => x.id === id); if(n) return n.nombre.es; }
+  return id;
+}
+function adminControlesAreas(){
+  const esCA = LANG === 'ca';
+  if(!CATALOGO_AJUSTES_OK || !CATALOGO_V13) return adminSqlFalta();
+  const ocultas = CATALOGO_AJUSTES.filter(x => x.tipo === 'ambito' && x.oculto).map(x => Object.assign({}, x, { titulo_es: nombreDeBase('ambito', x.clave) }));
+  return `<div class="nec-admin" style="margin-top:16px;"><h5>🛠️ ${esCA ? 'Administració: afegir una àrea' : 'Administración: añadir un área'}</h5>
+    <input id="adm-area-i" type="text" maxlength="4" placeholder="${esCA ? 'Emoji (per exemple 🏥)' : 'Emoji (por ejemplo 🏥)'}">
+    <input id="adm-area-t" type="text" maxlength="60" placeholder="${esCA ? 'Nom de l\'àrea' : 'Nombre del área'}">
+    <button class="nec-btn nec-btn-yo" onclick="anadirAreaCatalogo()">➕ ${esCA ? 'Afegir àrea' : 'Añadir área'}</button>
+    ${filasRestaurar(ocultas, esCA ? 'Àrees tretes' : 'Áreas quitadas')}</div>`;
+}
+function adminControlesPrestaciones(a){
+  const esCA = LANG === 'ca';
+  if(!CATALOGO_AJUSTES_OK || !CATALOGO_V13) return adminSqlFalta();
+  const ocultas = CATALOGO_AJUSTES.filter(x => x.tipo === 'necesidad' && x.oculto && (TAXONOMIA_BASE.find(b => b.id === a.id) || { necesidades: [] }).necesidades.some(n => n.id === x.necesidad_id)).map(x => Object.assign({}, x, { titulo_es: nombreDeBase('necesidad', x.necesidad_id) }));
+  return `<div class="nec-admin" style="margin-top:14px;"><h5>🛠️ ${esCA ? 'Administració: afegir una prestació' : 'Administración: añadir una prestación'}</h5>
+    <input id="adm-nec-t" type="text" maxlength="80" placeholder="${esCA ? 'Nom de la prestació' : 'Nombre de la prestación'}">
+    <button class="nec-btn nec-btn-yo" onclick="anadirPrestacionCatalogo('${escAttr(a.id)}')">➕ ${esCA ? 'Afegir prestació' : 'Añadir prestación'}</button>
+    <div class="nec-item-d" style="margin-top:6px;">${esCA ? 'Nova, sense tràmits: surt «Adreça\'t a Logos» fins que hi afegeixis enllaços.' : 'Nueva y sin trámites: sale «Dirígete a Logos» hasta que añadas enlaces.'}</div>
+    ${filasRestaurar(ocultas, esCA ? 'Prestacions tretes' : 'Prestaciones quitadas')}</div>`;
+}
+function idNuevoCatalogo(pref){ return pref + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+async function quitarAreaCatalogo(id){
+  if(!IS_ADMIN) return;
+  const esCA = LANG === 'ca';
+  const a = TAXONOMIA.find(x => x.id === id); if(!a) return;
+  if(!confirm((esCA ? 'Treure l\'àrea «' : '¿Quitar el área «') + a.nombre[LANG] + (esCA ? '» de la pantalla principal?\n\nEs pot restaurar després.' : '» de la pantalla principal?\n\nSe podrá restaurar después.'))) return;
+  let error;
+  if(a.__custom) ({ error } = await sb.from('catalogo_ajustes').delete().eq('id', a.__ajusteId));
+  else ({ error } = await sb.from('catalogo_ajustes').insert({ tipo: 'ambito', clave: a.id, necesidad_id: a.id, titulo_es: a.nombre.es, oculto: true, creado_por: CURRENT_USER.email }));
+  if(error){ alert(error.message); return; }
+  await cargarAjustesCatalogo(); renderAmbitos();
+}
+async function anadirAreaCatalogo(){
+  if(!IS_ADMIN) return;
+  const esCA = LANG === 'ca';
+  const t = (document.getElementById('adm-area-t').value || '').trim();
+  const ic = (document.getElementById('adm-area-i').value || '').trim() || '📌';
+  if(!t){ alert(esCA ? 'Escriu el nom de l\'àrea.' : 'Escribe el nombre del área.'); return; }
+  const id = idNuevoCatalogo('area');
+  const { error } = await sb.from('catalogo_ajustes').insert({ tipo: 'ambito', clave: id, necesidad_id: id, titulo_es: t, titulo_ca: t, icono: ic, oculto: false, creado_por: CURRENT_USER.email });
+  if(error){ alert(error.message); return; }
+  await cargarAjustesCatalogo(); renderAmbitos();
+}
+async function quitarPrestacionCatalogo(necId){
+  if(!IS_ADMIN) return;
+  const esCA = LANG === 'ca';
+  const a = TAXONOMIA.find(x => x.id === CURRENT_AMBITO); const n = a && a.necesidades.find(x => x.id === necId); if(!n) return;
+  if(!confirm((esCA ? 'Treure la prestació «' : '¿Quitar la prestación «') + n.nombre[LANG] + (esCA ? '»?\n\nEs pot restaurar després.' : '»?\n\nSe podrá restaurar después.'))) return;
+  let error;
+  if(n.__custom) ({ error } = await sb.from('catalogo_ajustes').delete().eq('id', n.__ajusteId));
+  else ({ error } = await sb.from('catalogo_ajustes').insert({ tipo: 'necesidad', necesidad_id: n.id, ambito_id: a.id, titulo_es: n.nombre.es, oculto: true, creado_por: CURRENT_USER.email }));
+  if(error){ alert(error.message); return; }
+  await cargarAjustesCatalogo(); showNecesidades(CURRENT_AMBITO, true);
+}
+async function anadirPrestacionCatalogo(ambId){
+  if(!IS_ADMIN) return;
+  const esCA = LANG === 'ca';
+  const t = (document.getElementById('adm-nec-t').value || '').trim();
+  if(!t){ alert(esCA ? 'Escriu el nom de la prestació.' : 'Escribe el nombre de la prestación.'); return; }
+  const id = idNuevoCatalogo('prest');
+  const { error } = await sb.from('catalogo_ajustes').insert({ tipo: 'necesidad', clave: id, necesidad_id: id, ambito_id: ambId, titulo_es: t, titulo_ca: t, oculto: false, creado_por: CURRENT_USER.email });
+  if(error){ alert(error.message); return; }
+  await cargarAjustesCatalogo(); await showNecesidades(CURRENT_AMBITO, true);
+  const a = TAXONOMIA.find(x => x.id === CURRENT_AMBITO);
+  const idx = a ? a.necesidades.findIndex(n => n.id === id) : -1;
+  const det = document.querySelectorAll('#necesidades-list details.nec-det')[idx]; if(det) det.open = true;
 }
 // Vuelve a pintar el área dejando abierta la prestación que se estaba editando
 async function recargarNecesidadesAdmin(necId){
@@ -882,6 +992,7 @@ function necesidadesAcordeonHtml(a){
   const esCA = LANG === 'ca';
   __NEC_ITEMS = [];
   const bloques = [];
+  if(IS_ADMIN) bloques.push(`<div class="nec-admin" style="margin:6px 0 12px;"><h5 style="margin:0 0 4px;">🛠️ ${esCA ? 'Mode administració' : 'Modo administración'}</h5><div class="nec-item-d" style="margin:0;">${esCA ? 'Pots treure un tràmit amb la ✕ o afegir-ne un de nou al final de cada prestació.' : 'Puedes quitar un trámite con la ✕ o añadir uno nuevo al final de cada prestación.'}</div></div>`);
   // «Mi situación»: datos completos y citas previas arriba
   if(a.id === 'mi-situacion'){
     const p = window.__perfilActual || null;
@@ -913,8 +1024,8 @@ function necesidadesAcordeonHtml(a){
       });
     }
     // Ajustes de la administración: ocultar trámites y añadir otros
-    const ajustes = CATALOGO_AJUSTES.filter(x => x.necesidad_id === n.id);
-    const ocultas = ajustes.filter(x => x.oculto);
+    const ajustes = CATALOGO_AJUSTES.filter(x => esTramiteAj(x) && x.necesidad_id === n.id);
+    const ocultas = ajustes.filter(x => x.oculto);  // (ajustes ya contiene solo trámites)
     const claves = new Set(ocultas.map(x => (x.clave || '').trim().toLowerCase()));
     const visibles = items.filter(it => !claves.has(it.nombre.trim().toLowerCase()));
     items.length = 0; visibles.forEach(it => items.push(it));
@@ -934,6 +1045,7 @@ function necesidadesAcordeonHtml(a){
     return `<details class="nec-det"><summary><span>${nombreN}</span><span class="nec-n">${items.length ? items.length : ''}</span></summary><div class="nec-det-c">${cuerpo}${adminHtml}</div></details>`;
   }).join('');
   bloques.push(`<div class="nec-lista">${necesidades}</div>`);
+  if(IS_ADMIN) bloques.push(adminControlesPrestaciones(a));
   return bloques.join('');
 }
 async function avisarAyudaCita(){
@@ -1253,6 +1365,9 @@ async function checkStaff(){
   if(IS_STAFF){ try { const r = await sb.from('notificaciones').select('asignada_a_email').limit(1); REPARTO_OK = !r.error; const j = await sb.from('notificaciones').select('para_jovenes').limit(1); JOVENES_OK = !j.error; } catch(e) { REPARTO_OK = false; JOVENES_OK = false; } }
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
   document.getElementById('nav-admin-btn').style.display = IS_ADMIN ? '' : 'none';
+  // si ya hay un área abierta, se vuelve a pintar para que la administración vea sus controles (✕ y añadir)
+  if(CURRENT_AMBITO && typeof showNecesidades === 'function') showNecesidades(CURRENT_AMBITO, true);
+  if(typeof renderAmbitos === 'function' && TAXONOMIA && TAXONOMIA.length) renderAmbitos();
 }
 
 async function renderEntradaPanel(){
@@ -3466,6 +3581,7 @@ function renderConfigScreen(){
           </button>`).join('')}
       </div>
     </div>
+    <p class="subtle" style="margin-top:14px;font-size:12px;">${esCA ? 'Versió de l\'app' : 'Versión de la app'}: <strong>${APP_VERSION_ACOMP}</strong>${IS_ADMIN ? ' · ' + (esCA ? 'Sessió d\'administració' : 'Sesión de administración') : ''}</p>
   `;
 }
 
