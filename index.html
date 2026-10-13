@@ -17,7 +17,7 @@
     --teal:#16233F; --teal-dark:#0B1526; --ochre:#D9832E; --ochre-soft:#FBE7D3;
     --alert:#A8431F; --alert-soft:#FBE7DE;
     --good:#2F6B27; --good-soft:#DDEFD9;
-    --sidebar-green:#111111; --sidebar-yellow:#F0B90B;
+    --sidebar-green:#1E3F66; --sidebar-yellow:#F0B90B;
     --font-display:'Fraunces',serif; --font-body:'Atkinson Hyperlegible',sans-serif;
   }
   *{box-sizing:border-box;}
@@ -28,15 +28,21 @@
   .sidebar-logo-img{width:100%;max-width:150px;margin-bottom:18px;display:block;}
   .sidebar nav{display:none;flex-direction:column;gap:4px;flex:1;}
   .sidebar nav button{text-align:left;background:none;border:none;color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
-  .sidebar nav button:hover{background:var(--bg);}
-  .sidebar nav button.active{background:var(--teal);color:#fff;}
+  .sidebar nav button:hover{background:rgba(255,255,255,.14);}
+  .sidebar nav button.active{background:#F2BC2C;color:#16304F;}
   .nav-staff-btn{color:#7A4A1F !important;}
   .nav-staff-btn:hover{background:var(--ochre-soft);}
   .nav-staff-btn.active{background:var(--ochre) !important;color:#fff !important;}
   .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
   .sidebar-public-nav button{text-align:left;background:none;border:none;color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
-  .sidebar-public-nav button:hover{background:var(--bg);}
-  .sidebar-public-nav button.active{background:var(--teal);color:#fff;}
+  .sidebar-public-nav button:hover{background:rgba(255,255,255,.14);}
+  .sidebar-public-nav button.active{background:#F2BC2C;color:#16304F;}
+  .menu-mas-toggle{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:none;color:#fff;opacity:.85;font-family:var(--font-body);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding:8px 12px;margin-top:6px;border-radius:9px;cursor:pointer;}
+  .menu-mas-toggle:hover{background:rgba(255,255,255,.14);}
+  .menu-mas-toggle .fl{transition:transform .15s;}
+  .menu-mas.abierto .menu-mas-toggle .fl{transform:rotate(180deg);}
+  .menu-mas-lista{display:none;flex-direction:column;gap:4px;}
+  .menu-mas.abierto .menu-mas-lista{display:flex;}
   .sidebar-social{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);text-align:center;}
   .sidebar-social-label{font-family:var(--font-display);font-style:italic;font-size:12.5px;color:var(--ink-soft);margin-bottom:10px;}
   .sidebar-social-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
@@ -86,15 +92,18 @@
     #app{flex-direction:column;}
     .sidebar{width:100%;height:56px;position:sticky;bottom:0;top:auto;order:2;flex-direction:row;align-items:center;justify-content:center;padding:0;border-right:none;border-top:1.5px solid var(--line);z-index:150;}
     .sidebar-logo-img,.sidebar-logout,.sidebar > .sidebar-social{display:none;}
-    .mobile-menu-toggle{display:flex;width:100%;height:100%;align-items:center;justify-content:center;gap:8px;background:none;border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font-body);}
+    .sidebar{background:var(--paper);border-top:3px solid var(--ochre);box-shadow:0 -4px 14px rgba(22,35,63,.10);padding:0 12px;}
+    .mobile-menu-toggle{display:flex;width:100%;height:38px;align-items:center;justify-content:center;gap:8px;background:var(--teal);border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font-body);}
     .mobile-menu-overlay{display:none;}
-    .sidebar.menu-open .mobile-menu-overlay{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:56px;background:var(--sidebar-green);z-index:160;}
+    .sidebar.menu-open .mobile-menu-overlay{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:56px;background:var(--teal);z-index:160;}
     .mobile-menu-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1.5px solid rgba(255,255,255,.15);font-family:var(--font-display);font-weight:700;font-size:17px;flex-shrink:0;color:#fff;}
     .mobile-menu-header button{background:none;border:none;font-size:22px;line-height:1;cursor:pointer;color:#fff;padding:4px 6px;}
     .mobile-menu-scroll{flex:1;overflow-y:auto;padding:12px 14px;-webkit-overflow-scrolling:touch;}
     .sidebar nav button{flex:0 0 auto;text-align:left;font-size:14.5px;padding:14px 12px;white-space:normal;width:100%;border-bottom:1px solid rgba(255,255,255,.12);border-radius:0;color:#fff;}
     .sidebar-public-nav button{color:#fff;border-bottom:1px solid rgba(255,255,255,.12);padding:14px 12px;width:100%;text-align:left;border-radius:0;}
     .sidebar .section-label{color:#fff;opacity:.65;}
+    .sidebar nav button.active, .sidebar-public-nav button.active{background:#F2BC2C;color:#16304F;}
+    .menu-mas-toggle{border-radius:0;padding:14px 12px;border-bottom:1px solid rgba(255,255,255,.12);}
     .main{order:1;}
     .main-content{padding:22px 18px 96px;}
     .home-mobile-extra{display:none;}
@@ -126,6 +135,33 @@
   .service-row .icon{width:38px;height:38px;border-radius:10px;background:#E6E9F1;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
   .service-row .txt strong{display:block;font-size:14.5px;}
   .service-row .txt span{font-size:12px;color:var(--ink-soft);}
+  /* Áreas con prestaciones desplegables */
+  .nec-lista{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+  .nec-det{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;}
+  .nec-det[open]{border-color:var(--ochre);box-shadow:0 8px 20px -10px rgba(0,0,0,.15);}
+  .nec-det summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px;font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--ink);}
+  .nec-det summary::-webkit-details-marker{display:none;}
+  .nec-det summary::after{content:'▾';color:var(--ochre);font-size:16px;margin-left:auto;transition:transform .15s;}
+  .nec-det[open] summary::after{transform:rotate(180deg);}
+  .nec-n{background:var(--ochre-soft);color:#7A4A1F;border-radius:999px;font-size:11.5px;font-weight:800;min-width:22px;text-align:center;padding:1px 7px;}
+  .nec-n:empty{display:none;}
+  .nec-det-c{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;}
+  .nec-item{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .nec-item-t{font-weight:700;font-size:14px;color:var(--ink);line-height:1.35;}
+  .nec-item-d{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:3px;}
+  .nec-item-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .nec-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:9px 14px;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;}
+  .nec-btn-yo{background:var(--teal);border-color:var(--teal);color:#fff;}
+  .nec-btn-ayuda{background:var(--ochre-soft);border-color:var(--ochre);color:#7A4A1F;}
+  .nec-btn-llamar{background:var(--ochre);border-color:var(--ochre);color:#fff;}
+  .nec-btn-wa{background:#25D366;border-color:#25D366;color:#fff;}
+  .nec-btn-info{font-weight:600;}
+  .nec-ok{background:var(--good-soft);color:var(--good);border-radius:10px;padding:9px 12px;font-weight:700;font-size:13px;}
+  .nec-card{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;margin:6px 0 12px;}
+  .nec-card-datos{border-color:var(--ochre);background:var(--ochre-soft);}
+  .nec-card-t{font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--ink);margin-bottom:6px;}
+  .nec-acceso{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:13.5px;}
+  .nec-acceso-i{font-size:22px;}
   .necesidad-grupo{background:var(--bg);border:1.5px dashed var(--line);border-radius:14px;padding:12px 12px 4px;margin:12px 0;}
   .necesidad-grupo-titulo{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 2px 8px;}
 
@@ -332,8 +368,11 @@
       <button class="nav-staff-btn" data-target="admin" id="nav-admin-btn" onclick="showScreen('admin');renderAdminPanel()" style="display:none;">Administrador</button>
     </nav>
     <div class="sidebar-public-nav">
-      <div class="section-label" style="margin-top:6px;">¿Qué más te ofrecemos?</div>
-      <button data-target="jovenes" onclick="showScreen('jovenes');renderJovenesEnAccion()" id="sidebar-jovenes-btn">🌱 Jóvenes en acción</button>
+      <div class="menu-mas" id="menu-mas">
+      <button class="menu-mas-toggle" onclick="toggleMenuMas()" aria-expanded="false">¿Qué más te ofrecemos? <span class="fl">▾</span></button>
+      <div class="menu-mas-lista">
+      <!-- Jóvenes en acción: oculto por ahora (decisión con Luis). Para volver a mostrarlo, quitar style="display:none". -->
+      <button data-target="jovenes" onclick="showScreen('jovenes');renderJovenesEnAccion()" id="sidebar-jovenes-btn" style="display:none;">🌱 Jóvenes en acción</button>
       <button data-target="familias" onclick="showScreen('familias');renderFamilias()" id="sidebar-familias-btn">👨‍👩‍👧 Familias</button>
       <button data-target="aulaciudadano" onclick="showScreen('aulaciudadano');renderAulaCiudadano()" id="sidebar-aula-btn">🎓 Aula Virtual</button>
       <button data-target="voluntariado" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🤝 Voluntariado</button>
@@ -341,6 +380,7 @@
       <button data-target="cuidados" onclick="showScreen('cuidados');renderCuidadosCompania()" id="sidebar-cuidados-btn">🧓 Cuidados y compañía</button>
       <button data-target="emprendimiento" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()" id="sidebar-emprendimiento-btn">🚀 Mi emprendimiento</button>
       <button data-target="queofrecemos" onclick="showScreen('queofrecemos');renderQueOfrecemos()" id="sidebar-queofrecemos-btn">🎁 ¿Qué te ofrecemos?</button>
+      </div></div>
       <div class="section-label" style="margin-top:10px;">¿Quiénes somos?</div>
       <button data-target="webredes" onclick="showScreen('webredes');renderWebRedes()" id="sidebar-webredes-btn">🌐 Web y redes sociales</button>
       <button data-target="verificarcert" onclick="showScreen('verificarcert');renderVerificarCertificado()" id="sidebar-verificar-btn">🔎 Verificar certificado</button>
@@ -547,6 +587,7 @@ async function loadData(){
     ]);
     SERVICIOS = (await resServ.json()).servicios;
     TAXONOMIA = (await resTax.json()).ambitos;
+    ajustarTaxonomia();
     renderAmbitos();
   }catch(err){
     document.getElementById('ambitos-grid').innerHTML =
@@ -627,49 +668,218 @@ function showNecesidades(ambitoId, silent){
   if(!a) return;
   document.getElementById('ambito-title').textContent = a.icono + ' ' + a.nombre[LANG];
   document.getElementById('ambito-sub').textContent = LANG === 'ca'
-    ? 'Selecciona el que et correspongui.'
-    : 'Selecciona lo que te corresponda.';
+    ? 'Toca una prestació per veure els seus tràmits i enllaços.'
+    : 'Toca una prestación para ver sus trámites y enlaces.';
   const list = document.getElementById('necesidades-list');
 
-  list.innerHTML = `<div class="cards-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">` + a.necesidades.map(n => {
-    const ids = n.servicios_ids || [];
-    if(ids.length === 0){
-      return `
-        <div class="quick-card" onclick="showProximamente('${n.nombre[LANG].replace(/'/g,"\\'")}')">
-          <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;">🕓</div>
-          <h4>${n.nombre[LANG]}</h4>
-          <p>${LANG==='ca' ? 'Molt aviat disponible.' : 'Muy pronto disponible.'}</p>
-        </div>`;
-    }
-    if(ids.length === 1){
-      const s = SERVICIOS.find(x => x.id === ids[0]);
-      const desc = s && s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 90) : '';
-      const enlaceCaido = ENLACES_ESTADO[ids[0]] === false;
-      return `
-        <div class="quick-card" style="position:relative;" onclick="showDetail('${ids[0]}')">
-          <div class="icon-badge" style="background:var(--good-soft);color:var(--good);">📋</div>
-          <h4>${n.nombre[LANG]}</h4>
-          <p>${desc}</p>
-          ${enlaceCaido ? `<p style="margin-top:6px;color:var(--alert);font-size:11px;font-weight:700;">⚠️ ${LANG==='ca' ? 'Enllaç no disponible ara mateix' : 'Enlace no disponible ahora mismo'}</p>` : ''}
-        </div>`;
-    }
-    // varios servicios reales para la misma necesidad: cada uno con su propia tarjeta
-    return ids.map(sid => {
-      const s = SERVICIOS.find(x => x.id === sid);
-      if(!s) return '';
-      const desc = s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 90) : (s.municipio || '');
-      const enlaceCaido = ENLACES_ESTADO[sid] === false;
-      return `
-        <div class="quick-card" style="position:relative;" onclick="showDetail('${sid}')">
-          <div class="icon-badge" style="background:#E7ECFF;color:#33449E;">📋</div>
-          <h4>${s.nombre[LANG]}</h4>
-          <p>${desc}</p>
-          ${enlaceCaido ? `<p style="margin-top:6px;color:var(--alert);font-size:11px;font-weight:700;">⚠️ ${LANG==='ca' ? 'Enllaç no disponible ara mateix' : 'Enlace no disponible ahora mismo'}</p>` : ''}
-        </div>`;
-    }).join('');
-  }).join('') + `</div>`;
+  list.innerHTML = necesidadesAcordeonHtml(a);
 
   if(!silent) showScreen('necesidades');
+}
+
+// ================= ÁREAS CON PRESTACIONES DESPLEGABLES (catálogo de Luis) =================
+// Cada necesidad se despliega y muestra sus trámites con enlace oficial. Donde no hay enlace, la persona se dirige a Logos.
+const LL_ = (es, ca, u) => ({ es, ca, u });
+const URL_CITA_TGN = 'https://citaprevia.tarragona.cat/#nbb';
+const LINKS_LUIS = {
+  'identidad-documentacion': [LL_('Cita previa para el DNI y el pasaporte', 'Cita prèvia per al DNI i el passaport', 'https://www.citapreviadnie.es/citaPreviaDni/')],
+  'empadronamiento': [LL_('Cita previa de empadronamiento (Ajuntament de Tarragona)', 'Cita prèvia d\'empadronament (Ajuntament de Tarragona)', URL_CITA_TGN)],
+  'extranjeria': [LL_('Cita previa de extranjería', 'Cita prèvia d\'estrangeria', 'https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus')],
+  'discapacidad-situacion': [LL_('Reconocimiento o revisión del grado de discapacidad', 'Reconeixement o revisió del grau de discapacitat', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-o-revisio-del-grau-de-la-discapacitat')],
+  'dependencia-situacion': [LL_('Reconocimiento de la situación de dependencia', 'Reconeixement de la situació de dependència', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia')],
+  'derechos-orientacion': [LL_('Servicio de orientación jurídica (Colegio de Abogados)', 'Servei d\'orientació jurídica (Col·legi d\'Advocats)', 'https://unitram.icatarragona.com/Services/details?reference=soj')],
+  'hijos': [
+    LL_('Prestación para familias con hijos e hijas', 'Prestació per a famílies amb infants', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-per-a-families-amb-infants?moda=1'),
+    LL_('Ingreso mínimo vital: complemento de ayuda para la infancia', 'Ingrés mínim vital: complement d\'ajuda per a la infància', 'https://prestaciones.seg-social.es/servicio/ingreso-minimo-vital-complemento-ayuda-infancia.html')],
+  'familia-numerosa': [LL_('Título de familia numerosa', 'Títol de família nombrosa', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Titol-de-familia-nombrosa?category=')],
+  'familia-monoparental': [LL_('Título de familia monoparental', 'Títol de família monoparental', 'https://tramits.gencat.cat/ca/tramits/tramits-temes/Titol-de-familia-monoparental-00003')],
+  'pensiones': [
+    LL_('Pensión no contributiva de jubilación', 'Pensió no contributiva de jubilació', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Pensio-no-contributiva-per-jubilacio-00001'),
+    LL_('Pensión no contributiva de invalidez', 'Pensió no contributiva d\'invalidesa', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Pensio-no-contributiva-per-invalidesa-00001')],
+  'renta-garantizada': [
+    LL_('Renta garantizada de ciudadanía: complemento activable', 'Renda garantida de ciutadania: complement activable', 'https://tramits.gencat.cat/es/tramits/tramits-temes/rgc-i-complement-activables'),
+    LL_('Renta garantizada de ciudadanía: complemento no activable', 'Renda garantida de ciutadania: complement no activable', 'https://tramits.gencat.cat/ca/tramits/tramits-temes/rgc-i-complement-no-activables?category=7610da42-a82c-11e3-a972-000c29052e2c')],
+  'ingreso-minimo-vital': [LL_('Ingreso mínimo vital', 'Ingrés mínim vital', 'https://tramits.gencat.cat/ca/tramits/tramits-temes/ingres-minim-vital')],
+  'ayudas-economicas': [LL_('Prestación de atención social para personas con discapacidad (PUA)', 'Prestació d\'atenció social per a persones amb discapacitat (PUA)', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-datencio-social-a-les-persones-amb-discapacitat-PUA?moda=1')],
+  'deudas': [LL_('Orientación jurídica sobre deudas y dificultades económicas', 'Orientació jurídica sobre deutes i dificultats econòmiques', 'https://unitram.icatarragona.com/Services/details?reference=sojso')],
+  'buscar-trabajo': [LL_('Servei d\'Ocupació de Catalunya', 'Servei d\'Ocupació de Catalunya', 'https://serveiocupacio.gencat.cat/ca/inici/index.html')],
+  'desempleo': [
+    LL_('Prestación por desempleo sin certificado digital', 'Prestació per desocupació sense certificat digital', 'https://sepe.ibpms.redsara.es/prweb/app/sede-front-office/lZm4YlCOjhWvsDyu3D9kmOaVLIbxVnEF*/!STANDARD'),
+    LL_('Prestación por desempleo con certificado digital', 'Prestació per desocupació amb certificat digital', 'https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/reconocimiento-prestacion-contributiva.html')],
+  'formacion': [LL_('Formación: Servei d\'Ocupació de Catalunya', 'Formació: Servei d\'Ocupació de Catalunya', 'https://serveiocupacio.gencat.cat/ca/inici/index.html')],
+  'orientacion-laboral': [LL_('Orientación laboral: Servei d\'Ocupació de Catalunya', 'Orientació laboral: Servei d\'Ocupació de Catalunya', 'https://serveiocupacio.gencat.cat/ca/inici/index.html')],
+  'insercion-laboral': [LL_('Inserción laboral: Servei d\'Ocupació de Catalunya', 'Inserció laboral: Servei d\'Ocupació de Catalunya', 'https://serveiocupacio.gencat.cat/ca/inici/index.html')],
+  'autonomos': [LL_('Alta como trabajador autónomo (Seguridad Social)', 'Alta com a treballador autònom (Seguretat Social)', 'https://portal.seg-social.gob.es/wps/portal/importass/importass/Categorias/Altas%2C+bajas+y+modificaciones/Altas+y+afiliacion+de+trabajadores/Alta_trabajo_autonomo')],
+  'emprendimiento': [LL_('Xarxa Emprèn (Generalitat)', 'Xarxa Emprèn (Generalitat)', 'https://xarxaempren.gencat.cat/es/coneix-la-xarxa-empren/formulari/request/')],
+  'reconocimiento-competencias': [LL_('Acreditación de competencias profesionales', 'Acreditació de competències professionals', 'https://fp.gencat.cat/ca/acreditacio/em-vull-acreditar')],
+  'jubilacion': [LL_('Pensión de jubilación (Seguridad Social)', 'Pensió de jubilació (Seguretat Social)', 'https://prestaciones.seg-social.es/servicio/pension-jubilacion.html')],
+  'salud': [LL_('Pedir visita en el sistema de salud (CatSalut)', 'Demanar visita al sistema de salut (CatSalut)', 'https://catsalut.gencat.cat/ca/coneix-catsalut/acces-sistema-salut/com-accedeix/programacio-visites/')],
+  'salud-mental': [LL_('Recursos de salud mental', 'Recursos de salut mental', 'http://www.grupperemata.com/spa/item/ART00277.html')],
+  'discapacidad-salud': [LL_('Reconocimiento o revisión del grado de discapacidad', 'Reconeixement o revisió del grau de discapacitat', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-o-revisio-del-grau-de-la-discapacitat')],
+  'dependencia-salud': [LL_('Reconocimiento de la situación de dependencia', 'Reconeixement de la situació de dependència', 'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia?moda=1')],
+  'formacion-adultos': [
+    LL_('Enseñanza de adultos (Ajuntament de Tarragona)', 'Ensenyament d\'adults (Ajuntament de Tarragona)', 'https://www.tarragona.cat/educacio/estudiar-a-tgn/ensenyament-dadults'),
+    LL_('Centro de formación de adultos Josep Massanes', 'Centre de formació d\'adults Josep Massanes', 'https://agora.xtec.cat/cfajosepamassanes/')],
+  'actividades-mayores': [LL_('Centros cívicos de Tarragona', 'Centres cívics de Tarragona', 'https://www.tarragona.cat/centrescivics')],
+  'asociacionismo': [LL_('Buscador de trámites sobre asociaciones', 'Cercador de tràmits sobre associacions', 'https://tramits.gencat.cat/ca/tramits/cercador/?queryNat=associacions')],
+  'ocio': [LL_('Centros cívicos de Tarragona', 'Centres cívics de Tarragona', 'https://www.tarragona.cat/centrescivics')]
+};
+// Necesidades que, según el catálogo de trabajo, aún no tienen enlace: la persona se dirige a Logos
+const SIN_ENLACE_LUIS = ['alquiler', 'compra-vivienda', 'vivienda-social', 'ayudas-alquiler', 'emergencia-habitacional', 'suministros', 'accesibilidad-vivienda'];
+// Accesos rápidos de «Mi situación»: certificado digital y citas previas, para que la persona los haga desde el móvil
+const ACCESOS_CITAS = [
+  { i: '🔐', es: 'Certificado digital: idCAT Mòbil', ca: 'Certificat digital: idCAT Mòbil', d_es: 'Para identificarte en los trámites online desde el móvil.', d_ca: 'Per identificar-te als tràmits en línia des del mòbil.', u: 'https://idcat.aoc.cat/' },
+  { i: '🪪', es: 'Cita previa de DNI y pasaporte', ca: 'Cita prèvia de DNI i passaport', d_es: 'Policía Nacional.', d_ca: 'Policia Nacional.', u: 'https://www.citapreviadnie.es/citaPreviaDni/' },
+  { i: '🛂', es: 'Cita previa de extranjería y otras administraciones', ca: 'Cita prèvia d\'estrangeria i altres administracions', d_es: 'Sede electrónica de las administraciones públicas.', d_ca: 'Seu electrònica de les administracions públiques.', u: 'https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus/' },
+  { i: '🏛️', es: 'Cita previa de la Generalitat', ca: 'Cita prèvia de la Generalitat', d_es: 'Carpeta ciudadana de la Generalitat de Catalunya.', d_ca: 'Carpeta ciutadana de la Generalitat de Catalunya.', u: 'https://ovt.gencat.cat/carpetaciutadana360/mfe-fc-app/gsitfc/AppJava/citpre/citpre.do?set-locale=es_ES' },
+  { i: '🏙️', es: 'Cita previa del Ajuntament de Tarragona', ca: 'Cita prèvia de l\'Ajuntament de Tarragona', d_es: 'Padrón y atención municipal.', d_ca: 'Padró i atenció municipal.', u: URL_CITA_TGN },
+  { i: '📑', es: 'Trámites del Ajuntament de Tarragona', ca: 'Tràmits de l\'Ajuntament de Tarragona', d_es: 'Catálogo de trámites de la sede electrónica.', d_ca: 'Catàleg de tràmits de la seu electrònica.', u: 'https://seu.tarragona.cat/sta/CarpetaPublic/doEvent?APP_CODE=STA&PAGE_CODE=CATALOGO' }
+];
+let __NEC_ITEMS = [];
+
+function enlaceDeTramite(nombre){
+  const n = (nombre || '').trim().toLowerCase();
+  const s = (SERVICIOS || []).find(x => x.nombre && (x.nombre.es || '').trim().toLowerCase() === n);
+  if(s && s.enlace_oficial) return s.enlace_oficial;
+  for(const a of (TAXONOMIA || [])){
+    for(const nec of a.necesidades){
+      for(const l of (LINKS_LUIS[nec.id] || [])){
+        if((nec.nombre.es + ' — ' + l.es).trim().toLowerCase() === n || l.es.trim().toLowerCase() === n) return l.u;
+      }
+    }
+  }
+  return null;
+}
+
+// Registra el trámite y avisa a la Intranet: modo 'solo' (lo hace la propia persona) o 'ayuda' (necesita a Logos)
+async function registrarTramiteApp(nombre, modo){
+  if(!CURRENT_USER) return false;
+  const p = window.__perfilActual || {};
+  const quien = p.nombre_completo || CURRENT_USER.email;
+  let existente = null;
+  try { const r = await sb.from('tramites').select('id, estado').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', nombre).neq('estado', 'hecho').limit(1); existente = (r.data || [])[0] || null; } catch(e) {}
+  if(existente && (modo === 'solo' || existente.estado === 'derivado_logos')) return true;
+  const estado = modo === 'ayuda' ? 'derivado_logos' : 'en_curso';
+  try {
+    if(existente) await sb.from('tramites').update({ estado }).eq('id', existente.id);
+    else await sb.from('tramites').insert({ usuario_id: CURRENT_USER.id, nombre_servicio: nombre, estado, fecha_inicio: new Date().toISOString().slice(0, 10) });
+  } catch(e) {}
+  try {
+    await sb.from('notificaciones').insert({
+      usuario_id: CURRENT_USER.id, tipo: 'tramite_nuevo',
+      mensaje: modo === 'ayuda'
+        ? `🆘 ${quien} necesita la ayuda de Logos con: "${nombre}".`
+        : `🟢 ${quien} ha empezado por su cuenta: "${nombre}" (enlace oficial). Es solo un aviso, no hace falta actuar.`
+    });
+  } catch(e) {}
+  return true;
+}
+function accionesLogosHtml(esCA){
+  return `<a class="nec-btn nec-btn-llamar" href="tel:+34630461560">📞 ${esCA ? 'Trucar a Logos' : 'Llamar a Logos'}</a>
+    <a class="nec-btn nec-btn-wa" href="https://wa.me/34630461560" target="_blank" rel="noopener">💬 WhatsApp</a>
+    ${CURRENT_USER ? `<button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCA ? 'Demanar cita a Logos' : 'Pedir cita en Logos'}</button>` : ''}`;
+}
+function itemTramiteHtml(item, i, esCA){
+  const sinSesion = !CURRENT_USER;
+  const ayuda = sinSesion
+    ? `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`
+    : `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramite(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`;
+  return `<div class="nec-item" id="nec-item-${i}">
+    <div class="nec-item-t">${item.titulo}</div>
+    ${item.desc ? `<div class="nec-item-d">${item.desc}</div>` : ''}
+    <div class="nec-item-b">
+      <a class="nec-btn nec-btn-yo" href="${item.url}" target="_blank" rel="noopener" onclick="registrarTramiteApp(__NEC_ITEMS[${i}].nombre, 'solo')">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>
+      ${ayuda}
+      ${item.sid ? `<button class="nec-btn nec-btn-info" onclick="showDetail('${item.sid}')">ℹ️ ${esCA ? 'Més informació' : 'Más información'}</button>` : ''}
+    </div></div>`;
+}
+async function pedirAyudaTramite(i){
+  const it = __NEC_ITEMS[i]; if(!it) return;
+  const esCA = LANG === 'ca';
+  const caja = document.getElementById('nec-item-' + i); if(!caja) return;
+  caja.querySelector('.nec-item-b').innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div>
+    <div class="nec-item-b" style="margin-top:6px;">${accionesLogosHtml(esCA)}</div>`;
+  await registrarTramiteApp(it.nombre, 'ayuda');
+}
+async function avisarLogosNecesidad(i){
+  const it = __NEC_ITEMS[i]; if(!it) return;
+  const esCA = LANG === 'ca';
+  const caja = document.getElementById('nec-vacia-' + i); if(!caja) return;
+  caja.innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div><div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}</div>`;
+  await registrarTramiteApp(it.nombre, 'ayuda');
+}
+
+function necesidadesAcordeonHtml(a){
+  const esCA = LANG === 'ca';
+  __NEC_ITEMS = [];
+  const bloques = [];
+  // «Mi situación»: datos completos y citas previas arriba
+  if(a.id === 'mi-situacion'){
+    const p = window.__perfilActual || null;
+    const datos = CURRENT_USER
+      ? `<div class="nec-card nec-card-datos">
+          <div class="nec-card-t">👤 ${esCA ? 'Les meves dades' : 'Mis datos'}</div>
+          <p class="nec-item-d" style="margin:0 0 8px;">${p && p.nombre_completo ? `<strong>${p.nombre_completo}</strong>` : (esCA ? 'Encara no has completat les teves dades.' : 'Todavía no has completado tus datos.')}${p && p.telefono ? ' · ' + p.telefono : ''}${p && p.municipio ? ' · ' + p.municipio : ''}</p>
+          <p class="nec-item-d" style="margin:0 0 10px;">${esCA ? 'Amb les teves dades completes, Logos et pot orientar millor i tu no has de repetir-les.' : 'Con tus datos completos, Logos te orienta mejor y tú no tienes que repetirlos.'}</p>
+          <button class="nec-btn nec-btn-yo" onclick="showScreen('profile');renderDashboard()">${esCA ? 'Veure i completar les meves dades' : 'Ver y completar mis datos'}</button></div>`
+      : '';
+    const citas = `<div class="nec-card">
+        <div class="nec-card-t">📅 ${esCA ? 'Certificat digital i cites prèvies' : 'Certificado digital y citas previas'}</div>
+        <p class="nec-item-d" style="margin:0 0 10px;">${esCA ? 'Quan tinguis clar què necessites, pots demanar la cita tu mateix des del mòbil. Si et costa, Logos t\'ajuda.' : 'Cuando tengas claro lo que necesitas, puedes pedir la cita tú mismo desde el móvil. Si te cuesta, Logos te ayuda.'}</p>
+        ${ACCESOS_CITAS.map(c => `<a class="nec-acceso" href="${c.u}" target="_blank" rel="noopener"><span class="nec-acceso-i">${c.i}</span><span><strong>${esCA ? c.ca : c.es}</strong><br><span class="nec-item-d">${esCA ? c.d_ca : c.d_es}</span></span></a>`).join('')}
+        <div class="nec-item-b" style="margin-top:10px;"><button class="nec-btn nec-btn-ayuda" onclick="avisarAyudaCita()">🤝 ${esCA ? 'Necessito ajuda per demanar cita' : 'Necesito ayuda para pedir cita'}</button></div>
+        <div id="nec-cita-ok"></div></div>`;
+    bloques.push(datos + citas);
+  }
+  const necesidades = a.necesidades.map(n => {
+    const nombreN = n.nombre[LANG];
+    const items = [];
+    const luis = LINKS_LUIS[n.id];
+    if(luis){
+      luis.forEach(l => items.push({ titulo: l[LANG], url: l.u, desc: '', sid: null, nombre: n.nombre.es + ' — ' + l.es }));
+    } else if(!SIN_ENLACE_LUIS.includes(n.id)){
+      (n.servicios_ids || []).forEach(sid => {
+        const s = SERVICIOS.find(x => x.id === sid);
+        if(s && s.enlace_oficial) items.push({ titulo: s.nombre[LANG], url: s.enlace_oficial, desc: s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 110) : '', sid: s.id, nombre: s.nombre.es });
+      });
+    }
+    let cuerpo;
+    if(items.length){
+      cuerpo = items.map(it => { __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
+    } else {
+      __NEC_ITEMS.push({ nombre: n.nombre.es });
+      const idx = __NEC_ITEMS.length - 1;
+      cuerpo = `<div class="nec-item" id="nec-vacia-${idx}">
+        <div class="nec-item-d">${esCA ? 'Per a això et recomanem anar directament a Logos: truca\'ns o demana cita i t\'acompanyem.' : 'Para esto te recomendamos dirigirte directamente a Logos: llámanos o pide cita y te acompañamos.'}</div>
+        <div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}
+        ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="avisarLogosNecesidad(${idx})">🤝 ${esCA ? 'Aviseu Logos per mi' : 'Avisad a Logos por mí'}</button>` : ''}</div></div>`;
+    }
+    return `<details class="nec-det"><summary><span>${nombreN}</span><span class="nec-n">${items.length ? items.length : ''}</span></summary><div class="nec-det-c">${cuerpo}</div></details>`;
+  }).join('');
+  bloques.push(`<div class="nec-lista">${necesidades}</div>`);
+  return bloques.join('');
+}
+async function avisarAyudaCita(){
+  const esCA = LANG === 'ca';
+  const c = document.getElementById('nec-cita-ok'); if(!c) return;
+  c.innerHTML = `<div class="nec-ok" style="margin-top:8px;">✅ ${esCA ? 'Hem avisat Logos: t\'ajudarem a demanar la cita.' : 'Hemos avisado a Logos: te ayudaremos a pedir la cita.'}</div><div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}</div>`;
+  await registrarTramiteApp('Ayuda para pedir una cita previa o el certificado digital', 'ayuda');
+}
+
+
+// Añade a «Mi economía» las entradas que pidió Luis: prestaciones familiares y becas
+function ajustarTaxonomia(){
+  const eco = (TAXONOMIA || []).find(a => a.id === 'mi-economia');
+  if(!eco || eco.necesidades.some(n => n.id === 'prestaciones-familiares')) return;
+  LINKS_LUIS['prestaciones-familiares'] = LINKS_LUIS['hijos'];
+  const extra = [
+    { id: 'prestaciones-familiares', nombre: { es: 'Prestaciones familiares', ca: 'Prestacions familiars' }, servicios_ids: [] },
+    { id: 'becas-economia', nombre: { es: 'Becas y ayudas al estudio', ca: 'Beques i ajuts a l\'estudi' }, servicios_ids: ['soc-becas-formacion', 'becas-mec'] }
+  ];
+  const orden = ['prestaciones-familiares', 'pensiones', 'ingreso-minimo-vital', 'renta-garantizada', 'ayudas-economicas', 'becas-economia'];
+  const todas = eco.necesidades.concat(extra);
+  const primeras = orden.map(id => todas.find(n => n.id === id)).filter(Boolean);
+  eco.necesidades = primeras.concat(todas.filter(n => !orden.includes(n.id)));
 }
 
 function showProximamente(nombre){
@@ -848,6 +1058,17 @@ function showScreen(name){
   const target = homeGroup.includes(name) ? 'home' : (profileGroup.includes(name) ? 'profile' : (panelGroup.includes(name) ? 'panel' : (aulaGroup.includes(name) ? 'aulaciudadano' : (voluntariadoGroup.includes(name) ? 'voluntariado' : name))));
   const btn = document.querySelector('.sidebar nav button[data-target="'+target+'"], .sidebar-public-nav button[data-target="'+target+'"]');
   if(btn) btn.classList.add('active');
+  // si la pantalla activa está dentro de «¿Qué más te ofrecemos?», el desplegable se abre solo
+  if(btn && btn.closest('.menu-mas')) abrirMenuMas(true);
+}
+function abrirMenuMas(abrir){
+  const m = document.getElementById('menu-mas'); if(!m) return;
+  m.classList.toggle('abierto', !!abrir);
+  const t = m.querySelector('.menu-mas-toggle'); if(t) t.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+}
+function toggleMenuMas(){
+  const m = document.getElementById('menu-mas'); if(!m) return;
+  abrirMenuMas(!m.classList.contains('abierto'));
 }
 
 function toggleSidebarVisible(visible){
@@ -4442,6 +4663,13 @@ async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
 }
 
 
+async function pedirAyudaTramiteExistente(i){
+  const tr = (window.__MIS_TRAMITES || [])[i]; if(!tr) return;
+  await registrarTramiteApp(tr.nombre_servicio, 'ayuda');
+  alert(LANG === 'ca' ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.');
+  renderDashboard();
+}
+
 async function renderDashboard(){
   if(bloquearSinConsentimiento()) return;
   const t = T1[LANG];
@@ -4499,12 +4727,22 @@ async function renderDashboard(){
     </div>`;
   })() : '';
 
+  window.__MIS_TRAMITES = [];
   const tramitesHtml = (tramites && tramites.length)
     ? tramites.map(tr => {
         const chipClass = tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
         const chipLabel = tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
         const fechas = tr.fecha_inicio ? `${new Date(tr.fecha_inicio).toLocaleDateString('es-ES')}${tr.fecha_fin ? ' – ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}` : '';
-        return `<div class="list-row"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}</span><span class="chip ${chipClass}">${chipLabel}</span></div>`;
+        const enlace = enlaceDeTramite(tr.nombre_servicio);
+        window.__MIS_TRAMITES = window.__MIS_TRAMITES || [];
+        const idxT = window.__MIS_TRAMITES.push(tr) - 1;
+        const esCAt = LANG === 'ca';
+        const botones = tr.estado === 'hecho' ? '' : `<div class="nec-item-b" style="margin-top:8px;">
+            ${enlace ? `<a class="nec-btn nec-btn-yo" href="${enlace}" target="_blank" rel="noopener">🔗 ${esCAt ? 'Anar al tràmit' : 'Ir al trámite'}</a>` : `<a class="nec-btn nec-btn-llamar" href="tel:+34630461560">📞 ${esCAt ? 'Trucar a Logos' : 'Llamar a Logos'}</a><button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCAt ? 'Demanar cita' : 'Pedir cita'}</button>`}
+            ${tr.estado === 'derivado_logos' ? '' : `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramiteExistente(${idxT})">🤝 ${esCAt ? 'Necessito ajuda' : 'Necesito ayuda'}</button>`}
+          </div>`;
+        const quien = tr.estado === 'derivado_logos' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🤝 ${esCAt ? 'Amb l\'ajuda de Logos' : 'Con ayuda de Logos'}</span>` : (tr.estado === 'en_curso' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🟢 ${esCAt ? 'Ho fas tu' : 'Lo haces tú'}</span>` : '');
+        return `<div class="list-row" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}${quien}</span><span class="chip ${chipClass}">${chipLabel}</span></div>${botones}</div>`;
       }).join('')
     : `<div class="empty-note">${t.sinTramites}</div>`;
 
