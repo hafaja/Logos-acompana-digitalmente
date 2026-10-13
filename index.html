@@ -146,8 +146,14 @@
   .nec-n{background:var(--ochre-soft);color:#7A4A1F;border-radius:999px;font-size:11.5px;font-weight:800;min-width:22px;text-align:center;padding:1px 7px;}
   .nec-n:empty{display:none;}
   .nec-det-c{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;}
-  .nec-item{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
-  .nec-item-t{font-weight:700;font-size:14px;color:var(--ink);line-height:1.35;}
+  .nec-item{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .nec-x{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);color:var(--alert,#B0392F);font-weight:800;font-size:13px;cursor:pointer;line-height:1;}
+  .nec-x:hover{background:#FBE0E0;}
+  .nec-admin{border:1.5px dashed var(--ochre);border-radius:12px;padding:12px 14px;background:var(--ochre-soft);}
+  .nec-admin h5{margin:0 0 8px;font-size:12.5px;color:#7A4A1F;text-transform:uppercase;letter-spacing:.04em;}
+  .nec-admin input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:var(--font-body);font-size:13.5px;margin-bottom:8px;background:#fff;}
+  .nec-admin .rest{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;}
+  .nec-item-t{font-weight:700;font-size:14px;color:var(--ink);line-height:1.35;padding-right:30px;}
   .nec-item-d{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:3px;}
   .nec-item-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
   .nec-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:9px 14px;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;}
@@ -661,8 +667,9 @@ function renderAmbitos(){
   `;
 }
 
-function showNecesidades(ambitoId, silent){
+async function showNecesidades(ambitoId, silent){
   if(!silent && bloquearSinConsentimiento()) return;
+  if(!silent || !CATALOGO_AJUSTES_OK) await cargarAjustesCatalogo();
   CURRENT_AMBITO = ambitoId;
   const a = TAXONOMIA.find(x => x.id === ambitoId);
   if(!a) return;
@@ -736,6 +743,16 @@ const ACCESOS_CITAS = [
   { i: '📑', es: 'Trámites del Ajuntament de Tarragona', ca: 'Tràmits de l\'Ajuntament de Tarragona', d_es: 'Catálogo de trámites de la sede electrónica.', d_ca: 'Catàleg de tràmits de la seu electrònica.', u: 'https://seu.tarragona.cat/sta/CarpetaPublic/doEvent?APP_CODE=STA&PAGE_CODE=CATALOGO' }
 ];
 let __NEC_ITEMS = [];
+// Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
+let CATALOGO_AJUSTES = [];
+let CATALOGO_AJUSTES_OK = false;
+async function cargarAjustesCatalogo(){
+  try {
+    const r = await sb.from('catalogo_ajustes').select('*').order('id', { ascending: true });
+    if(r.error){ CATALOGO_AJUSTES_OK = false; CATALOGO_AJUSTES = []; return; }
+    CATALOGO_AJUSTES = r.data || []; CATALOGO_AJUSTES_OK = true;
+  } catch(e){ CATALOGO_AJUSTES_OK = false; CATALOGO_AJUSTES = []; }
+}
 
 function enlaceDeTramite(nombre){
   const n = (nombre || '').trim().toLowerCase();
@@ -785,7 +802,8 @@ function itemTramiteHtml(item, i, esCA){
     ? `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`
     : `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramite(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`;
   return `<div class="nec-item" id="nec-item-${i}">
-    <div class="nec-item-t">${item.titulo}</div>
+    ${IS_ADMIN && item.necId ? `<button class="nec-x" title="${esCA ? 'Treure aquest tràmit' : 'Quitar este trámite'}" onclick="quitarItemCatalogo(${i})">✕</button>` : ''}
+    <div class="nec-item-t">${escAttr(item.titulo)}</div>
     ${item.desc ? `<div class="nec-item-d">${item.desc}</div>` : ''}
     <div class="nec-item-b">
       <a class="nec-btn nec-btn-yo" href="${item.url}" target="_blank" rel="noopener" onclick="registrarTramiteApp(__NEC_ITEMS[${i}].nombre, 'solo')">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>
@@ -807,6 +825,57 @@ async function avisarLogosNecesidad(i){
   const caja = document.getElementById('nec-vacia-' + i); if(!caja) return;
   caja.innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div><div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}</div>`;
   await registrarTramiteApp(it.nombre, 'ayuda');
+}
+
+function adminControlesNecesidad(n, ocultas){
+  const esCA = LANG === 'ca';
+  if(!CATALOGO_AJUSTES_OK) return `<div class="nec-admin"><h5>🛠️ ${esCA ? 'Administració' : 'Administración'}</h5><div class="nec-item-d">${esCA ? 'Falta executar l\'SQL 12 a Supabase per poder editar el catàleg.' : 'Falta ejecutar el SQL 12 en Supabase para poder editar el catálogo.'}</div></div>`;
+  const rest = ocultas.length ? `<div style="margin-top:6px;"><div class="nec-item-d" style="margin:0 0 4px;">${esCA ? 'Tràmits treballats' : 'Trámites quitados'}:</div>${ocultas.map(o => `<div class="rest"><span>${escAttr(o.titulo_es || o.clave)}</span><button class="nec-btn" style="padding:4px 10px;font-size:12px;" onclick="restaurarItemCatalogo('${escAttr(o.id)}')">↩ ${esCA ? 'Restaurar' : 'Restaurar'}</button></div>`).join('')}</div>` : '';
+  return `<div class="nec-admin"><h5>🛠️ ${esCA ? 'Administració: afegir un tràmit' : 'Administración: añadir un trámite'}</h5>
+    <input id="adm-t-${n.id}" type="text" maxlength="160" placeholder="${esCA ? 'Nom del tràmit' : 'Nombre del trámite'}">
+    <input id="adm-u-${n.id}" type="url" inputmode="url" placeholder="https://…">
+    <button class="nec-btn nec-btn-yo" onclick="anadirItemCatalogo('${n.id}')">➕ ${esCA ? 'Afegir' : 'Añadir'}</button>
+    <div class="nec-item-d" style="margin-top:6px;">${esCA ? 'Només enllaços oficials. Si una prestació es queda sense tràmits, apareix sola «Adreça\'t a Logos».' : 'Solo enlaces oficiales. Si una prestación se queda sin trámites, aparece sola «Dirígete a Logos».'}</div>${rest}</div>`;
+}
+async function quitarItemCatalogo(i){
+  const it = __NEC_ITEMS[i]; if(!it || !IS_ADMIN) return;
+  const esCA = LANG === 'ca';
+  if(!confirm((esCA ? 'Treure aquest tràmit del catàleg?\n\n' : '¿Quitar este trámite del catálogo?\n\n') + it.titulo + '\n\n' + (esCA ? 'Es pot restaurar després.' : 'Se podrá restaurar después.'))) return;
+  let error;
+  if(it.origen === 'admin') ({ error } = await sb.from('catalogo_ajustes').delete().eq('id', it.ajusteId));
+  else ({ error } = await sb.from('catalogo_ajustes').insert({ necesidad_id: it.necId, clave: it.nombre, titulo_es: it.titulo, oculto: true, creado_por: CURRENT_USER.email }));
+  if(error){ alert(error.message); return; }
+  await recargarNecesidadesAdmin(it.necId);
+}
+async function restaurarItemCatalogo(id){
+  if(!IS_ADMIN) return;
+  const fila = CATALOGO_AJUSTES.find(x => String(x.id) === String(id));
+  const { error } = await sb.from('catalogo_ajustes').delete().eq('id', id);
+  if(error){ alert(error.message); return; }
+  await recargarNecesidadesAdmin(fila ? fila.necesidad_id : null);
+}
+async function anadirItemCatalogo(necId){
+  if(!IS_ADMIN) return;
+  const esCA = LANG === 'ca';
+  const t = (document.getElementById('adm-t-' + necId).value || '').trim();
+  let u = (document.getElementById('adm-u-' + necId).value || '').trim();
+  if(!t || !u){ alert(esCA ? 'Escriu el nom i l\'enllaç.' : 'Escribe el nombre y el enlace.'); return; }
+  if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try { new URL(u); } catch(e){ alert(esCA ? 'L\'enllaç no és vàlid.' : 'El enlace no es válido.'); return; }
+  const { error } = await sb.from('catalogo_ajustes').insert({ necesidad_id: necId, titulo_es: t, titulo_ca: t, url: u, oculto: false, creado_por: CURRENT_USER.email });
+  if(error){ alert(error.message); return; }
+  await recargarNecesidadesAdmin(necId);
+}
+// Vuelve a pintar el área dejando abierta la prestación que se estaba editando
+async function recargarNecesidadesAdmin(necId){
+  await cargarAjustesCatalogo();
+  if(CURRENT_AMBITO) await showNecesidades(CURRENT_AMBITO, true);
+  const a = TAXONOMIA.find(x => x.id === CURRENT_AMBITO);
+  if(a && necId){
+    const idx = a.necesidades.findIndex(n => n.id === necId);
+    const det = document.querySelectorAll('#necesidades-list details.nec-det')[idx];
+    if(det) det.open = true;
+  }
 }
 
 function necesidadesAcordeonHtml(a){
@@ -836,13 +905,20 @@ function necesidadesAcordeonHtml(a){
     const items = [];
     const luis = LINKS_LUIS[n.id];
     if(luis){
-      luis.forEach(l => items.push({ titulo: l[LANG], url: l.u, desc: '', sid: null, nombre: n.nombre.es + ' — ' + l.es }));
+      luis.forEach(l => items.push({ titulo: l[LANG], url: l.u, desc: '', sid: null, nombre: n.nombre.es + ' — ' + l.es, necId: n.id, origen: 'base' }));
     } else if(!SIN_ENLACE_LUIS.includes(n.id)){
       (n.servicios_ids || []).forEach(sid => {
         const s = SERVICIOS.find(x => x.id === sid);
-        if(s && s.enlace_oficial) items.push({ titulo: s.nombre[LANG], url: s.enlace_oficial, desc: s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 110) : '', sid: s.id, nombre: s.nombre.es });
+        if(s && s.enlace_oficial) items.push({ titulo: s.nombre[LANG], url: s.enlace_oficial, desc: s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 110) : '', sid: s.id, nombre: s.nombre.es, necId: n.id, origen: 'base' });
       });
     }
+    // Ajustes de la administración: ocultar trámites y añadir otros
+    const ajustes = CATALOGO_AJUSTES.filter(x => x.necesidad_id === n.id);
+    const ocultas = ajustes.filter(x => x.oculto);
+    const claves = new Set(ocultas.map(x => (x.clave || '').trim().toLowerCase()));
+    const visibles = items.filter(it => !claves.has(it.nombre.trim().toLowerCase()));
+    items.length = 0; visibles.forEach(it => items.push(it));
+    ajustes.filter(x => !x.oculto && x.url).forEach(x => items.push({ titulo: (LANG === 'ca' && x.titulo_ca) ? x.titulo_ca : x.titulo_es, url: x.url, desc: '', sid: null, nombre: n.nombre.es + ' — ' + x.titulo_es, necId: n.id, origen: 'admin', ajusteId: x.id }));
     let cuerpo;
     if(items.length){
       cuerpo = items.map(it => { __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
@@ -854,7 +930,8 @@ function necesidadesAcordeonHtml(a){
         <div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}
         ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="avisarLogosNecesidad(${idx})">🤝 ${esCA ? 'Aviseu Logos per mi' : 'Avisad a Logos por mí'}</button>` : ''}</div></div>`;
     }
-    return `<details class="nec-det"><summary><span>${nombreN}</span><span class="nec-n">${items.length ? items.length : ''}</span></summary><div class="nec-det-c">${cuerpo}</div></details>`;
+    const adminHtml = IS_ADMIN ? adminControlesNecesidad(n, ocultas) : '';
+    return `<details class="nec-det"><summary><span>${nombreN}</span><span class="nec-n">${items.length ? items.length : ''}</span></summary><div class="nec-det-c">${cuerpo}${adminHtml}</div></details>`;
   }).join('');
   bloques.push(`<div class="nec-lista">${necesidades}</div>`);
   return bloques.join('');
