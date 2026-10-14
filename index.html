@@ -149,6 +149,8 @@
   .nec-item{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
   .nec-x{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);color:var(--alert,#B0392F);font-weight:800;font-size:13px;cursor:pointer;line-height:1;}
   .nec-x:hover{background:#FBE0E0;}
+  .nec-x.nec-x-sum{position:static;margin-left:auto;flex:0 0 auto;}
+  .nec-det.adm summary::after{margin-left:4px;}
   .nec-admin{border:1.5px dashed var(--ochre);border-radius:12px;padding:12px 14px;background:var(--ochre-soft);}
   .nec-admin h5{margin:0 0 8px;font-size:12.5px;color:#7A4A1F;text-transform:uppercase;letter-spacing:.04em;}
   .nec-admin input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:var(--font-body);font-size:13.5px;margin-bottom:8px;background:#fff;}
@@ -230,6 +232,52 @@
     .ambitos-col{max-width:none;flex:1;min-width:0;}
     .ambitos-centro-box{position:sticky;top:24px;flex-shrink:0;width:190px;max-width:190px;padding:20px 14px;}
   }
+
+  /* ===== Necesidades en una sola vista: carrusel + buscador + áreas ===== */
+  #catalogo-panel{padding:0 16px;}
+  .nec-hero-t{margin:0 0 4px;}
+  .nc{position:relative;margin:6px -6px 18px;padding:6px 0 0;outline:none;}
+  .nc-track{position:relative;height:272px;overflow:hidden;perspective:900px;}
+  .nc-slide{position:absolute;left:50%;top:6px;width:min(78%,430px);height:256px;border-radius:22px;padding:20px 22px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:0 14px 30px -12px rgba(11,21,38,.55);transition:transform .6s cubic-bezier(.22,.8,.3,1),opacity .6s,filter .6s;will-change:transform;cursor:pointer;overflow:hidden;}
+  .nc-slide::after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;}
+  .nc-slide .nc-em{font-size:34px;line-height:1;}
+  .nc-slide h3{margin:8px 0 4px;font-family:var(--font-display);font-size:21px;line-height:1.2;font-weight:600;color:#fff;}
+  .nc-slide p{margin:0;font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.88);}
+  .nc-tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.18);border-radius:999px;padding:3px 10px;margin-bottom:6px;align-self:flex-start;}
+  .nc-bt{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .nc-ayuda{background:rgba(255,255,255,.16);color:#fff;border:1.5px solid rgba(255,255,255,.7);font-weight:700;font-size:13px;border-radius:999px;padding:8px 13px;cursor:pointer;text-decoration:none;font-family:inherit;}
+  .nc-ayuda:hover{background:rgba(255,255,255,.28);}
+  .nc-ok{font-size:13.5px;font-weight:700;background:rgba(255,255,255,.18);border-radius:12px;padding:9px 12px;line-height:1.35;}
+  .nb-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;margin-top:8px;}
+  .nb-card .nec-item-b{margin-top:8px;}
+  .nc-go{align-self:flex-start;background:var(--sidebar-yellow);color:#16233F;font-weight:800;font-size:13.5px;border:none;border-radius:999px;padding:9px 16px;cursor:pointer;text-decoration:none;font-family:inherit;}
+  .nc-go:hover{filter:brightness(1.06);}
+  .nc-arr{position:absolute;top:50%;transform:translateY(-62%);z-index:30;width:38px;height:38px;border-radius:50%;border:none;background:rgba(22,35,63,.82);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .nc-arr:hover{background:#16233F;}
+  .nc-prev{left:4px;} .nc-next{right:4px;}
+  .nc-dots{display:flex;justify-content:center;gap:7px;margin-top:8px;flex-wrap:wrap;}
+  .nc-dot{width:9px;height:9px;border-radius:99px;background:#C9C6B6;border:none;padding:0;cursor:pointer;transition:width .25s,background .25s;}
+  .nc-dot.on{width:26px;background:var(--ochre);}
+  @media (prefers-reduced-motion: reduce){ .nc-slide{transition:none;} }
+  .nb{position:relative;margin:0 0 6px;}
+  .nb input{width:100%;font-size:16px;padding:14px 16px 14px 46px;border:2px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);font-family:inherit;}
+  .nb input:focus{outline:none;border-color:var(--ochre);box-shadow:0 0 0 4px rgba(217,131,46,.18);}
+  .nb .nb-i{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;}
+  .nb-res{margin:0 0 14px;}
+  .nb-r{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;margin-top:8px;cursor:pointer;font-family:inherit;color:var(--ink);text-decoration:none;}
+  .nb-r:hover{border-color:var(--ochre);}
+  .nb-r .nb-ri{font-size:22px;flex-shrink:0;}
+  .nb-r strong{display:block;font-size:14.5px;}
+  .nb-r small{color:var(--ink-soft);font-size:12px;}
+  .nb-vacio{background:var(--ochre-soft);border:1.5px solid var(--ochre);border-radius:14px;padding:12px 14px;margin-top:8px;font-size:14px;}
+  .areas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  @media (min-width:760px){ .areas-grid{grid-template-columns:repeat(4,1fr);gap:14px;} .nc-track{height:270px;} .nc-slide{height:252px;padding:24px 28px;} .nc-slide h3{font-size:24px;} }
+  .areas-grid .quick-card{padding:16px 14px;min-height:150px;}
+  .areas-grid .quick-card p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:12.5px;margin-top:4px;}
+  .areas-grid .quick-card h4{font-size:15px;margin-top:8px;}
+  .areas-ayuda{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1.5px dashed var(--ochre);border-radius:16px;padding:14px 18px;margin-top:14px;}
+  .areas-ayuda .emoji-grande{font-size:28px;}
   .life-card{background:var(--paper);border:1.5px solid var(--line);border-top:3px solid var(--ochre);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .15s, box-shadow .15s;}
   .life-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(22,35,63,.08);}
   .life-card .emoji{font-size:22px;display:block;margin-bottom:6px;}
@@ -407,15 +455,18 @@
     <div class="content">
       <div id="entrada-panel"></div>
       <div id="catalogo-panel" style="display:none;">
-        <h2 class="screen-title" id="home-title">¿Qué necesitas?</h2>
-        <p class="subtle" id="home-sub">Toca el área que más se acerque a tu situación.</p>
-        <div class="trust-banner">
+        <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
+        <p class="subtle" id="home-sub">Encuentra el trámite o la ayuda que necesitas en Tarragona.</p>
+        <div id="nec-carrusel"></div>
+        <div class="nb"><span class="nb-i">🔎</span><input id="nec-q" type="search" autocomplete="off" oninput="necBuscar()" aria-label="Buscar"></div>
+        <div id="nec-res" class="nb-res" aria-live="polite"></div>
+        <div id="ambitos-grid"></div>
+        <div class="trust-banner" style="margin-top:18px;">
           <div>
             <strong id="trust-title">Aquí encuentras lo que necesitas</strong>
             <span id="trust-body">De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.</span>
           </div>
         </div>
-        <div id="ambitos-grid"></div>
       </div>
 
       <div class="home-mobile-extra">
@@ -613,8 +664,8 @@ function setLang(lang){
   document.getElementById('btn-es').classList.toggle('active', lang==='es');
   document.getElementById('btn-ca').classList.toggle('active', lang==='ca');
   const T = lang === 'ca'
-    ? { homeTitle:'Què necessites?', homeSub:'Toca l\'àrea que més s\'acosti a la teva situació.', trustTitle:'Aquí trobaràs el que necessites', trustBody:'De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada.', backHome:'← Inici', noSeTitle:'No sé exactament què necessito', noSeSub:'Explica\'ns la teva situació i t\'ajudem a trobar-ho' }
-    : { homeTitle:'¿Qué necesitas?', homeSub:'Toca el área que más se acerque a tu situación.', trustTitle:'Aquí encuentras lo que necesitas', trustBody:'De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.', backHome:'← Inicio', noSeTitle:'No sé exactamente qué necesito', noSeSub:'Cuéntanos tu situación y te ayudamos a encontrarlo' };
+    ? { homeTitle:'En què et podem ajudar?', homeSub:'Troba el tràmit o l\'ajut que necessites a Tarragona.', trustTitle:'Aquí trobaràs el que necessites', trustBody:'De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada.', backHome:'← Inici', noSeTitle:'No sé exactament què necessito', noSeSub:'Explica\'ns la teva situació i t\'ajudem a trobar-ho' }
+    : { homeTitle:'¿En qué podemos ayudarte?', homeSub:'Encuentra el trámite o la ayuda que necesitas en Tarragona.', trustTitle:'Aquí encuentras lo que necesitas', trustBody:'De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.', backHome:'← Inicio', noSeTitle:'No sé exactamente qué necesito', noSeSub:'Cuéntanos tu situación y te ayudamos a encontrarlo' };
   document.getElementById('home-title').textContent = T.homeTitle;
   document.getElementById('home-sub').textContent = T.homeSub;
   document.getElementById('trust-title').textContent = T.trustTitle;
@@ -632,43 +683,34 @@ const COLORES_AMBITO = [
 ];
 
 function renderAmbitos(){
+  __NEC_IDX = null;
   const esCA = LANG === 'ca';
   const grid = document.getElementById('ambitos-grid');
-  const mitad = Math.ceil(TAXONOMIA.length / 2);
-  const izquierda = TAXONOMIA.slice(0, mitad);
-  const derecha = TAXONOMIA.slice(mitad);
-
   const tarjeta = (a, i) => {
     const col = COLORES_AMBITO[i % COLORES_AMBITO.length];
-    const numPrest = (a.necesidades || []).length;
-    const sub = numPrest > 0
-      ? (esCA ? `${numPrest} prestació(ns)` : `${numPrest} prestación(es)`)
-      : (esCA ? 'Properament' : 'Próximamente');
+    const ej = (a.necesidades || []).slice(0, 3).map(n => n.nombre[LANG]).join(' · ');
+    const sub = ej || (esCA ? 'Properament' : 'Próximamente');
     return `
     <div class="quick-card" style="position:relative;" onclick="showNecesidades('${escAttr(a.id)}')">
       ${IS_ADMIN ? `<button class="nec-x" title="${esCA ? 'Treure aquesta àrea' : 'Quitar esta área'}" onclick="event.stopPropagation();quitarAreaCatalogo('${escAttr(a.id)}')">✕</button>` : ''}
       <div class="icon-badge" style="background:${col.bg};color:${col.color};font-size:20px;">${a.icono}</div>
       <h4>${a.nombre[LANG]}</h4>
-      <p>${sub}</p>
+      <p>${escAttr(sub)}</p>
     </div>`;
   };
-
   grid.innerHTML = `
-    <div class="ambitos-layout">
-      <div class="ambitos-col">${izquierda.map((a,i) => tarjeta(a,i)).join('')}</div>
-
-      <div class="panel-card ambitos-centro-box">
-        <img src="logo-lambda.png" alt="" style="width:34px;height:auto;opacity:.35;margin-bottom:10px;">
-        <div class="emoji-grande">🤔</div>
-        <h3 style="margin:0 0 6px;">${esCA ? 'Què et passa?' : '¿Qué te ocurre?'}</h3>
-        <p class="subtle" style="margin:0 0 12px;">${esCA ? 'Explica\'ns la teva situació i t\'ajudem a trobar-ho.' : 'Cuéntanos tu situación y te ayudamos a encontrarlo.'}</p>
-        <button class="link-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">${esCA ? 'Explicar-ho →' : 'Contarlo →'}</button>
-      </div>
-
-      <div class="ambitos-col">${derecha.map((a,i) => tarjeta(a, i+mitad)).join('')}</div>
+    <div class="section-label" style="margin:4px 0 10px;">${esCA ? 'O tria un tema' : 'O elige un tema'}</div>
+    <div class="areas-grid">${TAXONOMIA.map((a, i) => tarjeta(a, i)).join('')}</div>
+    <div class="areas-ayuda">
+      <div class="emoji-grande">🤔</div>
+      <div style="flex:1;min-width:200px;"><strong>${esCA ? 'No saps per on començar?' : '¿No sabes por dónde empezar?'}</strong><br><span class="subtle">${esCA ? 'Explica\'ns la teva situació i t\'ajudem a trobar-ho.' : 'Cuéntanos tu situación y te ayudamos a encontrarlo.'}</span></div>
+      <button class="link-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">${esCA ? 'Explicar-ho →' : 'Contarlo →'}</button>
     </div>
     ${IS_ADMIN ? adminControlesAreas() : ''}
   `;
+  const q = document.getElementById('nec-q'); if(q) q.placeholder = esCA ? 'Ex.: necessito ajuda per pagar el lloguer' : 'Ej.: necesito ayuda para pagar el alquiler';
+  renderCarruselNec();
+  if(q && q.value) necBuscar();
 }
 
 async function showNecesidades(ambitoId, silent){
@@ -746,8 +788,153 @@ const ACCESOS_CITAS = [
   { i: '🏙️', es: 'Cita previa del Ajuntament de Tarragona', ca: 'Cita prèvia de l\'Ajuntament de Tarragona', d_es: 'Padrón y atención municipal.', d_ca: 'Padró i atenció municipal.', u: URL_CITA_TGN },
   { i: '📑', es: 'Trámites del Ajuntament de Tarragona', ca: 'Tràmits de l\'Ajuntament de Tarragona', d_es: 'Catálogo de trámites de la sede electrónica.', d_ca: 'Catàleg de tràmits de la seu electrònica.', u: 'https://seu.tarragona.cat/sta/CarpetaPublic/doEvent?APP_CODE=STA&PAGE_CODE=CATALOGO' }
 ];
+
+// ================= NECESIDADES EN UNA SOLA VISTA (propuesta de Luis) =================
+// Accesos rápidos: trámites más frecuentes con su enlace oficial. Giran solos en el carrusel de arriba.
+const NEC_RAPIDOS = [
+  { em:'🏙️', es:'Pedir cita en el Ayuntamiento', ca:'Demanar cita a l\'Ajuntament', d_es:'Padrón, atención municipal y trámites de Tarragona.', d_ca:'Padró, atenció municipal i tràmits de Tarragona.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:'https://citaprevia.tarragona.cat/', g:['#1E3F66','#16233F'] },
+  { em:'🏛️', es:'Pedir cita en la Generalitat', ca:'Demanar cita a la Generalitat', d_es:'Atención ciudadana de la Generalitat de Catalunya.', d_ca:'Atenció ciutadana de la Generalitat de Catalunya.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:'https://tramits.gencat.cat/es/tramits/cita-informacio/', g:['#8A4B12','#D9832E'] },
+  { em:'💶', es:'Ingreso Mínimo Vital', ca:'Ingrés Mínim Vital', d_es:'Una ayuda mensual si tu familia tiene muy pocos ingresos.', d_ca:'Un ajut mensual si la teva família té pocs ingressos.', tag_es:'Ayudas e ingresos', tag_ca:'Ajuts i ingressos', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/ingres-minim-vital', g:['#2F6B27','#1E4A1A'] },
+  { em:'🏠', es:'Ayudas al alquiler', ca:'Ajuts al lloguer', d_es:'Busca las ayudas para pagar el alquiler de tu vivienda.', d_ca:'Cerca els ajuts per pagar el lloguer del teu habitatge.', tag_es:'Vivienda', tag_ca:'Habitatge', u:'https://web.gencat.cat/es/tramits/cercador/index.html', g:['#6A3FA0','#43266B'] },
+  { em:'🧓', es:'Dependencia y discapacidad', ca:'Dependència i discapacitat', d_es:'Reconocimiento de la dependencia y ayudas para cuidar.', d_ca:'Reconeixement de la dependència i ajuts per cuidar.', tag_es:'Mayores y cuidados', tag_ca:'Gent gran i cures', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-dependencia', g:['#B0392F','#7A2019'] },
+  { em:'💼', es:'Paro y subsidios', ca:'Atur i subsidis', d_es:'Consulta tu prestación por desempleo en el SEPE.', d_ca:'Consulta la teva prestació per desocupació al SEPE.', tag_es:'Trabajo', tag_ca:'Feina', u:'https://www.sepe.es/', g:['#2E5A8F','#1E3F66'] },
+  { em:'🧾', es:'Pensiones y Seguridad Social', ca:'Pensions i Seguretat Social', d_es:'Jubilación, incapacidad y otras prestaciones.', d_ca:'Jubilació, incapacitat i altres prestacions.', tag_es:'Pensiones', tag_ca:'Pensions', u:'https://www.seg-social.es/', g:['#8A6D1D','#5C4710'] },
+  { em:'🔐', es:'Sede electrónica de la Generalitat', ca:'Seu electrònica de la Generalitat', d_es:'Trámites online con tu certificado digital.', d_ca:'Tràmits en línia amb el teu certificat digital.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/seu-electronica', g:['#16233F','#2E5A8F'] },
+  { em:'🔎', es:'Buscar un trámite oficial', ca:'Cercar un tràmit oficial', d_es:'¿No sabes cuál es? Busca por tema en el buscador oficial.', d_ca:'No saps quin és? Cerca per tema al cercador oficial.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/tramits/cercador/index.html', g:['#33449E','#1E2A66'] },
+  { em:'🤝', es:'Habla con Logos', ca:'Parla amb Logos', d_es:'Si no sabes por dónde empezar, te acompañamos.', d_ca:'Si no saps per on començar, t\'acompanyem.', tag_es:'Te ayudamos', tag_ca:'T\'ajudem', logos:true, g:['#D9832E','#8A4B12'] }
+];
+let NC_I = 0, NC_T = null;
+function ncFondo(r){ return `linear-gradient(135deg, ${r.g[0]}, ${r.g[1]})`; }
+function renderCarruselNec(){
+  const host = document.getElementById('nec-carrusel'); if(!host) return;
+  const esCA = LANG === 'ca';
+  host.innerHTML = `<div class="nc" tabindex="0" role="region" aria-roledescription="carousel" aria-label="${esCA ? 'Accessos ràpids' : 'Accesos rápidos'}">
+    <div class="nc-track">${NEC_RAPIDOS.map((r, i) => `<div class="nc-slide" data-i="${i}" style="background:${ncFondo(r)};" role="group" aria-label="${i + 1} / ${NEC_RAPIDOS.length}" onclick="ncClick(${i})">
+        <div><span class="nc-tag">${esCA ? r.tag_ca : r.tag_es}</span><div class="nc-em">${r.em}</div><h3>${esCA ? r.ca : r.es}</h3><p>${esCA ? r.d_ca : r.d_es}</p></div>
+        <div class="nc-bt" id="nc-bt-${i}">${r.logos ? `<span class="nc-go">${esCA ? 'Contar la meva situació →' : 'Contar mi situación →'}</span>` : ncBotones(i, esCA)}</div></div>`).join('')}</div>
+    <button class="nc-arr nc-prev" aria-label="${esCA ? 'Anterior' : 'Anterior'}" onclick="ncIr(-1)">‹</button><button class="nc-arr nc-next" aria-label="${esCA ? 'Següent' : 'Siguiente'}" onclick="ncIr(1)">›</button>
+    <div class="nc-dots">${NEC_RAPIDOS.map((r, i) => `<button class="nc-dot" aria-label="${i + 1}" onclick="ncSet(${i})"></button>`).join('')}</div></div>`;
+  const nc = host.querySelector('.nc');
+  nc.addEventListener('mouseenter', ncParar); nc.addEventListener('mouseleave', ncArrancar);
+  nc.addEventListener('focusin', ncParar); nc.addEventListener('focusout', ncArrancar);
+  nc.addEventListener('keydown', e => { if(e.key === 'ArrowLeft') ncIr(-1); if(e.key === 'ArrowRight') ncIr(1); });
+  let x0 = null;
+  nc.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; ncParar(); }, { passive: true });
+  nc.addEventListener('touchend', e => { if(x0 !== null){ const dx = e.changedTouches[0].clientX - x0; if(Math.abs(dx) > 40) ncIr(dx < 0 ? 1 : -1); } x0 = null; ncArrancar(); });
+  ncPintar(); ncArrancar();
+}
+function ncPintar(){
+  const n = NEC_RAPIDOS.length;
+  document.querySelectorAll('#nec-carrusel .nc-slide').forEach((el, i) => {
+    let d = ((i - NC_I) % n + n) % n; if(d > n / 2) d -= n;
+    const ab = Math.abs(d);
+    if(ab > 1){ el.style.transform = `translateX(-50%) translateX(${d > 0 ? 120 : -120}%) scale(.7)`; el.style.opacity = '0'; el.style.pointerEvents = 'none'; el.style.zIndex = 0; el.setAttribute('aria-hidden', 'true'); return; }
+    el.style.transform = d === 0 ? 'translateX(-50%) scale(1)' : `translateX(-50%) translateX(${d * 64}%) scale(.84)`;
+    el.style.opacity = d === 0 ? '1' : '.55'; el.style.filter = d === 0 ? 'none' : 'saturate(.8)';
+    el.style.zIndex = d === 0 ? 5 : 2; el.style.pointerEvents = 'auto'; el.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
+  });
+  document.querySelectorAll('#nec-carrusel .nc-dot').forEach((el, i) => el.classList.toggle('on', i === NC_I));
+}
+function ncSet(i){ NC_I = (i + NEC_RAPIDOS.length) % NEC_RAPIDOS.length; ncPintar(); }
+function ncIr(d){ ncSet(NC_I + d); }
+function ncClick(i){
+  if(i !== NC_I){ ncSet(i); return; }
+  const r = NEC_RAPIDOS[i];
+  if(r.logos){ CURRENT_AMBITO = null; showProximamente(null); }
+}
+// Mismo formato que en cada trámite: «Lo hago yo» (enlace oficial) o «Necesito ayuda de Logos».
+function ncBotones(i, esCA){
+  const r = NEC_RAPIDOS[i];
+  const ayuda = CURRENT_USER
+    ? `<button class="nc-ayuda" onclick="event.stopPropagation();ncAyuda(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`
+    : `<a class="nc-ayuda" href="tel:+34630461560" onclick="event.stopPropagation()">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`;
+  return `<a class="nc-go" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation();ncYo(${i})">🔗 ${esCA ? 'Ho faig jo' : 'Lo hago yo'}</a>${ayuda}`;
+}
+function ncYo(i){ if(CURRENT_USER) registrarTramiteApp(NEC_RAPIDOS[i].es, 'solo'); }
+async function ncAyuda(i){
+  const esCA = LANG === 'ca', c = document.getElementById('nc-bt-' + i); if(!c) return;
+  ncParar();
+  c.innerHTML = `<div class="nc-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div>`;
+  await registrarTramiteApp(NEC_RAPIDOS[i].es, 'ayuda');
+}
+function ncParar(){ if(NC_T){ clearInterval(NC_T); NC_T = null; } }
+function ncArrancar(){
+  ncParar();
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  NC_T = setInterval(() => { const h = document.getElementById('nec-carrusel'); if(!h || !h.offsetParent){ return; } ncIr(1); }, 5000);
+}
+
+// Buscador por palabras cotidianas (con sinónimos)
+const NEC_SIN = [
+  ['alquiler','lloguer','vivienda','habitatge','piso','casa','hipoteca','desahucio','okupa'],
+  ['paro','atur','desempleo','desocupacion','sepe','subsidio','prestacion'],
+  ['cita','turno','cita previa','prèvia','previa'],
+  ['dni','documento','pasaporte','identidad','passaport','nie','tie'],
+  ['padron','padro','empadronamiento','empadronar','empadronarme'],
+  ['dinero','ayuda economica','ajut','ingreso','ingres','renta','imv','rgc','pension','pensio','cobrar','pagar'],
+  ['hijo','hijos','fill','nino','nina','familia','familiar','nacimiento','guarderia','escuela','cole','monoparental','numerosa'],
+  ['luz','agua','gas','suministro','subministrament','pobreza energetica','factura'],
+  ['salud','salut','medico','metge','sanitaria','cap','hospital','mental'],
+  ['trabajo','feina','empleo','ocupacion','curriculum','cv','buscar trabajo','curso','formacion','formacio'],
+  ['mayor','mayores','gent gran','dependencia','dependència','discapacidad','discapacitat','cuidador','cuidar','cuidados'],
+  ['extranjeria','estrangeria','permiso','residencia','arraigo','nacionalidad','nacionalitat','regularizacion','asilo','refugio'],
+  ['certificado','certificat','idcat','clave','firma','digital','certificado digital'],
+  ['beca','becas','beques','estudios','estudiar','universidad','matricula','idiomas']
+];
+const necNorm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+let __NEC_IDX = null;
+function necIndice(){
+  const idx = [];
+  NEC_RAPIDOS.filter(r => !r.logos).forEach(r => idx.push({ tipo:'link', em:r.em, es:r.es, ca:r.ca, sub_es:'Enlace oficial', sub_ca:'Enllaç oficial', u:r.u, txt:necNorm(r.es + ' ' + r.ca + ' ' + r.d_es + ' ' + r.d_ca) }));
+  ACCESOS_CITAS.forEach(c => idx.push({ tipo:'link', em:c.i, es:c.es, ca:c.ca, sub_es:'Enlace oficial', sub_ca:'Enllaç oficial', u:c.u, txt:necNorm(c.es + ' ' + c.ca + ' ' + (c.d_es || '') + ' ' + (c.d_ca || '')) }));
+  (TAXONOMIA || []).forEach(a => (a.necesidades || []).forEach(n => {
+    let titulos = (LINKS_LUIS[n.id] || []).map(l => l.es + ' ' + l.ca).join(' ');
+    (n.servicios_ids || []).forEach(sid => { const sv = SERVICIOS.find(x => x.id === sid); if(sv) titulos += ' ' + sv.nombre.es + ' ' + sv.nombre.ca; });
+    idx.push({ tipo:'nec', em:a.icono, es:n.nombre.es, ca:n.nombre.ca, sub_es:a.nombre.es, sub_ca:a.nombre.ca, amb:a.id, nec:n.id, txt:necNorm(n.nombre.es + ' ' + n.nombre.ca + ' ' + titulos + ' ' + a.nombre.es + ' ' + a.nombre.ca) });
+  }));
+  return idx;
+}
+function necBuscar(){
+  const host = document.getElementById('nec-res'); if(!host) return;
+  const esCA = LANG === 'ca';
+  const q = necNorm((document.getElementById('nec-q') || {}).value).trim();
+  if(q.length < 2){ host.innerHTML = ''; return; }
+  if(!__NEC_IDX) __NEC_IDX = necIndice();
+  const vacias = new Set(['para','como','quiero','necesito','ayuda','una','uno','unos','del','los','las','que','con','por','mis','mi','tengo','puedo','donde','hay','sobre','per','necessito','vull','com','amb','els','les','una','dels']);
+  const toks = q.split(/[^a-z0-9ñ]+/).filter(t => t.length > 2 && !vacias.has(t));
+  const grupo = t => { const g = NEC_SIN.find(gr => gr.some(w => necNorm(w) === t || (t.length > 3 && necNorm(w).startsWith(t.slice(0, 4)) && necNorm(w).length - t.length < 4))); return g ? g.map(necNorm) : [t]; };
+  const grupos = (toks.length ? toks : [q]).map(grupo);
+  const res = __NEC_IDX.map(e => { let pts = 0, ok = 0; grupos.forEach(g => { if(g.some(w => e.txt.includes(w))){ ok++; pts += g.some(w => necNorm(e.es).includes(w)) ? 3 : 1; } }); return { e, ok, pts }; })
+    .filter(r => r.ok > 0).sort((a, b) => (b.ok - a.ok) || (b.pts - a.pts)).slice(0, 8);
+  if(!res.length){
+    host.innerHTML = `<div class="nb-vacio">${esCA ? 'No hem trobat això. Cap problema: explica\'ns què necessites i t\'ajudem.' : 'No hemos encontrado eso. No pasa nada: cuéntanos qué necesitas y te ayudamos.'}<div style="margin-top:8px;"><button class="nec-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">🤝 ${esCA ? 'Parlar amb Logos' : 'Hablar con Logos'}</button></div></div>`;
+    return;
+  }
+  window.__NEC_RES = res.map(r => r.e);
+  host.innerHTML = res.map(({ e }, i) => {
+    const t = esCA ? e.ca : e.es, sub = esCA ? e.sub_ca : e.sub_es;
+    return e.tipo === 'link'
+      ? `<div class="nb-card" id="nb-card-${i}"><div style="display:flex;gap:12px;align-items:center;"><span class="nb-ri">${e.em}</span><span><strong>${escAttr(t)}</strong><br><small style="color:var(--ink-soft);">${escAttr(sub)}</small></span></div>
+          <div class="nec-item-b"><a class="nec-btn nec-btn-yo" href="${e.u}" target="_blank" rel="noopener" onclick="necYoRes(${i})">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>
+          ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="necAyudaRes(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>` : `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`}</div></div>`
+      : `<button class="nb-r" onclick="necAbrir('${escAttr(e.amb)}','${escAttr(e.nec)}')"><span class="nb-ri">${e.em}</span><span><strong>${escAttr(t)}</strong><small>${escAttr(sub)}</small></span></button>`;
+  }).join('');
+}
+function necYoRes(i){ const e = (window.__NEC_RES || [])[i]; if(e && CURRENT_USER) registrarTramiteApp(e.es, 'solo'); }
+async function necAyudaRes(i){
+  const e = (window.__NEC_RES || [])[i]; if(!e) return;
+  const esCA = LANG === 'ca', c = document.querySelector('#nb-card-' + i + ' .nec-item-b'); if(!c) return;
+  c.innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div><div class="nec-item-b" style="margin-top:6px;">${accionesLogosHtml(esCA)}</div>`;
+  await registrarTramiteApp(e.es, 'ayuda');
+}
+async function necAbrir(amb, nec){
+  await showNecesidades(amb);
+  const d = document.querySelector(`#necesidades-list details[data-nec="${nec}"]`);
+  if(d){ d.open = true; setTimeout(() => d.scrollIntoView({ behavior:'smooth', block:'center' }), 80); }
+}
+
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-14 · v45 (áreas y prestaciones editables por administración)';
+const APP_VERSION_ACOMP = '2026-10-14 · v48 (Carrusel y buscador con «Lo hago yo / Necesito ayuda de Logos»)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -927,10 +1114,11 @@ function adminControlesPrestaciones(a){
     <input id="adm-nec-t" type="text" maxlength="80" placeholder="${esCA ? 'Nom de la prestació' : 'Nombre de la prestación'}">
     <button class="nec-btn nec-btn-yo" onclick="anadirPrestacionCatalogo('${escAttr(a.id)}')">➕ ${esCA ? 'Afegir prestació' : 'Añadir prestación'}</button>
     <div class="nec-item-d" style="margin-top:6px;">${esCA ? 'Nova, sense tràmits: surt «Adreça\'t a Logos» fins que hi afegeixis enllaços.' : 'Nueva y sin trámites: sale «Dirígete a Logos» hasta que añadas enlaces.'}</div>
+    <div style="margin-top:10px;"><button class="nec-btn" style="color:#B0392F;border-color:#E6B8B3;" onclick="quitarAreaCatalogo('${escAttr(a.id)}', true)">🗑️ ${esCA ? 'Treure aquesta àrea' : 'Quitar esta área'}</button></div>
     ${filasRestaurar(ocultas, esCA ? 'Prestacions tretes' : 'Prestaciones quitadas')}</div>`;
 }
 function idNuevoCatalogo(pref){ return pref + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
-async function quitarAreaCatalogo(id){
+async function quitarAreaCatalogo(id, desdeDentro){
   if(!IS_ADMIN) return;
   const esCA = LANG === 'ca';
   const a = TAXONOMIA.find(x => x.id === id); if(!a) return;
@@ -939,7 +1127,9 @@ async function quitarAreaCatalogo(id){
   if(a.__custom) ({ error } = await sb.from('catalogo_ajustes').delete().eq('id', a.__ajusteId));
   else ({ error } = await sb.from('catalogo_ajustes').insert({ tipo: 'ambito', clave: a.id, necesidad_id: a.id, titulo_es: a.nombre.es, oculto: true, creado_por: CURRENT_USER.email }));
   if(error){ alert(error.message); return; }
-  await cargarAjustesCatalogo(); renderAmbitos();
+  await cargarAjustesCatalogo();
+  if(desdeDentro){ CURRENT_AMBITO = null; showScreen('home'); }
+  renderAmbitos();
 }
 async function anadirAreaCatalogo(){
   if(!IS_ADMIN) return;
@@ -1042,7 +1232,8 @@ function necesidadesAcordeonHtml(a){
         ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="avisarLogosNecesidad(${idx})">🤝 ${esCA ? 'Aviseu Logos per mi' : 'Avisad a Logos por mí'}</button>` : ''}</div></div>`;
     }
     const adminHtml = IS_ADMIN ? adminControlesNecesidad(n, ocultas) : '';
-    return `<details class="nec-det"><summary><span>${nombreN}</span><span class="nec-n">${items.length ? items.length : ''}</span></summary><div class="nec-det-c">${cuerpo}${adminHtml}</div></details>`;
+    const xResumen = (IS_ADMIN && CATALOGO_AJUSTES_OK && CATALOGO_V13) ? `<button class="nec-x nec-x-sum" title="${esCA ? 'Treure aquesta prestació' : 'Quitar esta prestación'}" onclick="event.preventDefault();event.stopPropagation();quitarPrestacionCatalogo('${escAttr(n.id)}')">✕</button>` : '';
+    return `<details class="nec-det${xResumen ? ' adm' : ''}" data-nec="${escAttr(n.id)}"><summary><span>${nombreN}</span><span class="nec-n">${items.length ? items.length : ''}</span>${xResumen}</summary><div class="nec-det-c">${cuerpo}${adminHtml}</div></details>`;
   }).join('');
   bloques.push(`<div class="nec-lista">${necesidades}</div>`);
   if(IS_ADMIN) bloques.push(adminControlesPrestaciones(a));
