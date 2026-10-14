@@ -235,6 +235,7 @@
 
   /* ===== Necesidades en una sola vista: carrusel + buscador + áreas ===== */
   #catalogo-panel{padding:0 16px;}
+  #screen-necesidades .content{padding:0 16px 20px;}
   .nec-hero-t{margin:0 0 4px;}
   .nc{position:relative;margin:6px -6px 18px;padding:6px 0 0;outline:none;}
   .nc-track{position:relative;height:272px;overflow:hidden;perspective:900px;}
@@ -274,7 +275,7 @@
   .areas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
   @media (min-width:760px){ .areas-grid{grid-template-columns:repeat(4,1fr);gap:14px;} .nc-track{height:270px;} .nc-slide{height:252px;padding:24px 28px;} .nc-slide h3{font-size:24px;} }
   .areas-grid .quick-card{padding:16px 14px;min-height:150px;}
-  .areas-grid .quick-card p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:12.5px;margin-top:4px;}
+  .areas-grid .quick-card p{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:12.5px;margin-top:4px;}
   .areas-grid .quick-card h4{font-size:15px;margin-top:8px;}
   .areas-ayuda{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#fff;border:1.5px dashed var(--ochre);border-radius:16px;padding:14px 18px;margin-top:14px;}
   .areas-ayuda .emoji-grande{font-size:28px;}
@@ -645,6 +646,7 @@ async function loadData(){
     SERVICIOS = (await resServ.json()).servicios;
     TAXONOMIA = (await resTax.json()).ambitos;
     ajustarTaxonomia();
+    organizarOchoCategorias();
     TAXONOMIA_BASE = TAXONOMIA;
     try { await cargarAjustesCatalogo(); } catch(e) {}
     renderAmbitos();
@@ -688,7 +690,7 @@ function renderAmbitos(){
   const grid = document.getElementById('ambitos-grid');
   const tarjeta = (a, i) => {
     const col = COLORES_AMBITO[i % COLORES_AMBITO.length];
-    const ej = (a.necesidades || []).slice(0, 3).map(n => n.nombre[LANG]).join(' · ');
+    const ej = a.desc ? a.desc[LANG] : (a.necesidades || []).slice(0, 3).map(n => n.nombre[LANG]).join(' · ');
     const sub = ej || (esCA ? 'Properament' : 'Próximamente');
     return `
     <div class="quick-card" style="position:relative;" onclick="showNecesidades('${escAttr(a.id)}')">
@@ -720,9 +722,9 @@ async function showNecesidades(ambitoId, silent){
   const a = TAXONOMIA.find(x => x.id === ambitoId);
   if(!a) return;
   document.getElementById('ambito-title').textContent = a.icono + ' ' + a.nombre[LANG];
-  document.getElementById('ambito-sub').textContent = LANG === 'ca'
+  document.getElementById('ambito-sub').textContent = (a.desc ? a.desc[LANG] + ' ' : '') + (LANG === 'ca'
     ? 'Toca una prestació per veure els seus tràmits i enllaços.'
-    : 'Toca una prestación para ver sus trámites y enlaces.';
+    : 'Toca una prestación para ver sus trámites y enlaces.');
   const list = document.getElementById('necesidades-list');
 
   list.innerHTML = necesidadesAcordeonHtml(a);
@@ -904,7 +906,8 @@ function necBuscar(){
   const toks = q.split(/[^a-z0-9ñ]+/).filter(t => t.length > 2 && !vacias.has(t));
   const grupo = t => { const g = NEC_SIN.find(gr => gr.some(w => necNorm(w) === t || (t.length > 3 && necNorm(w).startsWith(t.slice(0, 4)) && necNorm(w).length - t.length < 4))); return g ? g.map(necNorm) : [t]; };
   const grupos = (toks.length ? toks : [q]).map(grupo);
-  const res = __NEC_IDX.map(e => { let pts = 0, ok = 0; grupos.forEach(g => { if(g.some(w => e.txt.includes(w))){ ok++; pts += g.some(w => necNorm(e.es).includes(w)) ? 3 : 1; } }); return { e, ok, pts }; })
+  const res = __NEC_IDX.map(e => { let pts = 0, ok = 0; const en = (txt, w) => w.length <= 3 ? new RegExp('(^|[^a-z0-9])' + w + '([^a-z0-9]|$)').test(txt) : txt.includes(w);
+    grupos.forEach(g => { if(g.some(w => en(e.txt, w))){ ok++; pts += g.some(w => en(necNorm(e.es), w)) ? 3 : 1; } }); return { e, ok, pts }; })
     .filter(r => r.ok > 0).sort((a, b) => (b.ok - a.ok) || (b.pts - a.pts)).slice(0, 8);
   if(!res.length){
     host.innerHTML = `<div class="nb-vacio">${esCA ? 'No hem trobat això. Cap problema: explica\'ns què necessites i t\'ajudem.' : 'No hemos encontrado eso. No pasa nada: cuéntanos qué necesitas y te ayudamos.'}<div style="margin-top:8px;"><button class="nec-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">🤝 ${esCA ? 'Parlar amb Logos' : 'Hablar con Logos'}</button></div></div>`;
@@ -934,7 +937,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-14 · v48 (Carrusel y buscador con «Lo hago yo / Necesito ayuda de Logos»)';
+const APP_VERSION_ACOMP = '2026-10-14 · v49 (Necesidades en las 8 categorías de Luis)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1183,8 +1186,8 @@ function necesidadesAcordeonHtml(a){
   __NEC_ITEMS = [];
   const bloques = [];
   if(IS_ADMIN) bloques.push(`<div class="nec-admin" style="margin:6px 0 12px;"><h5 style="margin:0 0 4px;">🛠️ ${esCA ? 'Mode administració' : 'Modo administración'}</h5><div class="nec-item-d" style="margin:0;">${esCA ? 'Pots treure un tràmit amb la ✕ o afegir-ne un de nou al final de cada prestació.' : 'Puedes quitar un trámite con la ✕ o añadir uno nuevo al final de cada prestación.'}</div></div>`);
-  // «Mi situación»: datos completos y citas previas arriba
-  if(a.id === 'mi-situacion'){
+  // «Documentos y certificados»: datos completos de la persona. «Citas previas»: certificado digital y citas.
+  if(a.id === 'cat-documentos' || a.id === 'cat-citas'){
     const p = window.__perfilActual || null;
     const datos = CURRENT_USER
       ? `<div class="nec-card nec-card-datos">
@@ -1199,7 +1202,12 @@ function necesidadesAcordeonHtml(a){
         ${ACCESOS_CITAS.map(c => `<a class="nec-acceso" href="${c.u}" target="_blank" rel="noopener"><span class="nec-acceso-i">${c.i}</span><span><strong>${esCA ? c.ca : c.es}</strong><br><span class="nec-item-d">${esCA ? c.d_ca : c.d_es}</span></span></a>`).join('')}
         <div class="nec-item-b" style="margin-top:10px;"><button class="nec-btn nec-btn-ayuda" onclick="avisarAyudaCita()">🤝 ${esCA ? 'Necessito ajuda per demanar cita' : 'Necesito ayuda para pedir cita'}</button></div>
         <div id="nec-cita-ok"></div></div>`;
-    bloques.push(datos + citas);
+    bloques.push(a.id === 'cat-documentos' ? datos : '');
+  }
+  // Accesos directos oficiales de la categoría (los de la propuesta), con «Lo hago yo / Necesito ayuda de Logos»
+  if(a.accesos && a.id !== 'cat-citas'){
+    const filas = a.accesos.map(x => { const it = { titulo: esCA ? x[1] : x[0], url: x[2], desc: '', sid: null, nombre: a.nombre.es + ' — ' + x[0], necId: null, origen: 'base' }; __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
+    bloques.push(`<div class="nec-card"><div class="nec-card-t">⚡ ${esCA ? 'Accessos directes' : 'Accesos directos'}</div>${filas}</div>`);
   }
   const necesidades = a.necesidades.map(n => {
     const nombreN = n.nombre[LANG];
@@ -1248,6 +1256,67 @@ async function avisarAyudaCita(){
 
 
 // Añade a «Mi economía» las entradas que pidió Luis: prestaciones familiares y becas
+
+// ================= OCHO CATEGORÍAS (propuesta de Luis) =================
+// Reagrupa las necesidades del catálogo en 8 situaciones de la vida cotidiana. Cada categoría tiene
+// una explicación sencilla y sus accesos directos oficiales. Nada se pierde: cada necesidad va a una categoría.
+const OCHO = [
+  { id:'cat-ayudas', icono:'💶', nombre:{ es:'Ayudas e ingresos', ca:'Ajuts i ingressos' },
+    desc:{ es:'Ingreso Mínimo Vital, Renta Garantizada de Ciudadanía, ayudas de emergencia y prestaciones sociales.', ca:'Ingrés Mínim Vital, Renda Garantida de Ciutadania, ajuts d\'emergència i prestacions socials.' },
+    accesos:[ ['Ingreso Mínimo Vital','Ingrés Mínim Vital','https://tramits.gencat.cat/es/tramits/tramits-temes/ingres-minim-vital'], ['Renta Garantizada de Ciudadanía','Renda Garantida de Ciutadania','https://tramits.gencat.cat/es/tramits/tramits-temes/rgc-i-complement-activables'] ],
+    nec:['ingreso-minimo-vital','renta-garantizada','ayudas-economicas','emergencia-social','prestaciones-economia','prestaciones-familiares','ingresos','bonificaciones','deudas','impuestos','inclusion-social','exclusion','recursos-comunitarios'] },
+  { id:'cat-vivienda', icono:'🏠', nombre:{ es:'Vivienda y alquiler', ca:'Habitatge i lloguer' },
+    desc:{ es:'Ayudas al alquiler, vivienda social, emergencia habitacional e información sobre suministros.', ca:'Ajuts al lloguer, habitatge social, emergència habitacional i informació sobre subministraments.' },
+    accesos:[ ['Buscador de trámites de la Generalitat','Cercador de tràmits de la Generalitat','https://web.gencat.cat/es/tramits/cercador/index.html'] ],
+    nec:['ayudas-alquiler','alquiler','vivienda-social','emergencia-habitacional','suministros','compra-vivienda','accesibilidad-vivienda'] },
+  { id:'cat-familia', icono:'👨‍👩‍👧', nombre:{ es:'Familia, infancia y juventud', ca:'Família, infància i joventut' },
+    desc:{ es:'Familia numerosa o monoparental, ayudas por nacimiento y crianza, becas escolares, comedor y actividades juveniles.', ca:'Família nombrosa o monoparental, ajuts per naixement i criança, beques escolars, menjador i activitats juvenils.' },
+    accesos:[ ['Título de familia monoparental','Títol de família monoparental','https://tramits.gencat.cat/ca/tramits/tramits-temes/Titol-de-familia-monoparental-00003'], ['Buscador de trámites','Cercador de tràmits','https://web.gencat.cat/es/tramits/cercador/index.html'] ],
+    nec:['familia-numerosa','familia-monoparental','hijos','embarazo-nacimiento','conciliacion','ocio','deporte','cultura','voluntariado'] },
+  { id:'cat-estudios', icono:'🎓', nombre:{ es:'Estudios, becas y formación', ca:'Estudis, beques i formació' },
+    desc:{ es:'Becas, ayudas para material escolar, comedor, transporte y formación profesional.', ca:'Beques, ajuts per a material escolar, menjador, transport i formació professional.' },
+    accesos:[ ['Buscador de trámites de la Generalitat','Cercador de tràmits de la Generalitat','https://web.gencat.cat/es/tramits/cercador/index.html'] ],
+    nec:['becas','becas-economia','escolarizacion','educacion-infantil','formacion-profesional','formacion','formacion-adultos','universidad','educacion-especial','necesidades-educativas','aprendizaje-permanente','reconocimiento-competencias'] },
+  { id:'cat-mayores', icono:'🧓', nombre:{ es:'Mayores, discapacidad y dependencia', ca:'Gent gran, discapacitat i dependència' },
+    desc:{ es:'Reconocimiento de dependencia o discapacidad, prestaciones para cuidadores y recursos para la autonomía personal. También salud y bienestar.', ca:'Reconeixement de dependència o discapacitat, prestacions per a cuidadors i recursos per a l\'autonomia personal. També salut i benestar.' },
+    accesos:[ ['Reconocimiento de dependencia','Reconeixement de dependència','https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-dependencia'] ],
+    nec:['dependencia-situacion','discapacidad-situacion','autonomia-personal','personas-mayores-familia','cuidado-familiares','apoyo-cuidadores','personas-dependientes-cargo','ayuda-domicilio-vivienda','teleasistencia-vivienda','atencion-domiciliaria-salud','centros-dia','residencias','actividades-mayores','soledad-familia','rehabilitacion','accesibilidad-comunidad','salud','salud-mental','prevencion'] },
+  { id:'cat-trabajo', icono:'💼', nombre:{ es:'Trabajo y pensiones', ca:'Feina i pensions' },
+    desc:{ es:'Prestaciones por desempleo, subsidios, jubilación, incapacidad y pensiones no contributivas.', ca:'Prestacions per desocupació, subsidis, jubilació, incapacitat i pensions no contributives.' },
+    accesos:[ ['Seguridad Social','Seguretat Social','https://www.seg-social.es/'], ['SEPE – Servicio Público de Empleo Estatal','SEPE – Servei Públic d\'Ocupació Estatal','https://www.sepe.es/'] ],
+    nec:['desempleo','buscar-trabajo','pensiones','jubilacion','orientacion-laboral','insercion-laboral','autonomos','emprendimiento'] },
+  { id:'cat-documentos', icono:'🪪', nombre:{ es:'Documentos y certificados', ca:'Documents i certificats' },
+    desc:{ es:'Empadronamiento, certificados de nacimiento, convivencia, residencia y antecedentes, según el organismo competente.', ca:'Empadronament, certificats de naixement, convivència, residència i antecedents, segons l\'organisme competent.' },
+    accesos:[ ['Sede electrónica de la Generalitat','Seu electrònica de la Generalitat','https://web.gencat.cat/es/seu-electronica'] ],
+    nec:['identidad-documentacion','empadronamiento','nacionalidad','extranjeria','migracion-integracion','derechos-orientacion'] },
+  { id:'cat-citas', icono:'📅', nombre:{ es:'Citas previas y trámites digitales', ca:'Cites prèvies i tràmits digitals' },
+    desc:{ es:'Citas con el Ayuntamiento, la Generalitat, la Seguridad Social y otros organismos; identificación digital.', ca:'Cites amb l\'Ajuntament, la Generalitat, la Seguretat Social i altres organismes; identificació digital.' },
+    accesos:[ ['Cita previa del Ayuntamiento de Tarragona','Cita prèvia de l\'Ajuntament de Tarragona','https://citaprevia.tarragona.cat/'], ['Citas de atención ciudadana de la Generalitat','Cites d\'atenció ciutadana de la Generalitat','https://tramits.gencat.cat/es/tramits/cita-informacio/'], ['Sede electrónica de la Generalitat','Seu electrònica de la Generalitat','https://web.gencat.cat/es/seu-electronica'] ],
+    nec:['cita-ayuntamiento','cita-generalitat','cita-otros','sede-generalitat','identificacion-digital','asociacionismo','participacion-ciudadana'] }
+];
+// Entradas nuevas de la categoría «Citas previas y trámites digitales»
+const NEC_CITAS_NUEVAS = [
+  { id:'cita-ayuntamiento', nombre:{ es:'Cita en el Ayuntamiento de Tarragona', ca:'Cita a l\'Ajuntament de Tarragona' }, links:[ LL_('Cita previa del Ayuntamiento de Tarragona', 'Cita prèvia de l\'Ajuntament de Tarragona', 'https://citaprevia.tarragona.cat/'), LL_('Trámites del Ayuntamiento de Tarragona', 'Tràmits de l\'Ajuntament de Tarragona', 'https://seu.tarragona.cat/sta/CarpetaPublic/doEvent?APP_CODE=STA&PAGE_CODE=CATALOGO') ] },
+  { id:'cita-generalitat', nombre:{ es:'Cita en la Generalitat', ca:'Cita a la Generalitat' }, links:[ LL_('Citas de atención ciudadana de la Generalitat', 'Cites d\'atenció ciutadana de la Generalitat', 'https://tramits.gencat.cat/es/tramits/cita-informacio/'), LL_('Cita previa en la Carpeta Ciudadana', 'Cita prèvia a la Carpeta Ciutadana', 'https://ovt.gencat.cat/carpetaciutadana360/mfe-fc-app/gsitfc/AppJava/citpre/citpre.do?set-locale=es_ES') ] },
+  { id:'sede-generalitat', nombre:{ es:'Sede electrónica y buscador de trámites', ca:'Seu electrònica i cercador de tràmits' }, links:[ LL_('Sede electrónica de la Generalitat', 'Seu electrònica de la Generalitat', 'https://web.gencat.cat/es/seu-electronica'), LL_('Buscar un trámite oficial', 'Cercar un tràmit oficial', 'https://web.gencat.cat/es/tramits/cercador/index.html') ] },
+  { id:'identificacion-digital', nombre:{ es:'Identificación digital (idCAT Mòbil)', ca:'Identificació digital (idCAT Mòbil)' }, links:[ LL_('idCAT Mòbil: certificado digital en el móvil', 'idCAT Mòbil: certificat digital al mòbil', 'https://idcat.aoc.cat/') ] },
+  { id:'cita-otros', nombre:{ es:'Cita en otros organismos (DNI, extranjería, Seguridad Social)', ca:'Cita a altres organismes (DNI, estrangeria, Seguretat Social)' }, links:[ LL_('Cita previa de DNI y pasaporte', 'Cita prèvia de DNI i passaport', 'https://www.citapreviadnie.es/citaPreviaDni/'), LL_('Cita previa de extranjería y otras administraciones', 'Cita prèvia d\'estrangeria i altres administracions', 'https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus'), LL_('Seguridad Social', 'Seguretat Social', 'https://www.seg-social.es/') ] }
+];
+function organizarOchoCategorias(){
+  if(!TAXONOMIA || (TAXONOMIA[0] && TAXONOMIA[0].id === 'cat-ayudas')) return;
+  const porId = {}; TAXONOMIA.forEach(a => (a.necesidades || []).forEach(n => { if(!porId[n.id]) porId[n.id] = n; }));
+  NEC_CITAS_NUEVAS.forEach(c => { LINKS_LUIS[c.id] = c.links; porId[c.id] = { id:c.id, nombre:c.nombre, servicios_ids:[] }; });
+  // Duplicados del catálogo antiguo (misma cosa en dos áreas): se unen en una sola entrada
+  const fusion = { 'discapacidad-salud':'discapacidad-situacion', 'dependencia-salud':'dependencia-situacion', 'personas-mayores-salud':'personas-mayores-familia', 'soledad-bienestar':'soledad-familia' };
+  Object.keys(fusion).forEach(d => { const o = porId[d], k = porId[fusion[d]]; if(o && k) k.servicios_ids = Array.from(new Set((k.servicios_ids || []).concat(o.servicios_ids || []))); });
+  const usadas = new Set(Object.keys(fusion));
+  const nuevo = OCHO.map(c => ({ id:c.id, icono:c.icono, nombre:c.nombre, desc:c.desc, accesos:c.accesos,
+    necesidades: c.nec.map(id => { usadas.add(id); return porId[id]; }).filter(Boolean) }));
+  // Lo que no esté en ninguna lista (por si el catálogo crece) va a «Ayudas e ingresos» para no perderse
+  Object.keys(porId).filter(id => !usadas.has(id)).forEach(id => nuevo[0].necesidades.push(porId[id]));
+  TAXONOMIA = nuevo;
+}
+
 function ajustarTaxonomia(){
   const eco = (TAXONOMIA || []).find(a => a.id === 'mi-economia');
   if(!eco || eco.necesidades.some(n => n.id === 'prestaciones-familiares')) return;
