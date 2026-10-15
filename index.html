@@ -938,7 +938,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-14 · v50 (Carrusel, formaciones y portales de empleo)';
+const APP_VERSION_ACOMP = '2026-10-14 · v50 (Carrusel, formaciones, empleo, vivienda→Logos, Mis trámites→necesidades)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1235,10 +1235,15 @@ function necesidadesAcordeonHtml(a){
     } else {
       __NEC_ITEMS.push({ nombre: n.nombre.es });
       const idx = __NEC_ITEMS.length - 1;
+      const textoViv = a.id === 'cat-vivienda'
+        ? (esCA ? 'Les ajudes d\'habitatge són moltes i canvien constantment. Perquè no et perdis, Logos et diu quines n\'hi ha ara i quines et corresponen.' : 'Las ayudas de vivienda son muchas y cambian constantemente. Para que no te pierdas, Logos te dice cuáles hay ahora y cuáles te corresponden.')
+        : (esCA ? 'Per a això et recomanem anar directament a Logos: truca\'ns o demana cita i t\'acompanyem.' : 'Para esto te recomendamos dirigirte directamente a Logos: llámanos o pide cita y te acompañamos.');
+      const btnAyuda = CURRENT_USER
+        ? `<button class="nec-btn nec-btn-ayuda" onclick="avisarLogosNecesidad(${idx})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`
+        : `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`;
       cuerpo = `<div class="nec-item" id="nec-vacia-${idx}">
-        <div class="nec-item-d">${esCA ? 'Per a això et recomanem anar directament a Logos: truca\'ns o demana cita i t\'acompanyem.' : 'Para esto te recomendamos dirigirte directamente a Logos: llámanos o pide cita y te acompañamos.'}</div>
-        <div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}
-        ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="avisarLogosNecesidad(${idx})">🤝 ${esCA ? 'Aviseu Logos per mi' : 'Avisad a Logos por mí'}</button>` : ''}</div></div>`;
+        <div class="nec-item-d">${textoViv}</div>
+        <div class="nec-item-b" style="margin-top:8px;">${btnAyuda}${accionesLogosHtml(esCA)}</div></div>`;
     }
     const adminHtml = IS_ADMIN ? adminControlesNecesidad(n, ocultas) : '';
     const xResumen = (IS_ADMIN && CATALOGO_AJUSTES_OK && CATALOGO_V13) ? `<button class="nec-x nec-x-sum" title="${esCA ? 'Treure aquesta prestació' : 'Quitar esta prestación'}" onclick="event.preventDefault();event.stopPropagation();quitarPrestacionCatalogo('${escAttr(n.id)}')">✕</button>` : '';
@@ -1755,6 +1760,11 @@ async function renderResumenStep(mostrarCatalogoYa){
         : 'La Associació Logos – Projectes Socials es una entidad privada sin ánimo de lucro, con sede en Tarragona, con más de 10 años de experiencia en el ámbito social. Desde 2015, trabajamos en el diseño, desarrollo y gestión de proyectos orientados a mejorar las oportunidades y la calidad de vida de las personas. Contamos con un equipo técnico multidisciplinar especializado en inserción sociolaboral, formación, inclusión social, capacitación digital, igualdad y acompañamiento a colectivos en situación de vulnerabilidad. Nuestra trayectoria combina intervención directa, gestión técnica de proyectos y colaboración con administraciones públicas, entidades sociales y otros agentes del territorio.'}</p>
     </div>
   `;
+}
+
+function irANecesidades(){
+  showScreen('home');
+  setTimeout(revelarCatalogo, 60);
 }
 
 function revelarCatalogo(){
@@ -5218,6 +5228,10 @@ async function renderDashboard(){
         return `<div class="list-row" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}${quien}</span><span class="chip ${chipClass}">${chipLabel}</span></div>${botones}</div>`;
       }).join('')
     : `<div class="empty-note">${t.sinTramites}</div>`;
+  const btnEmpezarTramite = `<div style="margin-top:12px;${(tramites && tramites.length) ? '' : 'padding:14px;border:1.5px dashed var(--ochre);border-radius:14px;background:var(--ochre-soft);'}">
+      ${(tramites && tramites.length) ? '' : `<p style="margin:0 0 10px;font-size:13.5px;line-height:1.5;"><strong>${LANG==='ca' ? 'Encara no has començat cap tràmit.' : 'Todavía no has empezado ningún trámite.'}</strong> ${LANG==='ca' ? 'Mira què necessites i comença des d\'aquí; si et costa, Logos t\'ajuda.' : 'Mira qué necesitas y empieza desde aquí; si te cuesta, Logos te ayuda.'}</p>`}
+      <button class="primary-btn" style="margin:0;background:var(--ochre);" onclick="irANecesidades()">🔎 ${(tramites && tramites.length) ? (LANG==='ca' ? 'Començar un altre tràmit' : 'Empezar otro trámite') : (LANG==='ca' ? 'Veure què necessito i començar' : 'Ver qué necesito y empezar')}</button>
+    </div>`;
 
   const documentosHtml = (documentos && documentos.length)
     ? documentos.map(d => `
@@ -5348,6 +5362,7 @@ async function renderDashboard(){
         <h3 style="margin:0;">${t.misTramites}</h3>
       </div>
       ${tramitesHtml}
+      ${btnEmpezarTramite}
     </div>
 
     <div id="sec-consentimiento"></div>
