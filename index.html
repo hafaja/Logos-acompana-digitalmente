@@ -794,13 +794,14 @@ const ACCESOS_CITAS = [
 // ================= NECESIDADES EN UNA SOLA VISTA (propuesta de Luis) =================
 // Accesos rápidos: trámites más frecuentes con su enlace oficial. Giran solos en el carrusel de arriba.
 const NEC_RAPIDOS = [
-  { em:'🏙️', es:'Pedir cita en el Ayuntamiento', ca:'Demanar cita a l\'Ajuntament', d_es:'Padrón, atención municipal y trámites de Tarragona.', d_ca:'Padró, atenció municipal i tràmits de Tarragona.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:'https://citaprevia.tarragona.cat/', g:['#1E3F66','#16233F'] },
-  { em:'🏛️', es:'Pedir cita en la Generalitat', ca:'Demanar cita a la Generalitat', d_es:'Atención ciudadana de la Generalitat de Catalunya.', d_ca:'Atenció ciutadana de la Generalitat de Catalunya.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:'https://tramits.gencat.cat/es/tramits/cita-informacio/', g:['#8A4B12','#D9832E'] },
+  { em:'🏙️', es:'Empadronamiento', ca:'Empadronament', d_es:'Pide cita para empadronarte en el Ayuntamiento de Tarragona.', d_ca:'Demana cita per empadronar-te a l\'Ajuntament de Tarragona.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:URL_CITA_TGN, g:['#1E3F66','#16233F'] },
+  { em:'🛂', es:'Cita previa para el NIE', ca:'Cita prèvia per al NIE', d_es:'Extranjería: pide cita para tu NIE y otros trámites.', d_ca:'Estrangeria: demana cita per al teu NIE i altres tràmits.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:'https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus', g:['#8A4B12','#D9832E'] },
+{ em:'👨‍👩‍👧‍👦', es:'Familia numerosa', ca:'Família nombrosa', d_es:'Pide o renueva el título de familia numerosa.', d_ca:'Demana o renova el títol de família nombrosa.', tag_es:'Familias', tag_ca:'Famílies', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/Titol-de-familia-nombrosa?category=', g:['#2F6B4F','#1F4A36'] },
   { em:'💶', es:'Ingreso Mínimo Vital', ca:'Ingrés Mínim Vital', d_es:'Una ayuda mensual si tu familia tiene muy pocos ingresos.', d_ca:'Un ajut mensual si la teva família té pocs ingressos.', tag_es:'Ayudas e ingresos', tag_ca:'Ajuts i ingressos', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/ingres-minim-vital', g:['#2F6B27','#1E4A1A'] },
-  { em:'🏠', es:'Ayudas al alquiler', ca:'Ajuts al lloguer', d_es:'Busca las ayudas para pagar el alquiler de tu vivienda.', d_ca:'Cerca els ajuts per pagar el lloguer del teu habitatge.', tag_es:'Vivienda', tag_ca:'Habitatge', u:'https://web.gencat.cat/es/tramits/cercador/index.html', g:['#6A3FA0','#43266B'] },
-  { em:'🧓', es:'Dependencia y discapacidad', ca:'Dependència i discapacitat', d_es:'Reconocimiento de la dependencia y ayudas para cuidar.', d_ca:'Reconeixement de la dependència i ajuts per cuidar.', tag_es:'Mayores y cuidados', tag_ca:'Gent gran i cures', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-dependencia', g:['#B0392F','#7A2019'] },
+  { em:'🏠', es:'Ayudas al alquiler', ca:'Ajuts al lloguer', d_es:'Las ayudas cambian cada año: dirígete a Logos y te decimos cuáles hay y cómo pedirlas.', d_ca:'Els ajuts canvien cada any: adreça\'t a Logos i et diem quins n\'hi ha i com demanar-los.', tag_es:'Dirígete a Logos', tag_ca:'Adreça\'t a Logos', logos:true, g:['#6A3FA0','#43266B'] },
+  { em:'🧓', es:'Dependencia y discapacidad', ca:'Dependència i discapacitat', d_es:'Reconocimiento de la dependencia y ayudas para cuidar.', d_ca:'Reconeixement de la dependència i ajuts per cuidar.', tag_es:'Mayores y cuidados', tag_ca:'Gent gran i cures', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia', g:['#B0392F','#7A2019'] },
   { em:'💼', es:'Paro y subsidios', ca:'Atur i subsidis', d_es:'Consulta tu prestación por desempleo en el SEPE.', d_ca:'Consulta la teva prestació per desocupació al SEPE.', tag_es:'Trabajo', tag_ca:'Feina', u:'https://www.sepe.es/', g:['#2E5A8F','#1E3F66'] },
-  { em:'🧾', es:'Pensiones y Seguridad Social', ca:'Pensions i Seguretat Social', d_es:'Jubilación, incapacidad y otras prestaciones.', d_ca:'Jubilació, incapacitat i altres prestacions.', tag_es:'Pensiones', tag_ca:'Pensions', u:'https://www.seg-social.es/', g:['#8A6D1D','#5C4710'] },
+  { em:'🧾', es:'Jubilación', ca:'Jubilació', d_es:'Pide o consulta tu pensión de jubilación en la Seguridad Social.', d_ca:'Demana o consulta la teva pensió de jubilació a la Seguretat Social.', tag_es:'Pensiones', tag_ca:'Pensions', u:'https://prestaciones.seg-social.es/servicio/pension-jubilacion.html', g:['#8A6D1D','#5C4710'] },
   { em:'🔐', es:'Sede electrónica de la Generalitat', ca:'Seu electrònica de la Generalitat', d_es:'Trámites online con tu certificado digital.', d_ca:'Tràmits en línia amb el teu certificat digital.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/seu-electronica', g:['#16233F','#2E5A8F'] },
   { em:'🔎', es:'Buscar un trámite oficial', ca:'Cercar un tràmit oficial', d_es:'¿No sabes cuál es? Busca por tema en el buscador oficial.', d_ca:'No saps quin és? Cerca per tema al cercador oficial.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/tramits/cercador/index.html', g:['#33449E','#1E2A66'] },
   { em:'🤝', es:'Habla con Logos', ca:'Parla amb Logos', d_es:'Si no sabes por dónde empezar, te acompañamos.', d_ca:'Si no saps per on començar, t\'acompanyem.', tag_es:'Te ayudamos', tag_ca:'T\'ajudem', logos:true, g:['#D9832E','#8A4B12'] }
@@ -937,7 +938,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-14 · v49 (Necesidades en las 8 categorías de Luis)';
+const APP_VERSION_ACOMP = '2026-10-14 · v50 (Carrusel, formaciones y portales de empleo)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1279,7 +1280,7 @@ const OCHO = [
     nec:['becas','becas-economia','escolarizacion','educacion-infantil','formacion-profesional','formacion','formacion-adultos','universidad','educacion-especial','necesidades-educativas','aprendizaje-permanente','reconocimiento-competencias'] },
   { id:'cat-mayores', icono:'🧓', nombre:{ es:'Mayores, discapacidad y dependencia', ca:'Gent gran, discapacitat i dependència' },
     desc:{ es:'Reconocimiento de dependencia o discapacidad, prestaciones para cuidadores y recursos para la autonomía personal. También salud y bienestar.', ca:'Reconeixement de dependència o discapacitat, prestacions per a cuidadors i recursos per a l\'autonomia personal. També salut i benestar.' },
-    accesos:[ ['Reconocimiento de dependencia','Reconeixement de dependència','https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-dependencia'] ],
+    accesos:[ ['Reconocimiento de dependencia','Reconeixement de dependència','https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia'], ['Grado de discapacidad (reconocimiento o revisión)','Grau de discapacitat (reconeixement o revisió)','https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-o-revisio-del-grau-de-la-discapacitat'] ],
     nec:['dependencia-situacion','discapacidad-situacion','autonomia-personal','personas-mayores-familia','cuidado-familiares','apoyo-cuidadores','personas-dependientes-cargo','ayuda-domicilio-vivienda','teleasistencia-vivienda','atencion-domiciliaria-salud','centros-dia','residencias','actividades-mayores','soledad-familia','rehabilitacion','accesibilidad-comunidad','salud','salud-mental','prevencion'] },
   { id:'cat-trabajo', icono:'💼', nombre:{ es:'Trabajo y pensiones', ca:'Feina i pensions' },
     desc:{ es:'Prestaciones por desempleo, subsidios, jubilación, incapacidad y pensiones no contributivas.', ca:'Prestacions per desocupació, subsidis, jubilació, incapacitat i pensions no contributives.' },
@@ -3385,7 +3386,9 @@ function renderBusquedaEmpleo(){
   const portales = [
     { nombre: 'Feina Activa (Generalitat)', desc: esCA ? 'Ofertes de feina de Catalunya, gestionades pel SOC.' : 'Ofertas de trabajo de Cataluña, gestionadas por el SOC.', url: 'https://feinaactiva.gencat.cat/es/home' },
     { nombre: 'InfoJobs', desc: esCA ? 'El portal d\'ofertes més gran d\'Espanya.' : 'El portal de ofertas más grande de España.', url: 'https://www.infojobs.net/' },
-    { nombre: 'Indeed', desc: esCA ? 'Cerca ofertes de moltes fonts diferents alhora.' : 'Busca ofertas de muchas fuentes diferentes a la vez.', url: 'https://es.indeed.com/' }
+    { nombre: 'Indeed', desc: esCA ? 'Cerca ofertes de moltes fonts diferents alhora.' : 'Busca ofertas de muchas fuentes diferentes a la vez.', url: 'https://es.indeed.com/' },
+    { nombre: 'JOB TODAY', desc: esCA ? 'Ofertes a Tarragona (hostaleria, vendes, construcció…) amb inscripció fàcil i app per al mòbil.' : 'Ofertas en Tarragona (hostelería, ventas, construcción…) con inscripción fácil y app para el móvil.', url: 'https://jobtoday.com/es/trabajos/tarragona' },
+    { nombre: 'Empleo en Red', desc: esCA ? 'Xarxa d\'entitats sense ànim de lucre que orienten i formen per trobar feina.' : 'Red de entidades sin ánimo de lucro que orientan y forman para encontrar trabajo.', url: 'https://empleoenred.org/' }
   ];
 
   // Grandes empleadores del territorio, con su propia página oficial de empleo
@@ -4722,6 +4725,21 @@ function descargarSalidaPorId(id){
 }
 
 
+const FORMACIONES_EXTRA = [
+  { em:'⚖️', t:'Igualdad de género', d:'Manual formativo de un curso online sobre igualdad entre mujeres y hombres.', f:'Academia Formación · PDF', u:'https://academia-formacion.com/wp-content/uploads/2026/01/MANUAL-FORMATIVO-CURSO-ONLINE-IGUALDAD-DE-GENERO_.pdf' },
+  { em:'📵', t:'Desconexión digital: guía básica', d:'Qué es el derecho a desconectar del trabajo, cómo cuidar la salud y cómo crear políticas en la organización (INSST, 2024).', f:'INSST · PDF', u:'https://fe.ccoo.es/a582298e284549566debdcbff6d2ea85000063.pdf' },
+  { em:'🦺', t:'Prevención de riesgos laborales', d:'Curso básico de 60 horas: riesgos generales y por sector, gestión de la prevención y primeros auxilios.', f:'Curso PRL · PDF', u:'https://curso-prevencion-riesgos-laborales.com/prl-30.pdf' }
+];
+function formacionesExtraHtml(){
+  return `<div class="info-box" style="margin-bottom:20px;border-color:var(--line);background:var(--paper);">
+    <div class="info-box-title">Más formaciones</div>
+    <p style="margin-bottom:12px;">Materiales de otras entidades para seguir aprendiendo. Se abren en una página nueva.</p>
+    ${FORMACIONES_EXTRA.map(f => `<a class="service-row" style="text-decoration:none;color:inherit;display:flex;align-items:flex-start;gap:12px;margin-bottom:8px;" href="${f.u}" target="_blank" rel="noopener noreferrer">
+      <span style="font-size:24px;">${f.em}</span>
+      <span style="flex:1;"><strong>${f.t}</strong><br><span class="subtle" style="font-size:13px;">${f.d}</span><br><span style="font-size:12px;color:var(--ochre);font-weight:600;">${f.f} ↗</span></span></a>`).join('')}
+  </div>`;
+}
+
 function renderVoluntariado(){
   if(bloquearSinConsentimiento()) return;
   const cont = document.getElementById('voluntariado-content');
@@ -4746,6 +4764,8 @@ function renderVoluntariado(){
       <p style="margin-bottom:12px;">Este módulo no forma parte del programa oficial de 8 módulos, pero puede ser útil como recurso adicional de actividades.</p>
       ${VOLUNTARIADO_MODULOS.filter(m => m.num > 8).map(renderModuloAcordeon).join('')}
     </div>
+
+    ${formacionesExtraHtml()}
 
     <div class="pull-quote">Escuchamos con el corazón · Comprendemos a las personas · Acompañamos con humanidad · Transformamos juntos la sociedad</div>
 
