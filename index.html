@@ -458,7 +458,8 @@
       <div class="menu-mas-lista">
       <!-- Jóvenes en acción: oculto por ahora (decisión con Luis). Para volver a mostrarlo, quitar style="display:none". -->
       <button data-target="jovenes" onclick="showScreen('jovenes');renderJovenesEnAccion()" id="sidebar-jovenes-btn" style="display:none;">🌱 Jóvenes en acción</button>
-      <button data-target="familias" onclick="showScreen('familias');renderFamilias()" id="sidebar-familias-btn">👨‍👩‍👧 Familias</button>
+      <!-- Familias: oculto por ahora, igual que Jóvenes en acción. Para volver a mostrarlo, quitar style="display:none". -->
+      <button data-target="familias" onclick="showScreen('familias');renderFamilias()" id="sidebar-familias-btn" style="display:none;">👨‍👩‍👧 Familias</button>
       <button data-target="aulaciudadano" onclick="showScreen('aulaciudadano');renderAulaCiudadano()" id="sidebar-aula-btn">🎓 Aula Virtual</button>
       <button data-target="voluntariado" onclick="showScreen('voluntariado');renderVoluntariado()" id="sidebar-volunteer-btn">🤝 Voluntariado</button>
       <button data-target="empleo" onclick="showScreen('empleo');renderBusquedaEmpleo()" id="sidebar-empleo-btn">💼 Búsqueda de empleo</button>
@@ -5352,7 +5353,7 @@ async function renderDashboard(){
     <div id="sec-emprendimiento"></div>
     ${emprendimientoHtml}
 
-    ${mensajesNuevos ? `
+    ${(mensajesNuevos && false) ? `
     <div class="info-box info-box-gold" style="margin-bottom:16px;cursor:pointer;" onclick="showScreen('familias');renderFamilias()">
       <p style="margin:0;"><strong>💬 ${mensajesNuevos} ${LANG==='ca' ? (mensajesNuevos === 1 ? 'missatge nou' : 'missatges nous') + ' de Joves en acció' : (mensajesNuevos === 1 ? 'mensaje nuevo' : 'mensajes nuevos') + ' de Jóvenes en acción'}</strong> →</p>
     </div>` : ''}
@@ -6582,6 +6583,7 @@ async function enviarMensajeAsistente(){
   const pensando = agregarMensajeAsistente('…', 'bot');
   try {
     const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/asistente', {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await tokenParaFunciones()), 'apikey': SUPABASE_KEY },
       body: JSON.stringify({
@@ -6712,7 +6714,7 @@ function guiaSlidesAcomp(){
       p: L('En el menú, «¿Qué más te ofrecemos?» se despliega con:', 'Al menú, «Què més t\'oferim?» es desplega amb:'),
       l: [L('💼 <strong>Búsqueda de empleo</strong> · 🧓 <strong>Cuidados y compañía</strong>', '💼 <strong>Cerca de feina</strong> · 🧓 <strong>Cures i companyia</strong>'),
           L('🚀 <strong>Mi emprendimiento</strong> · 🎓 <strong>Aula Virtual</strong>', '🚀 <strong>El meu emprenedoria</strong> · 🎓 <strong>Aula Virtual</strong>'),
-          L('🤝 <strong>Voluntariado</strong> · 👨‍👩‍👧 <strong>Familias</strong>', '🤝 <strong>Voluntariat</strong> · 👨‍👩‍👧 <strong>Famílies</strong>'),
+          L('🤝 <strong>Voluntariado</strong>', '🤝 <strong>Voluntariat</strong>'),
           L('Y <strong>Mi currículum</strong>, para preparar el tuyo.', 'I <strong>El meu currículum</strong>, per preparar el teu.')] },
     { e: '🔒', t: L('Tus datos y los enlaces seguros', 'Les teves dades i els enllaços segurs'),
       l: [L('Solo el personal de Logos ve tus datos, y tú puedes verlos y corregirlos.', 'Només el personal de Logos veu les teves dades, i tu pots veure\'ls i corregir-los.'),
