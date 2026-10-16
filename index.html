@@ -1586,6 +1586,7 @@ loadData();
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 // --- Configuración de conexión ---
 // La "publishable key" está pensada para ir en el navegador: la protección real
@@ -4063,6 +4064,42 @@ function hablarTraductor(texto, idioma){
   window.speechSynthesis.speak(utter);
 }
 
+// ---------- Código QR personal ----------
+function qrSvg(token){
+  if(typeof qrcode === 'undefined' || !token) return '';
+  const q = qrcode(0, 'M'); q.addData('LOGOS-QR:' + token); q.make();
+  return q.createSvgTag({ cellSize: 6, margin: 2, scalable: true });
+}
+function qrHtml(perfil, nombre){
+  const ca = LANG === 'ca';
+  const svg = perfil && perfil.qr_token ? qrSvg(perfil.qr_token) : '';
+  if(!svg) return `<p style="font-size:13px;color:var(--muted);">${ca ? 'El teu QR encara no està disponible.' : 'Tu QR todavía no está disponible.'}</p>`;
+  return `
+    <div id="qr-caja" style="width:210px;max-width:70%;margin:0 auto;background:#fff;padding:6px;border-radius:10px;border:1px solid var(--line,#ddd);">${svg}</div>
+    <p style="margin:8px 0 2px;font-weight:700;">${escAttr(nombre)}</p>
+    <p style="margin:0 0 10px;font-size:13px;color:var(--muted);">${ca ? 'Ensenya aquest codi al personal de Logos perquè trobi la teva fitxa ràpidament. No conté dades personals.' : 'Enseña este código al personal de Logos para que encuentre tu ficha rápidamente. No contiene datos personales.'}</p>
+    <button class="primary-btn" style="margin-bottom:8px;" onclick="qrDescargar()">${ca ? '⬇️ Descarrega el meu QR' : '⬇️ Descargar mi QR'}</button>
+    <button class="primary-btn" style="background:#8a8a8a;margin-bottom:0;" onclick="qrRegenerar()">${ca ? '🔄 Canviar el meu codi' : '🔄 Cambiar mi código'}</button>`;
+}
+function qrDescargar(){
+  const svg = document.querySelector('#qr-caja svg'); if(!svg) return;
+  const xml = new XMLSerializer().serializeToString(svg);
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas'); c.width = c.height = 600;
+    const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 600, 600); g.drawImage(img, 0, 0, 600, 600);
+    const a = document.createElement('a'); a.download = 'mi-qr-logos.png'; a.href = c.toDataURL('image/png'); a.click();
+  };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
+}
+async function qrRegenerar(){
+  const ca = LANG === 'ca';
+  if(!confirm(ca ? 'El codi actual deixarà de funcionar. Vols canviar-lo?' : 'El código actual dejará de funcionar. ¿Quieres cambiarlo?')) return;
+  const { data, error } = await sb.rpc('qr_regenerar');
+  if(error || !data){ alert(ca ? 'No s\'ha pogut canviar ara mateix.' : 'No se ha podido cambiar ahora mismo.'); return; }
+  const caja = document.getElementById('qr-caja'); if(caja) caja.innerHTML = qrSvg(data);
+}
+
 function escAttr(txt){
   return String(txt == null ? '' : txt).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
@@ -5328,6 +5365,7 @@ async function renderDashboard(){
     : '';
 
   const gridAccesos = [
+    { id:'qr', icon:'🔳', bg:'#EFEFEF', color:'var(--ink)', titulo: LANG==='ca'?'El meu QR':'Mi QR', sub: LANG==='ca'?'Per identificar-te a Logos.':'Para identificarte en Logos.' },
     { id:'recordatorios', icon:'🔔', bg:'var(--ochre-soft)', color:'#7A4A1F', titulo: LANG==='ca'?'Recordatoris':'Recordatorios', sub: LANG==='ca'?'Avisos i properes cites.':'Avisos y próximas citas.' },
     { id:'emprendimiento', icon:'🚀', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'El meu emprenedoria':'Mi emprendimiento', sub: emprendimiento ? (LANG==='ca'?'Itinerari en marxa.':'Itinerario en marcha.') : (LANG==='ca'?'Encara no has començat.':'Aún no has empezado.') },
     { id:'consulta', icon:'💬', bg:'#E7ECFF', color:'#33449E', titulo: LANG==='ca'?'La meva consulta d\'orientació':'Mi consulta de orientación', sub: (consultas && consultas.length) ? (LANG==='ca'?`${consultas.length} consulta(es).`:`${consultas.length} consulta(s).`) : (LANG==='ca'?'Sense consultes.':'Sin consultas.') },
@@ -5381,6 +5419,15 @@ async function renderDashboard(){
           ${avisosPersonales[av.id] ? `<p style="margin:6px 0 0;padding:7px 10px;background:var(--gold-soft);border-radius:8px;font-size:13px;white-space:pre-line;"><strong>${LANG==='ca' ? 'Per a tu:' : 'Para ti:'}</strong> ${escAttr(avisosPersonales[av.id])}</p>` : ''}
         </div>`).join('')}
     </div>` : ''}
+
+    <div id="sec-qr"></div>
+    <div class="panel-card" style="margin-top:16px;text-align:center;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;text-align:left;">
+        <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">🔳</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'El meu QR' : 'Mi QR'}</h3>
+      </div>
+      ${qrHtml(perfil, nombre)}
+    </div>
 
     <div id="sec-consulta"></div>
     ${consultasHtml ? `
