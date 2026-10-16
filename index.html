@@ -1811,7 +1811,16 @@ function revelarCatalogo(){
 }
 
 async function initAuth(){
+  // Al volver a la pestaña (por ejemplo, tras abrir WhatsApp o un enlace oficial) Supabase vuelve a avisar de la sesión.
+  // Si es la misma persona, no se vuelve a pintar la pantalla: así no se pierde lo que estaba escribiendo.
+  let __usuarioYaVisto = null;
   sb.auth.onAuthStateChange(async (_event, session) => {
+    const idNuevo = session && session.user ? session.user.id : null;
+    if(idNuevo && idNuevo === __usuarioYaVisto && _event !== 'USER_UPDATED'){
+      CURRENT_USER = session.user;
+      return;
+    }
+    __usuarioYaVisto = idNuevo;
     CURRENT_USER = session ? session.user : null;
     await checkStaff();
     if(document.getElementById('screen-profile').classList.contains('active')) renderDashboard();
