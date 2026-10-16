@@ -4065,9 +4065,10 @@ function hablarTraductor(texto, idioma){
 }
 
 // ---------- Código QR personal ----------
+const INTRANET_QR_URL = 'https://intranet.logostgn.cat/';
 function qrSvg(token){
   if(typeof qrcode === 'undefined' || !token) return '';
-  const q = qrcode(0, 'M'); q.addData('LOGOS-QR:' + token); q.make();
+  const q = qrcode(0, 'M'); q.addData(INTRANET_QR_URL + '?qr=' + token); q.make();
   return q.createSvgTag({ cellSize: 6, margin: 2, scalable: true });
 }
 function qrHtml(perfil, nombre){
