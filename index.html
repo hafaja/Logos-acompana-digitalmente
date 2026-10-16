@@ -1706,7 +1706,7 @@ async function renderEntradaPanel(){
     renderConsentStep();
     return;
   }
-  if(!perfil.nombre_completo){
+  if(!datosContactoCompletos(perfil)){
     ACCESO_COMPLETO = false;
     catalogo.style.display = 'none';
     toggleSidebarVisible(true);
@@ -6159,10 +6159,17 @@ async function guardarEncuesta(){
   document.getElementById('encuesta-content').innerHTML = `<div class="placeholder">${esCA ? 'Gràcies per la teva opinió!' : '¡Gracias por tu opinión!'}</div>`;
 }
 
+// Datos obligatorios para poder ponernos en contacto con la persona: nombre, teléfono, calle y código postal.
+function datosContactoCompletos(p){
+  p = p || {};
+  const t = String(p.telefono || '').replace(/\D/g, '');
+  return !!(p.nombre_completo && t.length >= 9 && String(p.calle || '').trim().length >= 3 && /^\d{5}$/.test(String(p.codigo_postal || '').trim()));
+}
+
 function renderDatosStep(){
   if(bloquearSinConsentimiento()) return;
   const p = window.__perfilActual || {};
-  if(!p.nombre_completo || !p.telefono){
+  if(!datosContactoCompletos(p)){
     renderDatosStepMinimo();
   } else {
     renderDatosStepEleccion();
@@ -6173,17 +6180,29 @@ function renderDatosStepMinimo(){
   const esCA = LANG === 'ca';
   const p = window.__perfilActual || {};
   document.getElementById('entrada-panel').innerHTML = `
-    <h2 class="screen-title">${esCA ? 'Les teves dades bàsiques' : 'Tus datos básicos'}</h2>
+    <h2 class="screen-title">${esCA ? 'Les teves dades de contacte' : 'Tus datos de contacto'}</h2>
     <p class="subtle">${esCA
-      ? 'Només et demanem el nom i un telèfon de contacte per començar. La resta ho pots fer tu mateix/a ara, o t\'ajudem nosaltres més endavant, com prefereixis.'
-      : 'Solo te pedimos el nombre y un teléfono de contacto para empezar. El resto lo puedes hacer tú mismo/a ahora, o te ayudamos nosotros más adelante, como prefieras.'}</p>
+      ? 'Necessitem aquestes dades per poder posar-nos en contacte amb tu. Són obligatòries. La resta les pots completar tu mateix/a ara, o t\'ajudem nosaltres més endavant, com prefereixis.'
+      : 'Necesitamos estos datos para poder ponernos en contacto contigo. Son obligatorios. El resto lo puedes completar tú mismo/a ahora, o te ayudamos nosotros más adelante, como prefieras.'}</p>
     <div class="field">
       <label>${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'} *</label>
-      <input type="text" id="pf-nombre-min" value="${p.nombre_completo || ''}">
+      <input type="text" id="pf-nombre-min" value="${escAttr(p.nombre_completo || '')}" autocomplete="name">
     </div>
     <div class="field">
       <label>${esCA ? 'Telèfon de contacte' : 'Teléfono de contacto'} *</label>
-      <input type="tel" id="pf-telefono-min" value="${p.telefono || ''}">
+      <input type="tel" id="pf-telefono-min" value="${escAttr(p.telefono || '')}" autocomplete="tel" inputmode="tel">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Carrer i número' : 'Calle y número'} *</label>
+      <input type="text" id="pf-calle-min" value="${escAttr(p.calle || '')}" autocomplete="street-address">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Codi postal' : 'Código postal'} *</label>
+      <input type="text" id="pf-cp-min" value="${escAttr(p.codigo_postal || '')}" inputmode="numeric" maxlength="5" autocomplete="postal-code">
+    </div>
+    <div class="field">
+      <label>${esCA ? 'Municipi' : 'Municipio'}</label>
+      <input type="text" id="pf-municipio-min" value="${escAttr(p.municipio || 'Tarragona')}">
     </div>
     <button class="primary-btn" onclick="guardarDatosMinimos()">${esCA ? 'Continuar →' : 'Continuar →'}</button>
   `;
@@ -6191,15 +6210,29 @@ function renderDatosStepMinimo(){
 
 async function guardarDatosMinimos(){
   const esCA = LANG === 'ca';
-  const nombre = document.getElementById('pf-nombre-min').value.trim();
-  const telefono = document.getElementById('pf-telefono-min').value.trim();
-  if(!nombre || !telefono){
-    document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin',
-      `<div class="auth-error">${esCA ? 'El nom i el telèfon són obligatoris per continuar.' : 'El nombre y el teléfono son obligatorios para continuar.'}</div>`);
+  const v = id => (document.getElementById(id).value || '').trim();
+  const nombre = v('pf-nombre-min'), telefono = v('pf-telefono-min'), calle = v('pf-calle-min'), cp = v('pf-cp-min'), municipio = v('pf-municipio-min');
+  const panel = document.getElementById('entrada-panel');
+  panel.querySelectorAll('.auth-error').forEach(e => e.remove());
+  const falta = [];
+  if(!nombre) falta.push(esCA ? 'el nom' : 'el nombre');
+  if(telefono.replace(/\D/g, '').length < 9) falta.push(esCA ? 'un telèfon vàlid (9 xifres)' : 'un teléfono válido (9 cifras)');
+  if(calle.length < 3) falta.push(esCA ? 'el carrer' : 'la calle');
+  if(!/^\d{5}$/.test(cp)) falta.push(esCA ? 'el codi postal (5 xifres)' : 'el código postal (5 cifras)');
+  if(falta.length){
+    panel.insertAdjacentHTML('afterbegin',
+      `<div class="auth-error">${esCA ? 'Falta per omplir: ' : 'Falta por rellenar: '}${falta.join(', ')}.</div>`);
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return;
   }
-  await sb.from('perfiles').update({ nombre_completo: nombre, telefono }).eq('id', CURRENT_USER.id);
-  window.__perfilActual = { ...window.__perfilActual, nombre_completo: nombre, telefono };
+  const cambios = { nombre_completo: nombre, telefono, calle, codigo_postal: cp };
+  if(municipio) cambios.municipio = municipio;
+  const { error } = await sb.from('perfiles').update(cambios).eq('id', CURRENT_USER.id);
+  if(error){
+    panel.insertAdjacentHTML('afterbegin', `<div class="auth-error">${escAttr(error.message)}</div>`);
+    return;
+  }
+  window.__perfilActual = { ...window.__perfilActual, ...cambios };
   renderDatosStepEleccion();
 }
 
