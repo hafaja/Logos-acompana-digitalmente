@@ -1732,7 +1732,7 @@ async function renderResumenStep(mostrarCatalogoYa){
 
   const hoyIsoEntrada = new Date().toISOString().slice(0,10);
   const [{ data: citasEntrada }, { data: consultasEntrada }, { count: tramitesEnCursoEntrada }, { count: documentosEntrada }] = await Promise.all([
-    sb.from('citas').select('fecha, hora').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoyIsoEntrada).order('fecha', { ascending: true }).limit(1),
+    sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoyIsoEntrada).order('fecha', { ascending: true }).limit(1),
     sb.from('consultas_orientacion').select('id').eq('usuario_id', CURRENT_USER.id).neq('estado', 'respondida'),
     sb.from('tramites').select('id', { count: 'exact', head: true }).eq('usuario_id', CURRENT_USER.id).eq('estado', 'en_curso'),
     sb.from('documentos').select('id', { count: 'exact', head: true }).eq('usuario_id', CURRENT_USER.id)
@@ -1745,7 +1745,7 @@ async function renderResumenStep(mostrarCatalogoYa){
   const recordatorioEntradaHtml = (proximaCitaEntrada || consultasPendEntrada > 0) ? `
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;cursor:pointer;" onclick="showScreen('profile');renderDashboard()">
       <h3 style="color:#7A4A1F;margin-bottom:6px;">🔔 ${esCA ? 'Recordatoris' : 'Recordatorios'}</h3>
-      ${proximaCitaEntrada ? `<p style="margin:0 0 6px;font-size:13.5px;">${esCitaHoyEntrada
+      ${proximaCitaEntrada ? `<p style="margin:0 0 6px;font-size:13.5px;">${proximaCitaEntrada.urgente ? `<span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${esCA ? 'Cita important' : 'Cita importante'}</span> ` : (proximaCitaEntrada.creada_por_email ? `<span class="chip gold">${esCA ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span> ` : '')}${esCitaHoyEntrada
         ? (esCA ? `Tens una cita <strong>avui</strong> a les ${proximaCitaEntrada.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCitaEntrada.hora.slice(0,5)}.`)
         : (esCA
             ? `Et falten <strong>${diasHastaCitaEntrada} dia${diasHastaCitaEntrada===1?'':'s'}</strong> per a la teva cita.`
@@ -4068,7 +4068,7 @@ function hablarTraductor(texto, idioma){
 const INTRANET_QR_URL = 'https://intranet.logostgn.cat/';
 function qrSvg(token){
   if(typeof qrcode === 'undefined' || !token) return '';
-  const q = qrcode(0, 'M'); q.addData(INTRANET_QR_URL + '?qr=' + token); q.make();
+  const q = qrcode(0, 'L'); q.addData(INTRANET_QR_URL + '?qr=' + token); q.make();
   return q.createSvgTag({ cellSize: 6, margin: 2, scalable: true });
 }
 function qrHtml(perfil, nombre){
@@ -5337,7 +5337,7 @@ async function renderDashboard(){
   const recordatoriosHtml = (proximaCita || consultasPendientesCount > 0) ? `
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:16px;">
       <h3 style="color:#7A4A1F;margin-bottom:8px;">🔔 ${LANG==='ca' ? 'Recordatoris' : 'Recordatorios'}</h3>
-      ${proximaCita ? `<p style="margin:0 0 6px;font-size:13.5px;">${esCitaHoy
+      ${proximaCita ? `<p style="margin:0 0 6px;font-size:13.5px;">${proximaCita.urgente ? `<span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Cita important' : 'Cita importante'}</span> ` : (proximaCita.creada_por_email ? `<span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span> ` : '')}${esCitaHoy
         ? (LANG==='ca' ? `Tens una cita <strong>avui</strong> a les ${proximaCita.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCita.hora.slice(0,5)}.`)
         : (LANG==='ca'
             ? `Et falten <strong>${diasHastaCita} dia${diasHastaCita===1?'':'s'}</strong> per a la teva cita (${fmtFecha(proximaCita.fecha)} a les ${proximaCita.hora.slice(0,5)}).`
@@ -5350,7 +5350,7 @@ async function renderDashboard(){
   const citasHtml = (citas && citas.length)
     ? citas.map(c => `
         <div class="list-row">
-          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}</span>
+          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
           <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="cancelarCita('${c.id}')">${LANG==='ca' ? 'Cancel·lar' : 'Cancelar'}</button>
         </div>`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
