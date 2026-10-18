@@ -1719,6 +1719,27 @@ async function renderEntradaPanel(){
   renderResumenStep();
 }
 
+
+// Aviso de espera de Logos ("te atendemos en breve"): se ve en Recordatorios hasta que el equipo marca que ya se ha atendido
+const ESPERA_TXT = {
+  breve:    { es: 'Gracias por registrarte. Ahora mismo estamos atendiendo a otras personas; te atenderemos en cuanto nos sea posible. ¡Gracias por tu paciencia!', ca: 'Gràcies per registrar-te. Ara mateix estem atenent altres persones; t\'atendrem tan aviat com ens sigui possible. Gràcies per la teva paciència!' },
+  diez:     { es: 'Estamos terminando con otra persona. Te atendemos en unos 10 minutos aproximadamente. Gracias por esperar.', ca: 'Estem acabant amb una altra persona. T\'atenem en uns 10 minuts aproximadament. Gràcies per esperar.' },
+  llamamos: { es: 'Hemos recibido tu registro. Una persona del equipo de Logos te llamará en cuanto quede libre.', ca: 'Hem rebut el teu registre. Una persona de l\'equip de Logos et trucarà tan aviat com quedi lliure.' }
+};
+async function cargarAvisoEspera(){
+  try {
+    const desde = new Date(Date.now() - 12 * 3600000).toISOString();
+    const { data, error } = await sb.from('avisos_espera').select('*').eq('usuario_id', CURRENT_USER.id).is('atendido_en', null).gte('creado_en', desde).order('creado_en', { ascending: false }).limit(1);
+    if(error || !data || !data.length) return null;
+    return data[0];
+  } catch(e){ return null; }
+}
+function avisoEsperaHtml(a, esCA, margen){
+  if(!a) return '';
+  const txt = a.clave === 'custom' ? (a.texto || '') : ((ESPERA_TXT[a.clave] || ESPERA_TXT.breve)[esCA ? 'ca' : 'es']);
+  return `<p style="margin:0 0 ${margen || 6}px;font-size:13.5px;"><span class="chip gold">🕓 ${esCA ? 'Missatge de Logos' : 'Mensaje de Logos'}</span> ${escAttr(txt)}</p>`;
+}
+
 async function renderResumenStep(mostrarCatalogoYa){
   const el = document.getElementById('entrada-panel');
   const catalogo = document.getElementById('catalogo-panel');
@@ -1737,14 +1758,16 @@ async function renderResumenStep(mostrarCatalogoYa){
     sb.from('tramites').select('id', { count: 'exact', head: true }).eq('usuario_id', CURRENT_USER.id).eq('estado', 'en_curso'),
     sb.from('documentos').select('id', { count: 'exact', head: true }).eq('usuario_id', CURRENT_USER.id)
   ]);
+  const avisoEsperaEntrada = await cargarAvisoEspera();
   const proximaCitaEntrada = (citasEntrada || [])[0];
   const consultasPendEntrada = (consultasEntrada || []).length;
   const esCitaHoyEntrada = proximaCitaEntrada && proximaCitaEntrada.fecha === hoyIsoEntrada;
   const diasHastaCitaEntrada = proximaCitaEntrada ? Math.round((new Date(proximaCitaEntrada.fecha+'T00:00:00') - new Date(hoyIsoEntrada+'T00:00:00')) / 86400000) : 0;
 
-  const recordatorioEntradaHtml = (proximaCitaEntrada || consultasPendEntrada > 0) ? `
+  const recordatorioEntradaHtml = (proximaCitaEntrada || consultasPendEntrada > 0 || avisoEsperaEntrada) ? `
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;cursor:pointer;" onclick="showScreen('profile');renderDashboard()">
       <h3 style="color:#7A4A1F;margin-bottom:6px;">🔔 ${esCA ? 'Recordatoris' : 'Recordatorios'}</h3>
+      ${avisoEsperaHtml(avisoEsperaEntrada, esCA)}
       ${proximaCitaEntrada ? `<p style="margin:0 0 6px;font-size:13.5px;">${proximaCitaEntrada.urgente ? `<span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${esCA ? 'Cita important' : 'Cita importante'}</span> ` : (proximaCitaEntrada.creada_por_email ? `<span class="chip gold">${esCA ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span> ` : '')}${esCitaHoyEntrada
         ? (esCA ? `Tens una cita <strong>avui</strong> a les ${proximaCitaEntrada.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCitaEntrada.hora.slice(0,5)}.`)
         : (esCA
@@ -5329,14 +5352,16 @@ async function renderDashboard(){
 
   const fmtFecha = f => new Date(f + 'T00:00:00').toLocaleDateString(LANG==='ca' ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
   const hoyIsoCiudadano = new Date().toISOString().slice(0,10);
+  const avisoEsperaPanel = await cargarAvisoEspera();
   const proximaCita = (citas || []).filter(c => c.fecha >= hoyIsoCiudadano).sort((a,b) => (a.fecha+a.hora).localeCompare(b.fecha+b.hora))[0];
   const consultasPendientesCount = (consultas || []).filter(c => c.estado !== 'respondida').length;
   const esCitaHoy = proximaCita && proximaCita.fecha === hoyIsoCiudadano;
   const diasHastaCita = proximaCita ? Math.round((new Date(proximaCita.fecha+'T00:00:00') - new Date(hoyIsoCiudadano+'T00:00:00')) / 86400000) : 0;
 
-  const recordatoriosHtml = (proximaCita || consultasPendientesCount > 0) ? `
+  const recordatoriosHtml = (proximaCita || consultasPendientesCount > 0 || avisoEsperaPanel) ? `
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:16px;">
       <h3 style="color:#7A4A1F;margin-bottom:8px;">🔔 ${LANG==='ca' ? 'Recordatoris' : 'Recordatorios'}</h3>
+      ${avisoEsperaHtml(avisoEsperaPanel, LANG==='ca')}
       ${proximaCita ? `<p style="margin:0 0 6px;font-size:13.5px;">${proximaCita.urgente ? `<span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Cita important' : 'Cita importante'}</span> ` : (proximaCita.creada_por_email ? `<span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span> ` : '')}${esCitaHoy
         ? (LANG==='ca' ? `Tens una cita <strong>avui</strong> a les ${proximaCita.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCita.hora.slice(0,5)}.`)
         : (LANG==='ca'
@@ -6122,6 +6147,7 @@ async function firmarConsentimientoGeneral(){
     btn.disabled = false;
     return;
   }
+  try { await sb.from('avisos_espera').insert({ usuario_id: CURRENT_USER.id, clave: 'breve' }); } catch(e){}
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
   window.__perfilActual = perfil;
   renderDatosStep();
@@ -6795,6 +6821,7 @@ function guiaSlidesAcomp(){
       l: [L('<strong>Mis trámites</strong>: ves en qué punto está cada uno. Si no has empezado ninguno, hay un botón para ver qué necesitas.', '<strong>Els meus tràmits</strong>: veus en quin punt és cadascun. Si no n\'has començat cap, hi ha un botó per veure què necessites.'),
           L('<strong>Mis documentos</strong>: sube una foto o un archivo y lo tienes guardado.', '<strong>Els meus documents</strong>: puja una foto o un arxiu i el tens guardat.'),
           L('<strong>Mis citas</strong> y <strong>Mis datos</strong>: puedes verlos y corregirlos cuando quieras. Si Logos te da una cita, la verás con la etiqueta <strong>«Cita puesta por Logos»</strong> y, si es importante, <strong>🔴 Urgente</strong>.', '<strong>Les meves cites</strong> i <strong>Les meves dades</strong>: pots veure\'ls i corregir-los quan vulguis. Si Logos et dona una cita, la veuràs amb l\'etiqueta <strong>«Cita posada per Logos»</strong> i, si és important, <strong>🔴 Urgent</strong>.'),
+          L('<strong>🔔 Recordatorios</strong>: si Logos está atendiendo a otras personas cuando acabas tu registro, verás aquí un <strong>mensaje de Logos</strong> («te atendemos en cuanto sea posible»).', '<strong>🔔 Recordatoris</strong>: si Logos està atenent altres persones quan acabes el registre, veuràs aquí un <strong>missatge de Logos</strong> («t\'atendrem tan aviat com sigui possible»).'),
           L('<strong>🔳 Mi QR</strong>: enséñalo al personal de Logos y encontrarán tu ficha enseguida. No lleva datos personales.', '<strong>🔳 El meu QR</strong>: ensenya\'l al personal de Logos i trobaran la teva fitxa de seguida. No porta dades personals.')],
       go: logged ? { txt: L('Ir a Mi espacio', 'Anar a El meu espai'), run: () => { showScreen('profile'); renderDashboard(); } } : null },
     { e: '📅', t: L('Pedir una cita', 'Demanar una cita'),
