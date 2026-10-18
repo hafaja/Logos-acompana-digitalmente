@@ -392,7 +392,13 @@
   .gi-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft,#5b6677);}
   .gi-x{background:none;border:none;font-size:20px;cursor:pointer;color:inherit;padding:4px 8px;border-radius:8px;}
   .gi-body{padding:8px 24px 6px;overflow-y:auto;flex:1;animation:giIn .28s ease;}
-  @keyframes giIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:none;}}
+  @keyframes giIn{from{opacity:0;transform:translateX(34px);}to{opacity:1;transform:none;}}
+  @keyframes giInL{from{opacity:0;transform:translateX(-34px);}to{opacity:1;transform:none;}}
+  @keyframes giProg{from{width:0;}to{width:100%;}}
+  .gi-prog{height:4px;background:var(--line,#e6e1d3);margin:8px 16px 0;border-radius:4px;overflow:hidden;}
+  .gi-prog i{display:block;height:100%;width:0;background:var(--gold,#F2BC2C);border-radius:4px;}
+  .gi-pp{background:var(--bg,#f4f1ea);border:none;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:800;cursor:pointer;color:inherit;margin-left:8px;}
+  @media (prefers-reduced-motion:reduce){.gi-body{animation:none !important;}}
   .gi-emoji{font-size:54px;line-height:1.1;margin:6px 0 4px;}
   .gi-t{font-family:var(--font-display,inherit);font-size:23px;line-height:1.2;margin:0 0 8px;color:var(--navy,#1E3F66);}
   .gi-p{font-size:15px;line-height:1.5;margin:0 0 10px;color:var(--ink-soft,#46505f);}
@@ -6725,15 +6731,18 @@ const GI_IMGS = {casa:'data:image/webp;base64,UklGRuBtAABXRUJQVlA4INRtAABw9gGdAS
 let __GI = { i: 0, slides: [], clave: '', L: (a) => a };
 function giStore(op, k, v){ try { return op === 'get' ? localStorage.getItem(k) : localStorage.setItem(k, v); } catch(e){ return null; } }
 function guiaAbrir(slides, clave, L, desde){
-  __GI = { i: desde || 0, slides, clave, L };
+  clearTimeout(__GI.t);
+  const quieto = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  __GI = { i: desde || 0, slides, clave, L, auto: !quieto, pausa: false, dir: 1, t: null };
   let ov = document.getElementById('guia-ov');
   if(!ov){
     ov = document.createElement('div'); ov.id = 'guia-ov';
     ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
     ov.addEventListener('click', e => { if(e.target === ov) guiaCerrar(); });
     let x0 = null;
-    ov.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
-    ov.addEventListener('touchend', e => { if(x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if(Math.abs(dx) > 60) guiaIr(__GI.i + (dx < 0 ? 1 : -1)); }, { passive: true });
+    ov.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; giPausar(true); }, { passive: true });
+    ov.addEventListener('touchend', e => { giPausar(false, 5000); if(x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if(Math.abs(dx) > 60) guiaIr(__GI.i + (dx < 0 ? 1 : -1)); }, { passive: true });
+    ov.addEventListener('pointerdown', e => { if(e.pointerType === 'mouse' && e.target.closest('.gi-body')) giPausar(false, 8000); });
     document.body.appendChild(ov);
   }
   ov.classList.add('open'); guiaPintar();
@@ -6746,14 +6755,40 @@ function giTecla(e){
   else if(e.key === 'ArrowLeft') guiaIr(__GI.i - 1);
 }
 function guiaCerrar(){
+  clearTimeout(__GI.t);
   const ov = document.getElementById('guia-ov'); if(ov) ov.classList.remove('open');
   document.removeEventListener('keydown', giTecla);
   giStore('set', __GI.clave, '1');
 }
-function guiaIr(n){
+function guiaIr(n, auto){
   if(n < 0) return;
-  if(n >= __GI.slides.length){ guiaCerrar(); return; }
+  if(n >= __GI.slides.length){ if(auto){ n = 0; } else { guiaCerrar(); return; } }
+  __GI.dir = n >= __GI.i ? 1 : -1;
   __GI.i = n; guiaPintar();
+}
+// Avance automático: el tiempo de cada diapositiva depende de lo que hay que leer; se detiene al tocar, pasar el ratón o con el botón de pausa
+function giTemporizar(){
+  clearTimeout(__GI.t);
+  const ov = document.getElementById('guia-ov'); if(!ov || !ov.classList.contains('open')) return;
+  const barra = ov.querySelector('.gi-prog i'); if(!barra) return;
+  barra.style.animation = 'none'; void barra.offsetWidth;
+  if(!__GI.auto || __GI.pausa){ barra.style.width = '0'; return; }
+  const s = __GI.slides[__GI.i] || {};
+  const n = String(JSON.stringify([s.t, s.p, s.l, s.hero]) || '').replace(/<[^>]+>/g, '').length;
+  const ms = Math.min(18000, Math.max(6000, 3500 + n * 24));
+  barra.style.animation = 'giProg ' + ms + 'ms linear forwards';
+  __GI.t = setTimeout(() => guiaIr(__GI.i + 1, true), ms);
+}
+function giPausar(si, reanudarEn){
+  clearTimeout(__GI.rt);
+  __GI.pausa = !!si;
+  if(!si && reanudarEn){ __GI.pausa = true; __GI.rt = setTimeout(() => { __GI.pausa = false; giTemporizar(); }, reanudarEn); }
+  giTemporizar();
+}
+function guiaAuto(){
+  __GI.auto = !__GI.auto; __GI.pausa = false;
+  const b = document.querySelector('#guia-ov .gi-pp'); if(b) b.textContent = __GI.auto ? '⏸ ' + __GI.L('Pausa', 'Pausa') : '▶ ' + __GI.L('Automático', 'Automàtic');
+  giTemporizar();
 }
 function guiaIrA(n){
   const s = __GI.slides[__GI.i]; const go = s && s.go;
@@ -6764,8 +6799,9 @@ function guiaPintar(){
   const { i, slides, L } = __GI; const s = slides[i]; const ult = i === slides.length - 1;
   const ov = document.getElementById('guia-ov');
   ov.innerHTML = `<div class="gi-card">
-    <div class="gi-top"><span>${i + 1} / ${slides.length}</span><button class="gi-x" onclick="guiaCerrar()" aria-label="${L('Cerrar', 'Tancar')}">✕</button></div>
-    <div class="gi-body" id="gi-body">
+    <div class="gi-top"><span>${i + 1} / ${slides.length}<button class="gi-pp" onclick="guiaAuto()">${__GI.auto ? '⏸ ' + L('Pausa', 'Pausa') : '▶ ' + L('Automático', 'Automàtic')}</button></span><button class="gi-x" onclick="guiaCerrar()" aria-label="${L('Cerrar', 'Tancar')}">✕</button></div>
+    <div class="gi-prog"><i></i></div>
+    <div class="gi-body" id="gi-body" style="${__GI.dir < 0 ? 'animation-name:giInL;' : ''}" onscroll="giPausar(false, 12000)">
       ${s.hero ? `<div class="gi-hero"><img class="gi-av" src="${GI_IMGS.av}" alt=""><div class="gi-bub">${s.hero}</div></div>` : (s.img ? `<img class="gi-pic" src="${GI_IMGS[s.img]}" alt="">` : `<div class="gi-emoji">${s.e}</div>`)}
       <h3 class="gi-t">${s.t}</h3>
       ${s.p ? `<p class="gi-p">${s.p}</p>` : ''}
@@ -6778,6 +6814,7 @@ function guiaPintar(){
       <button class="gi-next" onclick="guiaIr(${i + 1})">${ult ? L('¡Listo!', 'Fet!') : L('Siguiente', 'Següent') + ' →'}</button>
     </div>
   </div>`;
+  giTemporizar();
 }
 
 // ----- Contenido de la guía de Logos Acompanya (ciudadanía) -----
