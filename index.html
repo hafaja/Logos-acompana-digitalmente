@@ -1732,6 +1732,56 @@ const ESPERA_TXT = {
   diez:     { es: 'Estamos terminando con otra persona. Te atendemos en unos 10 minutos aproximadamente. Gracias por esperar.', ca: 'Estem acabant amb una altra persona. T\'atenem en uns 10 minuts aproximadament. Gràcies per esperar.' },
   llamamos: { es: 'Hemos recibido tu registro. Una persona del equipo de Logos te llamará en cuanto quede libre.', ca: 'Hem rebut el teu registre. Una persona de l\'equip de Logos et trucarà tan aviat com quedi lliure.' }
 };
+// ---------- Horario de atención de Logos (1 = lunes … 7 = domingo) ----------
+// Lunes, martes y jueves: 8–14 y 16–20, con cita. Miércoles: mismo horario; de 9 a 13 h sin cita previa y el resto con cita. Viernes: 8–14 con cita; tarde cerrado.
+const LOGOS_HORARIO = {
+  1: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
+  2: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
+  3: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true, sinCita:['09:00','13:00'] },
+  4: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
+  5: { m:['08:00','14:00'], t:null, cita:true }
+};
+function logosMadridAhora(){
+  try {
+    const p = {}; new Intl.DateTimeFormat('en-GB', { timeZone:'Europe/Madrid', weekday:'short', hour:'2-digit', minute:'2-digit', hour12:false }).formatToParts(new Date()).forEach(x => { p[x.type] = x.value; });
+    const dias = { Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6, Sun:7 };
+    return { dia: dias[p.weekday] || 1, min: (Number(p.hour) % 24) * 60 + Number(p.minute) };
+  } catch(e){ const d = new Date(); return { dia: d.getDay() === 0 ? 7 : d.getDay(), min: d.getHours() * 60 + d.getMinutes() }; }
+}
+const logosMin = hhmm => Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3, 5));
+function logosTramosDia(dia){ const h = LOGOS_HORARIO[dia]; return h ? [h.m, h.t].filter(Boolean) : []; }
+function logosEstadoAhora(){
+  const n = logosMadridAhora(), h = LOGOS_HORARIO[n.dia];
+  const tramo = logosTramosDia(n.dia).find(t => n.min >= logosMin(t[0]) && n.min < logosMin(t[1]));
+  if(tramo) return { abierto:true, sinCita: !!(h.sinCita && n.min >= logosMin(h.sinCita[0]) && n.min < logosMin(h.sinCita[1])), hasta: tramo[1] };
+  for(let i = 0; i < 8; i++){
+    const dia = ((n.dia - 1 + i) % 7) + 1;
+    for(const t of logosTramosDia(dia)){
+      if(i === 0 && logosMin(t[0]) <= n.min) continue;
+      return { abierto:false, proximo: t[0], dias: i, dia };
+    }
+  }
+  return { abierto:false };
+}
+function logosEstadoHtml(){
+  const ca = LANG === 'ca', e = logosEstadoAhora();
+  const nomDia = d => (ca ? ['dilluns','dimarts','dimecres','dijous','divendres'] : ['lunes','martes','miércoles','jueves','viernes'])[d - 1] || '';
+  let txt, bg, col;
+  if(e.abierto){
+    bg = '#E3F5E8'; col = '#17663A';
+    txt = `🟢 <strong>${ca ? 'Obert ara' : 'Abierto ahora'}</strong> · ${e.sinCita ? (ca ? 'sense cita prèvia' : 'sin cita previa') : (ca ? 'amb cita prèvia' : 'con cita previa')} · ${ca ? 'fins a les' : 'hasta las'} ${e.hasta}`;
+  } else {
+    bg = '#FBE4E4'; col = '#9B1C1C';
+    const cuando = e.proximo ? (e.dias === 0 ? (ca ? 'avui' : 'hoy') : e.dias === 1 ? (ca ? 'demà' : 'mañana') : 'el ' + nomDia(e.dia)) + ' ' + (ca ? 'a les' : 'a las') + ' ' + e.proximo : '';
+    txt = `🔴 <strong>${ca ? 'Tancat ara' : 'Cerrado ahora'}</strong>${cuando ? ' · ' + (ca ? 'obrim ' : 'abrimos ') + cuando : ''}`;
+  }
+  return `<div style="background:${bg};color:${col};border-radius:10px;padding:7px 12px;font-size:12.5px;margin:0 0 10px;display:inline-block;">${txt}</div>`;
+}
+function logosHorarioTexto(){
+  return LANG === 'ca' ? 'Dilluns, dimarts i dijous: 8–14 h i 16–20 h (amb cita). Dimecres: 8–14 h i 16–20 h; de 9 a 13 h sense cita prèvia i la resta amb cita. Divendres: 8–14 h (amb cita); tarda tancat.'
+                       : 'Lunes, martes y jueves: 8–14 h y 16–20 h (con cita). Miércoles: 8–14 h y 16–20 h; de 9 a 13 h sin cita previa y el resto con cita. Viernes: 8–14 h (con cita); tarde cerrado.';
+}
+
 async function cargarAvisoEspera(){
   try {
     const desde = new Date(Date.now() - 12 * 3600000).toISOString();
@@ -1805,6 +1855,7 @@ async function renderResumenStep(mostrarCatalogoYa){
     </div>`;
 
   el.innerHTML = `
+    ${logosEstadoHtml()}
     ${recordatorioEntradaHtml}
     ${statsEntradaHtml}
     <div class="panel-card">
@@ -5383,7 +5434,7 @@ async function renderDashboard(){
         <div class="list-row">
           <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
           <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="cancelarCita('${c.id}')">${LANG==='ca' ? 'Cancel·lar' : 'Cancelar'}</button>
-        </div>`).join('')
+        </div>${citaRespuestaHtml(c)}`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
 
   const consultasHtml = (consultas && consultas.length)
@@ -5537,6 +5588,44 @@ async function renderDashboard(){
   window.__documentosActuales = documentos || [];
 }
 
+// Contestar a una cita: confirmar, pedir otro día/hora o avisar de que no se puede ir. Le llega al personal de Logos.
+function citaRespuestaHtml(c){
+  const ca = LANG === 'ca';
+  const m = { confirma:[ca ? '✅ Has confirmat que vindràs' : '✅ Has confirmado que vendrás', 'hecho'], otra_hora:[ca ? '🔁 Has demanat un altre dia/hora. Logos et respondrà.' : '🔁 Has pedido otro día/hora. Logos te responderá.', 'en-curso'], no_puede:[ca ? '❌ Has avisat que no pots venir' : '❌ Has avisado de que no puedes venir', ''] }[c.respuesta_usuario];
+  const estado = m ? `<p style="margin:2px 0 6px;font-size:12.5px;">${m[0]}${c.respuesta_texto ? ' · <em>' + escAttr(c.respuesta_texto) + '</em>' : ''}</p>` : '';
+  return `<div style="padding:2px 0 10px;border-bottom:1px solid var(--line);">${estado}
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      ${c.respuesta_usuario === 'confirma' ? '' : `<button class="link-btn" style="font-size:12px;border:1px solid var(--good);color:var(--good);border-radius:999px;padding:3px 11px;" onclick="responderCita('${c.id}','confirma')">✅ ${ca ? 'Confirmo' : 'Confirmo'}</button>`}
+      <button class="link-btn" style="font-size:12px;border:1px solid var(--ochre);color:#7A4A1F;border-radius:999px;padding:3px 11px;" onclick="responderCita('${c.id}','otra_hora')">🔁 ${ca ? 'Demanar un altre dia/hora' : 'Pedir otro día/hora'}</button>
+      <button class="link-btn" style="font-size:12px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:3px 11px;" onclick="responderCita('${c.id}','no_puede')">❌ ${ca ? 'No puc venir' : 'No puedo ir'}</button>
+    </div></div>`;
+}
+async function responderCita(id, tipo){
+  const ca = LANG === 'ca';
+  let texto = null;
+  if(tipo === 'otra_hora' || tipo === 'no_puede'){
+    texto = prompt(tipo === 'otra_hora'
+      ? (ca ? 'Quin dia o hora et aniria millor? (opcional)' : '¿Qué día u hora te vendría mejor? (opcional)')
+      : (ca ? 'Vols dir-nos el motiu? (opcional)' : '¿Quieres decirnos el motivo? (opcional)'));
+    if(texto === null) return;
+    texto = texto.trim() || null;
+  }
+  const { data: cita } = await sb.from('citas').select('fecha, hora').eq('id', id).maybeSingle();
+  let { error } = await sb.from('citas').update({ respuesta_usuario: tipo, respuesta_texto: texto, respuesta_en: new Date().toISOString() }).eq('id', id);
+  const faltaSQL = error && /respuesta_/.test(error.message || '');
+  // "No puedo ir" cancela la cita para liberar la hora
+  if(tipo === 'no_puede'){ await sb.from('citas').update({ estado: 'cancelada' }).eq('id', id); }
+  try {
+    const p = window.__perfilActual || {};
+    const nombreAviso = p.nombre_completo || CURRENT_USER.email;
+    const f = cita ? new Date(cita.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' }) + ' a las ' + String(cita.hora).slice(0,5) : '';
+    const frase = { confirma:'confirma que vendrá', otra_hora:'pide otro día/hora', no_puede:'no puede venir (cita cancelada)' }[tipo];
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'cita_respuesta', mensaje: `${nombreAviso} ${frase} a la cita del ${f}.${texto ? ' Comentario: ' + texto : ''}` });
+  } catch(e){}
+  if(faltaSQL) console.warn('Falta ejecutar el SQL 23: la respuesta solo se ha enviado como aviso.');
+  renderDashboard();
+}
+
 async function cancelarCita(id){
   const msg = LANG === 'ca' ? 'Segur que vols cancel·lar aquesta cita?' : '¿Seguro que quieres cancelar esta cita?';
   if(!confirm(msg)) return;
@@ -5564,7 +5653,7 @@ async function renderCitaForm(){
     const d = new Date(hoy);
     d.setDate(hoy.getDate() + i);
     const isoWeekday = d.getDay() === 0 ? 7 : d.getDay();
-    if(horario.dias_semana.includes(isoWeekday)){
+    if(LOGOS_HORARIO[isoWeekday] && LOGOS_HORARIO[isoWeekday].cita){
       dias.push(d);
     }
   }
@@ -5577,8 +5666,10 @@ async function renderCitaForm(){
 
   document.getElementById('cita-content').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
+    ${logosEstadoHtml()}
     <p class="subtle">${esCA ? 'Tria un dia per veure les hores disponibles.' : 'Elige un día para ver las horas disponibles.'}</p>
     <div class="life-grid">${diasHtml}</div>
+    <p class="subtle" style="font-size:12px;margin-top:10px;">🕘 ${logosHorarioTexto()}</p>
     <div id="cita-horas" style="margin-top:16px;"></div>
   `;
 }
@@ -5607,14 +5698,16 @@ async function seleccionarDiaCita(fechaIso){
       cursor += horario.duracion_cita_minutos;
     }
   };
-  generarBloque(horario.hora_inicio, horario.hora_fin);
-  generarBloque(horario.hora_inicio_2, horario.hora_fin_2);
+  { const dObj = new Date(fechaIso + 'T00:00:00'); const iso = dObj.getDay() === 0 ? 7 : dObj.getDay();
+    logosTramosDia(iso).forEach(t => generarBloque(t[0], t[1]));
+    const hd = LOGOS_HORARIO[iso];
+    if(hd && hd.sinCita){ const a = logosMin(hd.sinCita[0]), z = logosMin(hd.sinCita[1]); for(let i = slots.length - 1; i >= 0; i--){ const m = logosMin(slots[i]); if(m >= a && m < z) slots.splice(i, 1); } } }
 
-  const finBloque1 = horario.hora_fin ? horario.hora_fin.slice(0,5) : null;
+  const finBloque1 = null;
   const slotsHtml = slots.map((s, i) => {
     const ocupadas = ocupadasPorHora[s] || 0;
     const lleno = ocupadas >= horario.tecnicos_simultaneos;
-    const esInicioTarde = horario.hora_inicio_2 && s === horario.hora_inicio_2.slice(0,5);
+    const esInicioTarde = s === '16:00';
     const etiquetaMañana = i === 0 ? `<div class="section-label" style="margin-top:0;">${esCA ? 'Matí' : 'Mañana'}</div>` : '';
     const etiquetaTarde = esInicioTarde ? `<div class="section-label" style="margin-top:14px;">${esCA ? 'Tarda' : 'Tarde'}</div>` : '';
     return `${etiquetaMañana}${etiquetaTarde}<button class="service-row" style="justify-content:center;${lleno ? 'opacity:.45;cursor:default;' : 'cursor:pointer;'}" ${lleno ? 'disabled' : `onclick="reservarCita('${fechaIso}','${s}')"`}>
