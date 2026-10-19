@@ -1733,11 +1733,11 @@ const ESPERA_TXT = {
   llamamos: { es: 'Hemos recibido tu registro. Una persona del equipo de Logos te llamará en cuanto quede libre.', ca: 'Hem rebut el teu registre. Una persona de l\'equip de Logos et trucarà tan aviat com quedi lliure.' }
 };
 // ---------- Horario de atención de Logos (1 = lunes … 7 = domingo) ----------
-// Lunes, martes y jueves: 8–14 y 16–20, con cita. Miércoles: mismo horario; de 9 a 13 h sin cita previa y el resto con cita. Viernes: 8–14 con cita; tarde cerrado.
+// Lunes, martes y jueves: 8–14 y 16–20, con cita. Miércoles: de 9 a 13:30 sin cita previa (no se dan citas). Viernes: 8–14 con cita; tarde cerrado.
 const LOGOS_HORARIO = {
   1: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
   2: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
-  3: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true, sinCita:['09:00','13:00'] },
+  3: { m:['09:00','13:30'], t:null, cita:false },
   4: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
   5: { m:['08:00','14:00'], t:null, cita:true }
 };
@@ -1753,7 +1753,7 @@ function logosTramosDia(dia){ const h = LOGOS_HORARIO[dia]; return h ? [h.m, h.t
 function logosEstadoAhora(){
   const n = logosMadridAhora(), h = LOGOS_HORARIO[n.dia];
   const tramo = logosTramosDia(n.dia).find(t => n.min >= logosMin(t[0]) && n.min < logosMin(t[1]));
-  if(tramo) return { abierto:true, sinCita: !!(h.sinCita && n.min >= logosMin(h.sinCita[0]) && n.min < logosMin(h.sinCita[1])), hasta: tramo[1] };
+  if(tramo) return { abierto:true, sinCita: !h.cita, hasta: tramo[1], hoy: logosTramosDia(n.dia).map(t => t[0].replace(/^0/, '') + '–' + t[1]).join(' · ') };
   for(let i = 0; i < 8; i++){
     const dia = ((n.dia - 1 + i) % 7) + 1;
     for(const t of logosTramosDia(dia)){
@@ -1769,7 +1769,7 @@ function logosEstadoHtml(){
   let txt, bg, col;
   if(e.abierto){
     bg = '#E3F5E8'; col = '#17663A';
-    txt = `🟢 <strong>${ca ? 'Obert ara' : 'Abierto ahora'}</strong> · ${e.sinCita ? (ca ? 'sense cita prèvia' : 'sin cita previa') : (ca ? 'amb cita prèvia' : 'con cita previa')} · ${ca ? 'fins a les' : 'hasta las'} ${e.hasta}`;
+    txt = `🟢 <strong>${ca ? 'Obert ara' : 'Abierto ahora'}</strong> · ${e.sinCita ? (ca ? 'sense cita prèvia' : 'sin cita previa') : (ca ? 'amb cita prèvia' : 'con cita previa')} · ${ca ? 'fins a les' : 'hasta las'} ${e.hasta}${e.hoy ? ` · ${ca ? 'avui' : 'hoy'}: ${e.hoy} h` : ''}`;
   } else {
     bg = '#FBE4E4'; col = '#9B1C1C';
     const cuando = e.proximo ? (e.dias === 0 ? (ca ? 'avui' : 'hoy') : e.dias === 1 ? (ca ? 'demà' : 'mañana') : 'el ' + nomDia(e.dia)) + ' ' + (ca ? 'a les' : 'a las') + ' ' + e.proximo : '';
@@ -1778,8 +1778,8 @@ function logosEstadoHtml(){
   return `<div style="background:${bg};color:${col};border-radius:10px;padding:7px 12px;font-size:12.5px;margin:0 0 10px;display:inline-block;">${txt}</div>`;
 }
 function logosHorarioTexto(){
-  return LANG === 'ca' ? 'Dilluns, dimarts i dijous: 8–14 h i 16–20 h (amb cita). Dimecres: 8–14 h i 16–20 h; de 9 a 13 h sense cita prèvia i la resta amb cita. Divendres: 8–14 h (amb cita); tarda tancat.'
-                       : 'Lunes, martes y jueves: 8–14 h y 16–20 h (con cita). Miércoles: 8–14 h y 16–20 h; de 9 a 13 h sin cita previa y el resto con cita. Viernes: 8–14 h (con cita); tarde cerrado.';
+  return LANG === 'ca' ? 'Dilluns, dimarts i dijous: 8–14 h i 16–20 h (amb cita). Dimecres: de 9 a 13:30 h sense cita prèvia (no es donen cites). Divendres: 8–14 h (amb cita); tarda tancat.'
+                       : 'Lunes, martes y jueves: 8–14 h y 16–20 h (con cita). Miércoles: de 9 a 13:30 h sin cita previa (no se dan citas). Viernes: 8–14 h (con cita); tarde cerrado.';
 }
 
 async function cargarAvisoEspera(){
