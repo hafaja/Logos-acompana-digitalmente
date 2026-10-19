@@ -5433,7 +5433,7 @@ async function renderDashboard(){
     ? citas.map(c => `
         <div class="list-row">
           <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
-          <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="cancelarCita('${c.id}')">${LANG==='ca' ? 'Cancel·lar' : 'Cancelar'}</button>
+          <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}')">✖ ${LANG==='ca' ? 'Cancel·lar cita' : 'Cancelar cita'}</button>
         </div>${citaRespuestaHtml(c)}`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
 
@@ -5626,11 +5626,37 @@ async function responderCita(id, tipo){
   renderDashboard();
 }
 
-async function cancelarCita(id){
-  const msg = LANG === 'ca' ? 'Segur que vols cancel·lar aquesta cita?' : '¿Seguro que quieres cancelar esta cita?';
+async function cancelarCita(id, desde){
+  const ca = LANG === 'ca';
+  const { data: cita } = await sb.from('citas').select('fecha, hora').eq('id', id).maybeSingle();
+  const cuando = cita ? new Date(cita.fecha + 'T00:00:00').toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { weekday:'long', day:'numeric', month:'long' }) + (ca ? ' a les ' : ' a las ') + String(cita.hora).slice(0,5) : '';
+  const msg = ca ? `Segur que vols cancel·lar la cita del ${cuando}?\nLa hora quedarà lliure per a una altra persona.` : `¿Seguro que quieres cancelar la cita del ${cuando}?\nLa hora quedará libre para otra persona.`;
   if(!confirm(msg)) return;
-  await sb.from('citas').update({ estado: 'cancelada' }).eq('id', id);
-  renderDashboard();
+  const { data: filas, error } = await sb.from('citas').update({ estado: 'cancelada' }).eq('id', id).select();
+  if(error || !filas || !filas.length){
+    alert(ca ? 'No s\'ha pogut cancel·lar la cita. Torna-ho a provar o truca a Logos.' : 'No se ha podido cancelar la cita. Inténtalo de nuevo o llama a Logos.');
+    return;
+  }
+  try {
+    const p = window.__perfilActual || {};
+    const nombreAviso = p.nombre_completo || CURRENT_USER.email;
+    const f = cita ? new Date(cita.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' }) + ' a las ' + String(cita.hora).slice(0,5) : '';
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'cita_cancelada', mensaje: `${nombreAviso} ha cancelado su cita del ${f}.` });
+  } catch(e){}
+  alert(ca ? '✅ Cita cancel·lada. Si vols, pots demanar-ne una altra.' : '✅ Cita cancelada. Si quieres, puedes pedir otra.');
+  if(desde === 'cita') renderCitaForm(); else renderDashboard();
+}
+async function misCitasPedidasHtml(){
+  const ca = LANG === 'ca';
+  const hoy = new Date().toISOString().slice(0,10);
+  const { data } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoy).order('fecha', { ascending:true });
+  if(!data || !data.length) return '';
+  const fmt = f => new Date(f + 'T00:00:00').toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
+  return `<div class="panel-card" style="margin-bottom:14px;">
+    <h3 style="margin-bottom:8px;">📅 ${ca ? 'Les teves cites demanades' : 'Tus citas pedidas'}</h3>
+    ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}</span>
+      <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}','cita')">✖ ${ca ? 'Cancel·lar cita' : 'Cancelar cita'}</button></div>`).join('')}
+  </div>`;
 }
 
 // --- Pedir cita ---
@@ -5658,6 +5684,7 @@ async function renderCitaForm(){
     }
   }
 
+  const misCitasBloque = await misCitasPedidasHtml();
   const diasHtml = dias.map(d => {
     const iso = d.toISOString().slice(0,10);
     const label = d.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
@@ -5667,6 +5694,7 @@ async function renderCitaForm(){
   document.getElementById('cita-content').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
     ${logosEstadoHtml()}
+    ${misCitasBloque}
     <p class="subtle">${esCA ? 'Tria un dia per veure les hores disponibles.' : 'Elige un día para ver las horas disponibles.'}</p>
     <div class="life-grid">${diasHtml}</div>
     <p class="subtle" style="font-size:12px;margin-top:10px;">🕘 ${logosHorarioTexto()}</p>
