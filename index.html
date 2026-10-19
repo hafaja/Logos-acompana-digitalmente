@@ -2912,7 +2912,7 @@ function renderAuthStep(errorMsg){
     </div>
     <div class="field">
       <label>${t.password}</label>
-      <input type="password" id="auth-password" autocomplete="current-password">
+      <input type="password" id="auth-password" autocomplete="${AUTH_MODE === 'login' ? 'current-password' : 'new-password'}">
     </div>
     <button class="primary-btn" id="auth-submit-btn" onclick="submitAuth()">${AUTH_MODE === 'login' ? t.entrar : t.crearCuenta}</button>
     <p style="text-align:center;margin-top:14px;">
@@ -6988,6 +6988,37 @@ function guiaTarjetaAcomp(){
   </div>`;
 }
 
+</script>
+
+<style>
+  .ojo-wrap{position:relative;display:block;width:100%;}
+  .ojo-wrap > input{padding-right:46px !important;}
+  .ojo-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:transparent;cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#6b6b6b;padding:0;}
+  .ojo-btn:hover,.ojo-btn:focus-visible{background:rgba(0,0,0,.06);color:#1f1f1f;outline:none;}
+  .ojo-btn svg{width:22px;height:22px;pointer-events:none;}
+</style>
+<script>
+// «Ojo» para ver u ocultar la contraseña al escribirla (todas las casillas de contraseña, también las que se crean después)
+(function(){
+  var OJO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12s3.8-7 10.5-7 10.5 7 10.5 7-3.8 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3.2"/></svg>';
+  var TACHADO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10.6 10.6 0 0 1 12 19.5C5.3 19.5 1.5 12 1.5 12a19 19 0 0 1 4.6-5.6M9.9 4.7A9.9 9.9 0 0 1 12 4.5c6.7 0 10.5 7.5 10.5 7.5a19 19 0 0 1-2.9 3.9M1 1l22 22"/><path d="M9.9 9.9a3.2 3.2 0 0 0 4.2 4.2"/></svg>';
+  function idioma(){ try { return (typeof LANG_I !== 'undefined' ? LANG_I : (typeof LANG !== 'undefined' ? LANG : (document.documentElement.lang || 'es'))) === 'ca' ? 'ca' : 'es'; } catch(e){ return 'es'; } }
+  function txt(visible){ var ca = idioma() === 'ca'; return visible ? (ca ? 'Amagar la contrasenya' : 'Ocultar la contraseña') : (ca ? 'Mostrar la contrasenya' : 'Mostrar la contraseña'); }
+  function poner(inp){
+    if(inp.dataset.ojo || !inp.parentNode) return;
+    inp.dataset.ojo = '1';
+    var w = document.createElement('span'); w.className = 'ojo-wrap';
+    inp.parentNode.insertBefore(w, inp); w.appendChild(inp);
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'ojo-btn'; b.tabIndex = 0;
+    function pintar(){ var v = inp.type === 'text'; b.innerHTML = v ? TACHADO : OJO; b.setAttribute('aria-label', txt(v)); b.title = txt(v); b.setAttribute('aria-pressed', v ? 'true' : 'false'); }
+    b.addEventListener('mousedown', function(e){ e.preventDefault(); });          // no quita el foco del campo
+    b.addEventListener('click', function(){ inp.type = inp.type === 'password' ? 'text' : 'password'; pintar(); try { inp.focus(); } catch(e){} });
+    pintar(); w.appendChild(b);
+  }
+  function revisar(){ var l = document.querySelectorAll('input[type="password"]:not([data-ojo])'); for(var i = 0; i < l.length; i++) poner(l[i]); }
+  revisar();
+  try { new MutationObserver(revisar).observe(document.body, { childList:true, subtree:true }); } catch(e){}
+})();
 </script>
 </body>
 </html>
