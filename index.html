@@ -5237,29 +5237,45 @@ function textoLegalConsentimientoHtml(esCA){
 }
 
 async function generarPdfMultipagina(contenedor, nombreArchivo){
-  const canvas = await html2canvas(contenedor, { scale: 2, backgroundColor: '#ffffff' });
-  const imgData = canvas.toDataURL('image/png');
+  const escala = 2;
+  // Puntos seguros donde cortar la página: el inicio de cada bloque (así no se parte ni se repite ningún texto)
+  const baseTop = contenedor.getBoundingClientRect().top;
+  const cortes = [];
+  contenedor.querySelectorAll('h1,h2,h3,p,li,img,table,tr,div').forEach(el => {
+    const prev = el.previousElementSibling;
+    if(prev && /^H[1-3]$/.test(prev.tagName)) return;   // no separar un título de lo que sigue
+    const t = Math.round((el.getBoundingClientRect().top - baseTop) * escala);
+    if(t > 0) cortes.push(t);
+  });
+  cortes.sort((a, b) => a - b);
+  const canvas = await html2canvas(contenedor, { scale: escala, backgroundColor: '#ffffff' });
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const anchoPagina = pdf.internal.pageSize.getWidth();
   const altoPagina = pdf.internal.pageSize.getHeight();
   const margen = 10;
   const anchoImg = anchoPagina - margen * 2;
-  const altoImgTotal = (canvas.height * anchoImg) / canvas.width;
-  const altoUtilPagina = altoPagina - margen * 2;
+  const pxPorMm = canvas.width / anchoImg;
+  const altoPaginaPx = Math.floor((altoPagina - margen * 2) * pxPorMm);
 
-  let alturaRestante = altoImgTotal;
-  let posicionY = margen;
-  pdf.addImage(imgData, 'PNG', margen, posicionY, anchoImg, altoImgTotal);
-  alturaRestante -= altoUtilPagina;
-
-  while(alturaRestante > 0){
-    posicionY = margen - (altoImgTotal - alturaRestante);
-    pdf.addPage();
-    pdf.addImage(imgData, 'PNG', margen, posicionY, anchoImg, altoImgTotal);
-    alturaRestante -= altoUtilPagina;
+  let inicio = 0, primera = true;
+  while(inicio < canvas.height){
+    let fin = Math.min(inicio + altoPaginaPx, canvas.height);
+    if(fin < canvas.height){
+      let mejor = 0;
+      for(const c of cortes){ if(c > inicio + altoPaginaPx * 0.4 && c <= fin) mejor = c; }
+      if(mejor) fin = mejor;
+    }
+    const trozo = document.createElement('canvas');
+    trozo.width = canvas.width; trozo.height = fin - inicio;
+    const ctx = trozo.getContext('2d');
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, trozo.width, trozo.height);
+    ctx.drawImage(canvas, 0, inicio, canvas.width, fin - inicio, 0, 0, canvas.width, fin - inicio);
+    if(!primera) pdf.addPage();
+    pdf.addImage(trozo.toDataURL('image/png'), 'PNG', margen, margen, anchoImg, (trozo.height / pxPorMm));
+    primera = false;
+    inicio = fin;
   }
-
   pdf.save(nombreArchivo);
 }
 
