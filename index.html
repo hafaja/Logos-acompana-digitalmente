@@ -215,8 +215,11 @@
   .icon-badge{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:8px;flex-shrink:0;}
   .quick-card{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;display:flex;flex-direction:column;}
   .quick-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px -8px rgba(0,0,0,.12);border-color:var(--ochre);}
-  .quick-card h4{margin:0 0 3px;font-size:14px;font-family:var(--font-display);font-weight:600;color:var(--ink);}
-  .quick-card p{margin:0;font-size:11.5px;color:var(--ink-soft);line-height:1.4;}
+  .quick-card h4{margin:0 0 3px;font-size:14.5px;line-height:1.25;font-family:var(--font-display);font-weight:600;color:var(--ink);}
+  .quick-card p{margin:0;font-size:12px;color:var(--ink-soft);line-height:1.4;}
+  #profile-content .quick-card{padding:14px 16px;gap:2px;}
+  #profile-content .panel-card{border-radius:16px;box-shadow:0 1px 0 rgba(0,0,0,.03);}
+  #profile-content .list-row{font-size:14px;line-height:1.4;}
   .quick-card .badge-num{position:absolute;top:14px;right:14px;background:var(--ochre);color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;padding:0 5px;}
   .stat-icon-card{background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;}
   .stat-icon-num{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--ink);line-height:1;}
@@ -293,8 +296,9 @@
   .rating-row{margin-top:6px;}
   .rating-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-bottom:4px;}
   .rating-scale{display:flex;justify-content:space-between;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:8px 4px;}
-  .rating-opt{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;cursor:pointer;flex:1;}
-  .rating-opt input{margin:0;}
+  .rating-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;cursor:pointer;flex:1;text-align:center;}
+  .rating-opt input{margin:0;padding:0;width:16px;height:16px;flex:none;}
+  .rating-opt span{display:block;width:100%;text-align:center;font-weight:700;color:var(--ink-soft);line-height:1;}
   .primary-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--font-body);font-weight:700;font-size:14.5px;cursor:pointer;margin-top:4px;}
   .primary-btn:disabled{opacity:.6;cursor:default;}
   .link-btn{background:none;border:none;color:var(--teal-dark);font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:underline;padding:0;}
@@ -338,7 +342,7 @@
   .info-box-gold .info-box-title{color:#8A4E12;}
 
   .pull-quote{border-left:4px solid var(--ochre);padding:14px 18px;margin:14px 0;background:var(--paper);border-radius:0 12px 12px 0;font-family:var(--font-display);font-size:15px;line-height:1.55;color:var(--teal);font-style:italic;}
-  .panel-card h3{margin:0 0 10px;font-size:14.5px;color:var(--teal-dark);font-family:var(--font-display);font-weight:600;}
+  .panel-card h3{margin:0 0 10px;font-size:16px;letter-spacing:.1px;color:var(--teal-dark);font-family:var(--font-display);font-weight:600;line-height:1.25;}
   .panel-stat-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
   .panel-stat-row:last-child{border-bottom:none;}
   .panel-big-number{font-family:var(--font-display);font-size:34px;color:var(--teal-dark);font-weight:600;line-height:1;}
@@ -416,6 +420,7 @@
   .gi-skip{font-size:12.5px;text-align:center;padding:0 16px 12px;color:var(--ink-soft,#5b6677);}
   .gi-skip label{cursor:pointer;}
   @media (max-width:520px){.gi-card{max-height:96vh;border-radius:18px;}.gi-body{padding:6px 18px 4px;}.gi-t{font-size:21px;}}
+  [id^="sec-"]{scroll-margin-top:72px;}
 </style>
 </head>
 <body>
@@ -672,7 +677,7 @@
 <script>
 let SERVICIOS = [];
 let TAXONOMIA = [];
-let LANG = 'es';
+let LANG = (function(){ try { return localStorage.getItem('logos_lang') === 'ca' ? 'ca' : 'es'; } catch(e){ return 'es'; } })();
 let CURRENT_AMBITO = null;
 let ENLACES_ESTADO = {};
 
@@ -698,10 +703,52 @@ async function loadData(){
   sb.from('enlaces_estado').select('servicio_id, funciona').then(({ data }) => {
     (data || []).forEach(r => { ENLACES_ESTADO[r.servicio_id] = r.funciona; });
   });
+  if(LANG === 'ca') setLang('ca'); else traducirEstatico();
+}
+
+// Textos fijos de la página (menú lateral, asistente…) ES → CA
+const TXT_ES_CA = {
+  '💬 Asistente Logos':'💬 Assistent Logos','Hola 👋 Cuéntame qué necesitas y te oriento hacia el servicio adecuado. Si no sabes cómo se usa la app, pregúntame y te lo explico.':'Hola 👋 Explica\'m què necessites i t\'oriento cap al servei adequat. Si no saps com es fa servir l\'app, pregunta\'m i t\'ho explico.',
+  'Enviar':'Enviar','PH:Escribe tu pregunta…':'Escriu la teva pregunta…','TI:Asistente de orientación':'Assistent d\'orientació',
+  '☰ Menú':'☰ Menú','Menú':'Menú','Inicio':'Inici','❓ Cómo se usa':'❓ Com es fa servir','✅ Firmar mi consentimiento':'✅ Signar el meu consentiment',
+  'Completar mis datos':'Completar les meves dades','Mis necesidades':'Les meves necessitats','Mi espacio':'El meu espai','Mi currículum':'El meu currículum',
+  'Encuesta de satisfacción':'Enquesta de satisfacció','🌐 Traductor en directo':'🌐 Traductor en directe','⚙️ Configuración':'⚙️ Configuració',
+  'Panel Logos':'Panell Logos','Administrador':'Administrador','¿Qué más te ofrecemos?':'Què més t\'oferim?','🌱 Jóvenes en acción':'🌱 Joves en acció',
+  '👨‍👩‍👧 Familias':'👨‍👩‍👧 Famílies','🎓 Aula Virtual':'🎓 Aula Virtual','🤝 Voluntariado':'🤝 Voluntariat','💼 Búsqueda de empleo':'💼 Cerca de feina',
+  '🧓 Cuidados y compañía':'🧓 Cures i companyia','🚀 Mi emprendimiento':'🚀 El meu emprenedoria','🎁 ¿Qué te ofrecemos?':'🎁 Què t\'oferim?',
+  '¿Quiénes somos?':'Qui som?','🌐 Web y redes sociales':'🌐 Web i xarxes socials','🔎 Verificar certificado':'🔎 Verificar certificat','Cerrar sesión':'Tancar sessió',
+  'Más accesos':'Més accessos','Búsqueda de empleo':'Cerca de feina','Cuidados y compañía':'Cures i companyia','Mi emprendimiento':'El meu emprenedoria',
+  'Web y redes sociales':'Web i xarxes socials','Aula Virtual':'Aula Virtual','Voluntariado':'Voluntariat','Verificar certificado':'Verificar certificat',
+  '← Inicio':'← Inici','← Volver':'← Tornar','← Panel Logos':'← Panell Logos','← Mi espacio':'← El meu espai','← Escuela de Voluntariado':'← Escola de Voluntariat','← Aula Virtual':'← Aula Virtual'
+};
+function traducirEstatico(){
+  const ca = LANG === 'ca';
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let n;
+  while(n = w.nextNode()){
+    const par = n.parentNode;
+    if(!par || /^(SCRIPT|STYLE)$/.test(par.nodeName) || par.closest('#profile-content, #entrada-panel, #catalogo-panel, [id$="-content"], #ambitos-grid')) continue;
+    if(n.__es === undefined){
+      const t = n.nodeValue.trim();
+      if(!t || !(t in TXT_ES_CA)) continue;
+      n.__es = n.nodeValue;
+    }
+    const es = n.__es;
+    n.nodeValue = ca ? es.replace(es.trim(), TXT_ES_CA[es.trim()]) : es;
+  }
+  document.querySelectorAll('[placeholder],[title]').forEach(e => {
+    ['placeholder','title'].forEach(a => {
+      if(!e.hasAttribute(a)) return;
+      if(e['__es_'+a] === undefined){ const k = (a==='placeholder'?'PH:':'TI:') + e.getAttribute(a); if(!(k in TXT_ES_CA)) return; e['__es_'+a] = e.getAttribute(a); }
+      const es = e['__es_'+a]; const k = (a==='placeholder'?'PH:':'TI:') + es;
+      e.setAttribute(a, ca ? TXT_ES_CA[k] : es);
+    });
+  });
 }
 
 function setLang(lang){
   LANG = lang;
+  try { localStorage.setItem('logos_lang', lang); } catch(e){}
   document.getElementById('btn-es').classList.toggle('active', lang==='es');
   document.getElementById('btn-ca').classList.toggle('active', lang==='ca');
   const T = lang === 'ca'
@@ -713,8 +760,16 @@ function setLang(lang){
   document.getElementById('trust-title').textContent = T.trustTitle;
   document.getElementById('trust-body').textContent = T.trustBody;
   document.getElementById('back-to-home').innerHTML = T.backHome;
-  renderAmbitos();
+  try { renderAmbitos(); } catch(e){}
   if(CURRENT_AMBITO) showNecesidades(CURRENT_AMBITO, true);
+  traducirEstatico();
+  // Volver a pintar la pantalla abierta en el idioma elegido (sin tocar formularios a medio escribir)
+  try {
+    const act = document.querySelector('.screen.active'); const id = act ? act.id.replace('screen-','') : '';
+    const mapa = { profile:renderDashboard, cita:renderCitaForm, config:renderConfigScreen, traductor:renderTraductorScreen, aulaciudadano:renderAulaCiudadano, voluntariado:renderVoluntariado, empleo:renderBusquedaEmpleo, cuidados:renderCuidadosCompania, emprendimiento:renderEmprendimientoScreen, queofrecemos:renderQueOfrecemos, webredes:renderWebRedes, verificarcert:renderVerificarCertificado };
+    if(mapa[id]) mapa[id]();
+    else if(id === 'home' && !document.querySelector('#entrada-panel input, #entrada-panel canvas, #entrada-panel textarea, #entrada-panel select')) renderEntradaPanel();
+  } catch(e){}
 }
 
 const COLORES_AMBITO = [
@@ -1465,6 +1520,12 @@ async function crearTramiteDesdeServicio(servicioId){
   const s = SERVICIOS.find(x => x.id === servicioId);
   if(!s) return;
 
+  // Evitar el mismo trámite abierto dos veces
+  try {
+    const { data: ya } = await sb.from('tramites').select('id').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', s.nombre.es).neq('estado', 'hecho').limit(1);
+    if(ya && ya.length){ alert(esCA ? 'Ja tens aquest tràmit obert. El trobaràs a «Mi espacio» → Els meus tràmits.' : 'Ya tienes este trámite abierto. Lo encontrarás en «Mi espacio» → Mis trámites.'); return; }
+  } catch(e){}
+
   const { error } = await sb.from('tramites').insert({
     usuario_id: CURRENT_USER.id,
     nombre_servicio: s.nombre.es,
@@ -1632,7 +1693,7 @@ const T1 = {
     discapacidad:'Discapacidad reconocida', dependencia:'Dependencia reconocida',
     ingresos:'Nivel de ingresos aproximado', si:'Sí', no:'No', prefiero:'Prefiero no decirlo',
     guardarDatos:'Guardar mis datos →', datosGuardados:'Datos guardados correctamente.',
-    completarDatos:'Llenar mis datos', misTramites:'MIS TRÁMITES', misDocumentos:'MIS DOCUMENTOS',
+    completarDatos:'Llenar mis datos', misTramites:'Mis trámites', misDocumentos:'Mis documentos',
     sinTramites:'Todavía no tienes trámites registrados.', sinDocumentos:'Todavía no has subido documentos.',
     subirDocumento:'Subir un documento', subiendo:'Subiendo…', tomarFoto:'📷 Tomar una foto',
     cerrarSesion:'Cerrar sesión', perfilIncompleto:'Perfil incompleto',
@@ -1649,7 +1710,7 @@ const T1 = {
     discapacidad:'Discapacitat reconeguda', dependencia:'Dependència reconeguda',
     ingresos:'Nivell d\'ingressos aproximat', si:'Sí', no:'No', prefiero:'Prefereixo no dir-ho',
     guardarDatos:'Desar les meves dades →', datosGuardados:'Dades desades correctament.',
-    completarDatos:'Omplir les meves dades', misTramites:'ELS MEUS TRÀMITS', misDocumentos:'ELS MEUS DOCUMENTS',
+    completarDatos:'Omplir les meves dades', misTramites:'Els meus tràmits', misDocumentos:'Els meus documents',
     sinTramites:'Encara no tens tràmits registrats.', sinDocumentos:'Encara no has pujat documents.',
     subirDocumento:'Pujar un document', subiendo:'Pujant…', tomarFoto:'📷 Fer una foto',
     cerrarSesion:'Tancar sessió', perfilIncompleto:'Perfil incomplet',
@@ -1911,6 +1972,11 @@ async function initAuth(){
   // Si es la misma persona, no se vuelve a pintar la pantalla: así no se pierde lo que estaba escribiendo.
   let __usuarioYaVisto = null;
   sb.auth.onAuthStateChange(async (_event, session) => {
+    if(_event === 'PASSWORD_RECOVERY'){
+      CURRENT_USER = session ? session.user : null;
+      setTimeout(() => { showScreen('config'); renderConfigScreen(); const c = document.getElementById('sec-clave'); if(c) c.scrollIntoView({behavior:'smooth', block:'center'}); }, 400);
+      return;
+    }
     const idNuevo = session && session.user ? session.user.id : null;
     if(idNuevo && idNuevo === __usuarioYaVisto && _event !== 'USER_UPDATED'){
       CURRENT_USER = session.user;
@@ -2931,7 +2997,7 @@ function renderAuthStep(errorMsg){
     </div>
     <button class="primary-btn" id="auth-submit-btn" onclick="submitAuth()">${AUTH_MODE === 'login' ? t.entrar : t.crearCuenta}</button>
     <p style="text-align:center;margin-top:14px;">
-      <button class="link-btn" onclick="toggleAuthMode()">${AUTH_MODE === 'login' ? t.noTengoCuenta : t.yaTengoCuenta}</button>
+      <button class="link-btn" onclick="toggleAuthMode()">${AUTH_MODE === 'login' ? t.noTengoCuenta : t.yaTengoCuenta}</button>${AUTH_MODE === 'login' ? `<br><button class="link-btn" onclick="recuperarClave()">${LANG==='ca' ? 'Has oblidat la contrasenya?' : '¿Has olvidado la contraseña?'}</button>` : ''}
     </p>
   `;
 }
@@ -3976,12 +4042,46 @@ function cargarColorFondoGuardado(){
   } catch(e){}
 }
 
+async function cambiarMiClave(){
+  const esCA = LANG === 'ca';
+  const n = document.getElementById('clave-nueva').value;
+  const r = document.getElementById('clave-repite').value;
+  const msg = document.getElementById('clave-msg');
+  const err = t => { msg.innerHTML = `<div class="auth-error">${t}</div>`; };
+  if(n.length < 8){ err(esCA ? 'La contrasenya ha de tenir almenys 8 caràcters.' : 'La contraseña debe tener al menos 8 caracteres.'); return; }
+  if(n !== r){ err(esCA ? 'Les dues contrasenyes no coincideixen.' : 'Las dos contraseñas no coinciden.'); return; }
+  const btn = document.getElementById('clave-btn'); btn.disabled = true;
+  const { error } = await sb.auth.updateUser({ password: n });
+  btn.disabled = false;
+  if(error){ err(error.message); return; }
+  document.getElementById('clave-nueva').value = ''; document.getElementById('clave-repite').value = '';
+  msg.innerHTML = `<div class="info-box" style="margin-bottom:10px;">✅ ${esCA ? 'Contrasenya canviada correctament.' : 'Contraseña cambiada correctamente.'}</div>`;
+}
+
+async function recuperarClave(){
+  const esCA = LANG === 'ca';
+  const email = (document.getElementById('auth-email').value || '').trim();
+  if(!email){ renderAuthStep(esCA ? 'Escriu primer el teu correu i torna a prémer «Has oblidat la contrasenya?».' : 'Escribe primero tu correo y vuelve a pulsar «¿Has olvidado la contraseña?».'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+  renderAuthStep(error ? error.message : (esCA ? '✅ T\'hem enviat un correu amb l\'enllaç per triar una contrasenya nova.' : '✅ Te hemos enviado un correo con el enlace para elegir una contraseña nueva.'));
+  const e = document.getElementById('auth-email'); if(e) e.value = email;
+}
+
 function renderConfigScreen(){
   const esCA = LANG === 'ca';
   const actual = (() => { try { return localStorage.getItem('logos_color_fondo') || '#F5F3EC'; } catch(e){ return '#F5F3EC'; } })();
 
   document.getElementById('config-content').innerHTML = `
     <h2 class="screen-title">⚙️ ${esCA ? 'Configuració' : 'Configuración'}</h2>
+    <div class="panel-card" id="sec-clave" style="margin-top:14px;">
+      <h3>🔑 ${esCA ? 'Canviar la contrasenya' : 'Cambiar la contraseña'}</h3>
+      ${CURRENT_USER ? `
+      <div class="field"><label>${esCA ? 'Nova contrasenya (mínim 8 caràcters)' : 'Nueva contraseña (mínimo 8 caracteres)'}</label><input type="password" id="clave-nueva" autocomplete="new-password"></div>
+      <div class="field"><label>${esCA ? 'Repeteix la nova contrasenya' : 'Repite la nueva contraseña'}</label><input type="password" id="clave-repite" autocomplete="new-password"></div>
+      <div id="clave-msg"></div>
+      <button class="primary-btn" id="clave-btn" onclick="cambiarMiClave()">${esCA ? 'Guardar la nova contrasenya' : 'Guardar la nueva contraseña'}</button>`
+      : `<p class="subtle" style="margin:0;">${esCA ? 'Entra al teu compte per canviar la contrasenya.' : 'Entra en tu cuenta para cambiar la contraseña.'}</p>`}
+    </div>
     <div class="panel-card" style="margin-top:14px;">
       <h3>🎨 ${esCA ? 'Color de fons' : 'Color de fondo'}</h3>
       <p class="subtle" style="margin:0 0 12px;">${esCA
@@ -5401,11 +5501,20 @@ async function renderDashboard(){
       <p style="margin:6px 0 0;font-size:13px;">${LANG==='ca' ? 'Etapa actual' : 'Etapa actual'}: <strong>${LANG==='ca' ? etapaActualObj.ca : etapaActualObj.es}</strong></p>
       <span class="link-btn" style="font-size:12px;display:inline-block;margin-top:6px;">${LANG==='ca' ? 'Continuar →' : 'Continuar →'}</span>
     </div>`;
-  })() : '';
+  })() : `
+    <div class="panel-card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🚀</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'El meu emprenedoria' : 'Mi emprendimiento'}</h3>
+      </div>
+      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Encara no has començat cap itinerari d\'emprenedoria.' : 'Aún no has empezado ningún itinerario de emprendimiento.'}</p>
+      <button class="link-btn" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()">${LANG==='ca' ? 'Començar →' : 'Empezar →'}</button>
+    </div>`;
 
   window.__MIS_TRAMITES = [];
+  const tramitesOrdenados = (tramites || []).slice().sort((x, y) => (x.estado==='hecho') - (y.estado==='hecho') || String(y.fecha_inicio||'').localeCompare(String(x.fecha_inicio||'')));
   const tramitesHtml = (tramites && tramites.length)
-    ? tramites.map(tr => {
+    ? tramitesOrdenados.map(tr => {
         const chipClass = tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
         const chipLabel = tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
         const fechas = tr.fecha_inicio ? `${new Date(tr.fecha_inicio).toLocaleDateString('es-ES')}${tr.fecha_fin ? ' – ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}` : '';
@@ -5420,7 +5529,7 @@ async function renderDashboard(){
         const quien = tr.estado === 'derivado_logos' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🤝 ${esCAt ? 'Amb l\'ajuda de Logos' : 'Con ayuda de Logos'}</span>` : (tr.estado === 'en_curso' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🟢 ${esCAt ? 'Ho fas tu' : 'Lo haces tú'}</span>` : '');
         return `<div class="list-row" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}${quien}</span><span class="chip ${chipClass}">${chipLabel}</span></div>${botones}</div>`;
       }).join('')
-    : `<div class="empty-note">${t.sinTramites}</div>`;
+    : '';
   const btnEmpezarTramite = `<div style="margin-top:12px;${(tramites && tramites.length) ? '' : 'padding:14px;border:1.5px dashed var(--ochre);border-radius:14px;background:var(--ochre-soft);'}">
       ${(tramites && tramites.length) ? '' : `<p style="margin:0 0 10px;font-size:13.5px;line-height:1.5;"><strong>${LANG==='ca' ? 'Encara no has començat cap tràmit.' : 'Todavía no has empezado ningún trámite.'}</strong> ${LANG==='ca' ? 'Mira què necessites i comença des d\'aquí; si et costa, Logos t\'ajuda.' : 'Mira qué necesitas y empieza desde aquí; si te cuesta, Logos te ayuda.'}</p>`}
       <button class="primary-btn" style="margin:0;background:var(--ochre);" onclick="irANecesidades()">🔎 ${(tramites && tramites.length) ? (LANG==='ca' ? 'Començar un altre tràmit' : 'Empezar otro trámite') : (LANG==='ca' ? 'Veure què necessito i començar' : 'Ver qué necesito y empezar')}</button>
@@ -5445,7 +5554,8 @@ async function renderDashboard(){
   const esCitaHoy = proximaCita && proximaCita.fecha === hoyIsoCiudadano;
   const diasHastaCita = proximaCita ? Math.round((new Date(proximaCita.fecha+'T00:00:00') - new Date(hoyIsoCiudadano+'T00:00:00')) / 86400000) : 0;
 
-  const recordatoriosHtml = (proximaCita || consultasPendientesCount > 0 || avisoEsperaPanel) ? `
+  const hayRecordatorios = !!(proximaCita || consultasPendientesCount > 0 || avisoEsperaPanel);
+  const recordatoriosHtml = `
     <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:16px;">
       <h3 style="color:#7A4A1F;margin-bottom:8px;">🔔 ${LANG==='ca' ? 'Recordatoris' : 'Recordatorios'}</h3>
       ${avisoEsperaHtml(avisoEsperaPanel, LANG==='ca')}
@@ -5457,7 +5567,8 @@ async function renderDashboard(){
       ${consultasPendientesCount > 0 ? `<p style="margin:0;font-size:13.5px;">${LANG==='ca'
         ? `Tens ${consultasPendientesCount} consulta${consultasPendientesCount>1?'s':''} pendent${consultasPendientesCount>1?'s':''} de resposta.`
         : `Tienes ${consultasPendientesCount} consulta${consultasPendientesCount>1?'s':''} pendiente${consultasPendientesCount>1?'s':''} de respuesta.`}</p>` : ''}
-    </div>` : '';
+      ${hayRecordatorios ? '' : `<p class="subtle" style="margin:0;">${LANG==='ca' ? 'Ara mateix no tens cap recordatori ni cita propera.' : 'Ahora mismo no tienes ningún recordatorio ni cita próxima.'}</p>`}
+    </div>`;
 
   const citasHtml = (citas && citas.length)
     ? citas.map(c => `
@@ -5478,9 +5589,9 @@ async function renderDashboard(){
     : '';
 
   const gridAccesos = [
-    { id:'qr', icon:'🔳', bg:'#EFEFEF', color:'var(--ink)', titulo: LANG==='ca'?'El meu QR':'Mi QR', sub: LANG==='ca'?'Per identificar-te a Logos.':'Para identificarte en Logos.' },
     { id:'recordatorios', icon:'🔔', bg:'var(--ochre-soft)', color:'#7A4A1F', titulo: LANG==='ca'?'Recordatoris':'Recordatorios', sub: LANG==='ca'?'Avisos i properes cites.':'Avisos y próximas citas.' },
     { id:'emprendimiento', icon:'🚀', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'El meu emprenedoria':'Mi emprendimiento', sub: emprendimiento ? (LANG==='ca'?'Itinerari en marxa.':'Itinerario en marcha.') : (LANG==='ca'?'Encara no has començat.':'Aún no has empezado.') },
+    { id:'qr', icon:'🔳', bg:'#EFEFEF', color:'var(--ink)', titulo: LANG==='ca'?'El meu QR':'Mi QR', sub: LANG==='ca'?'Per identificar-te a Logos.':'Para identificarte en Logos.' },
     { id:'consulta', icon:'💬', bg:'#E7ECFF', color:'#33449E', titulo: LANG==='ca'?'La meva consulta d\'orientació':'Mi consulta de orientación', sub: (consultas && consultas.length) ? (LANG==='ca'?`${consultas.length} consulta(es).`:`${consultas.length} consulta(s).`) : (LANG==='ca'?'Sense consultes.':'Sin consultas.') },
     { id:'citas', icon:'📅', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'Les meves cites':'Mis citas', sub: (citas && citas.length) ? (LANG==='ca'?`${citas.length} propera(es).`:`${citas.length} próxima(s).`) : (LANG==='ca'?'Sense cites.':'Sin citas.') },
     { id:'tramites', icon:'🗂️', bg:'var(--ochre-soft)', color:'#7A4A1F', titulo: LANG==='ca'?'Els meus tràmits':'Mis trámites', sub: (tramites && tramites.length) ? (LANG==='ca'?`${tramites.length} en total.`:`${tramites.length} en total.`) : (LANG==='ca'?'Sense tràmits.':'Sin trámites.') },
@@ -5544,12 +5655,11 @@ async function renderDashboard(){
     </div>
 
     <div id="sec-consulta"></div>
-    ${consultasHtml ? `
-    <div style="display:flex;align-items:center;gap:10px;margin:0 0 8px;">
+    <div style="display:flex;align-items:center;gap:10px;margin:16px 0 8px;">
       <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">💬</div>
       <h3 style="margin:0;font-size:14px;font-family:var(--font-display);font-weight:600;color:var(--teal-dark);">${LANG==='ca' ? 'La meva consulta d\'orientació' : 'Mi consulta de orientación'}</h3>
     </div>
-    ${consultasHtml}` : ''}
+    ${consultasHtml || `<div class="panel-card"><p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Encara no has fet cap consulta.' : 'Todavía no has hecho ninguna consulta.'}</p><button class="link-btn" onclick="irANecesidades()">${LANG==='ca' ? 'Fer una consulta →' : 'Hacer una consulta →'}</button></div>`}
 
     <div id="sec-citas"></div>
     <div class="panel-card" style="margin-top:16px;">
@@ -5572,7 +5682,12 @@ async function renderDashboard(){
     </div>
 
     <div id="sec-consentimiento"></div>
-    ${perfil && perfil.consentimiento_firmado ? `
+    ${!(perfil && perfil.consentimiento_firmado) ? `
+    <div class="panel-card" style="margin-top:16px;">
+      <h3 style="margin:0 0 8px;">✅ ${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
+      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Encara no has signat el consentiment.' : 'Todavía no has firmado el consentimiento.'}</p>
+      <button class="primary-btn" style="margin:0;" onclick="showScreen('home');renderConsentStep()">${LANG==='ca' ? 'Signar el consentiment' : 'Firmar el consentimiento'}</button>
+    </div>` : `
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">✅</div>
@@ -5582,7 +5697,7 @@ async function renderDashboard(){
         ? `Vas signar el teu consentiment de protecció de dades el ${perfil.consentimiento_fecha ? new Date(perfil.consentimiento_fecha).toLocaleDateString('ca-ES') : '—'}.`
         : `Firmaste tu consentimiento de protección de datos el ${perfil.consentimiento_fecha ? new Date(perfil.consentimiento_fecha).toLocaleDateString('es-ES') : '—'}.`}</p>
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
-    </div>` : ''}
+    </div>`}
 
     <div id="sec-documentos"></div>
     <div class="panel-card" style="margin-top:16px;">
@@ -5692,10 +5807,35 @@ async function misCitasPedidasHtml(){
 
 // --- Pedir cita ---
 
+// Máximo de citas futuras activas por persona (evita pedir citas indefinidas)
+const MAX_CITAS_FUTURAS = 1;
+async function citasFuturasPropias(){
+  if(!CURRENT_USER) return [];
+  const hoy = new Date().toISOString().slice(0,10);
+  try {
+    const { data } = await sb.from('citas').select('id, fecha, hora, estado').eq('usuario_id', CURRENT_USER.id).gte('fecha', hoy);
+    return (data || []).filter(c => c.estado !== 'cancelada');
+  } catch(e){ return []; }
+}
+
 async function renderCitaForm(){
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
   document.getElementById('cita-content').innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+  const futuras = await citasFuturasPropias();
+  if(futuras.length >= MAX_CITAS_FUTURAS){
+    const c = futuras.sort((a,b) => (a.fecha+a.hora).localeCompare(b.fecha+b.hora))[0];
+    const f = new Date(c.fecha + 'T00:00:00').toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { weekday:'long', day:'numeric', month:'long' });
+    document.getElementById('cita-content').innerHTML = `
+      <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
+      <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
+        <p style="margin:0 0 8px;"><strong>${esCA ? 'Ja tens una cita pendent' : 'Ya tienes una cita pendiente'}</strong></p>
+        <p style="margin:0 0 10px;">${f} · ${String(c.hora).slice(0,5)}</p>
+        <p class="subtle" style="margin:0 0 12px;">${esCA ? 'Per demanar-ne una altra, primer has de cancel·lar aquesta, o esperar que passi. Si necessites una altra hora, també pots trucar a Logos.' : 'Para pedir otra, primero tienes que cancelar esta o esperar a que pase. Si necesitas otra hora, también puedes llamar a Logos.'}</p>
+        <button class="primary-btn" style="margin:0;" onclick="showScreen('profile');renderDashboard()">${esCA ? 'Veure les meves cites' : 'Ver mis citas'}</button>
+      </div>`;
+    return;
+  }
 
   const { data: horario } = await sb.from('horario_atencion').select('*').eq('id', 1).maybeSingle();
   if(!horario){
@@ -5781,6 +5921,11 @@ async function seleccionarDiaCita(fechaIso){
 
 async function reservarCita(fecha, hora){
   const esCA = LANG === 'ca';
+  if(window.__reservandoCita) return;
+  window.__reservandoCita = true;
+  try {
+    if((await citasFuturasPropias()).length >= MAX_CITAS_FUTURAS){ window.__reservandoCita = false; renderCitaForm(); return; }
+  } catch(e){}
   const { error } = await sb.from('citas').insert({
     usuario_id: CURRENT_USER.id,
     fecha,
@@ -5790,6 +5935,7 @@ async function reservarCita(fecha, hora){
     document.getElementById('cita-horas').insertAdjacentHTML('afterbegin',
       `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar. Tria una altra.' : 'Esta hora se acaba de ocupar. Elige otra.') : error.message}</div>`);
     seleccionarDiaCita(fecha);
+    window.__reservandoCita = false;
     return;
   }
 
@@ -5805,6 +5951,7 @@ async function reservarCita(fecha, hora){
   } catch(e) { /* no bloquear la reserva si falla el aviso */ }
 
   showScreen('profile');
+  window.__reservandoCita = false;
   renderDashboard();
 }
 
@@ -6100,6 +6247,20 @@ async function borrarDocumento(id){
 
 function renderConsentStep(avisoBloqueo){
   const esCA = LANG === 'ca';
+  // El consentimiento se firma UNA sola vez: si ya está firmado, solo se muestra y se puede descargar.
+  const perfFirmado = window.__perfilActual;
+  if(!IS_STAFF && perfFirmado && perfFirmado.consentimiento_firmado){
+    const fF = perfFirmado.consentimiento_fecha ? new Date(perfFirmado.consentimiento_fecha).toLocaleDateString(esCA ? 'ca-ES' : 'es-ES') : '—';
+    document.getElementById('entrada-panel').innerHTML = `
+      <h2 class="screen-title">✅ ${esCA ? 'El teu consentiment ja està signat' : 'Tu consentimiento ya está firmado'}</h2>
+      <div class="panel-card">
+        <p style="margin:0 0 8px;">${esCA ? `Vas signar el consentiment el ${fF}. Només cal signar-lo una vegada.` : `Firmaste el consentimiento el ${fF}. Solo hace falta firmarlo una vez.`}</p>
+        <p class="subtle" style="margin:0 0 10px;">${esCA ? 'Si vols canviar alguna autorització, contacta amb Logos.' : 'Si quieres cambiar alguna autorización, contacta con Logos.'}</p>
+        <button class="link-btn" onclick="descargarMiConsentimientoPDF('${(perfFirmado.nombre_completo||'').replace(/'/g,"\\'")}', '${perfFirmado.dni_nie||''}', '${perfFirmado.consentimiento_fecha||''}')">⬇️ ${esCA ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
+        <button class="primary-btn" style="margin-top:12px;" onclick="showScreen('home');try{revelarCatalogo()}catch(e){}">${esCA ? 'Continuar' : 'Continuar'}</button>
+      </div>`;
+    return;
+  }
   document.getElementById('entrada-panel').innerHTML = `
     ${avisoBloqueo ? `<div class="panel-card" style="background:var(--alert-soft);border-color:var(--alert);margin-bottom:14px;">
       <p style="margin:0;font-size:13.5px;">${esCA
@@ -6268,6 +6429,7 @@ function firmaCanvasEstaVacia(){
 
 async function firmarConsentimientoGeneral(){
   const esCA = LANG === 'ca';
+  if(window.__perfilActual && window.__perfilActual.consentimiento_firmado){ renderConsentStep(); return; }
   const nombreConsent = document.getElementById('cons-nombre').value.trim();
   const dniConsent = document.getElementById('cons-dni').value.trim();
   if(!nombreConsent || !dniConsent){
