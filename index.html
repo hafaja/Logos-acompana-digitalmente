@@ -1803,6 +1803,7 @@ async function checkStaff(){
 }
 
 async function renderEntradaPanel(){
+  { const gb = document.getElementById('btn-guia-top'); if(gb) gb.style.display = ''; }
   const el = document.getElementById('entrada-panel');
   const catalogo = document.getElementById('catalogo-panel');
   if(!el) return;
@@ -1930,6 +1931,7 @@ async function renderResumenStep(mostrarCatalogoYa){
   const inicial = nombre.trim().charAt(0).toUpperCase();
 
   catalogo.style.display = mostrarCatalogoYa ? 'block' : 'none';
+  { const gb = document.getElementById('btn-guia-top'); if(gb) gb.style.display = 'none'; }  // en el resumen la guía ya sale bajo el nombre
 
   const hoyIsoEntrada = new Date().toISOString().slice(0,10);
   const [{ data: citasEntrada }, { data: consultasEntrada }, { count: tramitesEnCursoEntrada }] = await Promise.all([
