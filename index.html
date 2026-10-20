@@ -87,13 +87,17 @@
   .subtle{color:var(--ink-soft);font-size:13.5px;line-height:1.45;margin:0 0 20px;}
 
   .mobile-menu-toggle{display:none;}
+  .nav-hist{display:none;}
   .mobile-menu-header{display:none;}
   @media (max-width: 760px){
     #app{flex-direction:column;}
     .sidebar{width:100%;height:56px;position:sticky;bottom:0;top:auto;order:2;flex-direction:row;align-items:center;justify-content:center;padding:0;border-right:none;border-top:1.5px solid var(--line);z-index:150;}
     .sidebar-logo-img,.sidebar-logout,.sidebar > .sidebar-social{display:none;}
     .sidebar{background:var(--paper);border-top:3px solid var(--ochre);box-shadow:0 -4px 14px rgba(22,35,63,.10);padding:0 12px;}
-    .mobile-menu-toggle{display:flex;width:100%;height:38px;align-items:center;justify-content:center;gap:8px;background:var(--teal);border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font-body);}
+    body > .asistente-btn{bottom:74px;right:14px;width:48px;height:48px;font-size:20px;}
+    .nav-hist{display:flex;align-items:center;justify-content:center;flex:none;width:44px;height:38px;margin:0 6px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--teal-dark);font-size:26px;line-height:1;font-weight:700;cursor:pointer;padding:0 0 3px;}
+    .nav-hist:disabled{opacity:.3;cursor:default;}
+    .mobile-menu-toggle{display:flex;flex:1;min-width:0;height:38px;align-items:center;justify-content:center;gap:8px;background:var(--teal);border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font-body);}
     .mobile-menu-overlay{display:none;}
     .sidebar.menu-open .mobile-menu-overlay{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:56px;background:var(--teal);z-index:160;}
     .mobile-menu-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1.5px solid rgba(255,255,255,.15);font-family:var(--font-display);font-weight:700;font-size:17px;flex-shrink:0;color:#fff;}
@@ -443,7 +447,9 @@
 
   <div class="sidebar">
     <img class="sidebar-logo-img" src="logo-sidebar.png" alt="Logos - Transformem el discurs social" loading="eager" width="180">
+    <button class="nav-hist" id="nav-back" onclick="history.back()" aria-label="Atrás" title="Atrás">‹</button>
     <button class="mobile-menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('menu-open')">☰ Menú</button>
+    <button class="nav-hist" id="nav-fwd" onclick="history.forward()" aria-label="Adelante" title="Adelante">›</button>
     <div class="mobile-menu-overlay">
       <div class="mobile-menu-header">
         <span>Menú</span>
@@ -788,6 +794,15 @@ async function buscarPerfiles(texto, lim, soloNombre){
   } catch(e){}
   const base = sb.from('perfiles').select('id, nombre_completo, municipio, dni_nie, telefono');
   return await (soloNombre ? base.ilike('nombre_completo', `%${q}%`) : base.or(`nombre_completo.ilike.%${q}%,dni_nie.ilike.%${q}%,telefono.ilike.%${q}%`)).limit(lim || 10);
+}
+// Formato de fecha único: «jue 10 ene 2030» / «2 oct 2026»
+function fmtFechaCorta(f, ca, conDia){
+  if(!f) return '—';
+  const d = new Date(String(f).length <= 10 ? f + 'T00:00:00' : f);
+  if(isNaN(d)) return '—';
+  const o = { day:'numeric', month:'short', year:'numeric' };
+  if(conDia) o.weekday = 'short';
+  return d.toLocaleDateString(ca ? 'ca-ES' : 'es-ES', o).replace(/\./g, '');
 }
 function setLang(lang){
   LANG = lang;
@@ -1656,7 +1671,30 @@ async function tokenParaFunciones(){
   try { const { data } = await sb.auth.getSession(); return (data && data.session && data.session.access_token) || SUPABASE_KEY; }
   catch(e){ return SUPABASE_KEY; }
 }
+// Navegación adelante/atrás (botones ‹ › del móvil y botón atrás del teléfono)
+window.__navIdx = 0; window.__navMax = 0;
+try { history.replaceState({ s:'home', i:0 }, '', location.pathname + location.search); } catch(e){}
+function navPintar(){
+  const b = document.getElementById('nav-back'), f = document.getElementById('nav-fwd');
+  if(b) b.disabled = window.__navIdx <= 0;
+  if(f) f.disabled = window.__navIdx >= window.__navMax;
+}
+window.addEventListener('popstate', function(e){
+  const st = e.state; if(!st || !st.s) return;
+  window.__navIdx = st.i || 0; window.__navRestaurando = true;
+  try { showScreen(st.s); } finally { window.__navRestaurando = false; }
+  const mapa = { profile:() => renderDashboard(), cita:() => renderCitaForm(), config:() => renderConfigScreen(), traductor:() => renderTraductorScreen(), aulaciudadano:() => renderAulaCiudadano(), voluntariado:() => renderVoluntariado(), empleo:() => renderBusquedaEmpleo(), cuidados:() => renderCuidadosCompania(), emprendimiento:() => renderEmprendimientoScreen(), queofrecemos:() => renderQueOfrecemos(), webredes:() => renderWebRedes(), verificarcert:() => renderVerificarCertificado() };
+  try { if(mapa[st.s]) mapa[st.s](); } catch(err){}
+  navPintar();
+});
 function showScreen(name){
+  if(!window.__navRestaurando){
+    try {
+      const cur = history.state && history.state.s;
+      if(cur !== name){ window.__navIdx++; window.__navMax = window.__navIdx; history.pushState({ s:name, i:window.__navIdx }, '', location.pathname + location.search); }
+    } catch(e){}
+    setTimeout(navPintar, 0);
+  }
   // Si se abrió «Completar mis datos» o el consentimiento desde el menú y se vuelve a Inicio, Inicio vuelve a mostrar el resumen
   if(name === 'home' && window.__formVoluntario){
     const tk = window.__resetTk = (window.__resetTk || 0) + 1;
@@ -5614,7 +5652,7 @@ async function renderDashboard(){
     ? tramitesOrdenados.map(tr => {
         const chipClass = tr.estado === 'anulado' ? 'anulado' : tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
         const chipLabel = tr.estado === 'anulado' ? (LANG==='ca'?'Anul·lat':'Anulado') : tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
-        const fechas = tr.fecha_inicio ? `${new Date(tr.fecha_inicio).toLocaleDateString('es-ES')}${tr.fecha_fin ? ' – ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}` : '';
+        const fechas = tr.fecha_inicio ? `${LANG==='ca' ? 'Iniciat' : 'Iniciado'}: ${fmtFechaCorta(tr.fecha_inicio, LANG==='ca')}${tr.fecha_fin ? ` · ${tr.estado==='anulado' ? (LANG==='ca' ? 'Anul·lat' : 'Anulado') : (LANG==='ca' ? 'Acabat' : 'Terminado')}: ${fmtFechaCorta(tr.fecha_fin, LANG==='ca')}` : ''}` : '';
         const enlace = enlaceDeTramite(tr.nombre_servicio);
         window.__MIS_TRAMITES = window.__MIS_TRAMITES || [];
         const idxT = window.__MIS_TRAMITES.push(tr) - 1;
@@ -5636,15 +5674,15 @@ async function renderDashboard(){
   const documentosHtml = (documentos && documentos.length)
     ? documentos.map(d => `
         <div class="list-row">
-          <span>${d.nombre_archivo}${d.tipo_documento==='consentimiento' ? ` <span class="chip hecho" style="margin-left:6px;">${LANG==='ca' ? 'Consentiment' : 'Consentimiento'}</span>` : ''}${d.tipo_documento==='curriculum' ? ` <span class="chip en-curso" style="margin-left:6px;">CV</span>` : ''}</span>
+          <span>${d.nombre_archivo}${d.subido_en ? `<br><span class="subtle" style="font-size:11px;margin:0;">${LANG==='ca' ? 'Pujat el' : 'Subido el'} ${fmtFechaCorta(d.subido_en, LANG==='ca')}</span>` : ''}${d.tipo_documento==='consentimiento' ? ` <span class="chip hecho" style="margin-left:6px;">${LANG==='ca' ? 'Consentiment' : 'Consentimiento'}</span>` : ''}${d.tipo_documento==='curriculum' ? ` <span class="chip en-curso" style="margin-left:6px;">CV</span>` : ''}</span>
           <span style="display:flex;gap:12px;align-items:center;flex-shrink:0;">
             <button class="link-btn" style="font-size:12px;" onclick="verDocumento('${d.id}')">${LANG==='ca' ? 'Veure' : 'Ver'}</button>
-            <button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="borrarDocumento('${d.id}')">${LANG==='ca' ? 'Eliminar' : 'Eliminar'}</button>
+            ${d.tipo_documento==='consentimiento' ? '' : `<button class="link-btn" style="font-size:12px;color:var(--alert);" onclick="borrarDocumento('${d.id}')">${LANG==='ca' ? 'Eliminar' : 'Eliminar'}</button>`}
           </span>
         </div>`).join('')
     : `<div class="empty-note">${t.sinDocumentos}</div>`;
 
-  const fmtFecha = f => new Date(f + 'T00:00:00').toLocaleDateString(LANG==='ca' ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
+  const fmtFecha = f => fmtFechaCorta(f, LANG==='ca', true);
   const hoyIsoCiudadano = new Date().toISOString().slice(0,10);
   const avisoEsperaPanel = await cargarAvisoEspera();
   const proximaCita = (citas || []).filter(c => c.fecha >= hoyIsoCiudadano).sort((a,b) => (a.fecha+a.hora).localeCompare(b.fecha+b.hora))[0];
@@ -5668,8 +5706,9 @@ async function renderDashboard(){
       ${hayRecordatorios ? '' : `<p class="subtle" style="margin:0;">${LANG==='ca' ? 'Ara mateix no tens cap recordatori ni cita propera.' : 'Ahora mismo no tienes ningún recordatorio ni cita próxima.'}</p>`}
     </div>`;
 
+  const citasOrd = (citas || []).slice().sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora));
   const citasHtml = (citas && citas.length)
-    ? citas.map(c => `
+    ? citasOrd.map(c => `
         <div class="list-row">
           <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
           <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}')">✖ ${LANG==='ca' ? 'Cancel·lar cita' : 'Cancelar cita'}</button>
@@ -5707,13 +5746,7 @@ async function renderDashboard(){
     </div>`;
 
   document.getElementById('profile-content').innerHTML = `
-    <div class="profile-head">
-      <div class="avatar">${inicial}</div>
-      <div>
-        <strong>${nombre}</strong>
-        <span>${municipio}${!perfil || !perfil.nombre_completo ? ' · ' + t.perfilIncompleto : ''}</span>
-      </div>
-    </div>
+    ${(!perfil || !perfil.nombre_completo) ? `<div class="info-box" style="margin-bottom:12px;">${t.perfilIncompleto}</div>` : ''}
 
     ${gridAccesosHtml}
 
@@ -5793,8 +5826,8 @@ async function renderDashboard(){
         <h3 style="margin:0;">${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
       </div>
       <p class="subtle" style="margin:0 0 8px;">${LANG==='ca'
-        ? `Vas signar el teu consentiment de protecció de dades el ${perfil.consentimiento_fecha ? new Date(perfil.consentimiento_fecha).toLocaleDateString('ca-ES') : '—'}.`
-        : `Firmaste tu consentimiento de protección de datos el ${perfil.consentimiento_fecha ? new Date(perfil.consentimiento_fecha).toLocaleDateString('es-ES') : '—'}.`}</p>
+        ? `Vas signar el teu consentiment de protecció de dades el ${perfil.consentimiento_fecha ? fmtFechaCorta(perfil.consentimiento_fecha, true) : '—'}.`
+        : `Firmaste tu consentimiento de protección de datos el ${perfil.consentimiento_fecha ? fmtFechaCorta(perfil.consentimiento_fecha, false) : '—'}.`}</p>
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
     </div>`}
 
@@ -6340,8 +6373,14 @@ async function borrarDocumento(id){
   if(!doc) return;
   const confirmMsg = LANG === 'ca' ? 'Segur que vols eliminar aquest document?' : '¿Seguro que quieres eliminar este documento?';
   if(!confirm(confirmMsg)) return;
-  await sb.storage.from('documentos').remove([doc.ruta_storage]);
-  await sb.from('documentos').delete().eq('id', id);
+  const esCA = LANG === 'ca';
+  if(doc.tipo_documento === 'consentimiento'){ alert(esCA ? 'El consentiment signat no es pot eliminar.' : 'El consentimiento firmado no se puede eliminar.'); return; }
+  const { data: borrados, error } = await sb.from('documentos').delete().eq('id', id).eq('usuario_id', CURRENT_USER.id).select('id');
+  if(error || !borrados || !borrados.length){
+    alert((esCA ? 'No s\'ha pogut eliminar el document.' : 'No se ha podido eliminar el documento.') + (error ? '\n' + error.message : '') + '\n\n' + (esCA ? 'Avisa Logos si continua passant.' : 'Avisa a Logos si sigue pasando.'));
+    return;
+  }
+  try { await sb.storage.from('documentos').remove([doc.ruta_storage]); } catch(e){}
   renderDashboard();
 }
 
@@ -6350,7 +6389,7 @@ function renderConsentStep(avisoBloqueo){
   // El consentimiento se firma UNA sola vez: si ya está firmado, solo se muestra y se puede descargar.
   const perfFirmado = window.__perfilActual;
   if(!IS_STAFF && perfFirmado && perfFirmado.consentimiento_firmado){
-    const fF = perfFirmado.consentimiento_fecha ? new Date(perfFirmado.consentimiento_fecha).toLocaleDateString(esCA ? 'ca-ES' : 'es-ES') : '—';
+    const fF = fmtFechaCorta(perfFirmado.consentimiento_fecha, esCA);
     document.getElementById('entrada-panel').innerHTML = `
       <h2 class="screen-title">✅ ${esCA ? 'El teu consentiment ja està signat' : 'Tu consentimiento ya está firmado'}</h2>
       <div class="panel-card">
