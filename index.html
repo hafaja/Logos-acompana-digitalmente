@@ -313,6 +313,7 @@
   .chip{font-size:10.5px;font-weight:700;border-radius:999px;padding:3px 9px;}
   .chip.en-curso{background:var(--ochre-soft);color:#7A4A1F;}
   .chip.derivado{background:#E6E9F1;color:var(--teal-dark);}
+  .chip.anulado{background:#EEE;color:#777;}
   .chip.hecho{background:#DDEFD9;color:#2F6B27;}
   .resultado-btn{flex:1;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 6px;font-family:var(--font-body);font-weight:700;font-size:12px;cursor:pointer;color:var(--ink-soft);}
   .resultado-btn.sel-good{background:var(--good);color:#fff;border-color:var(--good);}
@@ -1087,7 +1088,7 @@ async function registrarTramiteApp(nombre, modo){
   const p = window.__perfilActual || {};
   const quien = p.nombre_completo || CURRENT_USER.email;
   let existente = null;
-  try { const r = await sb.from('tramites').select('id, estado').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', nombre).neq('estado', 'hecho').limit(1); existente = (r.data || [])[0] || null; } catch(e) {}
+  try { const r = await sb.from('tramites').select('id, estado').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', nombre).not('estado', 'in', '(hecho,anulado)').limit(1); existente = (r.data || [])[0] || null; } catch(e) {}
   if(existente && (modo === 'solo' || existente.estado === 'derivado_logos')) return true;
   const estado = modo === 'ayuda' ? 'derivado_logos' : 'en_curso';
   try {
@@ -1522,7 +1523,7 @@ async function crearTramiteDesdeServicio(servicioId){
 
   // Evitar el mismo trámite abierto dos veces
   try {
-    const { data: ya } = await sb.from('tramites').select('id').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', s.nombre.es).neq('estado', 'hecho').limit(1);
+    const { data: ya } = await sb.from('tramites').select('id').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', s.nombre.es).not('estado', 'in', '(hecho,anulado)').limit(1);
     if(ya && ya.length){ alert(esCA ? 'Ja tens aquest tràmit obert. El trobaràs a «Mi espacio» → Els meus tràmits.' : 'Ya tienes este trámite abierto. Lo encontrarás en «Mi espacio» → Mis trámites.'); return; }
   } catch(e){}
 
@@ -2130,7 +2131,7 @@ async function verPersonaStaff(usuarioId){
           <span>${tr.nombre_servicio}<br><span class="subtle" style="font-size:11px;margin:0;">Inicio: ${tr.fecha_inicio ? new Date(tr.fecha_inicio).toLocaleDateString('es-ES') : '—'}${tr.fecha_fin ? ' · Fin: ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}</span></span>
           <span style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
             <span class="chip ${tr.estado==='hecho'?'hecho':(tr.estado==='derivado_logos'?'derivado':'en-curso')}">${tr.estado}</span>
-            ${tr.estado !== 'hecho' ? `<button class="link-btn" style="font-size:11px;" onclick="marcarTramiteHecho('${tr.id}')">Marcar hecho</button>` : ''}
+            ${(tr.estado !== 'hecho' && tr.estado !== 'anulado') ? `<button class="link-btn" style="font-size:11px;" onclick="marcarTramiteHecho('${tr.id}')">Marcar hecho</button><button class="link-btn" style="font-size:11px;color:var(--alert);" onclick="anularMiTramite('${tr.id}')">✖ Anular</button>` : ''}
           </span>
         </div>`).join('')
     : `<div class="empty-note">Sin trámites</div>`;
@@ -2374,6 +2375,18 @@ async function crearTramite(){
   });
   if(error){ alert(error.message); return; }
   verPersonaStaff(window.__usuarioIdVisto);
+}
+
+async function anularMiTramite(id){
+  const esCA = LANG === 'ca';
+  if(!confirm(esCA ? 'Vols anul·lar aquest tràmit? Deixarà de sortir com a obert.' : '¿Quieres anular este trámite? Dejará de aparecer como abierto.')) return;
+  const { data, error } = await sb.from('tramites').update({ estado:'anulado', fecha_fin: new Date().toISOString().slice(0,10) }).eq('id', id).eq('usuario_id', CURRENT_USER.id).select();
+  if(error || !data || !data.length){ alert(esCA ? 'No s\'ha pogut anul·lar el tràmit. Prova-ho més tard o truca a Logos.' : 'No se ha podido anular el trámite. Inténtalo más tarde o llama a Logos.'); return; }
+  try {
+    const p = window.__perfilActual || {};
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'tramite_anulado', mensaje: `⚪ ${p.nombre_completo || CURRENT_USER.email} ha anulado el trámite "${data[0].nombre_servicio}". Solo es un aviso.` });
+  } catch(e){}
+  renderDashboard();
 }
 
 async function marcarTramiteHecho(tramiteId){
@@ -5512,19 +5525,20 @@ async function renderDashboard(){
     </div>`;
 
   window.__MIS_TRAMITES = [];
-  const tramitesOrdenados = (tramites || []).slice().sort((x, y) => (x.estado==='hecho') - (y.estado==='hecho') || String(y.fecha_inicio||'').localeCompare(String(x.fecha_inicio||'')));
+  const tramitesOrdenados = (tramites || []).slice().sort((x, y) => ((x.estado==='hecho'||x.estado==='anulado') - (y.estado==='hecho'||y.estado==='anulado')) || String(y.fecha_inicio||'').localeCompare(String(x.fecha_inicio||'')));
   const tramitesHtml = (tramites && tramites.length)
     ? tramitesOrdenados.map(tr => {
-        const chipClass = tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
-        const chipLabel = tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
+        const chipClass = tr.estado === 'anulado' ? 'anulado' : tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
+        const chipLabel = tr.estado === 'anulado' ? (LANG==='ca'?'Anul·lat':'Anulado') : tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
         const fechas = tr.fecha_inicio ? `${new Date(tr.fecha_inicio).toLocaleDateString('es-ES')}${tr.fecha_fin ? ' – ' + new Date(tr.fecha_fin).toLocaleDateString('es-ES') : ''}` : '';
         const enlace = enlaceDeTramite(tr.nombre_servicio);
         window.__MIS_TRAMITES = window.__MIS_TRAMITES || [];
         const idxT = window.__MIS_TRAMITES.push(tr) - 1;
         const esCAt = LANG === 'ca';
-        const botones = tr.estado === 'hecho' ? '' : `<div class="nec-item-b" style="margin-top:8px;">
+        const botones = (tr.estado === 'hecho' || tr.estado === 'anulado') ? '' : `<div class="nec-item-b" style="margin-top:8px;">
             ${enlace ? `<a class="nec-btn nec-btn-yo" href="${enlace}" target="_blank" rel="noopener">🔗 ${esCAt ? 'Anar al tràmit' : 'Ir al trámite'}</a>` : `<a class="nec-btn nec-btn-llamar" href="tel:+34630461560">📞 ${esCAt ? 'Trucar a Logos' : 'Llamar a Logos'}</a><button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCAt ? 'Demanar cita' : 'Pedir cita'}</button>`}
             ${tr.estado === 'derivado_logos' ? '' : `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramiteExistente(${idxT})">🤝 ${esCAt ? 'Necessito ajuda' : 'Necesito ayuda'}</button>`}
+            <button class="nec-btn" style="color:var(--alert);border-color:var(--alert);" onclick="anularMiTramite('${tr.id}')">✖ ${esCAt ? 'Anul·lar tràmit' : 'Anular trámite'}</button>
           </div>`;
         const quien = tr.estado === 'derivado_logos' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🤝 ${esCAt ? 'Amb l\'ajuda de Logos' : 'Con ayuda de Logos'}</span>` : (tr.estado === 'en_curso' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🟢 ${esCAt ? 'Ho fas tu' : 'Lo haces tú'}</span>` : '');
         return `<div class="list-row" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}${quien}</span><span class="chip ${chipClass}">${chipLabel}</span></div>${botones}</div>`;
