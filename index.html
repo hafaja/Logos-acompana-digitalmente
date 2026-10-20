@@ -1600,9 +1600,14 @@ loadData();
 
 <!-- ===================== MÓDULO 1: Mi espacio (Supabase) ===================== -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(function(){ function cargar(){
+  ['html2canvas/1.4.1/html2canvas.min.js','jspdf/2.5.1/jspdf.umd.min.js','qrcode-generator/1.4.4/qrcode.min.js'].forEach(function(u){
+    var el = document.createElement('script'); el.src = 'https://cdnjs.cloudflare.com/ajax/libs/' + u; el.async = true; document.head.appendChild(el);
+  });
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', cargar); else cargar(); })();
+</script>
 <script>
 // --- Configuración de conexión ---
 // La "publishable key" está pensada para ir en el navegador: la protección real
