@@ -509,6 +509,7 @@
         <div id="guia-card-host"></div>
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
         <p class="subtle" id="home-sub">Encuentra el trámite o la ayuda que necesitas en Tarragona.</p>
+        <div class="panel-card" id="nec-nota" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;">💡 Puedes hacer tu trámite tú mismo/a desde esta plataforma: te llevamos al sitio correcto. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.</div>
         <div id="nec-carrusel"></div>
         <div class="nb"><span class="nb-i">🔎</span><input id="nec-q" type="search" autocomplete="off" oninput="necBuscar()" aria-label="Buscar"></div>
         <div id="nec-res" class="nb-res" aria-live="polite"></div>
@@ -815,6 +816,10 @@ function setLang(lang){
   { const gt = document.getElementById('btn-guia-top'), gn = document.getElementById('nav-guia-btn'); const gl = lang === 'ca' ? '❓ Com es fa servir' : '❓ Cómo se usa'; if(gt) gt.textContent = gl; if(gn) gn.textContent = gl; }
   document.getElementById('home-title').textContent = T.homeTitle;
   document.getElementById('home-sub').textContent = T.homeSub;
+  const nn = document.getElementById('nec-nota');
+  if(nn) nn.innerHTML = (lang === 'ca')
+    ? '💡 Pots fer el teu tràmit tu mateix/a des d\'aquesta plataforma: et portem al lloc correcte. I si ho prefereixes, <strong>Logos t\'ajuda</strong>: només cal que ens ho demanis.'
+    : '💡 Puedes hacer tu trámite tú mismo/a desde esta plataforma: te llevamos al sitio correcto. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.';
   document.getElementById('trust-title').textContent = T.trustTitle;
   document.getElementById('trust-body').textContent = T.trustBody;
   document.getElementById('back-to-home').innerHTML = T.backHome;
@@ -2027,13 +2032,20 @@ async function renderResumenStep(mostrarCatalogoYa){
       ${nAvisosProy > 0 ? filaRec('📣', esCA ? `Tens <strong>${nAvisosProy} avís${nAvisosProy>1?'os':''}</strong> dels teus projectes.` : `Tienes <strong>${nAvisosProy} aviso${nAvisosProy>1?'s':''}</strong> de tus proyectos.`, 'avisos', false) : ''}
     </div>`;
 
-  const datosCompletosTodo = !!(p.dni_nie && p.fecha_nacimiento);
+  const camposDatos = [
+    ['dni_nie', 'DNI/NIE', 'DNI/NIE'], ['nacionalidad', 'nacionalidad', 'nacionalitat'], ['fecha_nacimiento', 'fecha de nacimiento', 'data de naixement'],
+    ['sexo', 'sexo', 'sexe'], ['municipio', 'municipio', 'municipi'], ['provincia', 'provincia', 'província'],
+    ['convivencia', 'con quién vives', 'amb qui vius'], ['personas_hogar', 'personas en el hogar', 'persones a la llar'],
+    ['numero_hijos', 'número de hijos/as', 'nombre de fills/es'], ['situacion_laboral', 'situación laboral', 'situació laboral'], ['discapacidad_reconocida', 'discapacidad reconocida', 'discapacitat reconeguda']
+  ];
+  const faltanDatos = camposDatos.filter(c => p[c[0]] === null || p[c[0]] === undefined || String(p[c[0]]).trim() === '').map(c => esCA ? c[2] : c[1]);
+  const datosCompletosTodo = faltanDatos.length === 0;
   const completarDatosHtml = `
     <div class="panel-card" style="margin-bottom:12px;${datosCompletosTodo ? '' : 'border-color:var(--ochre);'}">
       <h3 style="margin-bottom:4px;">📝 ${esCA ? 'Les meves dades' : 'Mis datos'}</h3>
       <p class="subtle" style="margin:0 0 10px;">${datosCompletosTodo
         ? (esCA ? 'Les teves dades estan completes. Les pots revisar quan vulguis.' : 'Tus datos están completos. Puedes revisarlos cuando quieras.')
-        : (esCA ? 'Com més dades tinguem, millor et podrem ajudar. Pots completar-les tu mateix/a.' : 'Cuantos más datos tengamos, mejor podremos ayudarte. Puedes completarlos tú mismo/a.')}</p>
+        : (esCA ? `Encara et falten ${faltanDatos.length} dades per completar: <strong>${faltanDatos.slice(0, 4).join(', ')}${faltanDatos.length > 4 ? '…' : ''}</strong>. Com més dades tinguem, millor et podrem ajudar.` : `Aún te faltan ${faltanDatos.length} datos por completar: <strong>${faltanDatos.slice(0, 4).join(', ')}${faltanDatos.length > 4 ? '…' : ''}</strong>. Cuantos más datos tengamos, mejor podremos ayudarte.`)}</p>
       <button class="primary-btn" style="margin:0;${datosCompletosTodo ? 'background:var(--teal);' : 'background:var(--ochre);'}" onclick="abrirFormDesdeMenu('datos')">${datosCompletosTodo ? (esCA ? 'Revisar les meves dades' : 'Revisar mis datos') : (esCA ? 'Completar les meves dades' : 'Completar mis datos')}</button>
     </div>`;
 
@@ -2070,7 +2082,11 @@ function abrirFormDesdeMenu(tipo){
   window.__formVoluntario = false;
   showScreen('home');
   window.__formVoluntario = true;
-  if(tipo === 'consent') renderConsentStep(); else renderDatosStep();
+  // El formulario se ve arriba del todo y el catálogo de necesidades se esconde, para no confundir
+  const cat = document.getElementById('catalogo-panel'); if(cat) cat.style.display = 'none';
+  try { window.scrollTo(0, 0); document.querySelectorAll('.main').forEach(m => { m.scrollTop = 0; }); } catch(e){}
+  if(tipo === 'consent') renderConsentStep();
+  else renderDatosStep(); // como antes: datos obligatorios de contacto -> elegir completar solo/a o con el técnico
 }
 async function irAMiEspacio(sec){
   showScreen('profile');
@@ -6773,20 +6789,16 @@ function renderDatosStepEleccion(){
   const esCA = LANG === 'ca';
   document.getElementById('entrada-panel').innerHTML = `
     <div class="panel-card" style="background:var(--good-soft);border-color:var(--good);">
-      <h3 style="color:var(--good);">✅ ${esCA ? 'Dades bàsiques desades' : 'Datos básicos guardados'}</h3>
+      <h3 style="color:var(--good);">✅ ${esCA ? 'Ja tens el mínim per començar' : 'Ya tienes lo mínimo para empezar'}</h3>
       <p style="margin:0;">${esCA
-        ? 'Ja tens el mínim per començar a fer servir la plataforma. Vols completar la resta ara mateix, o prefereixes que ho fem junts?'
-        : 'Ya tienes lo mínimo para empezar a usar la plataforma. ¿Quieres completar el resto ahora mismo, o prefieres que lo hagamos juntos?'}</p>
+        ? 'Pots completar la resta de dades ara, o continuar sense completar-les i fer-ho més endavant. No et bloqueja res: ho pots fer quan vulguis des de "Les meves dades".'
+        : 'Puedes completar el resto de datos ahora, o continuar sin completarlos y hacerlo más adelante. No te bloquea nada: lo puedes hacer cuando quieras desde "Mis datos".'}</p>
     </div>
-    <button class="primary-btn" style="margin-top:14px;" onclick="renderDatosStepCompleto()">📝 ${esCA ? 'Completar-ho ara jo mateix/a' : 'Completarlo ahora yo mismo/a'}</button>
-    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-top:14px;">
-      <h3 style="color:#7A4A1F;">⚡ ${esCA ? 'O fem-ho junts — és ràpid' : 'O lo hacemos juntos — es rápido'}</h3>
-      <p style="margin:0 0 10px;">${esCA
-        ? 'Truca\'ns, escriu-nos per WhatsApp, o passa per l\'oficina — completem la resta amb tu en pocs minuts, sense presses.'
-        : 'Llámanos, escríbenos por WhatsApp, o pasa por la oficina — completamos el resto contigo en pocos minutos, sin prisas.'}</p>
-      <p style="margin:0;font-weight:700;font-size:15px;">📞 +34 630 46 15 60</p>
-    </div>
-    <button class="primary-btn" style="margin-top:14px;" onclick="showScreen('home');revelarCatalogo()">${esCA ? 'Continuar sense completar-ho ara →' : 'Continuar sin completarlo ahora →'}</button>
+    <button class="primary-btn" style="margin-top:14px;" onclick="renderDatosStepCompleto()">📝 ${esCA ? 'Completar-ho ara' : 'Completarlo ahora'}</button>
+    <button class="primary-btn" style="margin-top:10px;background:var(--teal);" onclick="showScreen('home');revelarCatalogo()">${esCA ? 'Continuar sense completar-ho →' : 'Continuar sin completarlo →'}</button>
+    <p class="subtle" style="margin-top:14px;">${esCA
+      ? 'Si ho prefereixes, també ho podem fer junts: truca\'ns al <strong>+34 630 46 15 60</strong>, escriu-nos per WhatsApp o passa per l\'oficina.'
+      : 'Si lo prefieres, también lo podemos hacer juntos: llámanos al <strong>+34 630 46 15 60</strong>, escríbenos por WhatsApp o pasa por la oficina.'}</p>
   `;
 }
 
