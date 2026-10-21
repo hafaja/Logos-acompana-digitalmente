@@ -1165,18 +1165,18 @@ async function registrarTramiteApp(nombre, modo){
 // Teléfonos con los que la persona puede hablar directamente con la entidad (llamada y WhatsApp)
 const LOGOS_CONTACTOS = [
   { nombre: 'Logos', tel: '34630461560', texto: '630 46 15 60' },
-  { nombre: 'Irene González', tel: '34696279355', texto: '696 27 93 55' }
+  { nombre: 'Logos Proyectos', nombreCA: 'Logos Projectes', tel: '34696279355', texto: '696 27 93 55' }
 ];
 function contactoLogosBloqueHtml(esCA){
   const filas = LOGOS_CONTACTOS.map(c => `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--line);">
-      <span style="font-size:14px;"><strong>${c.nombre}</strong><br><span class="subtle" style="font-size:12.5px;margin:0;">${c.texto}</span></span>
+      <span style="font-size:14px;"><strong>${esCA && c.nombreCA ? c.nombreCA : c.nombre}</strong><br><span class="subtle" style="font-size:12.5px;margin:0;">${c.texto}</span></span>
       <span style="display:flex;gap:6px;"><a class="nec-btn nec-btn-llamar" href="tel:+${c.tel}">📞 ${esCA ? 'Trucar' : 'Llamar'}</a>
       <a class="nec-btn nec-btn-wa" href="https://wa.me/${c.tel}" target="_blank" rel="noopener">💬 WhatsApp</a></span></div>`).join('');
   return `<div class="panel-card" style="margin-bottom:16px;"><h3 style="margin-bottom:4px;">💬 ${esCA ? 'Parla directament amb Logos' : 'Habla directamente con Logos'}</h3>
     <p class="subtle" style="margin:0 0 6px;font-size:13px;">${esCA ? 'Pots trucar o escriure per WhatsApp a qualsevol d\'aquests telèfons.' : 'Puedes llamar o escribir por WhatsApp a cualquiera de estos teléfonos.'}</p>${filas}</div>`;
 }
 function accionesLogosHtml(esCA){
-  return `${LOGOS_CONTACTOS.map(c => `<a class="nec-btn nec-btn-llamar" href="tel:+${c.tel}">📞 ${c.nombre === 'Logos' ? (esCA ? 'Trucar a Logos' : 'Llamar a Logos') : (esCA ? 'Trucar a ' : 'Llamar a ') + c.nombre}</a>
+  return `${LOGOS_CONTACTOS.map(c => `<a class="nec-btn nec-btn-llamar" href="tel:+${c.tel}">📞 ${c.nombre === 'Logos' ? (esCA ? 'Trucar a Logos' : 'Llamar a Logos') : (esCA ? 'Trucar a ' : 'Llamar a ') + (esCA && c.nombreCA ? c.nombreCA : c.nombre)}</a>
     <a class="nec-btn nec-btn-wa" href="https://wa.me/${c.tel}" target="_blank" rel="noopener">💬 WhatsApp${c.nombre === 'Logos' ? '' : ' · ' + c.nombre.split(' ')[0]}</a>`).join('')}
     ${CURRENT_USER ? `<button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCA ? 'Demanar cita a Logos' : 'Pedir cita en Logos'}</button>` : ''}`;
 }
