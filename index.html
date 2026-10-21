@@ -2032,13 +2032,7 @@ async function renderResumenStep(mostrarCatalogoYa){
       ${nAvisosProy > 0 ? filaRec('📣', esCA ? `Tens <strong>${nAvisosProy} avís${nAvisosProy>1?'os':''}</strong> dels teus projectes.` : `Tienes <strong>${nAvisosProy} aviso${nAvisosProy>1?'s':''}</strong> de tus proyectos.`, 'avisos', false) : ''}
     </div>`;
 
-  const camposDatos = [
-    ['dni_nie', 'DNI/NIE', 'DNI/NIE'], ['nacionalidad', 'nacionalidad', 'nacionalitat'], ['fecha_nacimiento', 'fecha de nacimiento', 'data de naixement'],
-    ['sexo', 'sexo', 'sexe'], ['municipio', 'municipio', 'municipi'], ['provincia', 'provincia', 'província'],
-    ['convivencia', 'con quién vives', 'amb qui vius'], ['personas_hogar', 'personas en el hogar', 'persones a la llar'],
-    ['numero_hijos', 'número de hijos/as', 'nombre de fills/es'], ['situacion_laboral', 'situación laboral', 'situació laboral'], ['discapacidad_reconocida', 'discapacidad reconocida', 'discapacitat reconeguda']
-  ];
-  const faltanDatos = camposDatos.filter(c => p[c[0]] === null || p[c[0]] === undefined || String(p[c[0]]).trim() === '').map(c => esCA ? c[2] : c[1]);
+  const faltanDatos = datosFaltantes(p, esCA);
   const datosCompletosTodo = faltanDatos.length === 0;
   const completarDatosHtml = `
     <div class="panel-card" style="margin-bottom:12px;${datosCompletosTodo ? '' : 'border-color:var(--ochre);'}">
@@ -6708,6 +6702,17 @@ async function guardarEncuesta(){
   document.getElementById('encuesta-content').innerHTML = `<div class="placeholder">${esCA ? 'Gràcies per la teva opinió!' : '¡Gracias por tu opinión!'}</div>`;
 }
 
+// Datos del perfil que ayudan al acompañamiento (más allá de los de contacto obligatorios)
+const CAMPOS_DATOS = [
+  ['dni_nie', 'DNI/NIE', 'DNI/NIE'], ['nacionalidad', 'nacionalidad', 'nacionalitat'], ['fecha_nacimiento', 'fecha de nacimiento', 'data de naixement'],
+  ['sexo', 'sexo', 'sexe'], ['municipio', 'municipio', 'municipi'], ['provincia', 'provincia', 'província'],
+  ['convivencia', 'con quién vives', 'amb qui vius'], ['personas_hogar', 'personas en el hogar', 'persones a la llar'],
+  ['numero_hijos', 'número de hijos/as', 'nombre de fills/es'], ['situacion_laboral', 'situación laboral', 'situació laboral'], ['discapacidad_reconocida', 'discapacidad reconocida', 'discapacitat reconeguda']
+];
+function datosFaltantes(p, esCA){
+  p = p || {};
+  return CAMPOS_DATOS.filter(c => p[c[0]] === null || p[c[0]] === undefined || String(p[c[0]]).trim() === '').map(c => esCA ? c[2] : c[1]);
+}
 // Datos obligatorios para poder ponernos en contacto con la persona: nombre, teléfono, calle y código postal.
 function datosContactoCompletos(p){
   p = p || {};
@@ -6718,11 +6723,9 @@ function datosContactoCompletos(p){
 function renderDatosStep(){
   if(bloquearSinConsentimiento()) return;
   const p = window.__perfilActual || {};
-  if(!datosContactoCompletos(p)){
-    renderDatosStepMinimo();
-  } else {
-    renderDatosStepEleccion();
-  }
+  if(!datosContactoCompletos(p)) renderDatosStepMinimo();
+  else if(datosFaltantes(p, LANG === 'ca').length === 0) renderDatosStepCompleto();
+  else renderDatosStepEleccion();
 }
 
 function renderDatosStepMinimo(){
@@ -6787,12 +6790,17 @@ async function guardarDatosMinimos(){
 
 function renderDatosStepEleccion(){
   const esCA = LANG === 'ca';
+  const falta = datosFaltantes(window.__perfilActual, esCA);
+  const lista = falta.slice(0, 5).join(', ') + (falta.length > 5 ? '…' : '');
   document.getElementById('entrada-panel').innerHTML = `
     <div class="panel-card" style="background:var(--good-soft);border-color:var(--good);">
-      <h3 style="color:var(--good);">✅ ${esCA ? 'Ja tens el mínim per començar' : 'Ya tienes lo mínimo para empezar'}</h3>
-      <p style="margin:0;">${esCA
-        ? 'Pots completar la resta de dades ara, o continuar sense completar-les i fer-ho més endavant. No et bloqueja res: ho pots fer quan vulguis des de "Les meves dades".'
-        : 'Puedes completar el resto de datos ahora, o continuar sin completarlos y hacerlo más adelante. No te bloquea nada: lo puedes hacer cuando quieras desde "Mis datos".'}</p>
+      <h3 style="color:var(--good);">👍 ${esCA ? 'Ja tens l\'essencial!' : '¡Ya tienes lo esencial!'}</h3>
+      <p style="margin:0 0 8px;">${esCA
+        ? 'Amb les teves dades de contacte ja pots començar a fer servir la plataforma.'
+        : 'Con tus datos de contacto ya puedes empezar a usar la plataforma.'}</p>
+      ${falta.length ? `<p style="margin:0;">${esCA
+        ? `Encara et falten <strong>${falta.length}</strong> dades (${lista}). Com més en completis, millor et podrem ajudar: pots fer-ho ara o més endavant, sense cap bloqueig.`
+        : `Aún te faltan <strong>${falta.length}</strong> datos (${lista}). Cuantos más completes, mejor podremos ayudarte: puedes hacerlo ahora o más adelante, sin ningún bloqueo.`}</p>` : ''}
     </div>
     <button class="primary-btn" style="margin-top:14px;" onclick="renderDatosStepCompleto()">📝 ${esCA ? 'Completar-ho ara' : 'Completarlo ahora'}</button>
     <button class="primary-btn" style="margin-top:10px;background:var(--teal);" onclick="showScreen('home');revelarCatalogo()">${esCA ? 'Continuar sense completar-ho →' : 'Continuar sin completarlo →'}</button>
@@ -6813,7 +6821,7 @@ function renderDatosStepCompleto(){
 
   document.getElementById('entrada-panel').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Les meves dades' : 'Mis datos'}</h2>
-    <p class="subtle">${t.bienvenida}</p>
+    ${datosFaltantes(p, esCA).length === 0 && datosContactoCompletos(p) ? `<div class="panel-card" style="background:var(--good-soft);border-color:var(--good);margin-bottom:12px;"><p style="margin:0;">🎉 <strong>${esCA ? 'Perfecte! Les teves dades estan completes.' : '¡Perfecto! Tus datos están completos.'}</strong> ${esCA ? 'Les pots revisar o actualitzar quan vulguis.' : 'Puedes revisarlos o actualizarlos cuando quieras.'}</p></div>` : `<p class="subtle">${t.bienvenida}</p>`}
     <div class="field">
       <label>${t.nombreCompleto}</label>
       <input type="text" id="pf-nombre" value="${p.nombre_completo || ''}">
