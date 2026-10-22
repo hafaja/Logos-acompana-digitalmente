@@ -87,6 +87,7 @@
   .subtle{color:var(--ink-soft);font-size:13.5px;line-height:1.45;margin:0 0 20px;}
 
   .mobile-menu-toggle{display:none;}
+  .nav-hist{display:none;}
   .mobile-menu-header{display:none;}
   @media (max-width: 760px){
     #app{flex-direction:column;}
@@ -94,11 +95,8 @@
     .sidebar-logo-img,.sidebar-logout,.sidebar > .sidebar-social{display:none;}
     .sidebar{background:var(--paper);border-top:3px solid var(--ochre);box-shadow:0 -4px 14px rgba(22,35,63,.10);padding:0 12px;}
     body > .asistente-btn{bottom:74px;right:14px;width:48px;height:48px;font-size:20px;}
-    /* En móvil: solo las flechas, el título en medio */
-    .nav-sec-fila{gap:8px;padding:2px 0 6px;}
-    .nav-sec, #nav-fwd{width:44px;height:44px;padding:0;justify-content:center;}
-    .nav-sec-txt{display:none;}
-    .nav-sec-titulo{font-size:19px;}
+    .nav-hist{display:flex;align-items:center;justify-content:center;flex:none;width:44px;height:38px;margin:0 6px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--teal-dark);font-size:26px;line-height:1;font-weight:700;cursor:pointer;padding:0 0 3px;}
+    .nav-hist:disabled{opacity:.3;cursor:default;}
     .mobile-menu-toggle{display:flex;flex:1;min-width:0;height:38px;align-items:center;justify-content:center;gap:8px;background:var(--teal);border:none;border-radius:999px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font-body);}
     .mobile-menu-overlay{display:none;}
     .sidebar.menu-open .mobile-menu-overlay{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:56px;background:var(--teal);z-index:160;}
@@ -131,20 +129,14 @@
     .subtle{font-size:13.5px;line-height:1.5;}
     p{line-height:1.55;}
   }
-  /* Flechas de apartados arriba: ‹ apartado anterior · TÍTULO · apartado siguiente › (ordenador y móvil) */
-  .nav-sec-fila{display:grid;grid-template-columns:minmax(44px,1fr) auto minmax(44px,1fr);align-items:center;gap:14px;padding:16px 0 4px;}
-  .nav-sec-titulo{grid-column:2;text-align:center;font-family:var(--font-display);font-weight:600;font-size:21px;color:var(--teal-dark);line-height:1.2;}
-  #nav-back{grid-column:1;justify-self:start;} #nav-fwd{grid-column:3;justify-self:end;padding:0 8px 0 14px;}
-  .nav-sec{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%;height:42px;padding:0 14px 0 8px;border:2px solid var(--teal);border-radius:999px;background:#fff;color:var(--teal-dark);font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(22,35,63,.10);transition:background .15s,color .15s;-webkit-tap-highlight-color:transparent;}
-  .nav-sec svg{flex:none;}
-  .nav-sec-txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .nav-sec:hover:not(:disabled),.nav-sec:active:not(:disabled){background:var(--teal);color:#fff;}
-  .nav-sec:focus-visible{outline:3px solid var(--ochre);outline-offset:2px;}
-  .nav-sec:disabled{visibility:hidden;}
-  /* En los apartados principales sobra el «← Inicio» de arriba: lo hacen las flechas */
-  .screen.es-seccion > .topbar > .back-btn, .screen.es-seccion > .topbar > .brand{display:none;}
-  .screen.es-seccion > .topbar.nav-vacia{display:none;}
-  @media print{ .nav-sec-fila{display:none !important;} }
+  /* Flechas atrás/adelante también en ordenador (en móvil ya están en la barra inferior) */
+  @media (min-width: 761px){
+    .nav-hist{display:flex;align-items:center;justify-content:center;position:fixed;bottom:18px;width:44px;height:44px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--teal-dark);font-size:28px;line-height:1;font-weight:700;cursor:pointer;padding:0 0 4px;box-shadow:0 4px 14px rgba(22,35,63,.18);z-index:120;}
+    #nav-back{left:246px;}
+    #nav-fwd{left:300px;}
+    .nav-hist:hover:not(:disabled){background:var(--teal);color:#fff;}
+    .nav-hist:disabled{opacity:.35;cursor:default;box-shadow:none;}
+  }
   .home-mobile-extra{display:none;}
   .back-btn{border:none;background:none;cursor:pointer;font-weight:700;font-size:14px;color:var(--teal-dark);}
   .trust-banner{display:flex;gap:10px;background:var(--ochre-soft);border:1.5px solid var(--ochre);border-radius:14px;padding:12px 14px;margin-bottom:18px;}
@@ -463,7 +455,9 @@
 
   <div class="sidebar">
     <img class="sidebar-logo-img" src="logo-sidebar.png" alt="Logos - Transformem el discurs social" loading="eager" width="180">
+    <button class="nav-hist" id="nav-back" onclick="history.back()" aria-label="Atrás" title="Atrás">‹</button>
     <button class="mobile-menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('menu-open')">☰ Menú</button>
+    <button class="nav-hist" id="nav-fwd" onclick="history.forward()" aria-label="Adelante" title="Adelante">›</button>
     <div class="mobile-menu-overlay">
       <div class="mobile-menu-header">
         <span>Menú</span>
@@ -509,11 +503,6 @@
   </div>
 
   <div class="main">
-  <div class="nav-sec-fila" id="nav-sec-fila" style="display:none;">
-    <button class="nav-sec" id="nav-back" onclick="navAtras()" aria-label="Apartado anterior"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-sec-txt" id="nav-back-txt"></span></button>
-    <span class="nav-sec-titulo" id="nav-sec-titulo"></span>
-    <button class="nav-sec" id="nav-fwd" onclick="navAdelante()" aria-label="Apartado siguiente"><span class="nav-sec-txt" id="nav-fwd-txt"></span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-  </div>
   <div class="screen active" id="screen-home">
     <div class="topbar" style="justify-content:space-between;">
       <button class="link-btn" id="btn-guia-top" onclick="guiaAbrirAcomp()" style="margin:0;">❓ Cómo se usa</button>
@@ -1698,63 +1687,11 @@ async function tokenParaFunciones(){
 // Navegación adelante/atrás (botones ‹ › del móvil y botón atrás del teléfono)
 window.__navIdx = 0; window.__navMax = 0;
 try { history.replaceState({ s:'home', i:0 }, '', location.pathname + location.search); } catch(e){}
-// Pantallas que cuelgan de un apartado del menú
-const NAV_PADRE = { detail:'home', necesidades:'home', cita:'profile', atencion:'panel', buscarpersona:'panel', persona:'panel', cursodetalle:'aulaciudadano', certificado:'voluntariado', examen:'voluntariado', crearproyecto:'emprendimiento' };
-function navPantallaActiva(){ const a = document.querySelector('.screen.active'); return a ? a.id.replace('screen-', '') : null; }
-// Apartados del menú en orden, sin repetir y solo los visibles
-function navSecciones(){
-  const vistos = {}, lista = [];
-  document.querySelectorAll('.sidebar nav button[data-target], .sidebar-public-nav button[data-target]').forEach(b => {
-    const t = b.dataset.target;
-    if(vistos[t] || b.style.display === 'none' || !document.getElementById('screen-' + t)) return;
-    vistos[t] = true; lista.push(b);
-  });
-  return lista;
-}
-function navNombre(b){
-  if(b.dataset.target === 'home') return LANG === 'ca' ? 'Inici' : 'Inicio';
-  return b.textContent.replace(/^[^A-Za-zÀ-ÿ0-9¿¡]+/, '').replace(/\s+/g, ' ').trim();
-}
-function navPosicion(){
-  const pant = navPantallaActiva();
-  const objetivo = NAV_PADRE[pant] || pant;
-  const lista = navSecciones();
-  return { pant, lista, i: lista.findIndex(b => b.dataset.target === objetivo) };
-}
-function navIrSeccion(paso){
-  const { lista, i } = navPosicion(); if(i < 0) return;
-  const b = lista[i + paso]; if(!b) return;
-  b.click();
-  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e){ window.scrollTo(0, 0); }
-}
-function navAtras(){ navIrSeccion(-1); }
-function navAdelante(){ navIrSeccion(1); }
 function navPintar(){
-  const fila = document.getElementById('nav-sec-fila'), b = document.getElementById('nav-back'), f = document.getElementById('nav-fwd');
-  const a = document.querySelector('.screen.active');
-  if(!fila || !b || !f || !a) return;
-  const { pant, lista, i } = navPosicion();
-  if(i < 0){ fila.style.display = 'none'; return; }
-  // la fila se pone arriba del todo de la pantalla activa
-  if(fila.parentNode !== a || a.firstElementChild !== fila) a.insertBefore(fila, a.firstChild);
-  fila.style.display = '';
-  // en los apartados principales se esconde el «← Inicio» repetido
-  const esSeccion = !NAV_PADRE[pant];
-  a.classList.toggle('es-seccion', esSeccion);
-  const tb = a.querySelector(':scope > .topbar');
-  if(tb){ const resto = Array.from(tb.children).filter(c => !c.classList.contains('back-btn') && !c.classList.contains('brand')); tb.classList.toggle('nav-vacia', resto.length === 0); }
-  const ca = LANG === 'ca';
-  document.getElementById('nav-sec-titulo').textContent = navNombre(lista[i]);
-  const ant = i > 0 ? lista[i - 1] : null, sig = i < lista.length - 1 ? lista[i + 1] : null;
-  b.disabled = !ant; f.disabled = !sig;
-  const nb = ant ? navNombre(ant) : '', nf = sig ? navNombre(sig) : '';
-  document.getElementById('nav-back-txt').textContent = nb;
-  document.getElementById('nav-fwd-txt').textContent = nf;
-  b.title = ant ? (ca ? 'Anterior: ' : 'Anterior: ') + nb : ''; b.setAttribute('aria-label', b.title || (ca ? 'Apartat anterior' : 'Apartado anterior'));
-  f.title = sig ? (ca ? 'Següent: ' : 'Siguiente: ') + nf : ''; f.setAttribute('aria-label', f.title || (ca ? 'Apartat següent' : 'Apartado siguiente'));
+  const b = document.getElementById('nav-back'), f = document.getElementById('nav-fwd');
+  if(b) b.disabled = window.__navIdx <= 0;
+  if(f) f.disabled = window.__navIdx >= window.__navMax;
 }
-// Al cambiar de idioma se actualizan también los nombres de las flechas
-(function(){ const orig = setLang; setLang = function(l){ const r = orig.apply(this, arguments); setTimeout(navPintar, 0); return r; }; })();
 window.addEventListener('popstate', function(e){
   const st = e.state; if(!st || !st.s) return;
   window.__navIdx = st.i || 0; window.__navRestaurando = true;
@@ -1786,8 +1723,8 @@ function showScreen(name){
       const cur = history.state && history.state.s;
       if(cur !== name){ window.__navIdx++; window.__navMax = window.__navIdx; history.pushState({ s:name, i:window.__navIdx }, '', location.pathname + location.search); }
     } catch(e){}
+    setTimeout(navPintar, 0);
   }
-  setTimeout(navPintar, 0);
   // Si se abrió «Completar mis datos» o el consentimiento desde el menú y se vuelve a Inicio, Inicio vuelve a mostrar el resumen
   if(name === 'home' && window.__formVoluntario){
     const tk = window.__resetTk = (window.__resetTk || 0) + 1;
@@ -2414,7 +2351,6 @@ async function verPersonaStaff(usuarioId){
       ${campo('Municipio', p.municipio)}
       ${campo('Código postal', p.codigo_postal)}
       ${campo('Provincia', p.provincia)}
-      ${campo('Con quién vive', p.convivencia)}
       ${campo('Personas en el hogar', p.personas_hogar)}
       ${campo('Número de hijos', p.numero_hijos)}
       ${campo('Sexo', p.sexo)}
@@ -2424,7 +2360,6 @@ async function verPersonaStaff(usuarioId){
       ${campo('Nivel de estudios', p.nivel_estudios)}
       ${campo('Titulaciones/cursos', p.titulaciones_cursos)}
       ${campo('Experiencia laboral', p.experiencia_laboral)}
-      ${campo('Nivel de ingresos', p.nivel_ingresos)}
       ${campoBool('Discapacidad reconocida', p.discapacidad_reconocida)}
       ${campo('% Discapacidad', p.porcentaje_discapacidad)}
       ${campoBool('Dependencia reconocida', p.dependencia_reconocida)}
@@ -6795,7 +6730,7 @@ async function guardarEncuesta(){
 const CAMPOS_DATOS = [
   ['dni_nie', 'DNI/NIE', 'DNI/NIE'], ['nacionalidad', 'nacionalidad', 'nacionalitat'], ['fecha_nacimiento', 'fecha de nacimiento', 'data de naixement'],
   ['sexo', 'sexo', 'sexe'], ['municipio', 'municipio', 'municipi'], ['provincia', 'provincia', 'província'],
-  ['convivencia', 'con quién vives', 'amb qui vius'], ['personas_hogar', 'personas en el hogar', 'persones a la llar'],
+  ['personas_hogar', 'personas en el hogar', 'persones a la llar'],
   ['numero_hijos', 'número de hijos/as', 'nombre de fills/es'], ['situacion_laboral', 'situación laboral', 'situació laboral'], ['discapacidad_reconocida', 'discapacidad reconocida', 'discapacitat reconeguda']
 ];
 function datosFaltantes(p, esCA){
@@ -6940,10 +6875,6 @@ function renderDatosStepCompleto(){
       <input type="text" id="pf-provincia" value="${p.provincia || 'Tarragona'}">
     </div>
     <div class="field">
-      <label>${t.convivencia}</label>
-      <input type="text" id="pf-convivencia" value="${p.convivencia || ''}">
-    </div>
-    <div class="field">
       <label>${esCA ? 'Persones a la llar' : 'Personas en el hogar'}</label>
       <input type="number" id="pf-personas-hogar" min="1" value="${p.personas_hogar || ''}">
     </div>
@@ -6984,10 +6915,6 @@ function renderDatosStepCompleto(){
         <option value="true" ${p.dependencia_reconocida===true?'selected':''}>${t.si}</option>
         <option value="false" ${p.dependencia_reconocida===false?'selected':''}>${t.no}</option>
       </select>
-    </div>
-    <div class="field">
-      <label>${t.ingresos}</label>
-      <input type="text" id="pf-ingresos" value="${p.nivel_ingresos || ''}" placeholder="${t.prefiero}">
     </div>
 
     <div class="panel-card">
@@ -7108,7 +7035,6 @@ async function guardarPerfil(){
     municipio: val('pf-municipio') || null,
     codigo_postal: val('pf-cp') || null,
     provincia: val('pf-provincia') || null,
-    convivencia: val('pf-convivencia') || null,
     personas_hogar: val('pf-personas-hogar') ? parseInt(val('pf-personas-hogar'), 10) : null,
     numero_hijos: val('pf-num-hijos') ? parseInt(val('pf-num-hijos'), 10) : null,
     sexo: val('pf-sexo') || null,
@@ -7116,7 +7042,6 @@ async function guardarPerfil(){
     discapacidad_reconocida: boolVal('pf-discapacidad'),
     porcentaje_discapacidad: val('pf-pct-discapacidad') ? parseInt(val('pf-pct-discapacidad'), 10) : null,
     dependencia_reconocida: boolVal('pf-dependencia'),
-    nivel_ingresos: val('pf-ingresos') || null,
     nivel_estudios: val('pf-nivel-estudios') || null,
     titulaciones_cursos: val('pf-titulaciones') || null,
     experiencia_laboral: val('pf-experiencia') || null,
