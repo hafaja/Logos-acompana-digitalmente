@@ -129,6 +129,14 @@
     .subtle{font-size:13.5px;line-height:1.5;}
     p{line-height:1.55;}
   }
+  /* Flechas atrás/adelante también en ordenador (en móvil ya están en la barra inferior) */
+  @media (min-width: 761px){
+    .nav-hist{display:flex;align-items:center;justify-content:center;position:fixed;bottom:18px;width:44px;height:44px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--teal-dark);font-size:28px;line-height:1;font-weight:700;cursor:pointer;padding:0 0 4px;box-shadow:0 4px 14px rgba(22,35,63,.18);z-index:120;}
+    #nav-back{left:246px;}
+    #nav-fwd{left:300px;}
+    .nav-hist:hover:not(:disabled){background:var(--teal);color:#fff;}
+    .nav-hist:disabled{opacity:.35;cursor:default;box-shadow:none;}
+  }
   .home-mobile-extra{display:none;}
   .back-btn{border:none;background:none;cursor:pointer;font-weight:700;font-size:14px;color:var(--teal-dark);}
   .trust-banner{display:flex;gap:10px;background:var(--ochre-soft);border:1.5px solid var(--ochre);border-radius:14px;padding:12px 14px;margin-bottom:18px;}
@@ -1691,6 +1699,23 @@ window.addEventListener('popstate', function(e){
   const mapa = { profile:() => renderDashboard(), cita:() => renderCitaForm(), config:() => renderConfigScreen(), traductor:() => renderTraductorScreen(), aulaciudadano:() => renderAulaCiudadano(), voluntariado:() => renderVoluntariado(), empleo:() => renderBusquedaEmpleo(), cuidados:() => renderCuidadosCompania(), emprendimiento:() => renderEmprendimientoScreen(), queofrecemos:() => renderQueOfrecemos(), webredes:() => renderWebRedes(), verificarcert:() => renderVerificarCertificado() };
   try { if(mapa[st.s]) mapa[st.s](); } catch(err){}
   navPintar();
+});
+// Fecha de nacimiento escrita a mano (dd/mm/aaaa)
+function fechaISOaES(iso){ const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? m[3] + '/' + m[2] + '/' + m[1] : ''; }
+function fechaESaISO(t){
+  t = (t || '').trim(); if(!t) return '';
+  const m = /^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/.exec(t); if(!m) return null;
+  const d = +m[1], mo = +m[2], y = +m[3], dt = new Date(y, mo - 1, d);
+  if(dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d || y < 1900 || dt > new Date()) return null;
+  return y + '-' + String(mo).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+}
+function fechaTxtISO(id){ const el = document.getElementById(id); return el ? fechaESaISO(el.value) : ''; }
+document.addEventListener('input', function(e){
+  const el = e.target; if(!el || !el.classList || !el.classList.contains('fecha-txt')) return;
+  if(e.inputType && e.inputType.indexOf('delete') === 0) return;
+  const d = el.value.replace(/\D/g, '').slice(0, 8);
+  let o = d.slice(0, 2); if(d.length > 2) o += '/' + d.slice(2, 4); if(d.length > 4) o += '/' + d.slice(4);
+  el.value = o;
 });
 function showScreen(name){
   if(!window.__navRestaurando){
@@ -4840,7 +4865,7 @@ async function renderFamilias(){
       <details ${__JA.menores.length ? '' : 'open'} style="margin-top:10px;">
         <summary style="cursor:pointer;font-weight:700;font-size:13.5px;">➕ ${esCA ? 'Afegir un menor' : 'Añadir un menor'}</summary>
         <div class="field" style="margin-top:10px;"><label>${D.nombreApellidos}</label><input type="text" id="fam-menor-nombre"></div>
-        <div class="field"><label>${D.fechaNac}</label><input type="date" id="fam-menor-nac"></div>
+        <div class="field"><label>${D.fechaNac}</label><input type="text" class="fecha-txt" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa" id="fam-menor-nac"></div>
         <div class="field"><label>${D.dniSiProcede}</label><input type="text" id="fam-menor-dni"></div>
         <button class="primary-btn" style="margin:0;" onclick="anadirMenor()">${esCA ? 'Desar' : 'Guardar'}</button>
       </details>
@@ -4903,7 +4928,8 @@ async function renderFamilias(){
 async function anadirMenor(){
   const esCA = LANG === 'ca';
   const nombre = document.getElementById('fam-menor-nombre').value.trim();
-  const nac = document.getElementById('fam-menor-nac').value;
+  const nac = fechaTxtISO('fam-menor-nac');
+  if(nac === null){ alert(esCA ? 'La data de naixement no és vàlida. Escriu-la així: dd/mm/aaaa (per exemple 15/03/2015).' : 'La fecha de nacimiento no es válida. Escríbela así: dd/mm/aaaa (por ejemplo 15/03/2015).'); return; }
   const dni = document.getElementById('fam-menor-dni').value.trim();
   if(!nombre || !nac){ alert(esCA ? 'Cal el nom i la data de naixement.' : 'Hacen falta el nombre y la fecha de nacimiento.'); return; }
   const { error } = await sb.from('menores_familia').insert({ familiar_usuario_id: CURRENT_USER.id, nombre_completo: nombre, fecha_nacimiento: nac, dni_nie: dni || null });
@@ -6832,7 +6858,7 @@ function renderDatosStepCompleto(){
     </div>
     <div class="field">
       <label>${esCA ? 'Data de naixement' : 'Fecha de nacimiento'}</label>
-      <input type="date" id="pf-nacimiento" value="${p.fecha_nacimiento || ''}">
+      <input type="text" class="fecha-txt" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa" id="pf-nacimiento" value="${fechaISOaES(p.fecha_nacimiento)}">
     </div>
     <div class="field">
       <label>${esCA ? 'Carrer' : 'Calle'}</label>
@@ -6994,6 +7020,7 @@ function renderDatosStepCompleto(){
 }
 
 async function guardarPerfil(){
+  if(fechaTxtISO('pf-nacimiento') === null){ alert(LANG === 'ca' ? 'La data de naixement no és vàlida. Escriu-la així: dd/mm/aaaa (per exemple 15/03/1980).' : 'La fecha de nacimiento no es válida. Escríbela así: dd/mm/aaaa (por ejemplo 15/03/1980).'); return; }
   const t = T1[LANG];
   const btn = document.getElementById('pf-save-btn');
   btn.disabled = true;
@@ -7013,7 +7040,7 @@ async function guardarPerfil(){
     email: CURRENT_USER.email,
     nombre_completo: val('pf-nombre') || null,
     telefono: val('pf-telefono') || null,
-    fecha_nacimiento: val('pf-nacimiento') || null,
+    fecha_nacimiento: fechaTxtISO('pf-nacimiento') || null,
     calle: val('pf-calle') || null,
     municipio: val('pf-municipio') || null,
     codigo_postal: val('pf-cp') || null,
