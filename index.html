@@ -754,9 +754,9 @@ const TXT_ES_CA = {
   'Encuesta de satisfacción':'Enquesta de satisfacció','🌐 Traductor en directo':'🌐 Traductor en directe','⚙️ Configuración':'⚙️ Configuració',
   'Panel Logos':'Panell Logos','Administrador':'Administrador','¿Qué más te ofrecemos?':'Què més t\'oferim?','🌱 Jóvenes en acción':'🌱 Joves en acció',
   '👨‍👩‍👧 Familias':'👨‍👩‍👧 Famílies','🎓 Aula Virtual':'🎓 Aula Virtual','🤝 Voluntariado':'🤝 Voluntariat','💼 Búsqueda de empleo':'💼 Cerca de feina',
-  '🧓 Cuidados y compañía':'🧓 Cures i companyia','🚀 Mi emprendimiento':'🚀 El meu emprenedoria','🎁 ¿Qué te ofrecemos?':'🎁 Què t\'oferim?',
+  '🧓 Cuidados y compañía':'🧓 Cures i companyia','🚀 Mi emprendimiento':'🚀 La meva emprenedoria','🎁 ¿Qué te ofrecemos?':'🎁 Què t\'oferim?',
   '¿Quiénes somos?':'Qui som?','🌐 Web y redes sociales':'🌐 Web i xarxes socials','🔎 Verificar certificado':'🔎 Verificar certificat','Cerrar sesión':'Tancar sessió',
-  'Más accesos':'Més accessos','Búsqueda de empleo':'Cerca de feina','Cuidados y compañía':'Cures i companyia','Mi emprendimiento':'El meu emprenedoria',
+  'Más accesos':'Més accessos','Búsqueda de empleo':'Cerca de feina','Cuidados y compañía':'Cures i companyia','Mi emprendimiento':'La meva emprenedoria',
   'Web y redes sociales':'Web i xarxes socials','Aula Virtual':'Aula Virtual','Voluntariado':'Voluntariat','Verificar certificado':'Verificar certificat',
   '← Inicio':'← Inici','← Volver':'← Tornar','← Panel Logos':'← Panell Logos','← Mi espacio':'← El meu espai','← Escuela de Voluntariado':'← Escola de Voluntariat','← Aula Virtual':'← Aula Virtual'
 };
@@ -3353,7 +3353,7 @@ function renderEmprendimientoContenido(){
   }).join('<div style="flex:1;height:2px;background:var(--line);margin-top:17px;min-width:14px;"></div>');
 
   cont.innerHTML = `
-    <h2 class="screen-title">🚀 ${esCA ? 'El meu emprenedoria' : 'Mi emprendimiento'}</h2>
+    <h2 class="screen-title">🚀 ${esCA ? 'La meva emprenedoria' : 'Mi emprendimiento'}</h2>
     <p class="subtle">${esCA
       ? 'Segueix aquí el teu camí per posar en marxa la teva idea, pas a pas, amb l\'acompanyament de Logos.'
       : 'Sigue aquí tu camino para poner en marcha tu idea, paso a paso, con el acompañamiento de Logos.'}</p>
@@ -5640,7 +5640,7 @@ async function renderDashboard(){
     <div class="panel-card" style="margin-top:16px;cursor:pointer;" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🚀</div>
-        <h3 style="margin:0;">${LANG==='ca' ? 'El meu emprenedoria' : 'Mi emprendimiento'}</h3>
+        <h3 style="margin:0;">${LANG==='ca' ? 'La meva emprenedoria' : 'Mi emprendimiento'}</h3>
       </div>
       <div style="display:flex;align-items:flex-start;overflow-x:auto;padding:2px 0 6px;">${stepperMini}</div>
       <p style="margin:6px 0 0;font-size:13px;">${LANG==='ca' ? 'Etapa actual' : 'Etapa actual'}: <strong>${LANG==='ca' ? etapaActualObj.ca : etapaActualObj.es}</strong></p>
@@ -5650,7 +5650,7 @@ async function renderDashboard(){
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🚀</div>
-        <h3 style="margin:0;">${LANG==='ca' ? 'El meu emprenedoria' : 'Mi emprendimiento'}</h3>
+        <h3 style="margin:0;">${LANG==='ca' ? 'La meva emprenedoria' : 'Mi emprendimiento'}</h3>
       </div>
       <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Encara no has començat cap itinerari d\'emprenedoria.' : 'Aún no has empezado ningún itinerario de emprendimiento.'}</p>
       <button class="link-btn" onclick="showScreen('emprendimiento');renderEmprendimientoScreen()">${LANG==='ca' ? 'Començar →' : 'Empezar →'}</button>
@@ -5737,7 +5737,7 @@ async function renderDashboard(){
 
   const gridAccesos = [
     { id:'recordatorios', icon:'🔔', bg:'var(--ochre-soft)', color:'#7A4A1F', titulo: LANG==='ca'?'Recordatoris':'Recordatorios', sub: LANG==='ca'?'Avisos i properes cites.':'Avisos y próximas citas.' },
-    { id:'emprendimiento', icon:'🚀', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'El meu emprenedoria':'Mi emprendimiento', sub: emprendimiento ? (LANG==='ca'?'Itinerari en marxa.':'Itinerario en marcha.') : (LANG==='ca'?'Encara no has començat.':'Aún no has empezado.') },
+    { id:'emprendimiento', icon:'🚀', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'La meva emprenedoria':'Mi emprendimiento', sub: emprendimiento ? (LANG==='ca'?'Itinerari en marxa.':'Itinerario en marcha.') : (LANG==='ca'?'Encara no has començat.':'Aún no has empezado.') },
     { id:'qr', icon:'🔳', bg:'#EFEFEF', color:'var(--ink)', titulo: LANG==='ca'?'El meu QR':'Mi QR', sub: LANG==='ca'?'Per identificar-te a Logos.':'Para identificarte en Logos.' },
     { id:'consulta', icon:'💬', bg:'#E7ECFF', color:'#33449E', titulo: LANG==='ca'?'La meva consulta d\'orientació':'Mi consulta de orientación', sub: (consultas && consultas.length) ? (LANG==='ca'?`${consultas.length} consulta(es).`:`${consultas.length} consulta(s).`) : (LANG==='ca'?'Sense consultes.':'Sin consultas.') },
     { id:'citas', icon:'📅', bg:'var(--good-soft)', color:'var(--good)', titulo: LANG==='ca'?'Les meves cites':'Mis citas', sub: (citas && citas.length) ? (LANG==='ca'?`${citas.length} propera(es).`:`${citas.length} próxima(s).`) : (LANG==='ca'?'Sense cites.':'Sin citas.') },
@@ -7341,7 +7341,7 @@ function guiaSlidesAcomp(){
     { e: '🎁', t: L('¿Qué más te ofrecemos?', 'Què més t\'oferim?'),
       p: L('En el menú, «¿Qué más te ofrecemos?» se despliega con:', 'Al menú, «Què més t\'oferim?» es desplega amb:'),
       l: [L('💼 <strong>Búsqueda de empleo</strong> · 🧓 <strong>Cuidados y compañía</strong>', '💼 <strong>Cerca de feina</strong> · 🧓 <strong>Cures i companyia</strong>'),
-          L('🚀 <strong>Mi emprendimiento</strong> · 🎓 <strong>Aula Virtual</strong>', '🚀 <strong>El meu emprenedoria</strong> · 🎓 <strong>Aula Virtual</strong>'),
+          L('🚀 <strong>Mi emprendimiento</strong> · 🎓 <strong>Aula Virtual</strong>', '🚀 <strong>La meva emprenedoria</strong> · 🎓 <strong>Aula Virtual</strong>'),
           L('🤝 <strong>Voluntariado</strong>', '🤝 <strong>Voluntariat</strong>'),
           L('Y <strong>Mi currículum</strong>, para preparar el tuyo.', 'I <strong>El meu currículum</strong>, per preparar el teu.')] },
     { e: '🔒', t: L('Tus datos y los enlaces seguros', 'Les teves dades i els enllaços segurs'),
