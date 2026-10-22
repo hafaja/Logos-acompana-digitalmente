@@ -1116,7 +1116,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-15 · v51 (Guía en diapositivas + novedades de hoy)';
+const APP_VERSION_ACOMP = '2026-10-22 · v52 (trámites anulados y citas canceladas ocultos)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1764,6 +1764,8 @@ window.addEventListener('popstate', function(e){
   navPintar();
 });
 // Fecha de nacimiento escrita a mano (dd/mm/aaaa)
+// Trámites anulados y citas canceladas: se quedan guardados en la base de datos, pero no se muestran en pantalla
+function sinBorrados(lista){ return (lista || []).filter(x => x && x.estado !== 'anulado' && x.estado !== 'cancelada'); }
 function fechaISOaES(iso){ const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || ''); return m ? m[3] + '/' + m[2] + '/' + m[1] : ''; }
 function fechaESaISO(t){
   t = (t || '').trim(); if(!t) return '';
@@ -2323,6 +2325,8 @@ async function verPersonaStaff(usuarioId){
 
   (staffListRes.data || []).forEach(s => { if(s.nombre) __mapaNombresTecnicos[s.email] = s.nombre; });
 
+  if(tramitesRes) tramitesRes.data = sinBorrados(tramitesRes.data);
+  if(citasRes) citasRes.data = sinBorrados(citasRes.data);
   const p = perfilRes.data;
   if(!p){
     cont.innerHTML = `<div class="empty-note">No se encontró el perfil de esta persona.</div>`;
@@ -5678,7 +5682,8 @@ async function renderDashboard(){
   document.getElementById('profile-content').innerHTML = `<div class="placeholder">${LANG==='ca' ? 'Carregant…' : 'Cargando…'}</div>`;
 
   const { data: perfil } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle();
-  const { data: tramites } = await sb.from('tramites').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const { data: tramitesTodos } = await sb.from('tramites').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const tramites = sinBorrados(tramitesTodos);
   const { data: documentos } = await sb.from('documentos').select('*').eq('usuario_id', CURRENT_USER.id).order('subido_en', { ascending:false });
   const { data: citas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').order('fecha', { ascending:true });
   const { data: consultasRaw } = await sb.from('consultas_orientacion').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
