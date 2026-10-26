@@ -442,6 +442,14 @@
   .gi-skip label{cursor:pointer;}
   @media (max-width:520px){.gi-card{max-height:96vh;border-radius:18px;}.gi-body{padding:6px 18px 4px;}.gi-t{font-size:21px;}}
   [id^="sec-"]{scroll-margin-top:72px;}
+.cita-paso{display:flex;align-items:center;gap:8px;font-weight:700;margin:16px 0 8px;font-size:15px;}
+.cita-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy,#1F3A5F);color:#fff;font-size:13px;}
+.cita-tec-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
+.cita-tec{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border:1.5px solid #D9DEE5;border-radius:14px;background:#fff;cursor:pointer;font:inherit;color:inherit;min-height:52px;}
+.cita-tec small{color:#6B7280;font-size:11.5px;}
+.cita-tec-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#E6F0FA;color:#1F4E79;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+.cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
+@media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
 </style>
 </head>
 <body>
@@ -702,6 +710,7 @@
 </div>
 
 <script>
+function hoyLocalIso(d){ d = d || new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 // Mantener la posición de la pantalla cuando una sección se vuelve a pintar (anular, marcar, guardar…): no salta al inicio.
 (function(){
   try {
@@ -758,9 +767,12 @@ async function loadData(){
   }
   // No se espera esta consulta para no retrasar la pantalla principal; el estado de los
   // enlaces solo se usa más adelante, cuando la persona entra a ver sus necesidades.
-  sb.from('enlaces_estado').select('servicio_id, funciona').then(({ data }) => {
-    (data || []).forEach(r => { ENLACES_ESTADO[r.servicio_id] = r.funciona; });
-  });
+  (function cargarEnlaces(n){
+    if(typeof sb === 'undefined'){ if(n < 50) setTimeout(() => cargarEnlaces(n + 1), 200); return; }
+    sb.from('enlaces_estado').select('servicio_id, funciona').then(({ data }) => {
+      (data || []).forEach(r => { ENLACES_ESTADO[r.servicio_id] = r.funciona; });
+    });
+  })(0);
   if(LANG === 'ca') setLang('ca'); else traducirEstatico();
 }
 
@@ -1116,7 +1128,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-22 · v52 (trámites anulados y citas canceladas ocultos)';
+const APP_VERSION_ACOMP = '2026-10-26 · v54 (elegir técnico al pedir cita)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1612,7 +1624,7 @@ async function crearTramiteDesdeServicio(servicioId){
     usuario_id: CURRENT_USER.id,
     nombre_servicio: s.nombre.es,
     estado: 'en_curso',
-    fecha_inicio: new Date().toISOString().slice(0,10)
+    fecha_inicio: hoyLocalIso()
   });
   if(error){ alert(error.message); return; }
 
@@ -1841,7 +1853,7 @@ loadData();
 </script>
 
 <!-- ===================== MÓDULO 1: Mi espacio (Supabase) ===================== -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
 <script>
 (function(){ function cargar(){
   ['html2canvas/1.4.1/html2canvas.min.js','jspdf/2.5.1/jspdf.umd.min.js','qrcode-generator/1.4.4/qrcode.min.js'].forEach(function(u){
@@ -2066,7 +2078,7 @@ async function renderResumenStep(mostrarCatalogoYa){
   catalogo.style.display = mostrarCatalogoYa ? 'block' : 'none';
   { const gb = document.getElementById('btn-guia-top'); if(gb) gb.style.display = 'none'; }  // en el resumen la guía ya sale bajo el nombre
 
-  const hoyIsoEntrada = new Date().toISOString().slice(0,10);
+  const hoyIsoEntrada = hoyLocalIso();
   const [{ data: citasEntrada }, { data: consultasEntrada }, { count: tramitesEnCursoEntrada }] = await Promise.all([
     sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoyIsoEntrada).order('fecha', { ascending: true }).limit(1),
     sb.from('consultas_orientacion').select('id').eq('usuario_id', CURRENT_USER.id).neq('estado', 'respondida'),
@@ -2460,7 +2472,7 @@ async function verPersonaStaff(usuarioId){
       <div class="panel-card">
         ${actuacionesHtml}
         <div class="doc-upload-row" style="margin-top:10px;text-align:left;">
-          <div class="field"><label>Fecha</label><input type="date" id="act-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
+          <div class="field"><label>Fecha</label><input type="date" id="act-fecha" value="${hoyLocalIso()}"></div>
           <div class="field">
             <label>Proyecto / trámite / formación</label>
             <select id="act-categoria" onchange="document.getElementById('act-categoria-otro').style.display = this.value==='__otro__' ? 'block' : 'none';">
@@ -2507,7 +2519,7 @@ async function verPersonaStaff(usuarioId){
         ${tramitesHtml}
         <div class="doc-upload-row" style="margin-top:10px;">
           <div class="field" style="margin-bottom:8px;"><input type="text" id="nuevo-tramite-nombre" placeholder="Nombre del trámite"></div>
-          <div class="field" style="margin-bottom:8px;"><label style="text-align:left;">Fecha de inicio</label><input type="date" id="nuevo-tramite-fecha" value="${new Date().toISOString().slice(0,10)}"></div>
+          <div class="field" style="margin-bottom:8px;"><label style="text-align:left;">Fecha de inicio</label><input type="date" id="nuevo-tramite-fecha" value="${hoyLocalIso()}"></div>
           <button class="link-btn" onclick="crearTramite()">➕ Abrir trámite</button>
         </div>
       </div>
@@ -2569,7 +2581,7 @@ async function crearActuacion(){
   const { error } = await sb.from('actuaciones').insert({
     usuario_id: window.__usuarioIdVisto,
     tecnico_email: CURRENT_USER.email,
-    fecha: val('act-fecha') || new Date().toISOString().slice(0,10),
+    fecha: val('act-fecha') || hoyLocalIso(),
     categoria: categoriaFinal,
     objetivo: val('act-objetivo') || null,
     descripcion: val('act-descripcion') || null,
@@ -2590,7 +2602,7 @@ async function crearTramite(){
     usuario_id: window.__usuarioIdVisto,
     nombre_servicio: nombre,
     estado: 'en_curso',
-    fecha_inicio: fecha || new Date().toISOString().slice(0,10)
+    fecha_inicio: fecha || hoyLocalIso()
   });
   if(error){ alert(error.message); return; }
   verPersonaStaff(window.__usuarioIdVisto);
@@ -2599,7 +2611,7 @@ async function crearTramite(){
 async function anularMiTramite(id){
   const esCA = LANG === 'ca';
   if(!confirm(esCA ? 'Vols anul·lar aquest tràmit? Deixarà de sortir com a obert.' : '¿Quieres anular este trámite? Dejará de aparecer como abierto.')) return;
-  const { data, error } = await sb.from('tramites').update({ estado:'anulado', fecha_fin: new Date().toISOString().slice(0,10) }).eq('id', id).eq('usuario_id', CURRENT_USER.id).select();
+  const { data, error } = await sb.from('tramites').update({ estado:'anulado', fecha_fin: hoyLocalIso() }).eq('id', id).eq('usuario_id', CURRENT_USER.id).select();
   if(error || !data || !data.length){ alert(esCA ? 'No s\'ha pogut anul·lar el tràmit. Prova-ho més tard o truca a Logos.' : 'No se ha podido anular el trámite. Inténtalo más tarde o llama a Logos.'); return; }
   try {
     const p = window.__perfilActual || {};
@@ -2611,7 +2623,7 @@ async function anularMiTramite(id){
 async function marcarTramiteHecho(tramiteId){
   const { error } = await sb.from('tramites').update({
     estado: 'hecho',
-    fecha_fin: new Date().toISOString().slice(0,10)
+    fecha_fin: hoyLocalIso()
   }).eq('id', tramiteId);
   if(error){ alert(error.message); return; }
   verPersonaStaff(window.__usuarioIdVisto);
@@ -2913,7 +2925,7 @@ async function renderPanel(){
 
     <div class="panel-card">
       <h3>Cómo conoció Logos</h3>
-      ${filaLista(comoConocio.data, 'como_conocio', 'total')}
+      ${filaLista((comoConocio.data || []).map(r => { const o = COMO_CONOCIO_OPTS.find(x => x[0] === r.como_conocio); return Object.assign({}, r, { como_conocio: o ? (o[1][LANG] || o[1].es) : r.como_conocio }); }), 'como_conocio', 'total')}
     </div>
 
     <div class="panel-card">
@@ -3001,6 +3013,8 @@ const COMO_CONOCIO_OPTS = [
   ['siad', {es:'SIAD', ca:'SIAD'}],
   ['pass', {es:'PASS', ca:'PASS'}],
   ['xarxes_socials', {es:'Redes sociales', ca:'Xarxes socials'}],
+  ['ia', {es:'IA (ChatGPT, Gemini, Claude…)', ca:'IA (ChatGPT, Gemini, Claude…)'}],
+  ['internet', {es:'Internet / buscador (Google…)', ca:'Internet / cercador (Google…)'}],
   ['escola_saavedra', {es:'Escuela Saavedra', ca:'Escola Saavedra'}],
   ['escola_pau_delclos', {es:'Escuela Pau Delclós', ca:'Escola Pau Delclós'}]
 ];
@@ -3989,7 +4003,7 @@ async function abrirCursoCiudadano(cursoId){
   cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
 
   const { data: curso } = await sb.from('cursos').select('*').eq('id', cursoId).maybeSingle();
-  const hoyIso = new Date().toISOString().slice(0,10);
+  const hoyIso = hoyLocalIso();
   const { data: proximasClases } = await sb.from('aula_virtual_clases').select('*').eq('curso_id', cursoId).gte('fecha', hoyIso).order('fecha', { ascending:true }).order('hora', { ascending:true });
   const { data: modulos } = await sb.from('curso_modulos').select('*').eq('curso_id', cursoId).order('orden', { ascending:true });
   const moduloIds = (modulos || []).map(m => m.id);
@@ -4768,7 +4782,7 @@ const JA_SALIDA = {
 // vigente = ya puede salir solo/a; futura = empieza otro día; revocada = ya no vale
 function jaSalidaEstado(a){
   if(a.estado === 'revocada') return 'revocada';
-  const hoy = new Date().toISOString().slice(0,10);
+  const hoy = hoyLocalIso();
   return String(a.fecha_inicio).slice(0,10) > hoy ? 'futura' : 'vigente';
 }
 
@@ -4845,7 +4859,7 @@ let __jaFlash = '';
 
 // Solo actividades abiertas y que todavía no han pasado
 function jaActividadesVigentes(lista){
-  const hoy = new Date().toISOString().slice(0,10);
+  const hoy = hoyLocalIso();
   return (lista || []).filter(a => !(a.fecha_regreso || a.fecha_salida) || String(a.fecha_regreso || a.fecha_salida).slice(0,10) >= hoy);
 }
 
@@ -5139,7 +5153,7 @@ function abrirSalidaSola(menorId){
   if(!m) return;
   const p = window.__perfilActual || {};
   const previa = __JA.salidas.find(s => s.menor_id === menorId && s.estado === 'vigente');
-  const hoy = new Date().toISOString().slice(0,10);
+  const hoy = hoyLocalIso();
   cerrarSalidaOverlay();
   const ov = document.createElement('div');
   ov.id = 'sal-overlay'; ov.dataset.menor = menorId;
@@ -5186,7 +5200,7 @@ async function firmarSalidaSola(){
   const v = id => document.getElementById(id).value.trim();
   const m = __JA.menores.find(x => x.id === ov.dataset.menor);
   if(!m) return;
-  const hoy = new Date().toISOString().slice(0,10);
+  const hoy = hoyLocalIso();
 
   if(!v('sal-nombre') || !v('sal-dni')) return falla(esCA ? 'Cal el teu nom i DNI/NIE.' : 'Hacen falta tu nombre y DNI/NIE.');
   if(!v('sal-curso')) return falla(esCA ? 'Indica el curs o grup.' : 'Indica el curso o grupo.');
@@ -5785,7 +5799,7 @@ async function renderDashboard(){
     : `<div class="empty-note">${t.sinDocumentos}</div>`;
 
   const fmtFecha = f => fmtFechaCorta(f, LANG==='ca', true);
-  const hoyIsoCiudadano = new Date().toISOString().slice(0,10);
+  const hoyIsoCiudadano = hoyLocalIso();
   const avisoEsperaPanel = await cargarAvisoEspera();
   const proximaCita = (citas || []).filter(c => c.fecha >= hoyIsoCiudadano).sort((a,b) => (a.fecha+a.hora).localeCompare(b.fecha+b.hora))[0];
   const consultasPendientesCount = (consultas || []).filter(c => c.estado !== 'respondida').length;
@@ -5798,10 +5812,10 @@ async function renderDashboard(){
       <h3 style="color:#7A4A1F;margin-bottom:8px;">🔔 ${LANG==='ca' ? 'Recordatoris' : 'Recordatorios'}</h3>
       ${avisoEsperaHtml(avisoEsperaPanel, LANG==='ca')}
       ${proximaCita ? `<p style="margin:0 0 6px;font-size:13.5px;">${proximaCita.urgente ? `<span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Cita important' : 'Cita importante'}</span> ` : (proximaCita.creada_por_email ? `<span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span> ` : '')}${esCitaHoy
-        ? (LANG==='ca' ? `Tens una cita <strong>avui</strong> a les ${proximaCita.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCita.hora.slice(0,5)}.`)
+        ? (LANG==='ca' ? `Tens una cita <strong>avui</strong> a les ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' amb ' + escAttr(proximaCita.tecnico_nombre) : ''}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' con ' + escAttr(proximaCita.tecnico_nombre) : ''}.`)
         : (LANG==='ca'
-            ? `Et falten <strong>${diasHastaCita} dia${diasHastaCita===1?'':'s'}</strong> per a la teva cita (${fmtFecha(proximaCita.fecha)} a les ${proximaCita.hora.slice(0,5)}).`
-            : `Te falta${diasHastaCita===1?'n':'n'} <strong>${diasHastaCita} día${diasHastaCita===1?'':'s'}</strong> para tu cita (${fmtFecha(proximaCita.fecha)} a las ${proximaCita.hora.slice(0,5)}).`)}</p>` : ''}
+            ? `Et falten <strong>${diasHastaCita} dia${diasHastaCita===1?'':'s'}</strong> per a la teva cita (${fmtFecha(proximaCita.fecha)} a les ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' amb ' + escAttr(proximaCita.tecnico_nombre) : ''}).`
+            : `Te falta${diasHastaCita===1?'n':'n'} <strong>${diasHastaCita} día${diasHastaCita===1?'':'s'}</strong> para tu cita (${fmtFecha(proximaCita.fecha)} a las ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' con ' + escAttr(proximaCita.tecnico_nombre) : ''}).`)}</p>` : ''}
       ${consultasPendientesCount > 0 ? `<p style="margin:0;font-size:13.5px;">${LANG==='ca'
         ? `Tens ${consultasPendientesCount} consulta${consultasPendientesCount>1?'s':''} pendent${consultasPendientesCount>1?'s':''} de resposta.`
         : `Tienes ${consultasPendientesCount} consulta${consultasPendientesCount>1?'s':''} pendiente${consultasPendientesCount>1?'s':''} de respuesta.`}</p>` : ''}
@@ -5812,7 +5826,7 @@ async function renderDashboard(){
   const citasHtml = (citas && citas.length)
     ? citasOrd.map(c => `
         <div class="list-row">
-          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
+          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
           <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}')">✖ ${LANG==='ca' ? 'Cancel·lar cita' : 'Cancelar cita'}</button>
         </div>${citaRespuestaHtml(c)}`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
@@ -6028,13 +6042,13 @@ async function cancelarCita(id, desde){
 }
 async function misCitasPedidasHtml(){
   const ca = LANG === 'ca';
-  const hoy = new Date().toISOString().slice(0,10);
+  const hoy = hoyLocalIso();
   const { data } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoy).order('fecha', { ascending:true });
   if(!data || !data.length) return '';
   const fmt = f => new Date(f + 'T00:00:00').toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
   return `<div class="panel-card" style="margin-bottom:14px;">
     <h3 style="margin-bottom:8px;">📅 ${ca ? 'Les teves cites demanades' : 'Tus citas pedidas'}</h3>
-    ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}</span>
+    ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}</span>
       <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}','cita')">✖ ${ca ? 'Cancel·lar cita' : 'Cancelar cita'}</button></div>`).join('')}
   </div>`;
 }
@@ -6046,7 +6060,7 @@ const MAX_CITAS_FUTURAS = 1;
 const CONSULTA_DIAS_VISIBLE = 14;
 async function citasFuturasPropias(){
   if(!CURRENT_USER) return [];
-  const hoy = new Date().toISOString().slice(0,10);
+  const hoy = hoyLocalIso();
   try {
     const { data } = await sb.from('citas').select('id, fecha, hora, estado').eq('usuario_id', CURRENT_USER.id).gte('fecha', hoy);
     return (data || []).filter(c => c.estado !== 'cancelada');
@@ -6078,6 +6092,9 @@ async function renderCitaForm(){
     return;
   }
   window.__horarioAtencion = horario;
+  window.__citaDia = null;
+  const tecnicos = await cargarTecnicosCita();
+  if(window.__citaTec && !tecnicos.some(t => t.clave === window.__citaTec)) window.__citaTec = '';
 
   const dias = [];
   const hoy = new Date();
@@ -6092,17 +6109,19 @@ async function renderCitaForm(){
 
   const misCitasBloque = await misCitasPedidasHtml();
   const diasHtml = dias.map(d => {
-    const iso = d.toISOString().slice(0,10);
+    const iso = hoyLocalIso(d);
     const label = d.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
-    return `<button class="life-card" style="padding:10px 6px;" onclick="seleccionarDiaCita('${iso}')"><span style="font-size:12.5px;font-weight:700;">${label}</span></button>`;
+    return `<button class="life-card" style="padding:10px 6px;" data-dia="${iso}" onclick="seleccionarDiaCita('${iso}')"><span style="font-size:12.5px;font-weight:700;">${label}</span></button>`;
   }).join('');
 
   document.getElementById('cita-content').innerHTML = `
     <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
     ${logosEstadoHtml()}
     ${misCitasBloque}
-    <p class="subtle">${esCA ? 'Tria un dia per veure les hores disponibles.' : 'Elige un día para ver las horas disponibles.'}</p>
-    <div class="life-grid">${diasHtml}</div>
+    ${tecnicos.length ? `<div class="cita-paso"><span class="cita-num">1</span> ${esCA ? 'Amb qui vols la cita?' : '¿Con quién quieres la cita?'}</div>
+    <div id="cita-tecnicos" class="cita-tec-lista">${citaTecnicosHtml(tecnicos)}</div>
+    <div class="cita-paso"><span class="cita-num">2</span> ${esCA ? 'Tria el dia' : 'Elige el día'}</div>` : `<p class="subtle">${esCA ? 'Tria un dia per veure les hores disponibles.' : 'Elige un día para ver las horas disponibles.'}</p>`}
+    <div class="life-grid" id="cita-dias">${diasHtml}</div>
     <p class="subtle" style="font-size:12px;margin-top:10px;">🕘 ${logosHorarioTexto()}</p>
     <div id="cita-horas" style="margin-top:16px;"></div>
   `;
@@ -6113,8 +6132,19 @@ async function seleccionarDiaCita(fechaIso){
   const horario = window.__horarioAtencion;
   const cont = document.getElementById('cita-horas');
   cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+  window.__citaDia = fechaIso;
+  document.querySelectorAll('#cita-dias [data-dia]').forEach(b => b.classList.toggle('cita-sel', b.dataset.dia === fechaIso));
+  const tec = window.__citaTec || '';
+  const tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
 
-  const { data: ocupacion } = await sb.rpc('citas_disponibilidad', { p_fecha: fechaIso });
+  const [{ data: ocupacion }, dispTec] = await Promise.all([
+    sb.rpc('citas_disponibilidad', { p_fecha: fechaIso }),
+    tec ? sb.rpc('tecnico_disponibilidad', { p_fecha: fechaIso, p_clave: tec }).then(r => r.error ? null : r.data, () => null) : Promise.resolve(null)
+  ]);
+  if(window.__citaDia !== fechaIso || (window.__citaTec || '') !== tec) return; // el usuario ya ha cambiado de día o de técnico
+  const ocupTec = new Set(((dispTec && dispTec.ocupadas) || []).map(h => String(h).slice(0,5)));
+  const tramosTec = dispTec && Array.isArray(dispTec.tramos) && dispTec.tramos.length ? dispTec.tramos : null;
+  const enTramoTec = s => !tramosTec || tramosTec.some(t => logosMin(s) >= logosMin(String(t[0]).slice(0,5)) && logosMin(s) < logosMin(String(t[1]).slice(0,5)));
   const ocupadasPorHora = {};
   (ocupacion || []).forEach(o => { ocupadasPorHora[o.hora.slice(0,5)] = o.ocupadas; });
 
@@ -6138,20 +6168,49 @@ async function seleccionarDiaCita(fechaIso){
     if(hd && hd.sinCita){ const a = logosMin(hd.sinCita[0]), z = logosMin(hd.sinCita[1]); for(let i = slots.length - 1; i >= 0; i--){ const m = logosMin(slots[i]); if(m >= a && m < z) slots.splice(i, 1); } } }
 
   const finBloque1 = null;
+  if(tramosTec){ for(let i = slots.length - 1; i >= 0; i--){ if(!enTramoTec(slots[i])) slots.splice(i, 1); } }
+  if(!slots.length){
+    cont.innerHTML = `<div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);"><p style="margin:0;">${esCA ? `${escAttr(tecNombre)} no atén cites aquest dia. Tria un altre dia o «La primera persona disponible».` : `${escAttr(tecNombre)} no atiende citas este día. Elige otro día o «La primera persona disponible».`}</p></div>`;
+    return;
+  }
+  const titulo = tec ? `<div class="cita-paso"><span class="cita-num">3</span> ${esCA ? `Hores lliures amb ${escAttr(tecNombre)}` : `Horas libres con ${escAttr(tecNombre)}`}</div>`
+    : ((window.__tecnicosCita || []).length ? `<div class="cita-paso"><span class="cita-num">3</span> ${esCA ? 'Tria l\'hora' : 'Elige la hora'}</div>` : '');
+  let primerTarde = true;
   const slotsHtml = slots.map((s, i) => {
     const ocupadas = ocupadasPorHora[s] || 0;
-    const lleno = ocupadas >= horario.tecnicos_simultaneos;
-    const esInicioTarde = s === '16:00';
-    const etiquetaMañana = i === 0 ? `<div class="section-label" style="margin-top:0;">${esCA ? 'Matí' : 'Mañana'}</div>` : '';
-    const etiquetaTarde = esInicioTarde ? `<div class="section-label" style="margin-top:14px;">${esCA ? 'Tarda' : 'Tarde'}</div>` : '';
+    const lleno = ocupadas >= horario.tecnicos_simultaneos || ocupTec.has(s);
+    const esInicioTarde = logosMin(s) >= 15*60 && primerTarde && i > 0 && logosMin(slots[i-1]) < 15*60; if(logosMin(s) >= 15*60) primerTarde = false;
+    const etiquetaMañana = i === 0 && logosMin(s) < 15*60 ? `<div class="section-label" style="margin-top:0;">${esCA ? 'Matí' : 'Mañana'}</div>` : '';
+    const etiquetaTarde = (esInicioTarde || (i === 0 && logosMin(s) >= 15*60)) ? `<div class="section-label" style="margin-top:14px;">${esCA ? 'Tarda' : 'Tarde'}</div>` : '';
     return `${etiquetaMañana}${etiquetaTarde}<button class="service-row" style="justify-content:center;${lleno ? 'opacity:.45;cursor:default;' : 'cursor:pointer;'}" ${lleno ? 'disabled' : `onclick="reservarCita('${fechaIso}','${s}')"`}>
       <strong>${s}</strong>${lleno ? ` <span style="font-size:11px;">(${esCA ? 'complet' : 'completo'})</span>` : ''}
     </button>`;
   }).join('');
 
-  cont.innerHTML = `
-    ${slotsHtml}
-  `;
+  cont.innerHTML = `${titulo}${slotsHtml}`;
+  if(window.innerWidth < 760) cont.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// --- Elegir técnico (SQL 39). Si el SQL no está ejecutado, la lista sale vacía y todo funciona como antes ---
+async function cargarTecnicosCita(){
+  if(window.__tecnicosCita && Date.now() - (window.__tecnicosCitaT || 0) < 5*60*1000) return window.__tecnicosCita;
+  let lista = [];
+  try { const r = await sb.rpc('tecnicos_citas'); if(!r.error && Array.isArray(r.data)) lista = r.data.filter(t => t && t.clave && t.nombre); } catch(e){}
+  window.__tecnicosCita = lista; window.__tecnicosCitaT = Date.now();
+  return lista;
+}
+function citaTecnicosHtml(tecnicos){
+  const esCA = LANG === 'ca', sel = window.__citaTec || '';
+  const ini = n => String(n || '?').trim().split(/\s+/).slice(0,2).map(x => x[0] || '').join('').toUpperCase();
+  return `<button type="button" class="cita-tec ${!sel ? 'cita-sel' : ''}" onclick="elegirTecnicoCita('')"><span class="cita-tec-av" style="background:var(--ochre);">⚡</span><span><strong>${esCA ? 'La primera persona disponible' : 'La primera persona disponible'}</strong><br><small>${esCA ? 'Recomanat: més hores lliures' : 'Recomendado: más horas libres'}</small></span></button>`
+    + tecnicos.map(t => `<button type="button" class="cita-tec ${sel === t.clave ? 'cita-sel' : ''}" onclick="elegirTecnicoCita('${escAttr(t.clave)}')"><span class="cita-tec-av">${escAttr(ini(t.nombre))}</span><span><strong>${escAttr(t.nombre)}</strong></span></button>`).join('');
+}
+function elegirTecnicoCita(clave){
+  window.__citaTec = clave || '';
+  const cont = document.getElementById('cita-tecnicos');
+  if(cont) cont.innerHTML = citaTecnicosHtml(window.__tecnicosCita || []);
+  if(window.__citaDia) seleccionarDiaCita(window.__citaDia);
+  else { const d = document.getElementById('cita-dias'); if(d && window.innerWidth < 760) d.scrollIntoView({ behavior:'smooth', block:'center' }); }
 }
 
 async function reservarCita(fecha, hora){
@@ -6161,14 +6220,16 @@ async function reservarCita(fecha, hora){
   try {
     if((await citasFuturasPropias()).length >= MAX_CITAS_FUTURAS){ window.__reservandoCita = false; renderCitaForm(); return; }
   } catch(e){}
-  const { error } = await sb.from('citas').insert({
-    usuario_id: CURRENT_USER.id,
-    fecha,
-    hora
-  });
+  const tec = window.__citaTec || '';
+  const tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
+  if(tec && !confirm(esCA ? `Confirmes la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('ca-ES', { weekday:'long', day:'numeric', month:'long' })} a les ${hora} amb ${tecNombre}?` : `¿Confirmas la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} a las ${hora} con ${tecNombre}?`)){ window.__reservandoCita = false; return; }
+  let { error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, tec ? { tecnico_clave: tec } : {}));
+  if(error && tec && /tecnico_clave|schema cache|column/i.test(error.message || '')){
+    ({ error } = await sb.from('citas').insert({ usuario_id: CURRENT_USER.id, fecha, hora }));
+  }
   if(error){
     document.getElementById('cita-horas').insertAdjacentHTML('afterbegin',
-      `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar. Tria una altra.' : 'Esta hora se acaba de ocupar. Elige otra.') : error.message}</div>`);
+      `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar. Tria una altra.' : 'Esta hora se acaba de ocupar. Elige otra.') : (error.message.includes('ya no está disponible') ? (esCA ? 'Aquesta persona ja no atén cites. Tria\'n una altra.' : 'Esta persona ya no atiende citas. Elige otra.') : error.message)}</div>`);
     seleccionarDiaCita(fecha);
     window.__reservandoCita = false;
     return;
@@ -6181,7 +6242,7 @@ async function reservarCita(fecha, hora){
     await sb.from('notificaciones').insert({
       usuario_id: CURRENT_USER.id,
       tipo: 'cita_nueva',
-      mensaje: `${nombreAviso} ha pedido cita para el ${fechaFmt} a las ${hora}.`
+      mensaje: `${nombreAviso} ha pedido cita para el ${fechaFmt} a las ${hora}${tecNombre ? ' con ' + tecNombre : ((window.__tecnicosCita || []).length ? ' (con la primera persona disponible)' : '')}.`
     });
   } catch(e) { /* no bloquear la reserva si falla el aviso */ }
 
@@ -6696,7 +6757,7 @@ async function firmarConsentimientoGeneral(){
     nombre_completo: nombreConsent,
     dni_nie: dniConsent,
     consentimiento_firmado: true,
-    consentimiento_fecha: new Date().toISOString().slice(0,10),
+    consentimiento_fecha: hoyLocalIso(),
     consentimiento_cesion_organismos: document.getElementById('cons-cesion').checked,
     consentimiento_contacto: document.getElementById('cons-contacto').checked,
     consentimiento_imagen_voz: document.getElementById('cons-imagen').checked,
