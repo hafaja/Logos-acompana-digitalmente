@@ -1128,15 +1128,20 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-26 · v54 (elegir técnico al pedir cita)';
+const APP_VERSION_ACOMP = '2026-10-26 · v56 (aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
 let CATALOGO_V13 = false;   // la base de datos ya admite editar áreas y prestaciones (SQL 13)
 let TAXONOMIA_BASE = null;   // áreas y prestaciones tal como vienen del catálogo, sin los cambios de la administración
 const esTramiteAj = x => !x.tipo || x.tipo === 'tramite';
+// La conexión con Supabase se crea un poco más abajo en la página: si los datos llegan antes (ordenador rápido o caché), se espera
+function esperarSb(){
+  return new Promise(res => { let n = 0; (function mira(){ if(typeof sb !== 'undefined') return res(true); if(++n > 75) return res(false); setTimeout(mira, 100); })(); });
+}
 async function cargarAjustesCatalogo(){
   try {
+    if(typeof sb === 'undefined') await esperarSb();
     const r = await sb.from('catalogo_ajustes').select('*').order('id', { ascending: true });
     if(r.error){ CATALOGO_AJUSTES_OK = false; CATALOGO_AJUSTES = []; return; }
     CATALOGO_AJUSTES = r.data || []; CATALOGO_AJUSTES_OK = true;
@@ -1942,6 +1947,8 @@ async function checkStaff(){
   if(IS_STAFF){ try { const r = await sb.from('notificaciones').select('asignada_a_email').limit(1); REPARTO_OK = !r.error; const j = await sb.from('notificaciones').select('para_jovenes').limit(1); JOVENES_OK = !j.error; } catch(e) { REPARTO_OK = false; JOVENES_OK = false; } }
   document.getElementById('nav-panel-btn').style.display = IS_STAFF ? '' : 'none';
   document.getElementById('nav-admin-btn').style.display = IS_ADMIN ? '' : 'none';
+  // la administración vuelve a leer el catálogo con su sesión (por si falló al abrir la página)
+  if(IS_ADMIN && (!CATALOGO_AJUSTES_OK || !CATALOGO_V13)){ try { await cargarAjustesCatalogo(); } catch(e){} }
   // si ya hay un área abierta, se vuelve a pintar para que la administración vea sus controles (✕ y añadir)
   if(CURRENT_AMBITO && typeof showNecesidades === 'function') showNecesidades(CURRENT_AMBITO, true);
   if(typeof renderAmbitos === 'function' && TAXONOMIA && TAXONOMIA.length) renderAmbitos();
@@ -3559,7 +3566,8 @@ async function renderCrearProyectoEntrada(){
   const cont = document.getElementById('crearproyecto-content');
   cont.innerHTML = `<div class="placeholder">${esCA?'Carregant…':'Cargando…'}</div>`;
 
-  const { data: itinerarios } = await sb.from('itinerario_proyectos').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const { data: itinerariosTodos } = await sb.from('itinerario_proyectos').select('*').eq('usuario_id', CURRENT_USER.id).order('creado_en', { ascending:false });
+  const itinerarios = itinLimpiar(itinerariosTodos);
   const enCurso = (itinerarios||[]).filter(it => it.estado === 'en_curso');
 
   const continuarHtml = enCurso.length ? enCurso.map(it => `
@@ -3585,7 +3593,37 @@ async function renderCrearProyectoEntrada(){
   `;
 }
 
+
+// ---- Proyectos guiados: no crear ideas vacías repetidas ----
+const ITIN_META = ['id','usuario_id','modo','origen','estado','etapa_actual','creado_en','actualizado_en','created_at','updated_at','proyecto_id'];
+function itinVacio(it){
+  if(!it || (Number(it.etapa_actual) || 1) > 1) return false;
+  return Object.keys(it).every(k => ITIN_META.includes(k) || it[k] === null || it[k] === '' || it[k] === false || it[k] === 0
+    || (Array.isArray(it[k]) && !it[k].length) || (typeof it[k] === 'object' && it[k] && !Array.isArray(it[k]) && !Object.keys(it[k]).length));
+}
+async function itinDescartarDB(ids){
+  if(!ids.length) return true;
+  const d = await sb.from('itinerario_proyectos').delete().in('id', ids).select('id');
+  if(!d.error && (d.data || []).length === ids.length) return true;
+  const u = await sb.from('itinerario_proyectos').update({ estado: 'descartado' }).in('id', ids).select('id');
+  return !u.error && (u.data || []).length > 0;
+}
+// Si hay varias ideas vacías (sin nombre y sin nada escrito), se deja solo la más reciente
+function itinLimpiar(lista){
+  const vacios = (lista || []).filter(it => it.estado === 'en_curso' && itinVacio(it));
+  if(vacios.length <= 1) return lista || [];
+  const sobran = vacios.slice(1).map(x => x.id);
+  itinDescartarDB(sobran).catch(() => {});
+  return (lista || []).filter(x => !sobran.includes(x.id));
+}
 async function iniciarItinerario(modo){
+  if(window.__iniciandoItin) return;   // evita crear varias ideas con dos o tres toques seguidos
+  window.__iniciandoItin = true; setTimeout(() => { window.__iniciandoItin = false; }, 1500);
+  try {
+    const { data: ex } = await sb.from('itinerario_proyectos').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'en_curso').order('creado_en', { ascending:false }).limit(20);
+    const vacio = (ex || []).find(it => itinVacio(it));
+    if(vacio){ if(vacio.modo !== modo) await sb.from('itinerario_proyectos').update({ modo }).eq('id', vacio.id); renderEtapaItinerario(vacio.id, 1); return; }
+  } catch(e){}
   const { data, error } = await sb.from('itinerario_proyectos').insert({ usuario_id: CURRENT_USER.id, modo }).select('id').single();
   if(error){ alert(error.message); return; }
   renderEtapaItinerario(data.id, 1);
