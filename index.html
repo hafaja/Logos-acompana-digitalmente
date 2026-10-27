@@ -450,6 +450,28 @@
 .cita-tec-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#E6F0FA;color:#1F4E79;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
 .cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
 @media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
+.cchat{border:1.5px solid #D6E2F2;border-radius:16px;background:#fff;overflow:hidden;margin:0 0 16px;display:flex;flex-direction:column;}
+.cchat-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:linear-gradient(120deg,#1E3F66,#2F5DA8);color:#fff;padding:10px 14px;font-weight:700;font-size:14px;}
+.cchat-wa{display:flex;gap:6px;flex-wrap:wrap;}
+.cchat-wa-btn{background:#25D366;color:#fff !important;text-decoration:none;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;}
+.cchat-lista{height:340px;overflow-y:auto;padding:10px 12px;background:#F4F7FB;display:flex;flex-direction:column;gap:6px;}
+.cchat-vacio{margin:auto;color:#6B7A90;font-size:13px;text-align:center;padding:20px;}
+.cchat-dia{align-self:center;font-size:11px;color:#6B7A90;background:#E6ECF4;border-radius:999px;padding:2px 10px;margin:6px 0;text-transform:capitalize;}
+.cchat-m{max-width:80%;align-self:flex-start;background:#fff;border:1px solid #E2E8F0;border-radius:14px 14px 14px 4px;padding:7px 10px;}
+.cchat-m.staff{border-color:#F2BC2C;background:#FFFBEA;}
+.cchat-m.mio{align-self:flex-end;background:#DCEBFF;border-color:#BCD5F5;border-radius:14px 14px 4px 14px;}
+.cchat-a{font-size:11.5px;font-weight:700;color:#1E3F66;margin-bottom:2px;}
+.cchat-tag{background:#F2BC2C;color:#16304F;border-radius:6px;padding:0 5px;font-size:10px;}
+.cchat-wa-mini{color:#128C3E;font-weight:700;font-size:10.5px;text-decoration:none;margin-left:4px;}
+.cchat-t{font-size:14px;line-height:1.4;word-wrap:break-word;overflow-wrap:anywhere;}
+.cchat-h{font-size:10.5px;color:#8090A6;text-align:right;margin-top:2px;}
+.cchat-h button{border:none;background:none;color:#B04A3A;font-size:10.5px;cursor:pointer;padding:0;}
+.cchat-form{display:flex;gap:8px;padding:8px 10px;border-top:1px solid #E2E8F0;align-items:flex-end;}
+.cchat-form textarea{flex:1;resize:none;border:1.5px solid #D6E2F2;border-radius:12px;padding:9px 11px;font:inherit;font-size:14px;min-height:40px;box-sizing:border-box;}
+.cchat-env{flex:0 0 42px;height:42px;border-radius:50%;border:none;background:#1E3F66;color:#fff;font-size:18px;cursor:pointer;}
+.cchat-pie{font-size:11px;color:#8090A6;padding:0 12px 8px;}
+.cchat-badge{background:#C0392B;color:#fff;border-radius:999px;padding:0 6px;font-size:11px;margin-left:4px;}
+@media (max-width:600px){ .cchat-lista{height:300px;} .cchat-m{max-width:88%;} }
 </style>
 </head>
 <body>
@@ -1128,7 +1150,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-27 · v57 (pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-27 · v58 (mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -4002,7 +4024,7 @@ async function renderAulaCiudadano(){
           ${(c.fecha_inicio||c.fecha_final) ? `<div class="list-row"><span>${esCA?'Dates':'Fechas'}</span><span>${c.fecha_inicio ? new Date(c.fecha_inicio+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES') : '—'} – ${c.fecha_final ? new Date(c.fecha_final+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES') : '—'}</span></div>` : ''}
           ${c.horas_totales ? `<div class="list-row"><span>${esCA?'Hores':'Horas'}</span><span>${c.horas_totales} h</span></div>` : ''}
           ${yaInscrito
-            ? `<button class="primary-btn" style="margin-top:10px;" onclick="abrirCursoCiudadano('${c.id}')">${esCA?'📖 Continuar el curs':'📖 Continuar el curso'}</button>`
+            ? `<button class="primary-btn" style="margin-top:10px;" data-chat-curso="${c.id}" onclick="abrirCursoCiudadano('${c.id}')">${esCA?'📖 Continuar el curs':'📖 Continuar el curso'}</button>`
             : `<button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="apuntarmeCurso('${c.id}')">✋ ${esCA?'Apuntar-me':'Apuntarme'}</button>`}
         </div>`;
       }).join('')
@@ -4015,6 +4037,7 @@ async function renderAulaCiudadano(){
       : 'Haz los cursos de Logos desde casa, con el móvil o el ordenador, cuando tú quieras.'}</p>
     ${cursosHtml}
   `;
+  try { for(const b of document.querySelectorAll('#aulaciudadano-content [data-chat-curso]')){ const n = await cursoChatNuevos(b.dataset.chatCurso); if(n) b.insertAdjacentHTML('beforeend', ` <span class="cchat-badge">💬 ${n}</span>`); } } catch(e){}
 }
 
 async function apuntarmeCurso(cursoId){
@@ -4031,6 +4054,104 @@ async function apuntarmeCurso(cursoId){
   if(error){ alert(error.message); return; }
   alert(esCA ? "T'has apuntat correctament!" : '¡Te has apuntado correctamente!');
   renderAulaCiudadano();
+}
+
+
+// ================= MENSAJES DEL CURSO (Aula Virtual) · común a la Intranet y a Logos Acompanya (SQL 47) =================
+const chL = () => (typeof LANG_I !== 'undefined' ? LANG_I : (typeof LANG !== 'undefined' ? LANG : 'es'));
+const chT = (es, ca) => chL() === 'ca' ? ca : es;
+const chEsc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+window.__chat = window.__chat || {};
+function chYoEsStaff(){ return (typeof IS_STAFF !== 'undefined' && IS_STAFF) || (typeof LANG_I !== 'undefined'); }
+function chMiNombre(){
+  if(typeof CURRENT_USER_NOMBRE !== 'undefined' && CURRENT_USER_NOMBRE) return CURRENT_USER_NOMBRE;
+  const p = window.__perfilActual || {}; return p.nombre_completo || (CURRENT_USER && CURRENT_USER.email ? CURRENT_USER.email.split('@')[0] : '');
+}
+function chWaLink(tel, texto){ let t = String(tel || '').replace(/[^\d+]/g, '').replace(/^\+/, ''); if(t.length === 9) t = '34' + t; return 'https://wa.me/' + t + (texto ? '?text=' + encodeURIComponent(texto) : ''); }
+function chVistoClave(id){ return 'logos_chat_visto_' + id; }
+// Caja de mensajes (se pone dentro de cualquier pantalla)
+function cursoChatHtml(cursoId, titulo){
+  return `<div class="cchat" id="cchat-${chEsc(cursoId)}" data-curso="${chEsc(cursoId)}">
+    <div class="cchat-cab"><span>💬 ${chT('Mensajes del curso', 'Missatges del curs')}${titulo ? ' · ' + chEsc(titulo) : ''}</span><span class="cchat-wa" id="cchat-wa-${chEsc(cursoId)}"></span></div>
+    <div class="cchat-lista" id="cchat-lista-${chEsc(cursoId)}"><div class="cchat-vacio">${chT('Cargando…', 'Carregant…')}</div></div>
+    <div class="cchat-form">
+      <textarea id="cchat-txt-${chEsc(cursoId)}" rows="1" maxlength="2000" placeholder="${chT('Escribe un mensaje para el grupo…', 'Escriu un missatge per al grup…')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cursoChatEnviar('${chEsc(cursoId)}');}" oninput="this.style.height='auto';this.style.height=Math.min(120,this.scrollHeight)+'px'"></textarea>
+      <button class="cchat-env" onclick="cursoChatEnviar('${chEsc(cursoId)}')" aria-label="${chT('Enviar', 'Enviar')}">➤</button>
+    </div>
+    <div class="cchat-pie">${chT('Lo ven todas las personas del curso y el equipo de Logos. No compartas datos personales (DNI, dirección…).', 'Ho veuen totes les persones del curs i l\'equip de Logos. No comparteixis dades personals (DNI, adreça…).')}</div>
+  </div>`;
+}
+async function cursoChatIniciar(cursoId){
+  const st = window.__chat[cursoId] = window.__chat[cursoId] || { msgs: [], canal: null, timer: null };
+  await cursoChatCargar(cursoId);
+  cursoChatContactos(cursoId);
+  try {
+    if(st.canal) sb.removeChannel(st.canal);
+    st.canal = sb.channel('cchat-' + cursoId).on('postgres_changes', { event: '*', schema: 'public', table: 'curso_mensajes', filter: 'curso_id=eq.' + cursoId }, () => cursoChatCargar(cursoId)).subscribe();
+  } catch(e){}
+  clearInterval(st.timer);
+  st.timer = setInterval(() => { if(!document.getElementById('cchat-lista-' + cursoId)){ clearInterval(st.timer); try { if(st.canal) sb.removeChannel(st.canal); } catch(e){} return; } cursoChatCargar(cursoId); }, 20000);
+}
+async function cursoChatCargar(cursoId){
+  const lista = document.getElementById('cchat-lista-' + cursoId); if(!lista) return;
+  const { data, error } = await sb.from('curso_mensajes').select('*').eq('curso_id', String(cursoId)).order('creado_en', { ascending: true }).limit(300);
+  if(error){ lista.innerHTML = `<div class="cchat-vacio">${/curso_mensajes|does not exist|schema cache/i.test(error.message || '') ? chT('Los mensajes del curso se activan con el SQL 47 en Supabase.', 'Els missatges del curs s\'activen amb l\'SQL 47 a Supabase.') : chEsc(error.message)}</div>`; return; }
+  const st = window.__chat[cursoId] || (window.__chat[cursoId] = {});
+  st.msgs = (data || []).filter(m => !m.borrado);
+  const yo = CURRENT_USER && CURRENT_USER.id, staffVe = typeof LANG_I !== 'undefined';
+  const abajo = lista.scrollHeight - lista.scrollTop - lista.clientHeight < 60;
+  let diaPrev = '';
+  lista.innerHTML = st.msgs.length ? st.msgs.map(m => {
+    const mio = m.autor_id && m.autor_id === yo, d = m.creado_en ? new Date(m.creado_en) : new Date();
+    const dia = d.toLocaleDateString(chL() === 'ca' ? 'ca-ES' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    const sep = dia !== diaPrev ? `<div class="cchat-dia">${dia}</div>` : ''; diaPrev = dia;
+    const tel = m.es_staff && st.tels ? st.tels[String(m.autor_email || '').toLowerCase()] : '';
+    return `${sep}<div class="cchat-m ${mio ? 'mio' : ''} ${m.es_staff ? 'staff' : ''}">
+      ${mio ? '' : `<div class="cchat-a">${chEsc(m.autor_nombre || chT('Participante', 'Participant'))}${m.es_staff ? ` <span class="cchat-tag">Logos</span>` : ''}${tel ? ` <a class="cchat-wa-mini" href="${chWaLink(tel)}" target="_blank" rel="noopener" title="WhatsApp">🟢 WhatsApp</a>` : ''}</div>`}
+      <div class="cchat-t">${chEsc(m.texto).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')}</div>
+      <div class="cchat-h">${d.toLocaleTimeString(chL() === 'ca' ? 'ca-ES' : 'es-ES', { hour: '2-digit', minute: '2-digit' })}${(mio || staffVe) ? ` · <button onclick="cursoChatBorrar('${chEsc(cursoId)}','${m.id}')">${chT('borrar', 'esborrar')}</button>` : ''}</div></div>`;
+  }).join('') : `<div class="cchat-vacio">${chT('Todavía no hay mensajes. ¡Escribe el primero para saludar al grupo!', 'Encara no hi ha missatges. Escriu el primer per saludar el grup!')}</div>`;
+  if(abajo || !st.yaVisto){ lista.scrollTop = lista.scrollHeight; st.yaVisto = true; }
+  try { localStorage.setItem(chVistoClave(cursoId), String(st.msgs.length ? st.msgs[st.msgs.length - 1].creado_en : '')); } catch(e){}
+}
+async function cursoChatContactos(cursoId){
+  const host = document.getElementById('cchat-wa-' + cursoId); if(!host) return;
+  try {
+    const { data, error } = await sb.rpc('curso_contactos', { p_curso: String(cursoId) });
+    if(error || !Array.isArray(data)) return;
+    const st = window.__chat[cursoId]; st.tels = {}; data.forEach(c => { st.tels[c.email] = c.telefono; });
+    const doc = data[0];
+    host.innerHTML = data.slice(0, 2).map(c => `<a class="cchat-wa-btn" href="${chWaLink(c.telefono, chT('Hola ' + c.nombre + ', te escribo por el curso.', 'Hola ' + c.nombre + ', t\'escric pel curs.'))}" target="_blank" rel="noopener">🟢 WhatsApp ${chEsc(String(c.nombre).split(' ')[0])}</a>`).join('');
+    if(doc) cursoChatCargar(cursoId);
+  } catch(e){}
+}
+async function cursoChatEnviar(cursoId){
+  const ta = document.getElementById('cchat-txt-' + cursoId); if(!ta) return;
+  const texto = ta.value.trim(); if(!texto) return;
+  if(/\b\d{8}[A-Z]\b|\b[XYZ]\d{7}[A-Z]\b/i.test(texto) && !confirm(chT('Parece que el mensaje contiene un DNI/NIE. Lo verá todo el grupo. ¿Enviar igualmente?', 'Sembla que el missatge conté un DNI/NIE. Ho veurà tot el grup. Enviar igualment?'))) return;
+  ta.disabled = true;
+  const fila = { curso_id: String(cursoId), autor_id: CURRENT_USER.id, autor_email: CURRENT_USER.email, autor_nombre: chMiNombre(), es_staff: typeof LANG_I !== 'undefined' || !!(typeof IS_STAFF !== 'undefined' && IS_STAFF), texto };
+  const { error } = await sb.from('curso_mensajes').insert(fila);
+  ta.disabled = false;
+  if(error){ alert(/curso_mensajes|does not exist|schema cache/i.test(error.message || '') ? chT('Falta ejecutar el SQL 47 en Supabase.', 'Cal executar l\'SQL 47 a Supabase.') : (/row-level|permission/i.test(error.message || '') ? chT('Solo pueden escribir las personas inscritas en el curso.', 'Només hi poden escriure les persones inscrites al curs.') : error.message)); return; }
+  ta.value = ''; ta.style.height = 'auto'; ta.focus();
+  const st = window.__chat[cursoId]; if(st) st.yaVisto = false;
+  await cursoChatCargar(cursoId);
+}
+async function cursoChatBorrar(cursoId, id){
+  if(!confirm(chT('¿Borrar este mensaje?', 'Esborrar aquest missatge?'))) return;
+  const { error } = await sb.from('curso_mensajes').update({ borrado: true }).eq('id', id);
+  if(error){ alert(error.message); return; }
+  cursoChatCargar(cursoId);
+}
+// Número de mensajes nuevos de un curso (desde la última vez que se abrió)
+async function cursoChatNuevos(cursoId){
+  try {
+    let visto = ''; try { visto = localStorage.getItem(chVistoClave(cursoId)) || ''; } catch(e){}
+    let q = sb.from('curso_mensajes').select('id', { count: 'exact', head: true }).eq('curso_id', String(cursoId)).eq('borrado', false);
+    if(visto) q = q.gt('creado_en', visto);
+    const { count, error } = await q; return error ? 0 : (count || 0);
+  } catch(e){ return 0; }
 }
 
 async function abrirCursoCiudadano(cursoId){
@@ -4152,9 +4273,11 @@ async function abrirCursoCiudadano(cursoId){
       <h3>📅 ${esCA?'Properes classes':'Próximas clases'}</h3>
       ${clasesHtml}
     </div>
+    ${cursoChatHtml(cursoId)}
     ${modulosHtml}
     <div id="test-tarea-wrap"></div>
   `;
+  cursoChatIniciar(cursoId);
 }
 
 function toggleModuloCC(id){
