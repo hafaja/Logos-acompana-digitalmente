@@ -7,18 +7,18 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#16233F">
+<meta name="theme-color" content="#1B2A44">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F5F3EC; --paper:#FFFFFF; --ink:#16233F; --ink-soft:#545F78; --line:#E1DFD3;
-    --teal:#16233F; --teal-dark:#0B1526; --ochre:#D9832E; --ochre-soft:#FBE7D3;
+    --bg:#F6F8FB; --paper:#FFFFFF; --ink:#1B2A44; --ink-soft:#5D6B82; --line:#E2E7EF;
+    --teal:#2463B8; --teal-dark:#1B4E95; --ochre:#D9832E; --ochre-soft:#FBE7D3;
     --alert:#A8431F; --alert-soft:#FBE7DE;
     --good:#2F6B27; --good-soft:#DDEFD9;
-    --sidebar-green:#1E3F66; --sidebar-yellow:#F0B90B;
-    --font-display:'Fraunces',serif; --font-body:'Atkinson Hyperlegible',sans-serif;
+    --sidebar-green:#2463B8; --sidebar-yellow:#F0B90B;
+    --font-display:'Figtree',system-ui,sans-serif; --font-body:'Figtree',system-ui,sans-serif;
   }
   *{box-sizing:border-box;}
   body{margin:0;background:var(--bg);font-family:var(--font-body);color:var(--ink);}
@@ -29,14 +29,14 @@
   .sidebar nav{display:none;flex-direction:column;gap:4px;flex:1;}
   .sidebar nav button{text-align:left;background:none;border:none;color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar nav button:hover{background:rgba(255,255,255,.14);}
-  .sidebar nav button.active{background:#F2BC2C;color:#16304F;}
+  .sidebar nav button.active{background:#F2BC2C;color:#1B4E95;}
   .nav-staff-btn{color:#7A4A1F !important;}
   .nav-staff-btn:hover{background:var(--ochre-soft);}
   .nav-staff-btn.active{background:var(--ochre) !important;color:#fff !important;}
   .sidebar-public-nav{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line);}
   .sidebar-public-nav button{text-align:left;background:none;border:none;color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;padding:8px 12px;border-radius:9px;cursor:pointer;transition:background .15s;}
   .sidebar-public-nav button:hover{background:rgba(255,255,255,.14);}
-  .sidebar-public-nav button.active{background:#F2BC2C;color:#16304F;}
+  .sidebar-public-nav button.active{background:#F2BC2C;color:#1B4E95;}
   .menu-mas-toggle{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:none;color:#fff;opacity:.85;font-family:var(--font-body);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;padding:8px 12px;margin-top:6px;border-radius:9px;cursor:pointer;}
   .menu-mas-toggle:hover{background:rgba(255,255,255,.14);}
   .menu-mas-toggle .fl{transition:transform .15s;}
@@ -108,7 +108,7 @@
     .sidebar nav button{flex:0 0 auto;text-align:left;font-size:14.5px;padding:14px 12px;white-space:normal;width:100%;border-bottom:1px solid rgba(255,255,255,.12);border-radius:0;color:#fff;}
     .sidebar-public-nav button{color:#fff;border-bottom:1px solid rgba(255,255,255,.12);padding:14px 12px;width:100%;text-align:left;border-radius:0;}
     .sidebar .section-label{color:#fff;opacity:.65;}
-    .sidebar nav button.active, .sidebar-public-nav button.active{background:#F2BC2C;color:#16304F;}
+    .sidebar nav button.active, .sidebar-public-nav button.active{background:#F2BC2C;color:#1B4E95;}
     .menu-mas-toggle{border-radius:0;padding:14px 12px;border-bottom:1px solid rgba(255,255,255,.12);}
     .main{order:1;}
     .main-content{padding:22px 18px 96px;}
@@ -275,10 +275,10 @@
   .nc-ok{font-size:13.5px;font-weight:700;background:rgba(255,255,255,.18);border-radius:12px;padding:9px 12px;line-height:1.35;}
   .nb-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;margin-top:8px;}
   .nb-card .nec-item-b{margin-top:8px;}
-  .nc-go{align-self:flex-start;background:var(--sidebar-yellow);color:#16233F;font-weight:800;font-size:13.5px;border:none;border-radius:999px;padding:9px 16px;cursor:pointer;text-decoration:none;font-family:inherit;}
+  .nc-go{align-self:flex-start;background:var(--sidebar-yellow);color:#1B2A44;font-weight:800;font-size:13.5px;border:none;border-radius:999px;padding:9px 16px;cursor:pointer;text-decoration:none;font-family:inherit;}
   .nc-go:hover{filter:brightness(1.06);}
   .nc-arr{position:absolute;top:50%;transform:translateY(-62%);z-index:30;width:38px;height:38px;border-radius:50%;border:none;background:rgba(22,35,63,.82);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .nc-arr:hover{background:#16233F;}
+  .nc-arr:hover{background:#1B2A44;}
   .nc-prev{left:4px;} .nc-next{right:4px;}
   .nc-dots{display:flex;justify-content:center;gap:7px;margin-top:8px;flex-wrap:wrap;}
   .nc-dot{width:9px;height:9px;border-radius:99px;background:#C9C6B6;border:none;padding:0;cursor:pointer;transition:width .25s,background .25s;}
@@ -408,7 +408,7 @@
   .asistente-input-row button{background:var(--teal);color:#fff;border:none;border-radius:20px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:13px;}
   .gi-hero{display:flex;gap:12px;align-items:center;margin:4px 0 10px;}
   .gi-av{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid var(--gold,#F2BC2C);flex:0 0 auto;background:#fff;}
-  .gi-bub{background:#E8F0FE;color:#16304F;border-radius:6px 18px 18px 18px;padding:10px 14px;font-size:14.5px;line-height:1.35;font-weight:700;}
+  .gi-bub{background:#E8F0FE;color:#1B4E95;border-radius:6px 18px 18px 18px;padding:10px 14px;font-size:14.5px;line-height:1.35;font-weight:700;}
   .gi-pic{width:100%;max-height:190px;object-fit:cover;object-position:50% 12%;border-radius:14px;margin:2px 0 10px;display:block;}
   /* ===== Guía en diapositivas ===== */
   #guia-ov{position:fixed;inset:0;z-index:100000;background:rgba(15,28,48,.72);display:none;align-items:center;justify-content:center;padding:14px;}
@@ -425,18 +425,18 @@
   .gi-pp{background:var(--bg,#f4f1ea);border:none;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:800;cursor:pointer;color:inherit;margin-left:8px;}
   @media (prefers-reduced-motion:reduce){.gi-body{animation:none !important;}}
   .gi-emoji{font-size:54px;line-height:1.1;margin:6px 0 4px;}
-  .gi-t{font-family:var(--font-display,inherit);font-size:23px;line-height:1.2;margin:0 0 8px;color:var(--navy,#1E3F66);}
+  .gi-t{font-family:var(--font-display,inherit);font-size:23px;line-height:1.2;margin:0 0 8px;color:var(--navy,#2463B8);}
   .gi-p{font-size:15px;line-height:1.5;margin:0 0 10px;color:var(--ink-soft,#46505f);}
   .gi-l{margin:0 0 10px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;}
   .gi-l li{font-size:14.5px;line-height:1.45;padding:9px 12px 9px 14px;background:var(--bg,#f4f1ea);border-left:4px solid var(--gold,#F2BC2C);border-radius:10px;}
-  .gi-go{display:inline-block;margin:4px 0 8px;background:var(--navy,#1E3F66);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-weight:800;font-size:14px;cursor:pointer;}
+  .gi-go{display:inline-block;margin:4px 0 8px;background:var(--navy,#2463B8);color:#fff;border:none;border-radius:999px;padding:10px 18px;font-weight:800;font-size:14px;cursor:pointer;}
   .gi-dots{display:flex;gap:6px;justify-content:center;padding:6px 12px 0;flex-wrap:wrap;}
   .gi-dot{width:9px;height:9px;border-radius:50%;border:none;background:var(--line,#d9d4c7);cursor:pointer;padding:0;}
   .gi-dot.on{background:var(--gold,#F2BC2C);width:24px;border-radius:6px;}
   .gi-nav{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px 16px 14px;}
   .gi-nav button{border:none;border-radius:999px;padding:11px 20px;font-weight:800;font-size:14px;cursor:pointer;}
   .gi-prev{background:var(--bg,#f4f1ea);color:var(--ink,#1c2430);}
-  .gi-next{background:var(--gold,#F2BC2C);color:var(--navy-dark,#16304F);}
+  .gi-next{background:var(--gold,#F2BC2C);color:var(--navy-dark,#1B4E95);}
   .gi-prev[disabled]{opacity:.35;cursor:default;}
   .gi-skip{font-size:12.5px;text-align:center;padding:0 16px 12px;color:var(--ink-soft,#5b6677);}
   .gi-skip label{cursor:pointer;}
@@ -451,7 +451,7 @@
 .cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
 @media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
 .cchat{border:1.5px solid #D6E2F2;border-radius:16px;background:#fff;overflow:hidden;margin:0 0 16px;display:flex;flex-direction:column;}
-.cchat-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:linear-gradient(120deg,#1E3F66,#2F5DA8);color:#fff;padding:10px 14px;font-weight:700;font-size:14px;}
+.cchat-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;background:linear-gradient(120deg,#2463B8,#2F5DA8);color:#fff;padding:10px 14px;font-weight:700;font-size:14px;}
 .cchat-wa{display:flex;gap:6px;flex-wrap:wrap;}
 .cchat-wa-btn{background:#25D366;color:#fff !important;text-decoration:none;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;}
 .cchat-lista{height:340px;overflow-y:auto;padding:10px 12px;background:#F4F7FB;display:flex;flex-direction:column;gap:6px;}
@@ -460,18 +460,55 @@
 .cchat-m{max-width:80%;align-self:flex-start;background:#fff;border:1px solid #E2E8F0;border-radius:14px 14px 14px 4px;padding:7px 10px;}
 .cchat-m.staff{border-color:#F2BC2C;background:#FFFBEA;}
 .cchat-m.mio{align-self:flex-end;background:#DCEBFF;border-color:#BCD5F5;border-radius:14px 14px 4px 14px;}
-.cchat-a{font-size:11.5px;font-weight:700;color:#1E3F66;margin-bottom:2px;}
-.cchat-tag{background:#F2BC2C;color:#16304F;border-radius:6px;padding:0 5px;font-size:10px;}
+.cchat-a{font-size:11.5px;font-weight:700;color:#2463B8;margin-bottom:2px;}
+.cchat-tag{background:#F2BC2C;color:#1B4E95;border-radius:6px;padding:0 5px;font-size:10px;}
 .cchat-wa-mini{color:#128C3E;font-weight:700;font-size:10.5px;text-decoration:none;margin-left:4px;}
 .cchat-t{font-size:14px;line-height:1.4;word-wrap:break-word;overflow-wrap:anywhere;}
 .cchat-h{font-size:10.5px;color:#8090A6;text-align:right;margin-top:2px;}
 .cchat-h button{border:none;background:none;color:#B04A3A;font-size:10.5px;cursor:pointer;padding:0;}
 .cchat-form{display:flex;gap:8px;padding:8px 10px;border-top:1px solid #E2E8F0;align-items:flex-end;}
 .cchat-form textarea{flex:1;resize:none;border:1.5px solid #D6E2F2;border-radius:12px;padding:9px 11px;font:inherit;font-size:14px;min-height:40px;box-sizing:border-box;}
-.cchat-env{flex:0 0 42px;height:42px;border-radius:50%;border:none;background:#1E3F66;color:#fff;font-size:18px;cursor:pointer;}
+.cchat-env{flex:0 0 42px;height:42px;border-radius:50%;border:none;background:#2463B8;color:#fff;font-size:18px;cursor:pointer;}
 .cchat-pie{font-size:11px;color:#8090A6;padding:0 12px 8px;}
 .cchat-badge{background:#C0392B;color:#fff;border-radius:999px;padding:0 6px;font-size:11px;margin-left:4px;}
 @media (max-width:600px){ .cchat-lista{height:300px;} .cchat-m{max-width:88%;} }
+/* ---- Estilo «Sanitas»: inicio claro, azul, letras grandes ---- */
+.sn-hola{font-size:26px;font-weight:700;color:var(--ink);margin:4px 0 2px;letter-spacing:-.01em;}
+.sn-fecha{color:var(--ink-soft);font-size:14px;margin:0 0 6px;text-transform:capitalize;}
+.sn-sec-t{font-size:21px;font-weight:700;color:var(--ink);margin:24px 0 12px;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.sn-sec-t a,.sn-sec-t button{font-size:14px;font-weight:600;color:#2463B8;background:#fff;border:1.5px solid #2463B8;border-radius:10px;padding:6px 12px;cursor:pointer;font-family:inherit;text-decoration:none;}
+.sn-citas{display:flex;flex-direction:column;gap:10px;}
+.sn-cita{display:flex;gap:16px;align-items:stretch;border:1.5px solid #D9DFE8;border-radius:14px;background:#fff;padding:16px 18px;cursor:pointer;}
+.sn-cita:hover{border-color:#2463B8;}
+.sn-cita-f{flex:0 0 70px;text-align:center;border-right:2px solid #D9DFE8;padding-right:14px;display:flex;flex-direction:column;justify-content:center;}
+.sn-cita-d{font-size:32px;font-weight:700;color:#2463B8;line-height:1;}
+.sn-cita-m{font-size:15px;font-weight:700;text-transform:uppercase;color:var(--ink);margin-top:4px;}
+.sn-cita-h{font-size:14px;color:var(--ink);margin-top:2px;}
+.sn-cita-i{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;}
+.sn-cita-p{font-size:14px;color:var(--ink);}
+.sn-cita-t{font-size:19px;font-weight:700;color:var(--ink);line-height:1.25;}
+.sn-cita-tec{font-size:13.5px;font-weight:700;color:#2463B8;text-transform:uppercase;letter-spacing:.02em;}
+.sn-cita-l{font-size:13.5px;color:var(--ink-soft);}
+.sn-vacio{border:1.5px dashed #D9DFE8;border-radius:14px;padding:18px;text-align:center;color:var(--ink-soft);font-size:15px;background:#fff;}
+.sn-cta{display:block;width:100%;margin:14px 0 4px;background:#2F7BD9;color:#fff;border:none;border-radius:12px;padding:17px 18px;font-family:inherit;font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 6px 16px -8px rgba(36,99,184,.6);}
+.sn-cta:hover{background:#2463B8;}
+.sn-accesos{display:flex;gap:14px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin;}
+.sn-acc{flex:0 0 92px;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:inherit;padding:0;position:relative;}
+.sn-acc-i{width:66px;height:66px;border-radius:16px;background:#EEF3FA;display:flex;align-items:center;justify-content:center;font-size:30px;transition:transform .15s;}
+.sn-acc:hover .sn-acc-i{transform:translateY(-2px);background:#E2ECF9;}
+.sn-acc-i.sn-prim{background:#1B2F6B;}
+.sn-acc-l{font-size:14.5px;line-height:1.25;color:var(--ink);text-align:center;}
+.sn-acc-n{position:absolute;top:-4px;right:8px;background:#D6336C;color:#fff;border-radius:999px;font-size:11.5px;font-weight:700;min-width:20px;height:20px;line-height:20px;padding:0 5px;}
+.sn-carrusel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;}
+.sn-banner{flex:0 0 min(86%,520px);scroll-snap-align:start;background:#1B2F6B;color:#fff;border-radius:16px;padding:20px;min-height:118px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:6px;border:none;text-align:left;font-family:inherit;}
+.sn-banner strong{font-size:20px;line-height:1.2;}
+.sn-banner span{font-size:15px;opacity:.9;line-height:1.35;}
+.sn-banner.sn-b2{background:#2463B8;} .sn-banner.sn-b3{background:#0E7A5F;} .sn-banner.sn-b4{background:#7A4A1F;}
+.sn-wrap{max-width:900px;}
+@media (max-width:700px){ .sn-hola{font-size:24px;} .sn-cita{padding:14px;} .sn-cita-t{font-size:17px;} .sn-acc{flex-basis:82px;} .sn-acc-i{width:60px;height:60px;font-size:27px;} .sn-acc-l{font-size:13.5px;} }
+
+body{font-size:15.5px;}
+@media (max-width:700px){ #profile-content .sn-wrap{padding:0 14px;} }
 </style>
 </head>
 <body>
@@ -1006,15 +1043,15 @@ const ACCESOS_CITAS = [
 // ================= NECESIDADES EN UNA SOLA VISTA (propuesta de Luis) =================
 // Accesos rápidos: trámites más frecuentes con su enlace oficial. Giran solos en el carrusel de arriba.
 const NEC_RAPIDOS = [
-  { em:'🏙️', es:'Empadronamiento', ca:'Empadronament', d_es:'Pide cita para empadronarte en el Ayuntamiento de Tarragona.', d_ca:'Demana cita per empadronar-te a l\'Ajuntament de Tarragona.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:URL_CITA_TGN, g:['#1E3F66','#16233F'] },
+  { em:'🏙️', es:'Empadronamiento', ca:'Empadronament', d_es:'Pide cita para empadronarte en el Ayuntamiento de Tarragona.', d_ca:'Demana cita per empadronar-te a l\'Ajuntament de Tarragona.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:URL_CITA_TGN, g:['#2463B8','#1B2A44'] },
   { em:'🛂', es:'Cita previa para el NIE', ca:'Cita prèvia per al NIE', d_es:'Extranjería: pide cita para tu NIE y otros trámites.', d_ca:'Estrangeria: demana cita per al teu NIE i altres tràmits.', tag_es:'Con cita previa', tag_ca:'Amb cita prèvia', u:'https://sede.administracionespublicas.gob.es/pagina/index/directorio/icpplus', g:['#8A4B12','#D9832E'] },
 { em:'👨‍👩‍👧‍👦', es:'Familia numerosa', ca:'Família nombrosa', d_es:'Pide o renueva el título de familia numerosa.', d_ca:'Demana o renova el títol de família nombrosa.', tag_es:'Familias', tag_ca:'Famílies', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/Titol-de-familia-nombrosa?category=', g:['#2F6B4F','#1F4A36'] },
   { em:'💶', es:'Ingreso Mínimo Vital', ca:'Ingrés Mínim Vital', d_es:'Una ayuda mensual si tu familia tiene muy pocos ingresos.', d_ca:'Un ajut mensual si la teva família té pocs ingressos.', tag_es:'Ayudas e ingresos', tag_ca:'Ajuts i ingressos', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/ingres-minim-vital', g:['#2F6B27','#1E4A1A'] },
   { em:'🏠', es:'Ayudas al alquiler', ca:'Ajuts al lloguer', d_es:'Las ayudas cambian cada año: dirígete a Logos y te decimos cuáles hay y cómo pedirlas.', d_ca:'Els ajuts canvien cada any: adreça\'t a Logos i et diem quins n\'hi ha i com demanar-los.', tag_es:'Dirígete a Logos', tag_ca:'Adreça\'t a Logos', logos:true, g:['#6A3FA0','#43266B'] },
   { em:'🧓', es:'Dependencia y discapacidad', ca:'Dependència i discapacitat', d_es:'Reconocimiento de la dependencia y ayudas para cuidar.', d_ca:'Reconeixement de la dependència i ajuts per cuidar.', tag_es:'Mayores y cuidados', tag_ca:'Gent gran i cures', u:'https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia', g:['#B0392F','#7A2019'] },
-  { em:'💼', es:'Paro y subsidios', ca:'Atur i subsidis', d_es:'Consulta tu prestación por desempleo en el SEPE.', d_ca:'Consulta la teva prestació per desocupació al SEPE.', tag_es:'Trabajo', tag_ca:'Feina', u:'https://www.sepe.es/', g:['#2E5A8F','#1E3F66'] },
+  { em:'💼', es:'Paro y subsidios', ca:'Atur i subsidis', d_es:'Consulta tu prestación por desempleo en el SEPE.', d_ca:'Consulta la teva prestació per desocupació al SEPE.', tag_es:'Trabajo', tag_ca:'Feina', u:'https://www.sepe.es/', g:['#2E5A8F','#2463B8'] },
   { em:'🧾', es:'Jubilación', ca:'Jubilació', d_es:'Pide o consulta tu pensión de jubilación en la Seguridad Social.', d_ca:'Demana o consulta la teva pensió de jubilació a la Seguretat Social.', tag_es:'Pensiones', tag_ca:'Pensions', u:'https://prestaciones.seg-social.es/servicio/pension-jubilacion.html', g:['#8A6D1D','#5C4710'] },
-  { em:'🔐', es:'Sede electrónica de la Generalitat', ca:'Seu electrònica de la Generalitat', d_es:'Trámites online con tu certificado digital.', d_ca:'Tràmits en línia amb el teu certificat digital.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/seu-electronica', g:['#16233F','#2E5A8F'] },
+  { em:'🔐', es:'Sede electrónica de la Generalitat', ca:'Seu electrònica de la Generalitat', d_es:'Trámites online con tu certificado digital.', d_ca:'Tràmits en línia amb el teu certificat digital.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/seu-electronica', g:['#1B2A44','#2E5A8F'] },
   { em:'🔎', es:'Buscar un trámite oficial', ca:'Cercar un tràmit oficial', d_es:'¿No sabes cuál es? Busca por tema en el buscador oficial.', d_ca:'No saps quin és? Cerca per tema al cercador oficial.', tag_es:'Online', tag_ca:'En línia', u:'https://web.gencat.cat/es/tramits/cercador/index.html', g:['#33449E','#1E2A66'] },
   { em:'🤝', es:'Habla con Logos', ca:'Parla amb Logos', d_es:'Si no sabes por dónde empezar, te acompañamos.', d_ca:'Si no saps per on començar, t\'acompanyem.', tag_es:'Te ayudamos', tag_ca:'T\'ajudem', logos:true, g:['#D9832E','#8A4B12'] }
 ];
@@ -1150,7 +1187,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-27 · v58 (mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v60 (botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -4852,7 +4889,7 @@ function autorizacionDocHtml(a, esCA){
   if(!completo){
     const f = jaActividadFechas(s, esCA);
     const horario = (s.hora_salida || s.hora_regreso) ? `${D.de} ${s.hora_salida || '____'} ${D.a} ${s.hora_regreso || '____'}` : '';
-    return `<div style="font-family:Georgia,serif;color:#16233F;">${cabecera}
+    return `<div style="font-family:Georgia,serif;color:#1B2A44;">${cabecera}
       <p style="font-size:13px;line-height:1.7;">${e(D.yo)} <strong>${e(a.familiar_nombre)}</strong>, ${e(D.dniNie)} <strong>${e(a.familiar_dni_nie)}</strong>, ${e(D.enCalidad)}:</p>
       <p style="font-size:13px;margin:4px 0 10px;">${parentescos}</p>
       <p style="font-size:13px;line-height:1.7;">${e(D.delMenor)} <strong>${e(a.menor_nombre)}</strong>${a.menor_dni_nie ? `, ${e(D.dniNie)} <strong>${e(a.menor_dni_nie)}</strong>` : ''}, <strong>${e(D.autorizoSimple)}</strong></p>
@@ -4864,7 +4901,7 @@ function autorizacionDocHtml(a, esCA){
       ${linea(D.telefono, a.telefono)}${linea(D.telAlt, a.telefono_alternativo)}${linea(D.observaciones, a.observaciones)}
       ${lugarFecha}${firmaBloque}</div>`;
   }
-  return `<div style="font-family:Georgia,serif;color:#16233F;">${cabecera}
+  return `<div style="font-family:Georgia,serif;color:#1B2A44;">${cabecera}
     <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.datosMenor)}</h3>
     ${linea(D.nombreApellidos, a.menor_nombre)}${linea(D.fechaNac, jaFecha(a.menor_fecha_nacimiento, esCA))}${linea(D.dniSiProcede, a.menor_dni_nie)}
     <h3 style="font-size:14px;margin:14px 0 4px;">${e(D.datosTutor)}</h3>
@@ -4958,7 +4995,7 @@ function autorizacionSalidaDocHtml(a, esCA){
   const horaFirma = f.toLocaleTimeString(loc, { hour:'2-digit', minute:'2-digit' });
   const banner = a.estado === 'revocada'
     ? `<div style="border:2px solid #B3261E;color:#B3261E;padding:8px;text-align:center;font-weight:700;margin-bottom:16px;">${e(a.revocacion_motivo === 'sustituida' ? S.sustituida : S.revocada)} ${a.revocado_en ? e(jaFecha(a.revocado_en, esCA)) : ''}</div>` : '';
-  return `<div style="font-family:Georgia,serif;color:#16233F;font-size:14px;line-height:2;">
+  return `<div style="font-family:Georgia,serif;color:#1B2A44;font-size:14px;line-height:2;">
     <p style="font-size:11px;color:#666;margin:0 0 4px;">${e(JA_DOC[esCA ? 'ca' : 'es'].entidad)}</p>
     <h1 style="font-size:17px;margin:0 0 18px;border-bottom:2px solid #C99A2E;padding-bottom:8px;">${e(S.titulo)}</h1>
     ${banner}
@@ -4993,7 +5030,7 @@ async function descargarAutorizacionSalidaPDF(a, esCA){
 function crearPadFirma(canvasId){
   const canvas = document.getElementById(canvasId);
   const ctx = canvas.getContext('2d');
-  ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.strokeStyle = '#16233F';
+  ctx.lineWidth = 2.2; ctx.lineCap = 'round'; ctx.strokeStyle = '#1B2A44';
   let dibujando = false, hayTrazo = false;
   const pos = ev => {
     const r = canvas.getBoundingClientRect();
@@ -5799,7 +5836,7 @@ async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
   const firmaImg = (window.__perfilActual && window.__perfilActual.consentimiento_firma_imagen) || '';
   const fechaFmt = fechaFirma ? new Date(fechaFirma).toLocaleDateString(esCA ? 'ca-ES' : 'es-ES') : '—';
   const contenedor = document.createElement('div');
-  contenedor.style.cssText = 'position:absolute;left:0;top:-10000px;width:700px;background:#fff;padding:40px;font-family:Georgia,serif;color:#16233F;';
+  contenedor.style.cssText = 'position:absolute;left:0;top:-10000px;width:700px;background:#fff;padding:40px;font-family:Georgia,serif;color:#1B2A44;';
   contenedor.innerHTML = `
     <div style="text-align:center;margin-bottom:24px;">
       <h1 style="font-size:20px;margin:0 0 4px;">Associació Logos — Projectes Socials</h1>
@@ -5851,6 +5888,24 @@ async function pedirAyudaTramiteExistente(i){
   renderDashboard();
 }
 
+function snCitaHtml(c, nombre, onclick){
+  const d = new Date(c.fecha + 'T00:00:00'), ca = LANG === 'ca';
+  const mes = d.toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { month: 'short' }).replace('.', '');
+  return `<div class="sn-cita" onclick="${onclick || ''}"><div class="sn-cita-f"><div class="sn-cita-d">${d.getDate()}</div><div class="sn-cita-m">${mes}</div><div class="sn-cita-h">${String(c.hora || '').slice(0, 5)}h</div></div>
+    <div class="sn-cita-i"><div class="sn-cita-p">${nombre || ''}</div><div class="sn-cita-t">${c.motivo ? String(c.motivo).replace(/</g, '&lt;') : (ca ? 'Cita a Logos' : 'Cita en Logos')}</div>
+    ${c.tecnico_nombre ? `<div class="sn-cita-tec">${String(c.tecnico_nombre).replace(/</g, '&lt;')}</div>` : ''}<div class="sn-cita-l">Associació Logos · C/ de la Pau del Protectorat, 14</div></div></div>`;
+}
+async function snAcompInteres(){
+  const host = document.getElementById('sn-interes-a'); if(!host) return;
+  const ca = LANG === 'ca', items = [];
+  try {
+    const { data: cursos } = await sb.from('cursos').select('id, nombre, audiencia, estado').in('estado', ['inscripcion', 'activo']).neq('audiencia', 'equipo').limit(3);
+    (cursos || []).forEach(c => items.push(['sn-b2', '🎓 ' + escAttr(c.nombre), ca ? 'Curs de Logos: apunta-t\'hi a l\'Aula Virtual.' : 'Curso de Logos: apúntate en el Aula Virtual.', "showScreen('aulaciudadano');renderAulaCiudadano()"]));
+  } catch(e){}
+  items.push(['', '🤝 ' + (ca ? 'Què et pot oferir Logos?' : '¿Qué te puede ofrecer Logos?'), ca ? 'Feina, tràmits, formació i acompanyament.' : 'Empleo, trámites, formación y acompañamiento.', "showScreen('home')"]);
+  items.push(['sn-b3', '📝 ' + (ca ? 'Fes el teu currículum' : 'Haz tu currículum'), ca ? 'En pocs minuts, llest per enviar.' : 'En pocos minutos, listo para enviar.', "showScreen('cv');renderCVScreen()"]);
+  host.innerHTML = items.map(([c, t, d, on]) => `<button class="sn-banner ${c}" onclick="${on}"><strong>${t}</strong><span>${d}</span></button>`).join('');
+}
 async function renderDashboard(){
   if(bloquearSinConsentimiento()) return;
   const t = T1[LANG];
@@ -6022,10 +6077,34 @@ async function renderDashboard(){
         </div>`).join('')}
     </div>`;
 
+  const caSn = LANG === 'ca', proximasSn = (citas || []).filter(c => c.fecha >= hoyLocalIso()).sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora)).slice(0, 2);
+  const nombreSn = (perfil && perfil.nombre_completo) || '';
+  const accSn = (ic, txt, id, n, prim) => `<button class="sn-acc" onclick="${id.startsWith('fn:') ? id.slice(3) : `document.getElementById('sec-${id}').scrollIntoView({behavior:'smooth', block:'start'})`}"><span class="sn-acc-i${prim ? ' sn-prim' : ''}">${ic}</span><span class="sn-acc-l">${txt}</span>${n ? `<span class="sn-acc-n">${n}</span>` : ''}</button>`;
+  const inicioSn = `<div class="sn-wrap">
+    <div class="sn-hola">${caSn ? 'Hola' : 'Hola'}${nombreSn ? ', ' + escAttr(nombreSn.split(' ')[0]) : ''}</div>
+    <div class="sn-fecha">${new Date().toLocaleDateString(caSn ? 'ca-ES' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+    <div class="sn-sec-t">${caSn ? 'Properes cites' : 'Próximas citas'}</div>
+    <div class="sn-citas">${proximasSn.length ? proximasSn.map(c => snCitaHtml(c, escAttr(nombreSn), "document.getElementById('sec-citas').scrollIntoView({behavior:'smooth',block:'start'})")).join('') : `<div class="sn-vacio">${caSn ? 'No tens cap cita. Pots demanar-ne una aquí sota.' : 'No tienes ninguna cita. Puedes pedir una aquí debajo.'}</div>`}</div>
+    <button class="sn-cta" onclick="showScreen('cita');renderCitaForm()">${caSn ? 'Demanar cita a Logos' : 'Pedir cita en Logos'}</button>
+    <div class="sn-sec-t">${caSn ? 'Accessos ràpids' : 'Accesos rápidos'}</div>
+    <div class="sn-accesos">
+      ${accSn('🗂️', caSn ? 'Els meus tràmits' : 'Mis trámites', 'tramites', (tramites || []).filter(x => x.estado !== 'hecho').length, true)}
+      ${accSn('📄', caSn ? 'Documents' : 'Documentos', 'documentos')}
+      ${accSn('💬', caSn ? 'Consulta' : 'Consulta', 'consulta', (consultas || []).filter(c => c.estado === 'respondida').length)}
+      ${accSn('🔔', caSn ? 'Avisos' : 'Avisos', 'recordatorios')}
+      ${accSn('🎓', 'Aula Virtual', "fn:showScreen('aulaciudadano');renderAulaCiudadano()")}
+      ${accSn('📝', caSn ? 'Currículum' : 'Currículum', "fn:showScreen('cv');renderCVScreen()")}
+      ${accSn('🔳', caSn ? 'El meu QR' : 'Mi QR', 'qr')}
+      ${accSn('📞', caSn ? 'Trucar' : 'Llamar', "fn:location.href='tel:+34630461560'")}
+    </div>
+    <div class="sn-sec-t">${caSn ? 'Et pot interessar…' : 'Te puede interesar…'}</div>
+    <div class="sn-carrusel" id="sn-interes-a"></div>
+  </div>`;
   document.getElementById('profile-content').innerHTML = `
     ${(!perfil || !perfil.nombre_completo) ? `<div class="info-box" style="margin-bottom:12px;">${t.perfilIncompleto}</div>` : ''}
 
-    ${gridAccesosHtml}
+    ${inicioSn}
+    <div style="height:18px;"></div>
 
     <div id="sec-recordatorios"></div>
     ${recordatoriosHtml}
@@ -6141,6 +6220,7 @@ async function renderDashboard(){
 
   window.__perfilActual = perfil || null;
   window.__documentosActuales = documentos || [];
+  snAcompInteres();
 }
 
 // Contestar a una cita: confirmar, pedir otro día/hora o avisar de que no se puede ir. Le llega al personal de Logos.
@@ -6849,7 +6929,7 @@ function iniciarFirmaCanvas(){
   __firmaCtx = canvas.getContext('2d');
   __firmaCtx.lineWidth = 2.2;
   __firmaCtx.lineCap = 'round';
-  __firmaCtx.strokeStyle = '#16233F';
+  __firmaCtx.strokeStyle = '#1B2A44';
   const getPos = (ev) => {
     const rect = canvas.getBoundingClientRect();
     const escalaX = canvas.width / rect.width;
@@ -7685,6 +7765,13 @@ function guiaTarjetaAcomp(){
   .ojo-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:transparent;cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#6b6b6b;padding:0;}
   .ojo-btn:hover,.ojo-btn:focus-visible{background:rgba(0,0,0,.06);color:#1f1f1f;outline:none;}
   .ojo-btn svg{width:22px;height:22px;pointer-events:none;}
+
+/* Botón «Menú» con los colores de Logos (azul + dorado) */
+@media (max-width: 900px){
+  .mobile-menu-toggle{background:linear-gradient(90deg,#2463B8,#1B4E95) !important;border:2px solid #F2BC2C !important;box-shadow:0 3px 10px -4px rgba(242,188,44,.7);letter-spacing:.02em;}
+  .mobile-menu-toggle::before{content:'λ';color:#F2BC2C;font-weight:800;font-size:18px;line-height:1;margin-right:2px;}
+  .sidebar.menu-open ~ * .mobile-menu-toggle, .mobile-menu-toggle:active{background:#F2BC2C !important;color:#1B4E95 !important;}
+}
 </style>
 <script>
 // «Ojo» para ver u ocultar la contraseña al escribirla (todas las casillas de contraseña, también las que se crean después)
@@ -7727,12 +7814,12 @@ function guiaTarjetaAcomp(){
       : (ca ? 'Al menú del navegador (⋮) tria <strong>«Instal·lar aplicació»</strong> o <strong>«Afegir a la pantalla d\'inici»</strong>.' : 'En el menú del navegador (⋮) elige <strong>«Instalar aplicación»</strong> o <strong>«Añadir a la pantalla de inicio»</strong>.'));
     const b = document.createElement('div');
     b.id = 'instalar-banner';
-    b.style.cssText = 'position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;background:#fff;border:2px solid #C99A2E;border-radius:14px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.25);font-size:14px;line-height:1.45;color:#16233F;max-width:460px;margin:0 auto;';
+    b.style.cssText = 'position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;background:#fff;border:2px solid #C99A2E;border-radius:14px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.25);font-size:14px;line-height:1.45;color:#1B2A44;max-width:460px;margin:0 auto;';
     b.innerHTML = '<div style="font-weight:700;margin-bottom:4px;">📲 ' + (ca ? 'Instal·la Logos Acompanya al teu mòbil' : 'Instala Logos Acompanya en tu móvil') + '</div>'
       + '<div>' + (diferido ? (ca ? 'Així la tindràs a la pantalla d\'inici, com qualsevol altra aplicació.' : 'Así la tendrás en la pantalla de inicio, como cualquier otra aplicación.') : pasos) + '</div>'
       + '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px;">'
       + '<button id="instalar-no" style="background:none;border:0;color:#666;font-size:13px;padding:6px 8px;">' + (ca ? 'Ara no' : 'Ahora no') + '</button>'
-      + (diferido ? '<button id="instalar-si" style="background:#16233F;color:#fff;border:0;border-radius:10px;padding:8px 16px;font-weight:700;">' + (ca ? 'Instal·lar' : 'Instalar') + '</button>' : '')
+      + (diferido ? '<button id="instalar-si" style="background:#1B2A44;color:#fff;border:0;border-radius:10px;padding:8px 16px;font-weight:700;">' + (ca ? 'Instal·lar' : 'Instalar') + '</button>' : '')
       + '</div>';
     document.body.appendChild(b);
     document.getElementById('instalar-no').onclick = function(){ cerrado = true; b.remove(); try { localStorage.setItem('logos-instalar-descartado', '1'); } catch(e){} };
