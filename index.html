@@ -505,6 +505,26 @@
 .sn-banner span{font-size:15px;opacity:.9;line-height:1.35;}
 .sn-banner.sn-b2{background:#2463B8;} .sn-banner.sn-b3{background:#0E7A5F;} .sn-banner.sn-b4{background:#7A4A1F;}
 .sn-wrap{max-width:900px;}
+.snk{position:relative;}
+.snk-pista{scrollbar-width:none;}
+.snk-pista::-webkit-scrollbar{display:none;}
+.snk-ctr{display:flex;justify-content:center;align-items:center;gap:14px;margin:6px 0 4px;}
+.snk-b{width:40px;height:40px;border-radius:50%;border:1.5px solid #C9D3E1;background:#fff;color:#1B2A44;font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;padding:0 0 3px;transition:border-color .15s,color .15s,background .15s;}
+.snk-b:hover{border-color:#2463B8;color:#2463B8;}
+.snk-b.snk-p{background:#F2BC2C;border-color:#F2BC2C;color:#1B2A44;font-size:13px;font-weight:700;padding:0;}
+.snk-b.snk-p:hover{background:#E0A81A;border-color:#E0A81A;color:#1B2A44;}
+.snk-puntos{display:flex;gap:5px;}
+.snk-punto{width:7px;height:7px;border-radius:50%;background:#C9D3E1;transition:background .2s,width .2s;}
+.snk-punto.on{background:#2463B8;width:18px;border-radius:4px;}
+.sn-ficha{flex:0 0 232px;scroll-snap-align:start;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px;min-height:158px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;cursor:pointer;text-align:left;font-family:inherit;color:var(--ink);transition:transform .15s,box-shadow .15s;}
+.sn-ficha:hover{transform:translateY(-2px);box-shadow:0 10px 22px -14px rgba(27,42,68,.45);}
+.sn-ficha-i{width:46px;height:46px;border-radius:13px;background:#1B2F6B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:23px;margin-bottom:4px;}
+.sn-ficha.sn-b2 .sn-ficha-i{background:#2463B8;} .sn-ficha.sn-b3 .sn-ficha-i{background:#0E7A5F;} .sn-ficha.sn-b4 .sn-ficha-i{background:#B5651D;}
+.sn-ficha strong{font-size:16px;line-height:1.25;}
+.sn-ficha .d{font-size:13.5px;color:var(--ink-soft,#5B6B82);line-height:1.35;}
+.sn-stats{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;}
+.sn-stats .stat-icon-card{flex:0 0 178px;scroll-snap-align:start;}
+@media (max-width:700px){ .sn-ficha{flex-basis:74%;} .sn-stats .stat-icon-card{flex-basis:46%;} }
 @media (max-width:700px){ .sn-hola{font-size:24px;} .sn-cita{padding:14px;} .sn-cita-t{font-size:17px;} .sn-acc{flex-basis:82px;} .sn-acc-i{width:60px;height:60px;font-size:27px;} .sn-acc-l{font-size:13.5px;} }
 
 body{font-size:15.5px;}
@@ -1187,7 +1207,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v60 (botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v62 (fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -5903,8 +5923,66 @@ async function snAcompInteres(){
     (cursos || []).forEach(c => items.push(['sn-b2', '🎓 ' + escAttr(c.nombre), ca ? 'Curs de Logos: apunta-t\'hi a l\'Aula Virtual.' : 'Curso de Logos: apúntate en el Aula Virtual.', "showScreen('aulaciudadano');renderAulaCiudadano()"]));
   } catch(e){}
   items.push(['', '🤝 ' + (ca ? 'Què et pot oferir Logos?' : '¿Qué te puede ofrecer Logos?'), ca ? 'Feina, tràmits, formació i acompanyament.' : 'Empleo, trámites, formación y acompañamiento.', "showScreen('home')"]);
+  items.push(['sn-b4', '💬 ' + (ca ? 'Pregunta a Logos' : 'Pregunta a Logos'), ca ? 'Escriu el teu dubte i et responem aquí.' : 'Escribe tu duda y te respondemos aquí.', "document.getElementById('sec-consulta').scrollIntoView({behavior:'smooth',block:'start'})"]);
+  items.push(['', '📄 ' + (ca ? 'Els meus documents' : 'Mis documentos'), ca ? 'Puja i guarda els teus papers amb seguretat.' : 'Sube y guarda tus papeles de forma segura.', "document.getElementById('sec-documentos').scrollIntoView({behavior:'smooth',block:'start'})"]);
   items.push(['sn-b3', '📝 ' + (ca ? 'Fes el teu currículum' : 'Haz tu currículum'), ca ? 'En pocs minuts, llest per enviar.' : 'En pocos minutos, listo para enviar.', "showScreen('cv');renderCVScreen()"]);
-  host.innerHTML = items.map(([c, t, d, on]) => `<button class="sn-banner ${c}" onclick="${on}"><strong>${t}</strong><span>${d}</span></button>`).join('');
+  host.innerHTML = items.map(([c, t, d, on]) => snFichaHtml(c, t, d, on)).join('');
+  snCarrusel(host);
+}
+// Carrusel automático de fichas pequeñas (como la web de Logos): avanza solo en orden, ‹ pausa › y se para al pasar el dedo o el ratón
+function snCarrusel(el, ms){
+  if(typeof el === 'string') el = document.querySelector(el);
+  if(!el || el.dataset.snk) return; el.dataset.snk = '1';
+  ms = ms || 4500;
+  const ca = (typeof LANG_I !== 'undefined' ? LANG_I : (typeof LANG !== 'undefined' ? LANG : 'es')) === 'ca';
+  const wrap = document.createElement('div'); wrap.className = 'snk';
+  el.parentNode.insertBefore(wrap, el); wrap.appendChild(el); el.classList.add('snk-pista');
+  const ctr = document.createElement('div'); ctr.className = 'snk-ctr';
+  ctr.innerHTML = `<button type="button" class="snk-b" data-a="prev" aria-label="${ca ? 'Anterior' : 'Anterior'}">‹</button><button type="button" class="snk-b snk-p" data-a="pp"></button><button type="button" class="snk-b" data-a="next" aria-label="${ca ? 'Següent' : 'Siguiente'}">›</button>`;
+  wrap.appendChild(ctr);
+  const reducir = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let parado = !!reducir, encima = false, soltar = null;
+  const paso = () => { const c = el.children[0]; const gap = parseFloat(getComputedStyle(el).columnGap) || 12; return c ? c.getBoundingClientRect().width + gap : el.clientWidth; };
+  const hayMas = () => el.scrollWidth - el.clientWidth > 6;
+  const mover = dir => {
+    if(!hayMas()) return;
+    const max = el.scrollWidth - el.clientWidth;
+    let x = el.scrollLeft + dir * paso();
+    if(dir > 0 && el.scrollLeft >= max - 6) x = 0;
+    else if(dir < 0 && el.scrollLeft <= 6) x = max;
+    el.scrollTo({ left: x, behavior: reducir ? 'auto' : 'smooth' });
+  };
+  const pintar = () => {
+    const pp = ctr.querySelector('.snk-p');
+    pp.textContent = parado ? '▶' : '❚❚';
+    pp.setAttribute('aria-label', parado ? (ca ? 'Reprendre' : 'Reanudar') : (ca ? 'Pausa' : 'Pausa'));
+    pp.title = pp.getAttribute('aria-label');
+    ctr.style.display = hayMas() ? '' : 'none';
+  };
+  el.__snkPintar = pintar;
+  const timer = setInterval(() => {
+    if(!document.body.contains(el)){ clearInterval(timer); return; }
+    if(!parado && !encima && !document.hidden) mover(1);
+  }, ms);
+  ctr.addEventListener('click', e => {
+    const b = e.target.closest('.snk-b'); if(!b) return;
+    if(b.dataset.a === 'pp'){ parado = !parado; pintar(); }
+    else mover(b.dataset.a === 'next' ? 1 : -1);
+  });
+  el.addEventListener('mouseenter', () => { encima = true; });
+  el.addEventListener('mouseleave', () => { encima = false; });
+  el.addEventListener('focusin', () => { encima = true; });
+  el.addEventListener('focusout', () => { encima = false; });
+  el.addEventListener('touchstart', () => { encima = true; clearTimeout(soltar); }, { passive: true });
+  el.addEventListener('touchend', () => { clearTimeout(soltar); soltar = setTimeout(() => { encima = false; }, 5000); }, { passive: true });
+  pintar(); setTimeout(pintar, 400);
+  if(!window.__snkResize){ window.__snkResize = true; window.addEventListener('resize', () => document.querySelectorAll('.snk-pista').forEach(x => x.__snkPintar && x.__snkPintar())); }
+}
+// Ficha pequeña «Te puede interesar»: [clase, '🎓 Título', descripción, onclick]
+function snFichaHtml(c, t, d, on){
+  const m = String(t).match(/^(\S+)\s+([\s\S]*)$/);
+  const ic = m && !/[A-Za-zÀ-ÿ0-9]/.test(m[1]) ? m[1] : '✨', tit = m && ic === m[1] ? m[2] : t;
+  return `<button class="sn-ficha ${c}" onclick="${on}"><span class="sn-ficha-i">${ic}</span><strong>${tit}</strong><span class="d">${d}</span></button>`;
 }
 async function renderDashboard(){
   if(bloquearSinConsentimiento()) return;
@@ -6080,8 +6158,16 @@ async function renderDashboard(){
   const caSn = LANG === 'ca', proximasSn = (citas || []).filter(c => c.fecha >= hoyLocalIso()).sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora)).slice(0, 2);
   const nombreSn = (perfil && perfil.nombre_completo) || '';
   const accSn = (ic, txt, id, n, prim) => `<button class="sn-acc" onclick="${id.startsWith('fn:') ? id.slice(3) : `document.getElementById('sec-${id}').scrollIntoView({behavior:'smooth', block:'start'})`}"><span class="sn-acc-i${prim ? ' sn-prim' : ''}">${ic}</span><span class="sn-acc-l">${txt}</span>${n ? `<span class="sn-acc-n">${n}</span>` : ''}</button>`;
+  const nAvisosSn = (proximasSn.length ? 1 : 0) + (consultas || []).filter(c => c.estado === 'respondida').length + (avisosProyecto || []).length;
   const inicioSn = `<div class="sn-wrap">
-    <div class="sn-hola">${caSn ? 'Hola' : 'Hola'}${nombreSn ? ', ' + escAttr(nombreSn.split(' ')[0]) : ''}</div>
+    <div class="sn-top">
+      <div class="sn-hola" style="margin:0;">${caSn ? 'Hola' : 'Hola'}${nombreSn ? ', ' + escAttr(nombreSn.split(' ')[0]) : ''}</div>
+      <div class="sn-top-ic">
+        <button class="sn-ic" title="${caSn ? 'Escriure un missatge a Logos' : 'Escribir un mensaje a Logos'}" aria-label="${caSn ? 'Missatge' : 'Mensaje'}" onclick="document.getElementById('sec-consulta').scrollIntoView({behavior:'smooth',block:'start'})">💬</button>
+        <a class="sn-ic" href="tel:+34630461560" title="${caSn ? 'Trucar a Logos' : 'Llamar a Logos'}" aria-label="${caSn ? 'Trucar' : 'Llamar'}">📞</a>
+        <button class="sn-ic" title="${caSn ? 'Recordatoris' : 'Recordatorios'}" aria-label="${caSn ? 'Recordatoris' : 'Recordatorios'}" onclick="document.getElementById('sec-recordatorios').scrollIntoView({behavior:'smooth',block:'start'})">🔔${nAvisosSn ? `<span class="sn-ic-n">${nAvisosSn}</span>` : ''}</button>
+      </div>
+    </div>
     <div class="sn-fecha">${new Date().toLocaleDateString(caSn ? 'ca-ES' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     <div class="sn-sec-t">${caSn ? 'Properes cites' : 'Próximas citas'}</div>
     <div class="sn-citas">${proximasSn.length ? proximasSn.map(c => snCitaHtml(c, escAttr(nombreSn), "document.getElementById('sec-citas').scrollIntoView({behavior:'smooth',block:'start'})")).join('') : `<div class="sn-vacio">${caSn ? 'No tens cap cita. Pots demanar-ne una aquí sota.' : 'No tienes ninguna cita. Puedes pedir una aquí debajo.'}</div>`}</div>
@@ -6221,6 +6307,7 @@ async function renderDashboard(){
   window.__perfilActual = perfil || null;
   window.__documentosActuales = documentos || [];
   snAcompInteres();
+  snCarrusel('#profile-content .sn-accesos', 5000);
 }
 
 // Contestar a una cita: confirmar, pedir otro día/hora o avisar de que no se puede ir. Le llega al personal de Logos.
@@ -7772,6 +7859,13 @@ function guiaTarjetaAcomp(){
   .mobile-menu-toggle::before{content:'λ';color:#F2BC2C;font-weight:800;font-size:18px;line-height:1;margin-right:2px;}
   .sidebar.menu-open ~ * .mobile-menu-toggle, .mobile-menu-toggle:active{background:#F2BC2C !important;color:#1B4E95 !important;}
 }
+
+.sn-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 2px;}
+.sn-top-ic{display:flex;gap:10px;}
+.sn-ic{position:relative;width:46px;height:46px;border-radius:50%;border:1.5px solid #D9DFE8;background:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;text-decoration:none;box-shadow:0 2px 6px -3px rgba(27,47,107,.25);}
+.sn-ic:hover{border-color:#2463B8;}
+.sn-ic-n{position:absolute;top:-4px;right:-4px;background:#D6336C;color:#fff;border-radius:999px;font-size:11.5px;font-weight:700;min-width:20px;height:20px;line-height:20px;padding:0 5px;}
+@media (max-width:420px){ .sn-ic{width:42px;height:42px;font-size:19px;} .sn-top-ic{gap:7px;} }
 </style>
 <script>
 // «Ojo» para ver u ocultar la contraseña al escribirla (todas las casillas de contraseña, también las que se crean después)
