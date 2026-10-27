@@ -1128,7 +1128,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-26 · v56 (aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-27 · v57 (pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -5954,7 +5954,7 @@ async function renderDashboard(){
         <h3 style="margin:0;">${LANG==='ca' ? 'Les meves cites' : 'Mis citas'}</h3>
       </div>
       ${citasHtml}
-      <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button>
+      <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="showScreen('cita');renderCitaForm()">${(citas || []).length ? (LANG==='ca' ? '➕ Demanar una altra cita' : '➕ Pedir otra cita') : (LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita')}</button>
     </div>
 
     <div id="sec-tramites"></div>
@@ -6081,11 +6081,14 @@ async function cancelarCita(id, desde){
 async function misCitasPedidasHtml(){
   const ca = LANG === 'ca';
   const hoy = hoyLocalIso();
-  const { data } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).eq('estado', 'confirmada').gte('fecha', hoy).order('fecha', { ascending:true });
-  if(!data || !data.length) return '';
+  const { data: todas } = await sb.from('citas').select('*').eq('usuario_id', CURRENT_USER.id).gte('fecha', hoy).order('fecha', { ascending:true });
+  const data = (todas || []).filter(c => c.estado !== 'cancelada');
+  window.__misCitasHoras = data.map(c => c.fecha + ' ' + String(c.hora).slice(0, 5));
+  if(!data.length) return '';
   const fmt = f => new Date(f + 'T00:00:00').toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
   return `<div class="panel-card" style="margin-bottom:14px;">
     <h3 style="margin-bottom:8px;">📅 ${ca ? 'Les teves cites demanades' : 'Tus citas pedidas'}</h3>
+    <p class="subtle" style="margin:0 0 6px;font-size:12.5px;">${data.length < MAX_CITAS_FUTURAS ? (ca ? `➕ Pots demanar una altra cita a sota (fins a ${MAX_CITAS_FUTURAS} a la vegada).` : `➕ Puedes pedir otra cita aquí debajo (hasta ${MAX_CITAS_FUTURAS} a la vez).`) : ''}</p>
     ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}</span>
       <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}','cita')">✖ ${ca ? 'Cancel·lar cita' : 'Cancelar cita'}</button></div>`).join('')}
   </div>`;
@@ -6094,7 +6097,7 @@ async function misCitasPedidasHtml(){
 // --- Pedir cita ---
 
 // Máximo de citas futuras activas por persona (evita pedir citas indefinidas)
-const MAX_CITAS_FUTURAS = 1;
+const MAX_CITAS_FUTURAS = 3;   // se pueden tener varias citas a la vez (p. ej. para trámites distintos)
 const CONSULTA_DIAS_VISIBLE = 14;
 async function citasFuturasPropias(){
   if(!CURRENT_USER) return [];
@@ -6116,9 +6119,9 @@ async function renderCitaForm(){
     document.getElementById('cita-content').innerHTML = `
       <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
       <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
-        <p style="margin:0 0 8px;"><strong>${esCA ? 'Ja tens una cita pendent' : 'Ya tienes una cita pendiente'}</strong></p>
-        <p style="margin:0 0 10px;">${f} · ${String(c.hora).slice(0,5)}</p>
-        <p class="subtle" style="margin:0 0 12px;">${esCA ? 'Per demanar-ne una altra, primer has de cancel·lar aquesta, o esperar que passi. Si necessites una altra hora, també pots trucar a Logos.' : 'Para pedir otra, primero tienes que cancelar esta o esperar a que pase. Si necesitas otra hora, también puedes llamar a Logos.'}</p>
+        <p style="margin:0 0 8px;"><strong>${esCA ? `Ja tens ${MAX_CITAS_FUTURAS} cites pendents` : `Ya tienes ${MAX_CITAS_FUTURAS} citas pendientes`}</strong></p>
+        <p style="margin:0 0 10px;">${esCA ? 'La propera' : 'La próxima'}: ${f} · ${String(c.hora).slice(0,5)}</p>
+        <p class="subtle" style="margin:0 0 12px;">${esCA ? 'És el màxim a la vegada. Per demanar-ne una altra, cancel·la\'n alguna o espera que passi. També pots trucar a Logos.' : 'Es el máximo a la vez. Para pedir otra, cancela alguna o espera a que pase. También puedes llamar a Logos.'}</p>
         <button class="primary-btn" style="margin:0;" onclick="showScreen('profile');renderDashboard()">${esCA ? 'Veure les meves cites' : 'Ver mis citas'}</button>
       </div>`;
     return;
@@ -6216,12 +6219,13 @@ async function seleccionarDiaCita(fechaIso){
   let primerTarde = true;
   const slotsHtml = slots.map((s, i) => {
     const ocupadas = ocupadasPorHora[s] || 0;
-    const lleno = ocupadas >= horario.tecnicos_simultaneos || ocupTec.has(s);
+    const yaMia = (window.__misCitasHoras || []).includes(fechaIso + ' ' + s);
+    const lleno = ocupadas >= horario.tecnicos_simultaneos || ocupTec.has(s) || yaMia;
     const esInicioTarde = logosMin(s) >= 15*60 && primerTarde && i > 0 && logosMin(slots[i-1]) < 15*60; if(logosMin(s) >= 15*60) primerTarde = false;
     const etiquetaMañana = i === 0 && logosMin(s) < 15*60 ? `<div class="section-label" style="margin-top:0;">${esCA ? 'Matí' : 'Mañana'}</div>` : '';
     const etiquetaTarde = (esInicioTarde || (i === 0 && logosMin(s) >= 15*60)) ? `<div class="section-label" style="margin-top:14px;">${esCA ? 'Tarda' : 'Tarde'}</div>` : '';
     return `${etiquetaMañana}${etiquetaTarde}<button class="service-row" style="justify-content:center;${lleno ? 'opacity:.45;cursor:default;' : 'cursor:pointer;'}" ${lleno ? 'disabled' : `onclick="reservarCita('${fechaIso}','${s}')"`}>
-      <strong>${s}</strong>${lleno ? ` <span style="font-size:11px;">(${esCA ? 'complet' : 'completo'})</span>` : ''}
+      <strong>${s}</strong>${yaMia ? ` <span style="font-size:11px;">(${esCA ? 'ja hi tens cita' : 'ya tienes cita'})</span>` : (lleno ? ` <span style="font-size:11px;">(${esCA ? 'complet' : 'completo'})</span>` : '')}
     </button>`;
   }).join('');
 
