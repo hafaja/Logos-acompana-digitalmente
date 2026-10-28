@@ -943,6 +943,14 @@ body{font-size:15.5px;}
 .th-extra{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px;}
 .th-extra span{font-size:12px;background:#F5F8FC;border:1px solid #E2E7EF;border-radius:999px;padding:3px 9px;color:var(--ink);}
 .th-priv{font-size:11.5px;color:var(--ink-soft);margin:10px 0 0;}
+
+#mi-historial details.th-det{background:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;border-radius:0 !important;}
+.th-det > summary{list-style:none;cursor:pointer;margin:0;background:none !important;border:none !important;padding:0 !important;box-shadow:none !important;border-radius:0 !important;}
+.th-det > summary::-webkit-details-marker{display:none;}
+.th-flecha{margin-left:auto;width:34px;height:34px;border-radius:50%;background:#F1F5FB;color:#1B4E95;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;transition:transform .2s;flex:0 0 auto;}
+.th-det[open] .th-flecha{transform:rotate(180deg);}
+.th-det[open] > summary{margin-bottom:6px;}
+.th-det > summary:hover .th-flecha{background:#EAF1FB;}
 </style>
 </head>
 <body>
@@ -1629,7 +1637,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v71 («Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v75 (encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2063,6 +2071,15 @@ function showProximamente(nombre){
   showScreen('detail');
 }
 
+// Límites anti-abuso (SQL-55): mensajes claros cuando se llega al máximo
+function limiteTexto(m){
+  const t = String(m || ''), ca = LANG === 'ca';
+  if(/LIMITE_PENDIENTES/.test(t)) return ca ? 'Ja tens 2 consultes esperant resposta. Quan Logos et respongui en podràs enviar una altra. Si és urgent, truca al 630 46 15 60.' : 'Ya tienes 2 consultas esperando respuesta. Cuando Logos te responda podrás enviar otra. Si es urgente, llama al 630 46 15 60.';
+  if(/LIMITE_DIA/.test(t)) return ca ? 'Avui ja n\'has enviat el màxim (3 en 24 hores). Torna-ho a provar demà o truca al 630 46 15 60.' : 'Hoy ya has enviado el máximo (3 en 24 horas). Vuelve a intentarlo mañana o llama al 630 46 15 60.';
+  if(/LIMITE_TEXTO/.test(t)) return ca ? 'El text és massa llarg. Escriu-lo una mica més curt, si us plau.' : 'El texto es demasiado largo. Escríbelo un poco más corto, por favor.';
+  if(/LIMITE_AVISOS/.test(t)) return ca ? 'Has enviat molts avisos en poca estona. Espera una mica i torna-ho a provar.' : 'Has enviado muchos avisos en poco rato. Espera un poco y vuelve a intentarlo.';
+  return null;
+}
 function renderOrientacionForm(){
   const esCA = LANG === 'ca';
   document.getElementById('detail-content').innerHTML = `
@@ -2071,11 +2088,17 @@ function renderOrientacionForm(){
       ? 'Explica amb les teves paraules què et passa o què necessites. No cal que sàpigues el nom del tràmit — un tècnic de Logos llegirà el que escriguis i et respondrà amb una orientació.'
       : 'Explica con tus palabras qué te pasa o qué necesitas. No hace falta que sepas el nombre del trámite — un técnico de Logos leerá lo que escribas y te responderá con una orientación.'}</p>
     <div class="field">
-      <textarea id="orient-texto" rows="6" placeholder="${esCA ? 'Per exemple: la meva mare té dificultats per caminar i no sé si té dret a alguna ajuda...' : 'Por ejemplo: mi madre tiene dificultades para caminar y no sé si tiene derecho a alguna ayuda...'}"></textarea>
+      <textarea id="orient-texto" rows="6" maxlength="2000" oninput="const c=document.getElementById('orient-cuenta'); if(c) c.textContent=this.value.length+' / 2000'" placeholder="${esCA ? 'Per exemple: la meva mare té dificultats per caminar i no sé si té dret a alguna ajuda...' : 'Por ejemplo: mi madre tiene dificultades para caminar y no sé si tiene derecho a alguna ayuda...'}"></textarea>
+    <div id="orient-cuenta" class="subtle" style="font-size:11.5px;text-align:right;margin:2px 0 0;">0 / 2000</div>
     </div>
     <button class="primary-btn" id="orient-save-btn" onclick="guardarConsultaOrientacion()">${esCA ? 'Enviar a Logos' : 'Enviar a Logos'}</button>
+    <p class="subtle" style="font-size:11.5px;margin:8px 0 0;">${esCA ? 'Pots tenir fins a 2 consultes esperant resposta i enviar-ne 3 al dia.' : 'Puedes tener hasta 2 consultas esperando respuesta y enviar 3 al día.'}</p>
   `;
   showScreen('detail');
+  // Si ya tiene 2 consultas sin responder, se avisa antes de que escriba
+  if(CURRENT_USER) sb.from('consultas_orientacion').select('id').eq('usuario_id', CURRENT_USER.id).eq('estado', 'pendiente').then(r => {
+    if(!r.error && (r.data || []).length >= 2){ const b = document.getElementById('orient-save-btn'); if(b){ b.disabled = true; b.insertAdjacentHTML('beforebegin', `<div class="auth-error" style="background:#FFF4D6;color:#7A5200;border-color:#F2BC2C;">⏳ ${limiteTexto('LIMITE_PENDIENTES')}</div>`); } }
+  }, () => {});
 }
 
 async function guardarConsultaOrientacion(){
@@ -2091,10 +2114,10 @@ async function guardarConsultaOrientacion(){
 
   const { error } = await sb.from('consultas_orientacion').insert({
     usuario_id: CURRENT_USER.id,
-    texto_consulta: texto
+    texto_consulta: texto.slice(0, 2000)
   });
   if(error){
-    document.getElementById('detail-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    document.getElementById('detail-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${escAttr(limiteTexto(error.message) || error.message)}</div>`);
     btn.disabled = false;
     return;
   }
@@ -2519,11 +2542,11 @@ const ESPERA_TXT = {
   llamamos: { es: 'Hemos recibido tu registro. Una persona del equipo de Logos te llamará en cuanto quede libre.', ca: 'Hem rebut el teu registre. Una persona de l\'equip de Logos et trucarà tan aviat com quedi lliure.' }
 };
 // ---------- Horario de atención de Logos (1 = lunes … 7 = domingo) ----------
-// Lunes, martes y jueves: 8–14 y 16–20, con cita. Miércoles: de 9 a 13:30 sin cita previa (no se dan citas). Viernes: 8–14 con cita; tarde cerrado.
+// Lunes, martes y jueves: 8–14 y 16–20, con cita. Miércoles: 9–13:30 sin cita previa (atención al público) y 16–20 con cita. Viernes: 8–14 con cita; tarde cerrado.
 const LOGOS_HORARIO = {
   1: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
   2: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
-  3: { m:['09:00','13:30'], t:null, cita:false },
+  3: { m:['09:00','13:30'], t:['16:00','20:00'], cita:true, sinCita:['09:00','13:30'] },
   4: { m:['08:00','14:00'], t:['16:00','20:00'], cita:true },
   5: { m:['08:00','14:00'], t:null, cita:true }
 };
@@ -2539,7 +2562,7 @@ function logosTramosDia(dia){ const h = LOGOS_HORARIO[dia]; return h ? [h.m, h.t
 function logosEstadoAhora(){
   const n = logosMadridAhora(), h = LOGOS_HORARIO[n.dia];
   const tramo = logosTramosDia(n.dia).find(t => n.min >= logosMin(t[0]) && n.min < logosMin(t[1]));
-  if(tramo) return { abierto:true, sinCita: !h.cita, hasta: tramo[1], hoy: logosTramosDia(n.dia).map(t => t[0].replace(/^0/, '') + '–' + t[1]).join(' · ') };
+  if(tramo) return { abierto:true, sinCita: !h.cita || !!(h.sinCita && tramo[0] === h.sinCita[0]), hasta: tramo[1], hoy: logosTramosDia(n.dia).map(t => t[0].replace(/^0/, '') + '–' + t[1]).join(' · ') };
   for(let i = 0; i < 8; i++){
     const dia = ((n.dia - 1 + i) % 7) + 1;
     for(const t of logosTramosDia(dia)){
@@ -2564,8 +2587,8 @@ function logosEstadoHtml(){
   return `<div style="background:${bg};color:${col};border-radius:10px;padding:7px 12px;font-size:12.5px;margin:0 0 10px;display:inline-block;">${txt}</div>`;
 }
 function logosHorarioTexto(){
-  return LANG === 'ca' ? 'Dilluns, dimarts i dijous: 8–14 h i 16–20 h (amb cita). Dimecres: de 9 a 13:30 h sense cita prèvia (no es donen cites). Divendres: 8–14 h (amb cita); tarda tancat.'
-                       : 'Lunes, martes y jueves: 8–14 h y 16–20 h (con cita). Miércoles: de 9 a 13:30 h sin cita previa (no se dan citas). Viernes: 8–14 h (con cita); tarde cerrado.';
+  return LANG === 'ca' ? 'Dilluns, dimarts i dijous: 8–14 h i 16–20 h (amb cita). Dimecres: de 9 a 13:30 h sense cita prèvia (atenció al públic) i de 16 a 20 h amb cita. Divendres: 8–14 h (amb cita); tarda tancat.'
+                       : 'Lunes, martes y jueves: 8–14 h y 16–20 h (con cita). Miércoles: de 9 a 13:30 h sin cita previa (atención al público) y de 16 a 20 h con cita. Viernes: 8–14 h (con cita); tarde cerrado.';
 }
 
 async function cargarAvisoEspera(){
@@ -2775,7 +2798,7 @@ async function incEnviar(){
   const { error } = await sb.from('incidencias').insert(fila);
   if(error){
     btn.disabled = false;
-    msg.innerHTML = `<div class="auth-error">${/incidencias|schema cache|does not exist/i.test(error.message || '') ? incT('Los avisos de incidencias aún no están activados (falta el SQL 51). Mientras tanto llama al 630 46 15 60.', 'Els avisos d\'incidències encara no estan activats (falta l\'SQL 51). Mentrestant truca al 630 46 15 60.') : incEsc(error.message)}</div>`;
+    msg.innerHTML = `<div class="auth-error">${limiteTexto(error.message) ? limiteTexto(error.message) : /incidencias|schema cache|does not exist/i.test(error.message || '') ? incT('Los avisos de incidencias aún no están activados (falta el SQL 51). Mientras tanto llama al 630 46 15 60.', 'Els avisos d\'incidències encara no estan activats (falta l\'SQL 51). Mentrestant truca al 630 46 15 60.') : incEsc(error.message)}</div>`;
     return;
   }
   if(!INC_ES_INTRA){ try { await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'incidencia', mensaje: `🆘 ${nombre} avisa de una incidencia (${incNombreDestino(destino)}): ${asunto}` }); } catch(e){} }
@@ -7107,7 +7130,7 @@ function miHistorialHtml(ev, completo){
   const porAnio = {}; vis.forEach(e => { const y = String(e.f).slice(0, 4); (porAnio[y] = porAnio[y] || []).push(e); });
   const hechos = (window.__trMios || []).filter(t => t.estado === 'hecho').length;
   const fx = d => fmtFechaCorta(String(d).slice(0, 10), ca);
-  return `<div class="th-cab"><span class="th-i">📜</span><div><h3>${ca ? 'El meu historial amb Logos' : 'Mi historial con Logos'}</h3><small>${ca ? `Tràmits, atencions i seguiments · ${hechos} tràmit${hechos === 1 ? '' : 's'} acabat${hechos === 1 ? '' : 's'}` : `Trámites, atenciones y seguimientos · ${hechos} trámite${hechos === 1 ? '' : 's'} terminado${hechos === 1 ? '' : 's'}`}</small></div></div>
+  return `<details class="th-det" ${window.__miHistAbierto ? 'open' : ''} ontoggle="window.__miHistAbierto=this.open"><summary class="th-cab"><span class="th-i">📜</span><div><h3>${ca ? 'El meu historial amb Logos' : 'Mi historial con Logos'}</h3><small>${ev.length} ${ca ? (ev.length === 1 ? 'moviment' : 'moviments') : (ev.length === 1 ? 'movimiento' : 'movimientos')} · ${ca ? `${hechos} tràmit${hechos === 1 ? '' : 's'} acabat${hechos === 1 ? '' : 's'}` : `${hechos} trámite${hechos === 1 ? '' : 's'} terminado${hechos === 1 ? '' : 's'}`}</small></div><span class="th-flecha">⌄</span></summary>
     <div class="th-fil">${[['todo', ca ? 'Tot' : 'Todo', ev.length], ['atencion', ca ? 'Atencions' : 'Atenciones', n('atencion')], ['actuacion', ca ? 'Actuacions' : 'Actuaciones', n('actuacion')], ['tramite', ca ? 'Tràmits' : 'Trámites', n('tramite')]]
       .filter(x => x[0] === 'todo' || x[2] || (completo && x[0] !== 'tramite') || x[0] === 'tramite')
       .map(([k, t, c]) => `<button class="${f === k ? 'on' : ''}" onclick="window.__miHistFiltro='${k}';document.getElementById('mi-historial').innerHTML=miHistorialHtml(window.__miHist||[],${completo ? 'true' : 'false'})">${t} <b>${c}</b></button>`).join('')}</div>
@@ -7117,7 +7140,7 @@ function miHistorialHtml(ev, completo){
         ${e.res || e.sig || e.rev ? `<div class="th-extra">${e.res ? `<span>${escAttr(e.res)}</span>` : ''}${e.sig ? `<span>➡️ ${ca ? 'Següent pas' : 'Siguiente paso'}: ${escAttr(e.sig)}</span>` : ''}${e.rev ? `<span>📅 ${ca ? 'Revisió' : 'Revisión'}: ${fx(e.rev)}</span>` : ''}</div>` : ''}
       </div></div>`).join('')}</div>`).join('')
       : `<div class="inc-vacio" style="margin-top:8px;">${ca ? 'Encara no hi ha res aquí. Quan Logos t\'atengui o comencis un tràmit, apareixerà en aquesta línia de temps.' : 'Todavía no hay nada aquí. Cuando Logos te atienda o empieces un trámite, aparecerá en esta línea de tiempo.'}</div>`}
-    <p class="th-priv">🔒 ${ca ? 'Veus el que s\'ha treballat amb tu. Les notes internes de l\'equip no es mostren.' : 'Ves lo que se ha trabajado contigo. Las notas internas del equipo no se muestran.'}</p>`;
+    <p class="th-priv">🔒 ${ca ? 'Veus el que s\'ha treballat amb tu. Les notes internes de l\'equip no es mostren.' : 'Ves lo que se ha trabajado contigo. Las notas internas del equipo no se muestran.'}</p></details>`;
 }
 async function incRefrescar(){ const h = document.getElementById('inc-mios-a'); if(h) h.innerHTML = await incMisAvisosHtml(); }
 
@@ -8026,9 +8049,29 @@ async function firmarConsentimientoGeneral(){
   renderDatosStep();
 }
 
-function renderEncuestaForm(){
+async function renderEncuestaForm(){
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
+  // Solo se responde tras recibir una atención de Logos, y una vez por cada atención (SQL-55)
+  if(!IS_STAFF && CURRENT_USER){
+    const host = document.getElementById('encuesta-content');
+    host.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
+    let r = null; try { r = await sb.rpc('encuesta_puedo_responder'); } catch(e){}
+    const d = r && !r.error ? r.data : null;
+    if(d && d.puede === false){
+      const ya = d.motivo === 'ya_respondida';
+      host.innerHTML = `<h2 class="screen-title">${esCA ? 'Enquesta de satisfacció' : 'Encuesta de satisfacción'}</h2>
+        <div class="panel-card" style="text-align:center;padding:26px 18px;">
+          <div style="font-size:40px;margin-bottom:6px;">${ya ? '💛' : '🗓️'}</div>
+          <h3 style="margin:0 0 8px;">${ya ? (esCA ? 'Gràcies per la teva opinió!' : '¡Gracias por tu opinión!') : (esCA ? 'L\'enquesta s\'obre després de la teva atenció' : 'La encuesta se abre después de tu atención')}</h3>
+          <p class="subtle" style="margin:0;">${ya
+            ? (esCA ? 'Ja ens has valorat la teva última atenció. Podràs tornar a respondre després de la propera vegada que t\'atenguem.' : 'Ya nos has valorado tu última atención. Podrás volver a responder después de la próxima vez que te atendamos.')
+            : (esCA ? 'Quan un tècnic de Logos t\'hagi atès, aquí podràs dir-nos com ha anat. Si vols, demana una cita.' : 'Cuando un técnico de Logos te haya atendido, aquí podrás decirnos cómo ha ido. Si quieres, pide una cita.')}</p>
+          ${ya ? '' : `<button class="primary-btn" style="width:auto;margin:14px auto 0;" onclick="showScreen('cita');renderCitaForm()">📅 ${esCA ? 'Demanar cita' : 'Pedir cita'}</button>`}
+        </div>`;
+      return;
+    }
+  }
 
   const escala = (id) => `
     <div class="rating-row" data-name="${id}">
@@ -8066,7 +8109,7 @@ function renderEncuestaForm(){
     </div>
     <div class="field">
       <label>${esCA ? 'Tens alguna altra suggerència o comentari per millorar els nostres serveis?' : '¿Tienes alguna otra sugerencia o comentario para mejorar nuestros servicios?'}</label>
-      <textarea id="enc-comentario" rows="3"></textarea>
+      <textarea id="enc-comentario" rows="3" maxlength="1000"></textarea>
     </div>
     <button class="primary-btn" id="enc-save-btn" onclick="guardarEncuesta()">${esCA ? 'Enviar' : 'Enviar'}</button>
   `;
@@ -8097,9 +8140,14 @@ async function guardarEncuesta(){
   }
 
   btn.disabled = true;
-  const { error } = await sb.from('encuestas_satisfaccion').insert(payload);
+  let { error } = await sb.rpc('enviar_encuesta', { p: payload });
+  if(error && /enviar_encuesta|schema cache|does not exist|PGRST202/i.test(error.message || '') && !/ENCUESTA_/.test(error.message || '')) ({ error } = await sb.from('encuestas_satisfaccion').insert(payload));   // sin el SQL-55, como antes
   if(error){
-    document.getElementById('encuesta-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
+    const m = error.message || '';
+    const txt = /ENCUESTA_YA_RESPONDIDA/.test(m) ? (esCA ? 'Ja has valorat la teva última atenció. Gràcies!' : 'Ya has valorado tu última atención. ¡Gracias!')
+      : /ENCUESTA_SIN_ATENCION/.test(m) ? (esCA ? 'L\'enquesta s\'obre després que Logos t\'hagi atès.' : 'La encuesta se abre después de que Logos te haya atendido.')
+      : m;
+    document.getElementById('encuesta-content').insertAdjacentHTML('afterbegin', `<div class="auth-error">${escAttr(txt)}</div>`);
     btn.disabled = false;
     return;
   }
