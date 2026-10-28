@@ -529,6 +529,90 @@
 
 body{font-size:15.5px;}
 @media (max-width:700px){ #profile-content .sn-wrap{padding:0 14px;} }
+/* ===== «Mis necesidades» y áreas, estilo Sanitas ===== */
+#screen-home > .content, #screen-necesidades > .content{max-width:960px;width:100%;margin-left:auto !important;margin-right:auto !important;box-sizing:border-box;}
+@media (min-width:701px){ #screen-home > .content, #screen-necesidades > .content{padding-left:24px !important;padding-right:24px !important;} }
+.nh-hero{position:relative;z-index:2;background:linear-gradient(135deg,#163F7A 0%,#2463B8 58%,#3B82D9 100%);color:#fff;border-radius:22px;padding:16px 20px 18px;margin:0 0 14px;box-shadow:0 18px 36px -22px rgba(22,63,122,.9);}
+.nh-deco{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:0;}
+.nh-deco::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#F2BC2C,#FFE08A,#F2BC2C);}
+.nh-deco::after{content:'λ';position:absolute;right:-4px;bottom:-56px;font-size:200px;font-weight:700;color:rgba(242,188,44,.13);line-height:1;}
+.nh-hero > *:not(.nh-deco), .amb-hero > *:not(.nh-deco){position:relative;z-index:1;}
+.nh-estado > div{margin:0 0 12px !important;border-radius:999px !important;}
+.nh-hola{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.nh-av{width:52px;height:52px;border-radius:50%;background:#F2BC2C;color:#163F7A;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:3px solid rgba(255,255,255,.35);}
+.nh-hola strong{display:block;font-size:26px;line-height:1.15;font-weight:700;}
+.nh-hola span{font-size:14px;opacity:.85;}
+.nh-mano{display:inline-block;animation:nhMano 2.4s ease-in-out 1;transform-origin:70% 70%;font-size:inherit !important;opacity:1 !important;}
+@keyframes nhMano{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(14deg)}20%,40%{transform:rotate(-8deg)}}
+.nh-acc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.nh-acc button{display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:16px;padding:12px 6px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:background .15s,transform .15s;}
+.nh-acc button span{width:42px;height:42px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:21px;}
+.nh-acc button:hover{background:rgba(255,255,255,.24);transform:translateY(-2px);}
+.nh-card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;margin:0 0 12px;box-shadow:0 6px 18px -14px rgba(27,42,68,.35);}
+.nh-card-h{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.nh-card-i{width:36px;height:36px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto;}
+.nh-c1{background:#EAF1FB;} .nh-c2{background:#E6F6EC;} .nh-c3{background:#F1EBFB;} .nh-c4{background:#FFF6DC;} .nh-c5{background:#FCEFE2;}
+.nh-cq{background:#163F7A;color:#F2BC2C;font-weight:800;font-size:20px;}
+.nh-chip{margin-left:auto;background:#FCEFE2;color:#A8551A;border-radius:999px;font-size:12px;font-weight:700;padding:3px 10px;}
+.nh-rec{display:flex;align-items:center;gap:12px;width:100%;background:none;border:none;border-top:1px solid #EEF1F6;padding:10px 2px;cursor:pointer;font-family:inherit;text-align:left;color:var(--ink);}
+.nh-rec:hover .nh-rec-t{color:#2463B8;}
+.nh-rec.vacio .nh-rec-t{color:var(--ink-soft);}
+.nh-rec-i{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto;}
+.nh-rec-t{flex:1;font-size:14.5px;line-height:1.4;}
+.nh-chev{color:#9AA6B8;font-size:22px;line-height:1;margin-left:auto;}
+.nh-p{margin:0 0 12px;font-size:14px;color:var(--ink-soft);line-height:1.45;}
+.nh-btn{display:block;width:100%;background:#2F7BD9;color:#fff;border:none;border-radius:12px;padding:14px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 6px 16px -8px rgba(36,99,184,.6);}
+.nh-btn:hover{background:#2463B8;}
+.nh-btn2{background:#EAF1FB;color:#1B4E95;border:none;border-radius:12px;padding:11px 16px;font-family:inherit;font-size:14.5px;font-weight:700;cursor:pointer;}
+.nh-quienes{background:#fff;border:1.5px solid var(--line);border-radius:18px;margin:14px 0 12px;overflow:hidden;}
+.nh-quienes summary{list-style:none;display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;}
+.nh-quienes summary::-webkit-details-marker{display:none;}
+.nh-quienes summary strong{display:block;font-size:16px;color:var(--ink);}
+.nh-quienes summary small{font-size:12.5px;color:var(--ink-soft);}
+.nh-quienes[open] .nh-chev{transform:rotate(90deg);}
+.nh-quienes p{margin:0;padding:0 18px 16px;font-size:14px;line-height:1.6;color:var(--ink);}
+#screen-home .areas-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+#screen-home .areas-grid .quick-card{border-radius:18px;border-top:5px solid var(--ac,#2463B8);padding:18px 16px;box-shadow:0 6px 18px -14px rgba(27,42,68,.4);}
+#screen-home .areas-grid .quick-card:hover{border-color:var(--ac,#2463B8);border-top-color:var(--ac,#2463B8);}
+#screen-home .areas-grid .quick-card .icon-badge{width:50px;height:50px;border-radius:14px;font-size:25px !important;}
+#screen-home .areas-grid .quick-card h4{font-size:16px;font-weight:700;}
+#screen-home .areas-ayuda{border:1.5px dashed #9CC0EC;background:#F5F9FE;border-radius:18px;}
+#screen-home .trust-banner{background:#F5F9FE;border-color:#CFE0F5;border-radius:16px;}
+#screen-home .trust-banner strong, #screen-home .trust-banner span{color:#1B4E95;}
+#screen-home .nb input{border-radius:14px;}
+.amb-hero{--ac:#2463B8;position:relative;display:flex;align-items:center;gap:16px;background:#fff;border:1.5px solid var(--line);border-left:7px solid var(--ac);border-radius:20px;padding:18px 20px;margin:4px 0 16px;box-shadow:0 8px 22px -16px rgba(27,42,68,.45);}
+.amb-hero .nh-deco::before{display:none;}
+.amb-hero .nh-deco::after{color:rgba(36,99,184,.06);font-size:150px;bottom:-44px;}
+.amb-hero-i{width:62px;height:62px;border-radius:18px;background:var(--ac);display:flex;align-items:center;justify-content:center;font-size:32px;flex:0 0 auto;box-shadow:0 8px 16px -10px var(--ac);}
+.amb-hero .screen-title{margin:0 0 4px;}
+.amb-hero .subtle{margin:0;font-size:13.5px;line-height:1.45;}
+#screen-necesidades .nec-det{border-radius:18px;transition:box-shadow .15s,border-color .15s;}
+#screen-necesidades .nec-det:hover{border-color:#9CC0EC;}
+#screen-necesidades .nec-det[open]{border-color:#2463B8;}
+#screen-necesidades .nec-det summary{padding:15px 18px;}
+#screen-necesidades .nec-det summary::before{content:'';width:10px;height:10px;border-radius:50%;background:#2463B8;opacity:.35;flex:0 0 auto;}
+#screen-necesidades .nec-det[open] summary::before{opacity:1;}
+#screen-necesidades .nec-det summary > span:first-child{margin-right:auto;}
+#screen-necesidades .nec-det summary::after{content:'›';color:#9AA6B8;font-size:24px;margin-left:8px;transform:rotate(90deg);}
+#screen-necesidades .nec-det[open] summary::after{transform:rotate(-90deg);color:#2463B8;}
+#screen-necesidades .nec-n{background:#EAF1FB;color:#1B4E95;}
+#screen-necesidades .nec-card{border-radius:18px;background:linear-gradient(180deg,#F5F9FE,#fff);border-color:#CFE0F5;}
+#screen-necesidades .nec-item{background:#fff;border-radius:14px;}
+.nec-btn-ayuda{background:#FFF6DC;border-color:#F2D58A;color:#7A5600;}
+@media (max-width:700px){
+  #screen-home > .content, #screen-necesidades > .content{padding-left:14px !important;padding-right:14px !important;}
+  .nh-hero{padding:14px 14px 16px;border-radius:20px;}
+  .nh-hola strong{font-size:22px;} .nh-av{width:46px;height:46px;font-size:19px;}
+  .nh-acc{gap:7px;} .nh-acc button{font-size:11.5px;padding:10px 3px;border-radius:14px;} .nh-acc button span{width:36px;height:36px;font-size:18px;}
+  #screen-home .areas-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .amb-hero{padding:14px;gap:12px;} .amb-hero-i{width:50px;height:50px;font-size:26px;border-radius:14px;}
+}
+/* «Mi espacio» centrado en el ordenador, con el mismo ancho arriba y abajo */
+#profile-content{max-width:960px;width:100%;margin-left:auto !important;margin-right:auto !important;box-sizing:border-box;}
+#profile-content .sn-wrap{max-width:none;}
+#screen-profile > .topbar{max-width:960px;margin-left:auto;margin-right:auto;box-sizing:border-box;width:100%;}
+@media (min-width:701px){ #profile-content{padding-left:24px !important;padding-right:24px !important;} #screen-profile > .topbar{padding-left:24px;padding-right:24px;} }
+@media (max-width:700px){ #profile-content{padding-left:14px !important;padding-right:14px !important;overflow-x:hidden;} #profile-content .sn-wrap{padding:0 !important;} }
 </style>
 </head>
 <body>
@@ -615,7 +699,7 @@ body{font-size:15.5px;}
         <div id="guia-card-host"></div>
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
         <p class="subtle" id="home-sub">Encuentra el trámite o la ayuda que necesitas en Tarragona.</p>
-        <div class="panel-card" id="nec-nota" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;">💡 Puedes hacer tu trámite tú mismo/a desde esta plataforma: te llevamos al sitio correcto. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.</div>
+        <div class="panel-card" id="nec-nota" style="background:#EEF4FB;border-color:#CFE0F5;margin-bottom:12px;border-radius:16px;">💡 Puedes hacer tu trámite tú mismo/a desde esta plataforma: te llevamos al sitio correcto. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.</div>
         <div id="nec-carrusel"></div>
         <div class="nb"><span class="nb-i">🔎</span><input id="nec-q" type="search" autocomplete="off" oninput="necBuscar()" aria-label="Buscar"></div>
         <div id="nec-res" class="nb-res" aria-live="polite"></div>
@@ -645,8 +729,7 @@ body{font-size:15.5px;}
   <div class="screen" id="screen-necesidades">
     <div class="topbar"><button class="back-btn" onclick="showScreen('home')" id="back-to-home">← Inicio</button></div>
     <div class="content">
-      <h2 class="screen-title" id="ambito-title"></h2>
-      <p class="subtle" id="ambito-sub"></p>
+      <div class="amb-hero" id="amb-hero"><div class="nh-deco"></div><span class="amb-hero-i" id="ambito-icono"></span><div><h2 class="screen-title" id="ambito-title"></h2><p class="subtle" id="ambito-sub"></p></div></div>
       <div id="necesidades-list"></div>
     </div>
   </div>
@@ -945,6 +1028,7 @@ function setLang(lang){
   } catch(e){}
 }
 
+const AMB_ACENTO = ['#D9832E', '#2463B8', '#1E8A4C', '#7A4FC4', '#C2552B', '#C0392B', '#2E5A8F', '#B8901A'];
 const COLORES_AMBITO = [
   { bg:'#FBE7D3', color:'#7A4A1F' }, { bg:'#E7ECFF', color:'#33449E' },
   { bg:'#DDEFD9', color:'var(--good)' }, { bg:'#F0EAF8', color:'#6A3FA0' },
@@ -961,7 +1045,7 @@ function renderAmbitos(){
     const ej = a.desc ? a.desc[LANG] : (a.necesidades || []).slice(0, 3).map(n => n.nombre[LANG]).join(' · ');
     const sub = ej || (esCA ? 'Properament' : 'Próximamente');
     return `
-    <div class="quick-card" style="position:relative;" onclick="showNecesidades('${escAttr(a.id)}')">
+    <div class="quick-card" style="position:relative;--ac:${AMB_ACENTO[i % AMB_ACENTO.length]};--acs:${col.bg};" onclick="showNecesidades('${escAttr(a.id)}')">
       ${IS_ADMIN ? `<button class="nec-x" title="${esCA ? 'Treure aquesta àrea' : 'Quitar esta área'}" onclick="event.stopPropagation();quitarAreaCatalogo('${escAttr(a.id)}')">✕</button>` : ''}
       <div class="icon-badge" style="background:${col.bg};color:${col.color};font-size:20px;">${a.icono}</div>
       <h4>${a.nombre[LANG]}</h4>
@@ -990,7 +1074,10 @@ async function showNecesidades(ambitoId, silent){
   CURRENT_AMBITO = ambitoId;
   const a = TAXONOMIA.find(x => x.id === ambitoId);
   if(!a) return;
-  document.getElementById('ambito-title').textContent = a.icono + ' ' + a.nombre[LANG];
+  document.getElementById('ambito-title').textContent = a.nombre[LANG];
+  { const ic = document.getElementById('ambito-icono'); if(ic) ic.textContent = a.icono || '📌';
+    const i = Math.max(0, TAXONOMIA.findIndex(x => x.id === ambitoId)); const hero = document.getElementById('amb-hero');
+    if(hero) hero.style.setProperty('--ac', AMB_ACENTO[i % AMB_ACENTO.length]); }
   document.getElementById('ambito-sub').textContent = (a.desc ? a.desc[LANG] + ' ' : '') + (LANG === 'ca'
     ? 'Toca una prestació per veure els seus tràmits i enllaços.'
     : 'Toca una prestación para ver sus trámites y enlaces.');
@@ -1207,7 +1294,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v62 (fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v64 (Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2192,12 +2279,12 @@ async function renderResumenStep(mostrarCatalogoYa){
   const saludo = horaMad < 6 ? (esCA ? 'Bona nit' : 'Buenas noches') : horaMad < 14 ? (esCA ? 'Bon dia' : 'Buenos días') : horaMad < 21 ? (esCA ? 'Bona tarda' : 'Buenas tardes') : (esCA ? 'Bona nit' : 'Buenas noches');
   const primerNombre = String(p.nombre_completo || '').trim().split(/\s+/)[0] || '';
 
-  const filaRec = (icono, html, sec, vacio) => `
-    <div onclick="irAMiEspacio('${sec}')" style="display:flex;align-items:flex-start;gap:10px;padding:9px 2px;border-top:1px solid rgba(122,74,31,.18);cursor:pointer;${vacio ? 'opacity:.8;' : ''}">
-      <span style="font-size:17px;line-height:1.3;">${icono}</span>
-      <span style="flex:1;font-size:13.5px;line-height:1.45;">${html}</span>
-      <span style="color:#7A4A1F;font-size:15px;">›</span>
-    </div>`;
+  const filaRec = (icono, html, sec, vacio, c) => `
+    <button class="nh-rec${vacio ? ' vacio' : ''}" onclick="irAMiEspacio('${sec}')">
+      <span class="nh-rec-i nh-c${c || 1}">${icono}</span>
+      <span class="nh-rec-t">${html}</span>
+      <span class="nh-chev">›</span>
+    </button>`;
   const citaTxt = proximaCitaEntrada
     ? (esCitaHoyEntrada
         ? (esCA ? `Tens una cita <strong>avui</strong> a les ${proximaCitaEntrada.hora.slice(0,5)}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCitaEntrada.hora.slice(0,5)}.`)
@@ -2211,33 +2298,40 @@ async function renderResumenStep(mostrarCatalogoYa){
     : (esCA ? 'No tens cap missatge pendent de resposta.' : 'No tienes ningún mensaje pendiente de respuesta.');
 
   const recordatorioEntradaHtml = `
-    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);margin-bottom:12px;">
-      <h3 style="color:#7A4A1F;margin-bottom:6px;">🔔 ${esCA ? 'Recordatoris' : 'Recordatorios'}</h3>
+    <div class="nh-card">
+      <div class="nh-card-h"><span class="nh-card-i nh-c4">🔔</span>${esCA ? 'Recordatoris' : 'Recordatorios'}</div>
       ${avisoEsperaEntrada ? avisoEsperaHtml(avisoEsperaEntrada, esCA, 8) : ''}
-      ${filaRec('📅', citaTxt, 'citas', !proximaCitaEntrada)}
-      ${filaRec('🗂️', tramTxt, 'tramites', nTramites === 0)}
-      ${filaRec('💬', consTxt, 'consulta', consultasPendEntrada === 0)}
-      ${nAvisosProy > 0 ? filaRec('📣', esCA ? `Tens <strong>${nAvisosProy} avís${nAvisosProy>1?'os':''}</strong> dels teus projectes.` : `Tienes <strong>${nAvisosProy} aviso${nAvisosProy>1?'s':''}</strong> de tus proyectos.`, 'avisos', false) : ''}
+      ${filaRec('📅', citaTxt, 'citas', !proximaCitaEntrada, 1)}
+      ${filaRec('🗂️', tramTxt, 'tramites', nTramites === 0, 2)}
+      ${filaRec('💬', consTxt, 'consulta', consultasPendEntrada === 0, 3)}
+      ${nAvisosProy > 0 ? filaRec('📣', esCA ? `Tens <strong>${nAvisosProy} avís${nAvisosProy>1?'os':''}</strong> dels teus projectes.` : `Tienes <strong>${nAvisosProy} aviso${nAvisosProy>1?'s':''}</strong> de tus proyectos.`, 'avisos', false, 4) : ''}
     </div>`;
 
   const faltanDatos = datosFaltantes(p, esCA);
   const datosCompletosTodo = faltanDatos.length === 0;
   const completarDatosHtml = `
-    <div class="panel-card" style="margin-bottom:12px;${datosCompletosTodo ? '' : 'border-color:var(--ochre);'}">
-      <h3 style="margin-bottom:4px;">📝 ${esCA ? 'Les meves dades' : 'Mis datos'}</h3>
-      <p class="subtle" style="margin:0 0 10px;">${datosCompletosTodo
+    <div class="nh-card">
+      <div class="nh-card-h"><span class="nh-card-i nh-c${datosCompletosTodo ? 2 : 5}">${datosCompletosTodo ? '✅' : '📝'}</span>${esCA ? 'Les meves dades' : 'Mis datos'}${datosCompletosTodo ? '' : `<span class="nh-chip">${esCA ? `en falten ${faltanDatos.length}` : `faltan ${faltanDatos.length}`}</span>`}</div>
+      <p class="nh-p">${datosCompletosTodo
         ? (esCA ? 'Les teves dades estan completes. Les pots revisar quan vulguis.' : 'Tus datos están completos. Puedes revisarlos cuando quieras.')
         : (esCA ? `Encara et falten ${faltanDatos.length} dades per completar: <strong>${faltanDatos.slice(0, 4).join(', ')}${faltanDatos.length > 4 ? '…' : ''}</strong>. Com més dades tinguem, millor et podrem ajudar.` : `Aún te faltan ${faltanDatos.length} datos por completar: <strong>${faltanDatos.slice(0, 4).join(', ')}${faltanDatos.length > 4 ? '…' : ''}</strong>. Cuantos más datos tengamos, mejor podremos ayudarte.`)}</p>
-      <button class="primary-btn" style="margin:0;${datosCompletosTodo ? 'background:var(--teal);' : 'background:var(--ochre);'}" onclick="abrirFormDesdeMenu('datos')">${datosCompletosTodo ? (esCA ? 'Revisar les meves dades' : 'Revisar mis datos') : (esCA ? 'Completar les meves dades' : 'Completar mis datos')}</button>
+      <button class="${datosCompletosTodo ? 'nh-btn2' : 'nh-btn'}" onclick="abrirFormDesdeMenu('datos')">${datosCompletosTodo ? (esCA ? 'Revisar les meves dades' : 'Revisar mis datos') : (esCA ? 'Completar les meves dades' : 'Completar mis datos')}</button>
     </div>`;
 
   el.innerHTML = `
-    <div class="profile-head" style="margin-bottom:12px;">
-      <div class="avatar">${inicial}</div>
-      <div><strong>${saludo}${primerNombre ? ', ' + escAttr(primerNombre) : ''} 👋</strong><span>${p.municipio || 'Tarragona'}</span></div>
+    <div class="nh-hero"><div class="nh-deco"></div>
+      <div class="nh-estado">${logosEstadoHtml()}</div>
+      <div class="nh-hola">
+        <div class="nh-av">${inicial}</div>
+        <div><strong>${saludo}${primerNombre ? ', ' + escAttr(primerNombre) : ''} <span class="nh-mano">👋</span></strong><span>📍 ${escAttr(p.municipio || 'Tarragona')}</span></div>
+      </div>
+      <div class="nh-acc">
+        <button onclick="revelarCatalogo()"><span>🧭</span>${esCA ? 'Què necessito?' : '¿Qué necesito?'}</button>
+        <button onclick="showScreen('cita');renderCitaForm()"><span>📅</span>${esCA ? 'Demanar cita' : 'Pedir cita'}</button>
+        <button onclick="showScreen('profile');renderDashboard()"><span>👤</span>${esCA ? 'El meu espai' : 'Mi espacio'}</button>
+        <button onclick="guiaAbrirAcomp()"><span>❓</span>${esCA ? 'Com funciona' : 'Cómo se usa'}</button>
+      </div>
     </div>
-    ${logosEstadoHtml()}
-    <button class="service-row" style="justify-content:flex-start;margin-bottom:12px;width:100%;" onclick="guiaAbrirAcomp()"><span style="font-size:17px;">❓</span> <span style="margin-left:8px;text-align:left;"><strong>${esCA ? 'Com es fa servir l\'app' : 'Cómo se usa la app'}</strong></span></button>
     ${recordatorioEntradaHtml}
     ${completarDatosHtml}
     ${!mostrarCatalogoYa ? `
@@ -2245,12 +2339,12 @@ async function renderResumenStep(mostrarCatalogoYa){
       ${esCA ? 'Veure les meves necessitats →' : 'Ver mis necesidades →'}
     </button>` : ''}
 
-    <div class="panel-card" style="margin-top:16px;background:var(--sidebar-green);border-color:var(--sidebar-green);color:#fff;">
-      <h3 style="color:#fff;">${esCA ? 'Qui som' : 'Quiénes somos'}</h3>
-      <p style="margin:0;font-size:13.5px;line-height:1.6;color:#fff;">${esCA
+    <details class="nh-quienes">
+      <summary><span class="nh-card-i nh-cq">λ</span><span><strong>${esCA ? 'Qui som' : 'Quiénes somos'}</strong><small>${esCA ? 'Associació Logos · més de 10 anys a Tarragona' : 'Associació Logos · más de 10 años en Tarragona'}</small></span><span class="nh-chev">›</span></summary>
+      <p>${esCA
         ? "L'Associació Logos – Projectes Socials és una entitat privada sense ànim de lucre, amb seu a Tarragona, amb més de 10 anys d'experiència en l'àmbit social. Des de 2015, treballem en el disseny, desenvolupament i gestió de projectes orientats a millorar les oportunitats i la qualitat de vida de les persones. Comptem amb un equip tècnic multidisciplinar especialitzat en inserció sociolaboral, formació, inclusió social, capacitació digital, igualtat i acompanyament a col·lectius en situació de vulnerabilitat. La nostra trajectòria combina intervenció directa, gestió tècnica de projectes i col·laboració amb administracions públiques, entitats socials i altres agents del territori."
         : 'La Associació Logos – Projectes Socials es una entidad privada sin ánimo de lucro, con sede en Tarragona, con más de 10 años de experiencia en el ámbito social. Desde 2015, trabajamos en el diseño, desarrollo y gestión de proyectos orientados a mejorar las oportunidades y la calidad de vida de las personas. Contamos con un equipo técnico multidisciplinar especializado en inserción sociolaboral, formación, inclusión social, capacitación digital, igualdad y acompañamiento a colectivos en situación de vulnerabilidad. Nuestra trayectoria combina intervención directa, gestión técnica de proyectos y colaboración con administraciones públicas, entidades sociales y otros agentes del territorio.'}</p>
-    </div>
+    </details>
   `;
 }
 
@@ -6268,8 +6362,8 @@ async function renderDashboard(){
         <h3 style="margin:0;">${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
       </div>
       <p class="subtle" style="margin:0 0 8px;">${LANG==='ca'
-        ? `Vas signar el teu consentiment de protecció de dades el ${perfil.consentimiento_fecha ? fmtFechaCorta(perfil.consentimiento_fecha, true) : '—'}.`
-        : `Firmaste tu consentimiento de protección de datos el ${perfil.consentimiento_fecha ? fmtFechaCorta(perfil.consentimiento_fecha, false) : '—'}.`}</p>
+        ? `Vas signar el teu consentiment de protecció de dades${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, true) : ''}.`
+        : `Firmaste tu consentimiento de protección de datos${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, false) : ''}.`}</p>
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
     </div>`}
 
@@ -6888,7 +6982,7 @@ function renderConsentStep(avisoBloqueo){
     document.getElementById('entrada-panel').innerHTML = `
       <h2 class="screen-title">✅ ${esCA ? 'El teu consentiment ja està signat' : 'Tu consentimiento ya está firmado'}</h2>
       <div class="panel-card">
-        <p style="margin:0 0 8px;">${esCA ? `Vas signar el consentiment el ${fF}. Només cal signar-lo una vegada.` : `Firmaste el consentimiento el ${fF}. Solo hace falta firmarlo una vez.`}</p>
+        <p style="margin:0 0 8px;">${esCA ? `Vas signar el consentiment${perfFirmado.consentimiento_fecha ? ' el ' + fF : ''}. Només cal signar-lo una vegada.` : `Firmaste el consentimiento${perfFirmado.consentimiento_fecha ? ' el ' + fF : ''}. Solo hace falta firmarlo una vez.`}</p>
         <p class="subtle" style="margin:0 0 10px;">${esCA ? 'Si vols canviar alguna autorització, contacta amb Logos.' : 'Si quieres cambiar alguna autorización, contacta con Logos.'}</p>
         <button class="link-btn" onclick="descargarMiConsentimientoPDF('${(perfFirmado.nombre_completo||'').replace(/'/g,"\\'")}', '${perfFirmado.dni_nie||''}', '${perfFirmado.consentimiento_fecha||''}')">⬇️ ${esCA ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
         <button class="primary-btn" style="margin-top:12px;" onclick="showScreen('home');try{revelarCatalogo()}catch(e){}">${esCA ? 'Continuar' : 'Continuar'}</button>
@@ -7836,7 +7930,7 @@ function guiaAbrirAcomp(desde){ guiaAbrir(guiaSlidesAcomp(), 'logos_guia_acomp_v
 function guiaTarjetaAcomp(){
   const esCA = LANG === 'ca';
   if(giStore('get', 'logos_guia_acomp_v1') || giStore('get', 'logos_guia_acomp_card')) return '';
-  return `<div class="panel-card" id="guia-card" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--ochre-soft,#FBEBD3);border-color:var(--ochre,#D9832E);margin-bottom:14px;">
+  return `<div class="panel-card" id="guia-card" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#FFF8E6;border-color:#F2D58A;margin-bottom:14px;border-radius:18px;">
     <div style="font-size:30px;">👋</div>
     <div style="flex:1;min-width:200px;"><strong>${esCA ? 'Primera vegada aquí?' : '¿Primera vez aquí?'}</strong><br><span class="subtle">${esCA ? 'Mira en 1 minut com es fa servir.' : 'Mira en 1 minuto cómo se usa.'}</span></div>
     <button class="link-btn" onclick="guiaAbrirAcomp()">${esCA ? 'Veure la guia →' : 'Ver la guía →'}</button>
