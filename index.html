@@ -505,6 +505,35 @@
 .sn-banner span{font-size:15px;opacity:.9;line-height:1.35;}
 .sn-banner.sn-b2{background:#2463B8;} .sn-banner.sn-b3{background:#0E7A5F;} .sn-banner.sn-b4{background:#7A4A1F;}
 .sn-wrap{max-width:900px;}
+.asistente-panel{width:380px !important;height:540px !important;border-radius:20px !important;}
+.asistente-header{background:linear-gradient(135deg,#163F7A,#2463B8) !important;color:#fff !important;padding:12px 14px !important;}
+.asistente-header button{color:#fff !important;}
+.asis-cab{display:flex;align-items:center;gap:10px;}
+.asis-cab strong{display:block;font-size:15px;line-height:1.2;} .asis-cab small{font-size:11.5px;opacity:.9;display:flex;align-items:center;gap:5px;}
+.asis-av{width:36px;height:36px;border-radius:50%;background:#F2BC2C;color:#163F7A;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.asis-on{width:8px;height:8px;border-radius:50%;background:#4ADE80;display:inline-block;}
+.asistente-msg.user{background:#2463B8 !important;color:#fff !important;border-bottom-right-radius:4px;}
+.asistente-msg.bot{background:#F1F5FB !important;border-bottom-left-radius:4px;}
+.asis-sug, .asis-acc{display:flex;flex-wrap:wrap;gap:6px;align-self:flex-start;max-width:95%;}
+.asis-sug button, .asis-acc button{border:1.5px solid #CFE0F5;background:#fff;color:#1B4E95;border-radius:999px;padding:7px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.asis-acc button{background:#2463B8;border-color:#2463B8;color:#fff;}
+.asis-acc button:disabled{background:#1E8A4C;border-color:#1E8A4C;opacity:1;}
+.asis-sug button:hover{border-color:#2463B8;}
+.asis-esc{display:inline-flex;gap:4px;} .asis-esc i{width:7px;height:7px;border-radius:50%;background:#9AA6B8;animation:asisEsc 1s infinite;} .asis-esc i:nth-child(2){animation-delay:.15s} .asis-esc i:nth-child(3){animation-delay:.3s}
+@keyframes asisEsc{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+@media (max-width:700px){ .asistente-panel{width:calc(100vw - 20px) !important;right:10px !important;height:calc(100vh - 150px) !important;} #cita-content{padding-left:14px;padding-right:14px;} }
+#cita-content{max-width:760px;margin-left:auto;margin-right:auto;}
+.cita-modos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 12px;}
+.cita-modo{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;font-family:inherit;color:var(--ink);transition:border-color .15s,box-shadow .15s;}
+.cita-modo strong{display:block;font-size:15.5px;} .cita-modo small{font-size:12.5px;color:var(--ink-soft);line-height:1.35;display:block;margin-top:2px;}
+.cita-modo-i{width:46px;height:46px;border-radius:14px;background:#EAF1FB;display:flex;align-items:center;justify-content:center;font-size:23px;flex:0 0 auto;}
+.cita-modo.cita-sel{border-color:#2463B8;box-shadow:0 0 0 3px rgba(36,99,184,.15);} .cita-modo.cita-sel .cita-modo-i{background:#2463B8;}
+.cita-tel{background:#F5F9FE;border:1.5px solid #CFE0F5;border-radius:16px;padding:14px 16px;margin:0 0 14px;}
+.cita-tel label{display:block;font-weight:700;font-size:14.5px;margin-bottom:6px;}
+.cita-tel input{width:100%;box-sizing:border-box;border:1.5px solid #CFD8E6;border-radius:12px;padding:12px 14px;font-size:17px;font-family:inherit;}
+.cita-tel ul{margin:10px 0 0;padding-left:18px;font-size:13.5px;line-height:1.5;color:var(--ink-soft);}
+.sn-cita-tel{color:#5B3FA0 !important;font-weight:600;}
+@media (max-width:560px){ .cita-modos{grid-template-columns:1fr;} }
 .snk{position:relative;}
 .snk-pista{scrollbar-width:none;}
 .snk-pista::-webkit-scrollbar{display:none;}
@@ -613,17 +642,270 @@ body{font-size:15.5px;}
 #screen-profile > .topbar{max-width:960px;margin-left:auto;margin-right:auto;box-sizing:border-box;width:100%;}
 @media (min-width:701px){ #profile-content{padding-left:24px !important;padding-right:24px !important;} #screen-profile > .topbar{padding-left:24px;padding-right:24px;} }
 @media (max-width:700px){ #profile-content{padding-left:14px !important;padding-right:14px !important;overflow-x:hidden;} #profile-content .sn-wrap{padding:0 !important;} }
+
+/* ===== Guía rápida en carrusel (como «La nostra feina en imatges» de la web) ===== */
+#guia-ov{background:radial-gradient(120% 90% at 50% 0%,#1F4F93 0%,#12305C 55%,#0B1E3D 100%) !important;padding:0 !important;align-items:stretch !important;}
+#guia-ov .gi-wrap{width:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;padding:18px 16px 16px;box-sizing:border-box;min-height:100%;}
+#guia-ov .gi-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;text-align:center;}
+#guia-ov .gi-head > div{flex:1;}
+#guia-ov .gi-head h2{margin:0;color:#fff;font-family:Georgia,'Fraunces',serif;font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.01em;text-shadow:0 2px 0 rgba(0,0,0,.25);}
+#guia-ov .gi-head p{margin:4px 0 0;color:#F2BC2C;font-size:clamp(13px,1.8vw,17px);font-weight:600;font-style:italic;}
+#guia-ov .gi-x{color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);width:40px;height:40px;border-radius:50%;font-size:18px;padding:0;flex:0 0 auto;}
+#guia-ov .gi-stage{position:relative;flex:1;display:flex;align-items:center;justify-content:center;perspective:1400px;margin:14px 0 6px;min-height:0;}
+#guia-ov .gi-card{position:relative;z-index:3;width:min(560px,82vw);max-height:min(74vh,700px);background:#fff;border:5px solid #fff;border-radius:26px;box-shadow:0 0 0 2px rgba(242,188,44,.55),0 30px 70px -20px rgba(0,0,0,.65);animation:giCovR .35s ease;display:flex;flex-direction:column;overflow:hidden;}
+@keyframes giCovR{from{opacity:0;transform:translateX(50px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes giCovL{from{opacity:0;transform:translateX(-50px) scale(.96)}to{opacity:1;transform:none}}
+#guia-ov .gi-cov{position:relative;background:linear-gradient(135deg,#2463B8,#3B82D9 60%,#7FB0EE);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#guia-ov .gi-cov-main{height:clamp(120px,22vh,200px);flex:0 0 auto;border-radius:20px 20px 0 0;}
+#guia-ov .gi-cov-img{width:100%;height:100%;object-fit:cover;object-position:50% 15%;}
+#guia-ov .gi-cov-av{width:clamp(80px,13vh,120px);height:clamp(80px,13vh,120px);border-radius:50%;object-fit:cover;border:4px solid #F2BC2C;background:#fff;}
+#guia-ov .gi-cov-e{font-size:clamp(54px,9vh,84px);line-height:1;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));}
+#guia-ov .gi-cov-e2{position:absolute;right:16px;bottom:10px;font-size:34px;}
+#guia-ov .gi-cap{position:absolute;left:12px;bottom:10px;right:12px;color:#fff;font-weight:800;font-size:13.5px;text-shadow:0 1px 3px rgba(0,0,0,.6);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#guia-ov .gi-cov-main::after{content:'';position:absolute;inset:auto 0 0 0;height:50%;background:linear-gradient(transparent,rgba(0,0,0,.45));}
+#guia-ov .gi-cov-main .gi-cap{z-index:1;}
+#guia-ov .gi-prog{margin:0;border-radius:0;height:4px;background:#E7EDF6;}
+#guia-ov .gi-prog i{background:#F2BC2C;}
+#guia-ov .gi-body{padding:14px 22px 6px;}
+#guia-ov .gi-bub{display:inline-block;margin:0 0 8px;}
+#guia-ov .gi-t{color:#163F7A;}
+#guia-ov .gi-nav{padding:10px 16px 14px;border-top:1px solid #EEF1F6;}
+#guia-ov .gi-side{position:absolute;top:50%;z-index:1;width:min(360px,30vw);height:min(330px,50vh);border:4px solid rgba(255,255,255,.85);border-radius:22px;padding:0;overflow:hidden;cursor:pointer;background:#2463B8;box-shadow:0 20px 40px -18px rgba(0,0,0,.7);opacity:.8;transition:opacity .2s,transform .2s;}
+#guia-ov .gi-side .gi-cov{position:absolute;inset:0;}
+#guia-ov .gi-side::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.55));}
+#guia-ov .gi-side .gi-cap{z-index:1;font-size:13px;}
+#guia-ov .gi-izq{left:max(0px,calc(50% - min(560px,82vw)/2 - min(300px,24vw)));transform:translateY(-50%) rotateY(28deg) scale(.88);}
+#guia-ov .gi-der{right:max(0px,calc(50% - min(560px,82vw)/2 - min(300px,24vw)));transform:translateY(-50%) rotateY(-28deg) scale(.88);}
+#guia-ov .gi-side:hover{opacity:1;}
+#guia-ov .gi-vacia{visibility:hidden;}
+#guia-ov .gi-arr{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:48px;height:48px;border-radius:50%;border:none;background:rgba(11,30,61,.75);color:#fff;font-size:30px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 0 4px;box-shadow:0 6px 16px rgba(0,0,0,.35);}
+#guia-ov .gi-arr:hover{background:#2463B8;} #guia-ov .gi-arr:disabled{opacity:.25;cursor:default;}
+#guia-ov .gi-arr-l{left:4px;} #guia-ov .gi-arr-r{right:4px;}
+#guia-ov .gi-foot{display:flex;justify-content:center;align-items:center;gap:14px;padding:4px 0 2px;}
+#guia-ov .gi-dots{padding:0;gap:8px;}
+#guia-ov .gi-dot{width:10px;height:10px;background:rgba(255,255,255,.55);transition:width .2s,background .2s;}
+#guia-ov .gi-dot.on{width:30px;border-radius:6px;background:#F2BC2C;}
+#guia-ov .gi-pp{width:40px;height:40px;border-radius:50%;background:#F2BC2C;color:#0B1E3D;font-size:13px;font-weight:800;padding:0;margin:0;display:flex;align-items:center;justify-content:center;}
+@media (max-width:760px){
+  #guia-ov .gi-wrap{padding:12px 10px 10px;}
+  #guia-ov .gi-card{width:84vw;max-height:72vh;}
+  #guia-ov .gi-side{width:40vw;height:44vh;}
+  #guia-ov .gi-izq{left:-30vw;transform:translateY(-50%) rotateY(25deg) scale(.85);}
+  #guia-ov .gi-der{right:-30vw;transform:translateY(-50%) rotateY(-25deg) scale(.85);}
+  #guia-ov .gi-side .gi-cap{display:none;}
+  #guia-ov .gi-arr{width:38px;height:38px;font-size:24px;}
+  #guia-ov .gi-arr-l{left:0;} #guia-ov .gi-arr-r{right:0;}
+  #guia-ov .gi-body{padding:12px 16px 4px;}
+  #guia-ov .gi-dot{width:8px;height:8px;} #guia-ov .gi-dot.on{width:22px;}
+}
+/* ===== Aula Virtual con aspecto de campus (menú, lista de cursos y tareas pendientes) ===== */
+.cmp{display:grid;grid-template-columns:220px minmax(0,1fr) 270px;gap:18px;align-items:start;}
+.cmp-menu{position:sticky;top:12px;background:linear-gradient(180deg,#1B4E95,#2463B8);border-radius:20px;padding:14px 10px;color:#fff;box-shadow:0 14px 30px -18px rgba(22,63,122,.8);}
+.cmp-yo{display:flex;align-items:center;gap:10px;padding:4px 8px 12px;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:8px;}
+.cmp-yo-av{width:38px;height:38px;border-radius:50%;background:#F2BC2C;color:#163F7A;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.cmp-yo strong{display:block;font-size:14px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
+.cmp-yo small{font-size:11.5px;opacity:.8;}
+.cmp-mi{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:left;position:relative;}
+.cmp-mi:hover{background:rgba(255,255,255,.12);}
+.cmp-mi.on, .cmp-mi.av-tab-on{background:#fff;color:#1B4E95;box-shadow:none;}
+.cmp-mi .cmp-n{margin-left:auto;background:#F2BC2C;color:#163F7A;border-radius:999px;font-size:11px;font-weight:800;min-width:20px;height:20px;line-height:20px;text-align:center;padding:0 5px;}
+.cmp-mi-sep{height:1px;background:rgba(255,255,255,.18);margin:8px 6px;}
+.cmp-main{min-width:0;}
+.cmp-h1{font-family:Georgia,'Fraunces',serif;font-size:30px;font-weight:700;color:var(--ink);margin:2px 0 12px;}
+.cmp-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px;}
+.cmp-vista{display:flex;border:1.5px solid #D5DCE6;border-radius:10px;overflow:hidden;}
+.cmp-vista button{border:none;background:#fff;padding:8px 10px;cursor:pointer;font-size:15px;line-height:1;}
+.cmp-vista button.on{background:#1B2A44;color:#fff;}
+.cmp-buscar{flex:1;min-width:170px;position:relative;}
+.cmp-buscar input{width:100%;box-sizing:border-box;border:1.5px solid #D5DCE6;border-radius:10px;padding:9px 12px 9px 34px;font-family:inherit;font-size:14px;background:#fff;}
+.cmp-buscar::before{content:'🔎';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.6;}
+.cmp-sel{border:1.5px solid #D5DCE6;border-radius:10px;padding:8px 10px;font-family:inherit;font-size:13.5px;background:#fff;}
+.cmp-res{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);margin:0 0 10px;}
+.cmp-res b{background:#1B2A44;color:#fff;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;}
+.cmp-grupo{font-size:15.5px;font-weight:700;color:var(--ink);margin:16px 0 8px;}
+.cmp-lista{display:flex;flex-direction:column;gap:10px;}
+.cmp-row{--c:#2463B8;position:relative;background:#fff;border:1px solid #E2E7EF;border-left:7px solid var(--c);border-radius:12px;padding:14px 46px 12px 16px;box-shadow:0 4px 14px -12px rgba(27,42,68,.5);transition:box-shadow .15s,transform .15s;}
+.cmp-row:hover{box-shadow:0 10px 22px -14px rgba(27,42,68,.55);}
+.cmp-cod{font-size:12.5px;color:#5B6B82;letter-spacing:.02em;}
+.cmp-tit{font-size:17px;font-weight:700;color:var(--ink);margin:2px 0 4px;line-height:1.3;cursor:pointer;}
+.cmp-tit:hover{color:#2463B8;text-decoration:underline;}
+.cmp-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:#5B6B82;}
+.cmp-meta i{font-style:normal;color:#C3CCDA;}
+.cmp-meta .cmp-ok{color:#1E8A4C;font-weight:600;}
+.cmp-mas-b{background:none;border:none;color:#2463B8;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:0;}
+.cmp-star{position:absolute;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;color:#9AA6B8;line-height:1;}
+.cmp-star.on{color:#F2BC2C;}
+.cmp-prog{height:6px;background:#EEF1F6;border-radius:4px;margin:10px 0 2px;overflow:hidden;max-width:420px;}
+.cmp-prog i{display:block;height:100%;background:linear-gradient(90deg,#2463B8,#3B82D9);border-radius:4px;}
+.cmp-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.cmp-acc button, .cmp-acc a{border:1.5px solid #CFE0F5;background:#fff;color:#1B4E95;border-radius:999px;padding:6px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;position:relative;}
+.cmp-acc .cmp-pri{background:#2463B8;border-color:#2463B8;color:#fff;}
+.cmp-acc .cmp-oro{background:#F2BC2C;border-color:#F2BC2C;color:#163F7A;}
+.cmp-acc .cmp-x{border-color:#F3C9C4;color:#B0392F;}
+.cmp-mas{margin-top:10px;padding-top:10px;border-top:1px dashed #E2E7EF;font-size:13.5px;color:var(--ink);}
+.cmp-mas[hidden]{display:none;}
+.cmp-mas .panel-stat-row{padding:5px 0;}
+.cmp-lista.cmp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));}
+.cmp-grid .cmp-row{border-left-width:1px;border-top:7px solid var(--c);}
+.cmp-der{position:sticky;top:12px;display:flex;flex-direction:column;gap:12px;}
+.cmp-caja{background:#fff;border:1px solid #E2E7EF;border-radius:16px;padding:14px 14px 10px;box-shadow:0 6px 18px -16px rgba(27,42,68,.5);}
+.cmp-caja h3{margin:0 0 8px;font-size:17px;color:var(--ink);}
+.cmp-caja details{border:none !important;border-top:1px solid #EEF1F6 !important;border-radius:0 !important;padding:8px 0 !important;margin:0 !important;background:none !important;box-shadow:none !important;}
+.cmp-caja summary{padding:0 !important;background:none !important;}
+.cmp-caja summary{list-style:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:600;font-size:14px;}
+.cmp-caja summary::-webkit-details-marker{display:none;}
+.cmp-caja summary::after{content:'⌃';transform:rotate(180deg);color:#5B6B82;}
+.cmp-caja details[open] summary::after{transform:none;}
+.cmp-caja summary span{display:flex;align-items:center;gap:6px;}
+.cmp-caja summary b{border-radius:999px;font-size:11px;padding:1px 7px;color:#fff;background:#9AA6B8;}
+.cmp-vencida b{background:#C0392B !important;} .cmp-hoy b{background:#E0A81A !important;} .cmp-pronto b{background:#2463B8 !important;}
+.cmp-vacio{background:#F6F8FB;border-radius:10px;padding:12px;font-size:12.5px;color:#7A8698;text-align:center;margin-top:6px;}
+.cmp-tarea{display:block;width:100%;text-align:left;background:#F6F8FB;border:none;border-radius:10px;padding:9px 10px;margin-top:6px;font-family:inherit;cursor:pointer;color:var(--ink);}
+.cmp-tarea:hover{background:#EAF1FB;}
+.cmp-tarea strong{display:block;font-size:13.5px;} .cmp-tarea small{font-size:12px;color:#5B6B82;}
+.cmp-clase{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid #EEF1F6;font-size:13px;}
+.cmp-clase:first-of-type{border-top:none;}
+.cmp-clase-f{width:44px;text-align:center;background:#EAF1FB;color:#1B4E95;border-radius:10px;padding:4px 0;line-height:1.1;flex:0 0 auto;}
+.cmp-clase-f strong{display:block;font-size:17px;} .cmp-clase-f small{font-size:10.5px;text-transform:uppercase;}
+.cmp-clase a{margin-left:auto;font-weight:700;color:#2463B8;white-space:nowrap;}
+.cmp-sec[hidden]{display:none;}
+@media (max-width:1180px){ .cmp{grid-template-columns:200px minmax(0,1fr);} .cmp-der{grid-column:2;position:static;} }
+@media (max-width:820px){
+  .cmp{grid-template-columns:1fr;gap:12px;}
+  .cmp-menu{position:static;display:flex;gap:6px;overflow-x:auto;padding:8px;border-radius:16px;scrollbar-width:none;}
+  .cmp-menu::-webkit-scrollbar{display:none;}
+  .cmp-yo, .cmp-mi-sep{display:none;}
+  .cmp-mi{flex:0 0 auto;width:auto;padding:9px 12px;font-size:13.5px;white-space:nowrap;}
+  .cmp-menu{order:0;} .cmp-der{grid-column:auto;order:1;} .cmp-main{order:2;}
+  .cmp-der .cmp-caja:not(.cmp-tareas){display:none;}
+  .cmp-h1{font-size:24px;}
+  .cmp-row{padding:12px 40px 10px 12px;}
+}
+
+#screen-aulaciudadano > .content, #screen-cursodetalle > .content{max-width:1240px !important;width:100%;margin-left:auto;margin-right:auto;box-sizing:border-box;}
+@media (min-width:701px){ #screen-aulaciudadano > .content{padding-left:20px !important;padding-right:20px !important;} }
+#screen-cursodetalle > .content{max-width:880px !important;}
+@media (max-width:700px){ #screen-aulaciudadano > .content, #screen-cursodetalle > .content{padding-left:12px !important;padding-right:12px !important;} }
+.cmp-curso-cab{background:linear-gradient(135deg,#163F7A,#2463B8 60%,#3B82D9);color:#fff;border-radius:20px;padding:18px 20px;margin:0 0 16px;box-shadow:0 16px 32px -20px rgba(22,63,122,.9);}
+.cmp-curso-cab h2{margin:2px 0 4px;font-size:24px;line-height:1.25;color:#fff;}
+.cmp-curso-meta{font-size:13.5px;opacity:.9;}
+.cmp-curso-prog{display:flex;align-items:center;gap:10px;margin-top:12px;}
+.cmp-curso-prog > div{flex:1;height:10px;background:rgba(255,255,255,.25);border-radius:6px;overflow:hidden;}
+.cmp-curso-prog i{display:block;height:100%;background:#F2BC2C;border-radius:6px;}
+.cmp-curso-prog strong{font-size:18px;}
+#screen-cursodetalle .modulo-acordeon{border-radius:14px;overflow:hidden;}
+
+/* ===== «Mi carpeta» en Mi espacio: pestañas y un apartado a la vez ===== */
+.me-hub{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:14px 14px 12px;margin:0 0 14px;box-shadow:0 8px 22px -18px rgba(27,42,68,.5);scroll-margin-top:12px;}
+.me-hub-t{font-size:19px;font-weight:700;color:var(--ink);margin:0 0 10px 4px;display:flex;flex-direction:column;}
+.me-hub-t small{font-size:12.5px;font-weight:500;color:var(--ink-soft);}
+.me-tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;}
+.me-tab{--c:#2463B8;--cs:#EAF1FB;display:flex;flex-direction:column;align-items:center;gap:6px;background:#F7F9FC;border:2px solid transparent;border-radius:16px;padding:10px 4px 9px;cursor:pointer;font-family:inherit;color:var(--ink);transition:background .15s,border-color .15s,transform .15s;position:relative;}
+.me-tab:hover{background:var(--cs);transform:translateY(-1px);}
+.me-tab-i{position:relative;width:44px;height:44px;border-radius:14px;background:var(--cs);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.me-tab-i b{position:absolute;top:-6px;right:-8px;background:var(--c);color:#fff;border-radius:999px;font-size:11px;min-width:20px;height:20px;line-height:20px;padding:0 5px;font-weight:800;}
+.me-tab-i b.me-alerta{background:#D6336C;}
+.me-tab-l{font-size:12.5px;font-weight:600;line-height:1.15;text-align:center;}
+.me-tab.on{background:#fff;border-color:var(--c);box-shadow:0 8px 18px -12px var(--c);}
+.me-tab.on .me-tab-i{background:var(--c);}
+.me-tab.on::after{content:'';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--c);}
+.me-c1{--c:#2463B8;--cs:#EAF1FB;} .me-c2{--c:#D9832E;--cs:#FCEFE2;} .me-c3{--c:#1E8A4C;--cs:#E6F6EC;} .me-c4{--c:#7A4FC4;--cs:#F1EBFB;} .me-c5{--c:#E0A81A;--cs:#FFF6DC;} .me-c6{--c:#1B2A44;--cs:#EEF1F6;} .me-c7{--c:#5B6B82;--cs:#EEF1F6;}
+.me-pane{display:none;animation:mePane .25s ease;}
+.me-pane.on{display:block;}
+@keyframes mePane{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.me-pane > .panel-card, .me-pane > div > .panel-card{margin-top:0 !important;border-radius:18px;}
+.me-pane .panel-card{margin-bottom:12px;}
+.me-sig{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#F5F9FE;border:1.5px dashed #CFE0F5;border-radius:16px;padding:10px 12px;margin:4px 0 16px;}
+.me-sig span{font-size:12.5px;font-weight:700;color:#5B6B82;margin-right:2px;}
+.me-sig button{border:1.5px solid #CFE0F5;background:#fff;color:#1B4E95;border-radius:999px;padding:7px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.me-sig button:hover{border-color:#2463B8;background:#EAF1FB;}
+.me-qr{display:flex;gap:16px;align-items:center;text-align:left;flex-wrap:wrap;justify-content:center;}
+.me-qr-t{flex:1;min-width:200px;}
+.me-qr-t p{text-align:left;}
+.me-qr-b{display:flex;gap:8px;flex-wrap:wrap;}
+.me-qr-b button{border:1.5px solid #CFE0F5;background:#fff;color:#1B4E95;border-radius:999px;padding:7px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.me-qr-b button:first-child{background:#2463B8;border-color:#2463B8;color:#fff;}
+@media (max-width:760px){
+  .me-hub{padding:12px 10px 10px;border-radius:18px;}
+  .me-tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:2px 2px 10px;gap:8px;}
+  .me-tabs::-webkit-scrollbar{display:none;}
+  .me-tab{flex:0 0 76px;}
+  .me-tab-i{width:40px;height:40px;font-size:20px;}
+  .me-tab.on::after{bottom:-2px;border-width:6px;}
+  .me-sig button{flex:1 1 auto;}
+}
+
+/* ===== Pedir cita: pasos, días en calendario, horas en fichas y resumen ===== */
+.ct-hero{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#163F7A,#2463B8 60%,#3B82D9);color:#fff;border-radius:20px;padding:16px 18px;margin:0 0 12px;box-shadow:0 14px 30px -20px rgba(22,63,122,.9);}
+.ct-hero h2{margin:0;font-size:22px;color:#fff;} .ct-hero p{margin:2px 0 0;font-size:13.5px;opacity:.9;}
+.ct-hero-i{width:52px;height:52px;border-radius:16px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;flex:0 0 auto;}
+.ct-pasos{display:flex;gap:6px;margin:0 0 12px;overflow-x:auto;scrollbar-width:none;}
+.ct-pasos::-webkit-scrollbar{display:none;}
+.ct-pasos span{display:flex;align-items:center;gap:6px;flex:1 0 auto;justify-content:center;background:#EEF1F6;color:#5B6B82;border-radius:999px;padding:6px 10px;font-size:12.5px;font-weight:700;white-space:nowrap;}
+.ct-pasos b{width:20px;height:20px;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;}
+.ct-pasos span.ok{background:#E6F6EC;color:#1E7A3C;} .ct-pasos span.ok b{background:#1E8A4C;color:#fff;}
+.ct-pasos span.on{background:#2463B8;color:#fff;} .ct-pasos span.on b{color:#2463B8;}
+#cita-content .cita-paso{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--ink);margin:18px 0 10px;}
+#cita-content .cita-num{width:28px;height:28px;border-radius:50%;background:#2463B8;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13.5px;}
+.ct-dias{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+.ct-dia{display:flex;flex-direction:column;align-items:center;gap:1px;background:#fff;border:2px solid #E2E7EF;border-radius:16px;padding:9px 4px 8px;cursor:pointer;font-family:inherit;color:var(--ink);transition:border-color .15s,transform .15s,box-shadow .15s;}
+.ct-dia small{font-size:11.5px;font-weight:700;color:#5B6B82;text-transform:capitalize;}
+.ct-dia strong{font-size:24px;line-height:1.1;}
+.ct-dia span{font-size:11.5px;color:#5B6B82;text-transform:capitalize;}
+.ct-dia:hover{border-color:#9CC0EC;transform:translateY(-2px);}
+.ct-dia.cita-sel{background:#2463B8;border-color:#2463B8;color:#fff;box-shadow:0 10px 20px -12px rgba(36,99,184,.9);}
+.ct-dia.cita-sel small, .ct-dia.cita-sel span{color:rgba(255,255,255,.85);}
+.ct-horas-cab{font-size:14px;color:var(--ink-soft);margin:0 0 10px;text-transform:none;}
+.ct-horas-cab b{color:#1E8A4C;}
+.ct-franja{background:#fff;border:1.5px solid #E2E7EF;border-radius:16px;padding:12px;margin:0 0 10px;}
+.ct-franja > span{display:block;font-size:13px;font-weight:700;color:#5B6B82;margin:0 0 8px;}
+.ct-horas{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;}
+.ct-hora{position:relative;border:1.5px solid #CFE0F5;background:#F5F9FE;color:#1B4E95;border-radius:12px;padding:10px 4px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;}
+.ct-hora:hover{background:#EAF1FB;transform:translateY(-1px);}
+.ct-hora.sel{background:#2463B8;border-color:#2463B8;color:#fff;}
+.ct-hora.lleno{background:#F3F4F6;border-color:#EEF0F3;color:#B4BCC8;text-decoration:line-through;cursor:default;transform:none;}
+.ct-hora small{position:absolute;top:2px;right:5px;font-size:10px;color:#1E8A4C;text-decoration:none;}
+.ct-res{background:#fff;border:2px solid #2463B8;border-radius:20px;padding:16px;margin:14px 0 24px;box-shadow:0 18px 36px -22px rgba(36,99,184,.9);}
+.ct-res-t{font-size:13px;font-weight:800;color:#2463B8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.ct-res-f{display:flex;gap:14px;align-items:center;}
+.ct-res-cal{width:72px;flex:0 0 72px;border-radius:14px;overflow:hidden;text-align:center;border:1.5px solid #E2E7EF;}
+.ct-res-cal small{display:block;background:#C0392B;color:#fff;font-size:12px;font-weight:700;text-transform:uppercase;padding:3px 0;}
+.ct-res-cal strong{display:block;font-size:28px;line-height:1.2;color:var(--ink);}
+.ct-res-cal span{display:block;font-size:11.5px;color:#5B6B82;padding-bottom:4px;text-transform:capitalize;}
+.ct-res-x{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--ink);min-width:0;}
+.ct-res-x b{font-size:18px;}
+.ct-ok{display:block;width:100%;margin:14px 0 6px;background:#1E8A4C;color:#fff;border:none;border-radius:14px;padding:15px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px -10px rgba(30,138,76,.8);}
+.ct-ok:hover{background:#18763F;}
+.ct-cambiar{display:block;margin:0 auto;background:none;border:none;color:#2463B8;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;}
+#cita-content .cita-tec-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+#cita-content .cita-tec{border-radius:16px !important;}
+@media (max-width:560px){ .ct-dias{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;} .ct-dia strong{font-size:21px;} .ct-hero h2{font-size:19px;} .ct-horas{grid-template-columns:repeat(4,minmax(0,1fr));} .ct-hora{font-size:14px;padding:9px 2px;} }
+
+/* Histórico de mis trámites */
+.th-card{border-radius:18px;}
+.th-cab{display:flex;gap:12px;align-items:center;margin-bottom:6px;}
+.th-cab h3{margin:0;font-size:17px;} .th-cab small{font-size:12.5px;color:var(--ink-soft);}
+.th-i{width:42px;height:42px;border-radius:13px;background:#FFF6DC;display:flex;align-items:center;justify-content:center;font-size:21px;flex:0 0 auto;}
+.th-anio{display:inline-block;margin:12px 0 6px;background:#1B2A44;color:#fff;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;}
+.th-lista{position:relative;padding-left:22px;}
+.th-lista::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:#E2E7EF;border-radius:2px;}
+.th-it{position:relative;display:flex;padding:7px 0;}
+.th-p{position:absolute;left:-21px;top:11px;width:14px;height:14px;border-radius:50%;background:#1E8A4C;border:3px solid #E6F6EC;box-sizing:content-box;margin-left:-2px;}
+.th-it.an .th-p{background:#B4BCC8;border-color:#F1F3F7;}
+.th-it strong{display:block;font-size:14.5px;} .th-it small{font-size:12.5px;color:var(--ink-soft);}
+.th-it.an strong{color:#8A97AB;text-decoration:line-through;}
 </style>
 </head>
 <body>
 <button class="asistente-btn" onclick="toggleAsistenteChat()" title="Asistente de orientación">💬</button>
 <div class="asistente-panel" id="asistente-panel">
   <div class="asistente-header">
-    <span>💬 Asistente Logos</span>
-    <button onclick="toggleAsistenteChat()">✕</button>
+    <span class="asis-cab"><span class="asis-av">λ</span><span><strong>Técnico virtual de Logos</strong><small><i class="asis-on"></i> Te responde al momento</small></span></span>
+    <button onclick="toggleAsistenteChat()" aria-label="Cerrar">✕</button>
   </div>
   <div class="asistente-msgs" id="asistente-msgs">
-    <div class="asistente-msg bot">Hola 👋 Cuéntame qué necesitas y te oriento hacia el servicio adecuado. Si no sabes cómo se usa la app, pregúntame y te lo explico.</div>
+    <div class="asistente-msg bot">Hola 👋 Soy el técnico virtual de Logos. Cuéntame tu situación con tus palabras y te digo qué hacer paso a paso. Si hace falta, te doy cita (en Logos o por teléfono) o paso tu caso a un técnico del equipo.</div>
+    <div class="asis-sug"><button onclick="asistenteSugerir(this.textContent)">Quiero pedir una cita</button><button onclick="asistenteSugerir(this.textContent)">Necesito ayuda con el NIE</button><button onclick="asistenteSugerir(this.textContent)">Busco trabajo</button><button onclick="asistenteSugerir(this.textContent)">No puedo pagar el alquiler</button></div>
   </div>
   <div class="asistente-input-row">
     <input type="text" id="asistente-input" placeholder="Escribe tu pregunta…" onkeydown="enviarMensajeAsistenteEnter(event)">
@@ -941,7 +1223,10 @@ async function loadData(){
 // Textos fijos de la página (menú lateral, asistente…) ES → CA
 const TXT_ES_CA = {
   '💬 Asistente Logos':'💬 Assistent Logos','Hola 👋 Cuéntame qué necesitas y te oriento hacia el servicio adecuado. Si no sabes cómo se usa la app, pregúntame y te lo explico.':'Hola 👋 Explica\'m què necessites i t\'oriento cap al servei adequat. Si no saps com es fa servir l\'app, pregunta\'m i t\'ho explico.',
-  'Enviar':'Enviar','PH:Escribe tu pregunta…':'Escriu la teva pregunta…','TI:Asistente de orientación':'Assistent d\'orientació',
+  'Enviar':'Enviar','PH:Escribe tu pregunta…':'Escriu la teva pregunta…',
+  'Técnico virtual de Logos':'Tècnic virtual de Logos',' Te responde al momento':' Et respon al moment','Te responde al momento':'Et respon al moment',
+  'Hola 👋 Soy el técnico virtual de Logos. Cuéntame tu situación con tus palabras y te digo qué hacer paso a paso. Si hace falta, te doy cita (en Logos o por teléfono) o paso tu caso a un técnico del equipo.':'Hola 👋 Soc el tècnic virtual de Logos. Explica\'m la teva situació amb les teves paraules i et dic què fer pas a pas. Si cal, et dono cita (a Logos o per telèfon) o passo el teu cas a un tècnic de l\'equip.',
+  'Quiero pedir una cita':'Vull demanar una cita','Necesito ayuda con el NIE':'Necessito ajuda amb el NIE','Busco trabajo':'Busco feina','No puedo pagar el alquiler':'No puc pagar el lloguer','TI:Asistente de orientación':'Assistent d\'orientació',
   '☰ Menú':'☰ Menú','Menú':'Menú','Inicio':'Inici','❓ Cómo se usa':'❓ Com es fa servir','✅ Firmar mi consentimiento':'✅ Signar el meu consentiment',
   'Completar mis datos':'Completar les meves dades','Mis necesidades':'Les meves necessitats','Mi espacio':'El meu espai','Mi currículum':'El meu currículum',
   'Encuesta de satisfacción':'Enquesta de satisfacció','🌐 Traductor en directo':'🌐 Traductor en directe','⚙️ Configuración':'⚙️ Configuració',
@@ -1294,7 +1579,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v64 (Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v67 (histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2367,8 +2652,40 @@ function abrirFormDesdeMenu(tipo){
 async function irAMiEspacio(sec){
   showScreen('profile');
   await renderDashboard();
-  const el = document.getElementById('sec-' + sec);
-  if(el) setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'start' }), 50);
+  setTimeout(() => meIr(sec), 50);
+}
+// Histórico de mis trámites: los terminados y anulados, por año, como una línea de tiempo
+function tramitesHistoricoHtml(lista){
+  const ca = LANG === 'ca';
+  if(!lista || !lista.length) return `<div class="panel-card th-card"><div class="th-cab"><span class="th-i">📜</span><div><h3>${ca ? 'Històric dels meus tràmits' : 'Histórico de mis trámites'}</h3><small>${ca ? 'Aquí aniran els tràmits que acabis.' : 'Aquí irán los trámites que termines.'}</small></div></div></div>`;
+  const hechos = lista.filter(x => x.estado === 'hecho').length;
+  const porAnio = {}; lista.forEach(x => { const y = String(x.fecha_fin || x.fecha_inicio || x.creado_en || '').slice(0, 4) || '—'; (porAnio[y] = porAnio[y] || []).push(x); });
+  const dias = x => { const a = x.fecha_inicio || x.creado_en, b = x.fecha_fin; if(!a || !b) return ''; const n = Math.max(0, Math.round((new Date(b) - new Date(a)) / 864e5)); return n === 0 ? (ca ? 'el mateix dia' : 'el mismo día') : (n === 1 ? (ca ? '1 dia' : '1 día') : n + (ca ? ' dies' : ' días')); };
+  return `<div class="panel-card th-card">
+    <div class="th-cab"><span class="th-i">📜</span><div><h3>${ca ? 'Històric dels meus tràmits' : 'Histórico de mis trámites'}</h3><small>${ca ? `Has acabat ${hechos} tràmit${hechos === 1 ? '' : 's'} amb Logos` : `Has terminado ${hechos} trámite${hechos === 1 ? '' : 's'} con Logos`}${lista.length > hechos ? ' · ' + (lista.length - hechos) + (ca ? ' anul·lat(s)' : ' anulado(s)') : ''}</small></div></div>
+    ${Object.keys(porAnio).sort().reverse().map(y => `<div class="th-anio">${y}</div><div class="th-lista">${porAnio[y].map(x => { const ok = x.estado === 'hecho', d = dias(x);
+      return `<div class="th-it ${ok ? 'ok' : 'an'}"><span class="th-p"></span><div><strong>${escAttr(x.nombre_servicio || '')}</strong>
+        <small>${ok ? '✅ ' + (ca ? 'Fet' : 'Hecho') : '✖ ' + (ca ? 'Anul·lat' : 'Anulado')}${x.fecha_fin ? ' · ' + fmtFechaCorta(x.fecha_fin, ca) : ''}${d && ok ? ' · ' + (ca ? 'en ' : 'en ') + d : ''}${x.estado_previo === 'derivado_logos' || x.con_ayuda ? ' · 🤝 Logos' : ''}</small></div></div>`; }).join('')}</div>`).join('')}
+  </div>`;
+}
+// «Mi carpeta»: una pestaña por apartado; solo se ve uno a la vez
+const ME_DE = { citas:'citas', tramites:'tramites', documentos:'documentos', consulta:'consulta', recordatorios:'recordatorios', avisos:'recordatorios', qr:'qr', mas:'mas', emprendimiento:'mas', consentimiento:'mas' };
+function meTab(k, ic, txt, n, c, alerta){
+  return `<button class="me-tab me-${c}" data-me="${k}" role="tab" onclick="meIr('${k}', true)"><span class="me-tab-i">${ic}${n ? `<b class="${alerta ? 'me-alerta' : ''}">${n}</b>` : ''}</span><span class="me-tab-l">${txt}</span></button>`;
+}
+function meMostrar(k){
+  k = ME_DE[k] || k;
+  if(!document.querySelector(`.me-pane[data-me="${k}"]`)) k = 'citas';
+  document.querySelectorAll('.me-pane').forEach(p => p.classList.toggle('on', p.dataset.me === k));
+  document.querySelectorAll('.me-tab').forEach(t => { const on = t.dataset.me === k; t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
+  try { localStorage.setItem('logos_me_tab', k); } catch(e){}
+  return k;
+}
+function meIr(k, desdeTab){
+  meMostrar(k);
+  const hub = document.getElementById('me-hub'); if(!hub) return;
+  const tab = document.querySelector(`.me-tab[data-me="${ME_DE[k] || k}"]`); if(tab && tab.scrollIntoView) try { tab.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' }); } catch(e){}
+  if(!desdeTab || window.innerWidth < 760) setTimeout(() => hub.scrollIntoView({ behavior:'smooth', block:'start' }), 30);
 }
 function revelarCatalogo(){
   window.__resetTk = (window.__resetTk || 0) + 1; window.__formVoluntario = false;
@@ -4140,55 +4457,226 @@ async function buscarCertificado(){
   `;
 }
 
-async function renderAulaCiudadano(){
+const cmpNorm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+// ================= AULA VIRTUAL DEL ALUMNADO: aspecto de campus =================
+// Menú (Mis cursos · Calendario · Mensajes · Calificaciones · Ayuda), lista de cursos con barra de color,
+// y a la derecha «Tareas pendientes» (Vencida · Vence hoy · Vence pronto) y próximas clases.
+const CMP_COLORES = ['#2463B8', '#3BB0D6', '#E0B81A', '#E07A2E', '#7A4FC4', '#1E8A4C', '#C0392B', '#2E5A8F'];
+function cmpFavs(){ try { return JSON.parse(localStorage.getItem('logos_aula_fav') || '[]'); } catch(e){ return []; } }
+function cmpFav(id, btn){
+  const f = cmpFavs(); const i = f.indexOf(id);
+  if(i >= 0) f.splice(i, 1); else f.push(id);
+  try { localStorage.setItem('logos_aula_fav', JSON.stringify(f)); } catch(e){}
+  if(btn){ btn.classList.toggle('on', i < 0); btn.textContent = i < 0 ? '★' : '☆'; }
+}
+function cmpCodigo(c){
+  if(c.codigo) return c.codigo;
+  const y = c.fecha_inicio ? String(c.fecha_inicio).slice(0, 4) : (c.creado_en ? String(c.creado_en).slice(0, 4) : '');
+  return 'LOGOS' + (y ? '-' + y : '') + '-' + String(c.id || '').replace(/[^a-z0-9]/gi, '').slice(0, 4).toUpperCase();
+}
+function cmpMas(btn){ const r = btn.closest('.cmp-row'); const m = r && r.querySelector('.cmp-mas'); if(!m) return; m.hidden = !m.hidden; btn.textContent = (m.hidden ? (LANG === 'ca' ? 'Més informació ⌄' : 'Más información ⌄') : (LANG === 'ca' ? 'Menys informació ⌃' : 'Menos información ⌃')); }
+function cmpFiltrar(){
+  const q = cmpNorm((document.getElementById('cmp-q') || {}).value || '');
+  const per = (document.getElementById('cmp-per') || {}).value || 'actuales';
+  const fil = (document.getElementById('cmp-fil') || {}).value || 'todos';
+  const favs = cmpFavs(); let n = 0;
+  document.querySelectorAll('#aulaciudadano-content .cmp-sec[data-sec="cursos"] .cmp-row').forEach(r => {
+    const ok = (!q || cmpNorm(r.dataset.txt || '').includes(q))
+      && (per === 'todos' || (per === 'actuales' ? r.dataset.fin !== '1' : r.dataset.fin === '1'))
+      && (fil === 'todos' || (fil === 'fav' ? favs.includes(r.dataset.id) : (fil === 'mios' ? r.dataset.mio === '1' : r.dataset.mio !== '1')));
+    r.style.display = ok ? '' : 'none'; if(ok) n++;
+  });
+  document.querySelectorAll('#aulaciudadano-content .cmp-sec[data-sec="cursos"] .cmp-grupo').forEach(g => {
+    const lista = g.nextElementSibling; g.style.display = lista && [...lista.children].some(x => x.style.display !== 'none') ? '' : 'none';
+  });
+  const r = document.getElementById('cmp-n'); if(r) r.textContent = n;
+}
+function cmpVista(v){
+  window.__cmpVista = v; try { localStorage.setItem('logos_aula_vista', v); } catch(e){}
+  document.querySelectorAll('#aulaciudadano-content .cmp-sec[data-sec="cursos"] .cmp-lista').forEach(l => l.classList.toggle('cmp-grid', v === 'grid'));
+  document.querySelectorAll('#aulaciudadano-content .cmp-vista button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+}
+function cmpSec(sec){
+  window.__aulaSec = sec;
+  document.querySelectorAll('#aulaciudadano-content .cmp-sec').forEach(s => { s.hidden = s.dataset.sec !== sec; });
+  document.querySelectorAll('#aulaciudadano-content .cmp-mi[data-sec]').forEach(b => b.classList.toggle('on', b.dataset.sec === sec));
+  if(sec === 'mensajes' && window.__cmpChat){ const c = window.__cmpChat; window.__cmpChat = null; cmpAbrirChat(c); }
+}
+function cmpAbrirChat(cursoId){
+  const host = document.getElementById('cmp-chat-host'); if(!host) return;
+  const c = (window.__cmpCursos || {})[cursoId];
+  host.innerHTML = cursoChatHtml(cursoId, c ? c.nombre : '');
+  document.querySelectorAll('#aulaciudadano-content .cmp-chat-sel').forEach(b => b.classList.toggle('cmp-pri', b.dataset.id === String(cursoId)));
+  cursoChatIniciar(cursoId);
+}
+async function renderAulaCiudadano(sec){
   if(bloquearSinConsentimiento()) return;
-  const esCA = LANG === 'ca';
+  const esCA = LANG === 'ca', L = (a, b) => esCA ? b : a;
+  if(typeof sec === 'string') window.__aulaSec = sec;
   const cont = document.getElementById('aulaciudadano-content');
-  cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
-
-  const { data: cursos } = await sb.from('cursos').select('*').in('estado', ['inscripcion','activo']).order('creado_en', { ascending:false });
-
-  let misInscripciones = [];
+  cont.innerHTML = `<div class="placeholder">${L('Cargando…', 'Carregant…')}</div>`;
+  const { data: cursosTodos } = await sb.from('cursos').select('*').in('estado', ['inscripcion', 'activo', 'finalizado']).order('creado_en', { ascending: false });
+  const cursos = (cursosTodos || []).filter(c => c.audiencia !== 'equipo');
+  let misIds = [];
   if(CURRENT_USER){
     const { data } = await sb.from('cursos_inscripciones').select('curso_id').eq('usuario_id', CURRENT_USER.id).eq('estado', 'inscrito');
-    misInscripciones = (data || []).map(i => i.curso_id);
+    misIds = (data || []).map(i => i.curso_id);
   }
+  const mis = cursos.filter(c => misIds.includes(c.id));
+  const abiertos = cursos.filter(c => !misIds.includes(c.id) && c.estado !== 'finalizado');
+  window.__cmpCursos = {}; cursos.forEach(c => { window.__cmpCursos[c.id] = c; });
 
-  const iconoModalidad = { presencial:'🏫', online:'💻', mixta:'🔀' };
-  const textoEstadoCurso = {
-    inscripcion: esCA ? 'Inscripció oberta' : 'Inscripción abierta',
-    activo: esCA ? 'En curs' : 'En curso'
+  // Contenido, actividades y entregas de mis cursos (para el progreso y las tareas pendientes)
+  const hoy = hoyLocalIso();
+  let modulos = [], contenidos = [], actividades = [], progresos = [], entregas = [], clases = [];
+  if(mis.length){
+    const ids = mis.map(c => c.id);
+    const [m, cl] = await Promise.all([
+      sb.from('curso_modulos').select('*').in('curso_id', ids),
+      sb.from('aula_virtual_clases').select('*').in('curso_id', ids).gte('fecha', hoy).order('fecha', { ascending: true }).order('hora', { ascending: true })
+    ]);
+    modulos = m.data || []; clases = (cl.data || []).filter(x => x.estado !== 'cancelada');
+    const modIds = modulos.map(x => x.id);
+    if(modIds.length){
+      const [co, ac] = await Promise.all([
+        sb.from('curso_contenidos').select('id, modulo_id').in('modulo_id', modIds),
+        sb.from('curso_actividades').select('*').in('modulo_id', modIds)
+      ]);
+      contenidos = co.data || []; actividades = ac.data || [];
+      const [pr, en] = await Promise.all([
+        contenidos.length ? sb.from('curso_progreso_contenido').select('contenido_id').eq('usuario_id', CURRENT_USER.id).in('contenido_id', contenidos.map(x => x.id)) : Promise.resolve({ data: [] }),
+        actividades.length ? sb.from('curso_actividad_entregas').select('*').eq('usuario_id', CURRENT_USER.id).in('actividad_id', actividades.map(x => x.id)) : Promise.resolve({ data: [] })
+      ]);
+      progresos = pr.data || []; entregas = en.data || [];
+    }
+  }
+  const cursoDeMod = {}; modulos.forEach(x => { cursoDeMod[x.id] = x.curso_id; });
+  const stats = {};
+  mis.forEach(c => {
+    const coC = contenidos.filter(x => cursoDeMod[x.modulo_id] === c.id), acC = actividades.filter(x => cursoDeMod[x.modulo_id] === c.id);
+    const hechos = coC.filter(x => progresos.some(p => p.contenido_id === x.id)).length + acC.filter(a => { const e = entregas.find(e => e.actividad_id === a.id); return e && (a.tipo === 'test' || e.estado === 'aprobado'); }).length;
+    const total = coC.length + acC.length;
+    stats[c.id] = { pct: total ? Math.round(hechos / total * 100) : 0, total, acts: acC };
+  });
+  // Tareas pendientes: actividades sin entregar (o que hay que corregir)
+  const pendientes = actividades.filter(a => { const e = entregas.find(e => e.actividad_id === a.id); return !e || e.estado === 'necesita_correccion'; })
+    .map(a => ({ a, curso: (window.__cmpCursos || {})[cursoDeMod[a.modulo_id]], f: a.fecha_limite || null }))
+    .filter(x => x.curso && x.curso.estado !== 'finalizado');
+  const en7 = hoyLocalIso(new Date(Date.now() + 7 * 864e5));
+  const vencidas = pendientes.filter(x => x.f && x.f < hoy), deHoy = pendientes.filter(x => x.f === hoy), pronto = pendientes.filter(x => x.f && x.f > hoy && x.f <= en7), sinFecha = pendientes.filter(x => !x.f || x.f > en7);
+  const fCorta = f => new Date(f + 'T00:00:00').toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { day: 'numeric', month: 'short' });
+  const tareaHtml = x => `<button class="cmp-tarea" onclick="abrirCursoCiudadano('${x.curso.id}')"><strong>${x.a.tipo === 'test' ? '📝' : '📋'} ${escAttr(x.a.titulo || '')}</strong><small>${escAttr(x.curso.nombre || '')}${x.f ? ' · ' + L('hasta el', 'fins al') + ' ' + fCorta(x.f) : ''}</small></button>`;
+  const grupoT = (cls, tit, lista, vacio, abierto) => `<details class="${cls}" ${abierto ? 'open' : ''}><summary><span>${tit} <b>${lista.length}</b></span></summary>${lista.length ? lista.map(tareaHtml).join('') : `<div class="cmp-vacio">${vacio}</div>`}</details>`;
+  const tareasHtml = `<div class="cmp-caja cmp-tareas"><h3>${L('Tareas pendientes', 'Tasques pendents')}</h3>
+    ${grupoT('cmp-vencida', L('Vencida', 'Vençuda'), vencidas, L('No hay tareas vencidas.', 'No hi ha tasques vençudes.'), vencidas.length)}
+    ${grupoT('cmp-hoy', L('Vence hoy', 'Venç avui'), deHoy, L('Nada pendiente para hoy.', 'Res pendent per a avui.'), true)}
+    ${grupoT('cmp-pronto', L('Vence pronto', 'Venç aviat'), pronto, L('Nada para los próximos 7 días.', 'Res per als propers 7 dies.'), true)}
+    ${sinFecha.length ? grupoT('', L('Sin fecha', 'Sense data'), sinFecha, '', false) : ''}
+  </div>`;
+  const clasesCaja = `<div class="cmp-caja"><h3>📅 ${L('Próximas clases', 'Properes classes')}</h3>${clases.length ? clases.slice(0, 4).map(cl => cmpClaseHtml(cl)).join('') : `<div class="cmp-vacio">${L('No hay clases programadas.', 'No hi ha classes programades.')}</div>`}</div>`;
+
+  const favs = cmpFavs();
+  const estTxt = { inscripcion: L('Inscripción abierta', 'Inscripció oberta'), activo: L('En curso', 'En curs'), finalizado: L('Finalizado', 'Finalitzat') };
+  const fila = (c, i) => {
+    const mio = misIds.includes(c.id), st = stats[c.id], fav = favs.includes(c.id);
+    const f = d => d ? new Date(d + 'T00:00:00').toLocaleDateString(esCA ? 'ca-ES' : 'es-ES') : '—';
+    return `<div class="cmp-row" style="--c:${CMP_COLORES[i % CMP_COLORES.length]}" data-id="${escAttr(c.id)}" data-mio="${mio ? 1 : 0}" data-fin="${c.estado === 'finalizado' ? 1 : 0}" data-txt="${escAttr([c.nombre, c.docente_nombre, c.proyecto, cmpCodigo(c)].join(' '))}">
+      <div class="cmp-cod">${escAttr(cmpCodigo(c))}</div>
+      <div class="cmp-tit" onclick="${mio ? `abrirCursoCiudadano('${c.id}')` : `cmpMas(this.parentNode.querySelector('.cmp-mas-b'))`}">${escAttr(c.nombre || '')}</div>
+      <div class="cmp-meta"><span class="${c.estado === 'activo' ? 'cmp-ok' : ''}">${estTxt[c.estado] || c.estado}${mio && st ? ' · ' + st.pct + '%' : ''}</span><i>|</i><span>${escAttr(c.docente_nombre || 'Logos')}</span><i>|</i><button class="cmp-mas-b" onclick="cmpMas(this)">${L('Más información ⌄', 'Més informació ⌄')}</button></div>
+      ${mio && st ? `<div class="cmp-prog" title="${st.pct}%"><i style="width:${st.pct}%"></i></div>` : ''}
+      <div class="cmp-acc">${mio
+        ? `<button class="cmp-pri" onclick="abrirCursoCiudadano('${c.id}')">📖 ${L('Entrar al curso', 'Entrar al curs')}</button><button data-chat-curso="${escAttr(c.id)}" onclick="window.__cmpChat='${c.id}';cmpSec('mensajes')">💬 ${L('Mensajes', 'Missatges')}</button>`
+        : `<button class="cmp-oro" onclick="apuntarmeCurso('${c.id}')">✋ ${L('Apuntarme', 'Apuntar-me')}</button>`}</div>
+      <div class="cmp-mas" hidden>
+        ${c.descripcion ? `<p style="margin:0 0 8px;">${escAttr(c.descripcion)}</p>` : ''}
+        ${c.proyecto ? `<div class="panel-stat-row"><span>${L('Proyecto', 'Projecte')}</span><span>${escAttr(c.proyecto)}</span></div>` : ''}
+        <div class="panel-stat-row"><span>${L('Modalidad', 'Modalitat')}</span><span>${{ presencial: '🏫 Presencial', online: '💻 Online', mixta: L('🔀 Mixta', '🔀 Mixta') }[c.modalidad] || '🏫 Presencial'}</span></div>
+        ${(c.fecha_inicio || c.fecha_final) ? `<div class="panel-stat-row"><span>${L('Fechas', 'Dates')}</span><span>${f(c.fecha_inicio)} – ${f(c.fecha_final)}</span></div>` : ''}
+        ${c.horas_totales ? `<div class="panel-stat-row"><span>${L('Horas', 'Hores')}</span><span>${c.horas_totales} h</span></div>` : ''}
+        ${mio && st ? `<div class="panel-stat-row"><span>${L('Tu progreso', 'El teu progrés')}</span><span><strong>${st.pct}%</strong></span></div>` : ''}
+      </div>
+      <button class="cmp-star ${fav ? 'on' : ''}" onclick="cmpFav('${c.id}', this)" aria-label="${L('Favorito', 'Preferit')}">${fav ? '★' : '☆'}</button>
+    </div>`;
   };
-
-  const cursosHtml = (cursos && cursos.length)
-    ? cursos.map(c => {
-        const yaInscrito = misInscripciones.includes(c.id);
-        return `
-        <div class="panel-card" style="margin-bottom:12px;">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
-            <h3 style="margin:0;">${iconoModalidad[c.modalidad]||'🏫'} ${c.nombre}</h3>
-            <span class="chip ${c.estado==='activo'?'en-curso':'derivado'}">${textoEstadoCurso[c.estado]||c.estado}</span>
-          </div>
-          ${c.proyecto ? `<p class="subtle" style="margin:4px 0 8px;">${c.proyecto}</p>` : ''}
-          ${c.descripcion ? `<p style="font-size:13px;margin:0 0 8px;">${c.descripcion}</p>` : ''}
-          <div class="list-row"><span>${esCA?'Docent':'Docente'}</span><span>${c.docente_nombre || '—'}</span></div>
-          ${(c.fecha_inicio||c.fecha_final) ? `<div class="list-row"><span>${esCA?'Dates':'Fechas'}</span><span>${c.fecha_inicio ? new Date(c.fecha_inicio+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES') : '—'} – ${c.fecha_final ? new Date(c.fecha_final+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES') : '—'}</span></div>` : ''}
-          ${c.horas_totales ? `<div class="list-row"><span>${esCA?'Hores':'Horas'}</span><span>${c.horas_totales} h</span></div>` : ''}
-          ${yaInscrito
-            ? `<button class="primary-btn" style="margin-top:10px;" data-chat-curso="${c.id}" onclick="abrirCursoCiudadano('${c.id}')">${esCA?'📖 Continuar el curs':'📖 Continuar el curso'}</button>`
-            : `<button class="primary-btn" style="background:var(--ochre);margin-top:10px;" onclick="apuntarmeCurso('${c.id}')">✋ ${esCA?'Apuntar-me':'Apuntarme'}</button>`}
-        </div>`;
-      }).join('')
-    : `<div class="empty-note">${esCA ? 'Ara mateix no hi ha cursos oberts.' : 'Ahora mismo no hay cursos abiertos.'}</div>`;
-
-  cont.innerHTML = `
-    <h2 class="screen-title">🎓 Aula Virtual · Hub Logos</h2>
-    <p class="subtle">${esCA
-      ? 'Fes els cursos de Logos des de casa, amb el mòbil o l\'ordinador, quan tu vulguis.'
-      : 'Haz los cursos de Logos desde casa, con el móvil o el ordenador, cuando tú quieras.'}</p>
-    ${cursosHtml}
-  `;
-  try { for(const b of document.querySelectorAll('#aulaciudadano-content [data-chat-curso]')){ const n = await cursoChatNuevos(b.dataset.chatCurso); if(n) b.insertAdjacentHTML('beforeend', ` <span class="cchat-badge">💬 ${n}</span>`); } } catch(e){}
+  let k = 0;
+  const listaMis = mis.map(c => fila(c, k++)).join(''), listaAb = abiertos.map(c => fila(c, k++)).join('');
+  // Calendario
+  const calHtml = clases.length ? clases.map(cl => cmpClaseHtml(cl, true)).join('') : `<div class="cmp-vacio">${L('Todavía no hay clases programadas en tus cursos.', 'Encara no hi ha classes programades als teus cursos.')}</div>`;
+  const limites = pendientes.filter(x => x.f).sort((a, b) => a.f.localeCompare(b.f));
+  // Calificaciones
+  const califHtml = mis.length ? mis.map((c, i) => {
+    const st = stats[c.id] || { pct: 0, acts: [] };
+    return `<div class="cmp-row" style="--c:${CMP_COLORES[i % CMP_COLORES.length]};padding-right:16px;"><div class="cmp-tit" onclick="abrirCursoCiudadano('${c.id}')">${escAttr(c.nombre || '')}</div>
+      <div class="cmp-prog"><i style="width:${st.pct}%"></i></div><div class="cmp-meta">${L('Progreso', 'Progrés')}: <strong>${st.pct}%</strong></div>
+      ${st.acts.length ? st.acts.map(a => { const e = entregas.find(e => e.actividad_id === a.id);
+        const v = !e ? `<span style="color:#9AA6B8;">${L('Sin hacer', 'Sense fer')}</span>` : (a.tipo === 'test' ? `<strong>${e.puntuacion}/${e.total_preguntas}</strong>` : ({ pendiente: L('⏳ Pendiente de revisión', '⏳ Pendent de revisió'), aprobado: L('✅ Aprobada', '✅ Aprovada'), necesita_correccion: L('✏️ Corregir', '✏️ Corregir') }[e.estado] || e.estado));
+        return `<div class="panel-stat-row"><span>${a.tipo === 'test' ? '📝' : '📋'} ${escAttr(a.titulo || '')}</span><span>${v}</span></div>`; }).join('') : `<div class="cmp-vacio">${L('Este curso no tiene tests ni tareas.', 'Aquest curs no té tests ni tasques.')}</div>`}
+    </div>`; }).join('') : `<div class="cmp-vacio">${L('Cuando te apuntes a un curso, aquí verás tus notas y tu progreso.', 'Quan t\'apuntis a un curs, aquí veuràs les teves notes i el teu progrés.')}</div>`;
+  const p = window.__perfilActual || {}, nom = p.nombre_completo || (CURRENT_USER ? CURRENT_USER.email : '');
+  const sec0 = window.__aulaSec || 'cursos';
+  const mi = (s, ic, t, n) => `<button class="cmp-mi" data-sec="${s}" onclick="cmpSec('${s}')">${ic} ${t}${n ? `<span class="cmp-n">${n}</span>` : ''}</button>`;
+  cont.innerHTML = `<div class="cmp">
+    <nav class="cmp-menu">
+      <div class="cmp-yo"><span class="cmp-yo-av">${escAttr(String(nom || '?').trim().charAt(0).toUpperCase())}</span><span><strong>${escAttr(String(nom).split(' ').slice(0, 2).join(' '))}</strong><small>Aula Virtual · Logos</small></span></div>
+      ${mi('cursos', '📚', L('Cursos', 'Cursos'), '')}
+      ${mi('calendario', '📅', L('Calendario', 'Calendari'), clases.length)}
+      ${mi('mensajes', '💬', L('Mensajes', 'Missatges'), '')}
+      ${mi('calificaciones', '📊', L('Calificaciones', 'Qualificacions'), '')}
+      <div class="cmp-mi-sep"></div>
+      ${mi('ayuda', '❓', L('Ayuda', 'Ajuda'), '')}
+    </nav>
+    <main class="cmp-main">
+      <section class="cmp-sec" data-sec="cursos">
+        <h2 class="cmp-h1">${L('Cursos', 'Cursos')}</h2>
+        <div class="cmp-bar">
+          <div class="cmp-vista"><button data-v="lista" onclick="cmpVista('lista')" aria-label="${L('Lista', 'Llista')}">☰</button><button data-v="grid" onclick="cmpVista('grid')" aria-label="${L('Cuadrícula', 'Quadrícula')}">▦</button></div>
+          <div class="cmp-buscar"><input id="cmp-q" type="search" placeholder="${L('Busca tus cursos', 'Cerca els teus cursos')}" oninput="cmpFiltrar()"></div>
+          <select id="cmp-per" class="cmp-sel" onchange="cmpFiltrar()"><option value="actuales">${L('Cursos actuales', 'Cursos actuals')}</option><option value="anteriores">${L('Cursos anteriores', 'Cursos anteriors')}</option><option value="todos">${L('Todos los periodos', 'Tots els períodes')}</option></select>
+          <select id="cmp-fil" class="cmp-sel" onchange="cmpFiltrar()"><option value="todos">${L('Todos los cursos', 'Tots els cursos')}</option><option value="mios">${L('Mis cursos', 'Els meus cursos')}</option><option value="abiertos">${L('Para apuntarme', 'Per apuntar-me')}</option><option value="fav">★ ${L('Favoritos', 'Preferits')}</option></select>
+        </div>
+        <div class="cmp-res"><span><span id="cmp-n">${mis.length + abiertos.length}</span> ${L('resultados', 'resultats')}</span></div>
+        ${mis.length ? `<div class="cmp-grupo">🎓 ${L('Mis cursos', 'Els meus cursos')}</div><div class="cmp-lista">${listaMis}</div>` : ''}
+        ${abiertos.length ? `<div class="cmp-grupo">✋ ${L('Cursos abiertos: puedes apuntarte', 'Cursos oberts: t\'hi pots apuntar')}</div><div class="cmp-lista">${listaAb}</div>` : ''}
+        ${!mis.length && !abiertos.length ? `<div class="cmp-vacio">${L('Ahora mismo no hay cursos abiertos.', 'Ara mateix no hi ha cursos oberts.')}</div>` : ''}
+      </section>
+      <section class="cmp-sec" data-sec="calendario" hidden>
+        <h2 class="cmp-h1">${L('Calendario', 'Calendari')}</h2>
+        <div class="cmp-caja"><h3>🎥 ${L('Clases', 'Classes')}</h3>${calHtml}</div>
+        <div class="cmp-caja" style="margin-top:12px;"><h3>⏰ ${L('Fechas límite', 'Dates límit')}</h3>${limites.length ? limites.map(tareaHtml).join('') : `<div class="cmp-vacio">${L('Ninguna tarea con fecha límite.', 'Cap tasca amb data límit.')}</div>`}</div>
+      </section>
+      <section class="cmp-sec" data-sec="mensajes" hidden>
+        <h2 class="cmp-h1">${L('Mensajes', 'Missatges')}</h2>
+        ${mis.length ? `<div class="cmp-acc" style="margin:0 0 12px;">${mis.map(c => `<button class="cmp-chat-sel" data-id="${escAttr(c.id)}" data-chat-curso="${escAttr(c.id)}" onclick="cmpAbrirChat('${c.id}')">💬 ${escAttr(c.nombre || '')}</button>`).join('')}</div><div id="cmp-chat-host"><div class="cmp-vacio">${L('Elige un curso para ver sus mensajes.', 'Tria un curs per veure\'n els missatges.')}</div></div>` : `<div class="cmp-vacio">${L('Cuando te apuntes a un curso podrás hablar con el grupo y con el docente.', 'Quan t\'apuntis a un curs podràs parlar amb el grup i amb el docent.')}</div>`}
+      </section>
+      <section class="cmp-sec" data-sec="calificaciones" hidden>
+        <h2 class="cmp-h1">${L('Calificaciones', 'Qualificacions')}</h2>
+        <div class="cmp-lista">${califHtml}</div>
+      </section>
+      <section class="cmp-sec" data-sec="ayuda" hidden>
+        <h2 class="cmp-h1">${L('Ayuda', 'Ajuda')}</h2>
+        <div class="cmp-caja"><ol style="margin:0;padding-left:20px;line-height:1.7;font-size:14.5px;">
+          <li>${L('En <strong>Cursos</strong> pulsa <strong>✋ Apuntarme</strong> en el curso que te interese.', 'A <strong>Cursos</strong> prem <strong>✋ Apuntar-me</strong> al curs que t\'interessi.')}</li>
+          <li>${L('Después pulsa <strong>📖 Entrar al curso</strong>: verás los módulos, los vídeos y documentos, los tests y las tareas.', 'Després prem <strong>📖 Entrar al curs</strong>: veuràs els mòduls, els vídeos i documents, els tests i les tasques.')}</li>
+          <li>${L('A la derecha, <strong>Tareas pendientes</strong> te avisa de lo que vence hoy o pronto.', 'A la dreta, <strong>Tasques pendents</strong> t\'avisa del que venç avui o aviat.')}</li>
+          <li>${L('En <strong>Calendario</strong> tienes las clases en línea con el botón para entrar.', 'A <strong>Calendari</strong> tens les classes en línia amb el botó per entrar.')}</li>
+          <li>${L('En <strong>Mensajes</strong> hablas con el grupo y con el docente.', 'A <strong>Missatges</strong> parles amb el grup i amb el docent.')}</li>
+        </ol><p class="subtle" style="margin:12px 0 0;">${L('¿Dudas? Llama a Logos al 630 46 15 60 o escribe al técnico virtual 💬.', 'Dubtes? Truca a Logos al 630 46 15 60 o escriu al tècnic virtual 💬.')}</p></div>
+      </section>
+    </main>
+    <aside class="cmp-der">${CURRENT_USER ? tareasHtml : ''}${CURRENT_USER ? clasesCaja : ''}</aside>
+  </div>`;
+  cmpVista(window.__cmpVista || (() => { try { return localStorage.getItem('logos_aula_vista') || 'lista'; } catch(e){ return 'lista'; } })());
+  cmpSec(sec0);
+  cmpFiltrar();
+  try { for(const b of document.querySelectorAll('#aulaciudadano-content [data-chat-curso]')){ const n = await cursoChatNuevos(b.dataset.chatCurso); if(n) b.insertAdjacentHTML('beforeend', ` <span class="cchat-badge">${n}</span>`); } } catch(e){}
+}
+function cmpClaseHtml(cl, largo){
+  const esCA = LANG === 'ca', d = new Date(cl.fecha + 'T00:00:00');
+  const c = (window.__cmpCursos || {})[cl.curso_id];
+  return `<div class="cmp-clase"><div class="cmp-clase-f"><strong>${d.getDate()}</strong><small>${d.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { month: 'short' }).replace('.', '')}</small></div>
+    <div><strong>${String(cl.hora || '').slice(0, 5)}</strong> · ${escAttr(cl.titulo || (c && c.nombre) || '')}${largo && c ? `<br><small class="subtle" style="margin:0;">${escAttr(c.nombre || '')}</small>` : ''}</div>
+    ${cl.enlace_meet ? `<a href="${escAttr(cl.enlace_meet)}" target="_blank" rel="noopener">${esCA ? 'Entrar' : 'Entrar'} →</a>` : ''}</div>`;
 }
 
 async function apuntarmeCurso(cursoId){
@@ -4384,9 +4872,10 @@ async function abrirCursoCiudadano(cursoId){
               ? `<span class="chip ${entrega.estado==='aprobado'?'hecho':'en-curso'}" style="font-size:10px;">${textoEstado[entrega.estado]}</span>`
               : `<button class="link-btn" style="font-size:12px;" onclick="abrirTarea('${a.id}','${(a.titulo||'').replace(/'/g,"\\'")}')">${esCA?'Entregar':'Entregar'}</button>`;
           }
+          const fl = a.fecha_limite ? new Date(a.fecha_limite + 'T00:00:00') : null, venc = fl && !entrega && a.fecha_limite < hoyIso;
           return `<div class="contenido-row">
             <span>${iconoTipoAct[a.tipo]||'📝'}</span>
-            <span style="flex:1;">${a.titulo}</span>
+            <span style="flex:1;">${a.titulo}${fl ? `<br><small style="color:${venc ? '#C0392B' : '#5B6B82'};font-weight:600;">⏰ ${esCA ? 'Fins al' : 'Hasta el'} ${fl.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { day:'numeric', month:'short' })}${venc ? (esCA ? ' · vençuda' : ' · vencida') : ''}</small>` : ''}</span>
             ${estadoHtml}
           </div>`;
         }).join('');
@@ -4416,16 +4905,20 @@ async function abrirCursoCiudadano(cursoId){
     : `<div class="empty-note">${esCA ? 'Encara no hi ha classes programades.' : 'Todavía no hay clases programadas.'}</div>`;
 
   cont.innerHTML = `
-    <h2 class="screen-title">${curso ? curso.nombre : ''}</h2>
-    <div class="panel-card" style="background:var(--good-soft);border-color:var(--good);margin-bottom:16px;">
-      <div class="list-row"><span><strong>${esCA?'El teu progrés':'Tu progreso'}</strong></span><span style="font-weight:700;color:var(--teal-dark);">${miProgreso}%</span></div>
+    <div class="cmp-curso-cab">
+      <div class="cmp-cod" style="color:rgba(255,255,255,.8);">${curso ? escAttr(cmpCodigo(curso)) : ''}</div>
+      <h2>${curso ? escAttr(curso.nombre || '') : ''}</h2>
+      <div class="cmp-curso-meta">${curso && curso.docente_nombre ? '👤 ' + escAttr(curso.docente_nombre) + ' · ' : ''}${(modulos || []).length} ${esCA ? 'mòduls' : 'módulos'} · ${totalItems} ${esCA ? 'elements' : 'elementos'}</div>
+      <div class="cmp-curso-prog"><div><i style="width:${miProgreso}%"></i></div><strong>${miProgreso}%</strong></div>
+      <div class="cmp-acc" style="margin-top:12px;"><button class="cmp-oro" onclick="document.getElementById('cc-modulos').scrollIntoView({behavior:'smooth'})">📚 ${esCA ? 'Contingut' : 'Contenido'}</button><button onclick="document.querySelector('#cursodetalle-content .cchat').scrollIntoView({behavior:'smooth'})">💬 ${esCA ? 'Missatges' : 'Mensajes'}</button></div>
     </div>
     <div class="panel-card" style="margin-bottom:16px;">
       <h3>📅 ${esCA?'Properes classes':'Próximas clases'}</h3>
       ${clasesHtml}
     </div>
-    ${cursoChatHtml(cursoId)}
+    <div id="cc-modulos"></div>
     ${modulosHtml}
+    ${cursoChatHtml(cursoId)}
     <div id="test-tarea-wrap"></div>
   `;
   cursoChatIniciar(cursoId);
@@ -4826,11 +5319,10 @@ function qrHtml(perfil, nombre){
   const svg = perfil && perfil.qr_token ? qrSvg(perfil.qr_token) : '';
   if(!svg) return `<p style="font-size:13px;color:var(--muted);">${ca ? 'El teu QR encara no està disponible.' : 'Tu QR todavía no está disponible.'}</p>`;
   return `
-    <div id="qr-caja" style="width:210px;max-width:70%;margin:0 auto;background:#fff;padding:6px;border-radius:10px;border:1px solid var(--line,#ddd);">${svg}</div>
-    <p style="margin:8px 0 2px;font-weight:700;">${escAttr(nombre)}</p>
+    <div class="me-qr"><div id="qr-caja" style="width:132px;flex:0 0 132px;background:#fff;padding:6px;border-radius:12px;border:1px solid var(--line,#ddd);">${svg}</div><div class="me-qr-t">
+    <p style="margin:0 0 2px;font-weight:700;">${escAttr(nombre)}</p>
     <p style="margin:0 0 10px;font-size:13px;color:var(--muted);">${ca ? 'Ensenya aquest codi al personal de Logos perquè trobi la teva fitxa ràpidament. No conté dades personals.' : 'Enseña este código al personal de Logos para que encuentre tu ficha rápidamente. No contiene datos personales.'}</p>
-    <button class="primary-btn" style="margin-bottom:8px;" onclick="qrDescargar()">${ca ? '⬇️ Descarrega el meu QR' : '⬇️ Descargar mi QR'}</button>
-    <button class="primary-btn" style="background:#8a8a8a;margin-bottom:0;" onclick="qrRegenerar()">${ca ? '🔄 Canviar el meu codi' : '🔄 Cambiar mi código'}</button>`;
+    <div class="me-qr-b"><button onclick="qrDescargar()">${ca ? '⬇️ Descarregar' : '⬇️ Descargar'}</button><button onclick="qrRegenerar()">${ca ? '🔄 Canviar codi' : '🔄 Cambiar código'}</button></div></div></div>`;
 }
 function qrDescargar(){
   const svg = document.querySelector('#qr-caja svg'); if(!svg) return;
@@ -6006,8 +6498,10 @@ function snCitaHtml(c, nombre, onclick){
   const d = new Date(c.fecha + 'T00:00:00'), ca = LANG === 'ca';
   const mes = d.toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { month: 'short' }).replace('.', '');
   return `<div class="sn-cita" onclick="${onclick || ''}"><div class="sn-cita-f"><div class="sn-cita-d">${d.getDate()}</div><div class="sn-cita-m">${mes}</div><div class="sn-cita-h">${String(c.hora || '').slice(0, 5)}h</div></div>
-    <div class="sn-cita-i"><div class="sn-cita-p">${nombre || ''}</div><div class="sn-cita-t">${c.motivo ? String(c.motivo).replace(/</g, '&lt;') : (ca ? 'Cita a Logos' : 'Cita en Logos')}</div>
-    ${c.tecnico_nombre ? `<div class="sn-cita-tec">${String(c.tecnico_nombre).replace(/</g, '&lt;')}</div>` : ''}<div class="sn-cita-l">Associació Logos · C/ de la Pau del Protectorat, 14</div></div></div>`;
+    <div class="sn-cita-i"><div class="sn-cita-p">${nombre || ''}</div><div class="sn-cita-t">${c.motivo && !/^📞 Cita por teléfono/.test(c.motivo) ? String(c.motivo).replace(/</g, '&lt;') : (citaEsTelefono(c) ? (ca ? 'Cita per telèfon' : 'Cita por teléfono') : (ca ? 'Cita a Logos' : 'Cita en Logos'))}</div>
+    ${c.tecnico_nombre ? `<div class="sn-cita-tec">${String(c.tecnico_nombre).replace(/</g, '&lt;')}</div>` : ''}${citaEsTelefono(c)
+      ? `<div class="sn-cita-l sn-cita-tel">📞 ${ca ? 'Per telèfon · et truquem' : 'Por teléfono · te llamamos'}${citaTelDe(c) ? (ca ? ' al ' : ' al ') + String(citaTelDe(c)).replace(/</g, '&lt;') : ''}</div>`
+      : `<div class="sn-cita-l">🏢 Associació Logos · C/ de la Pau del Protectorat, 14</div>`}</div></div>`;
 }
 async function snAcompInteres(){
   const host = document.getElementById('sn-interes-a'); if(!host) return;
@@ -6017,8 +6511,8 @@ async function snAcompInteres(){
     (cursos || []).forEach(c => items.push(['sn-b2', '🎓 ' + escAttr(c.nombre), ca ? 'Curs de Logos: apunta-t\'hi a l\'Aula Virtual.' : 'Curso de Logos: apúntate en el Aula Virtual.', "showScreen('aulaciudadano');renderAulaCiudadano()"]));
   } catch(e){}
   items.push(['', '🤝 ' + (ca ? 'Què et pot oferir Logos?' : '¿Qué te puede ofrecer Logos?'), ca ? 'Feina, tràmits, formació i acompanyament.' : 'Empleo, trámites, formación y acompañamiento.', "showScreen('home')"]);
-  items.push(['sn-b4', '💬 ' + (ca ? 'Pregunta a Logos' : 'Pregunta a Logos'), ca ? 'Escriu el teu dubte i et responem aquí.' : 'Escribe tu duda y te respondemos aquí.', "document.getElementById('sec-consulta').scrollIntoView({behavior:'smooth',block:'start'})"]);
-  items.push(['', '📄 ' + (ca ? 'Els meus documents' : 'Mis documentos'), ca ? 'Puja i guarda els teus papers amb seguretat.' : 'Sube y guarda tus papeles de forma segura.', "document.getElementById('sec-documentos').scrollIntoView({behavior:'smooth',block:'start'})"]);
+  items.push(['sn-b4', '💬 ' + (ca ? 'Pregunta a Logos' : 'Pregunta a Logos'), ca ? 'Escriu el teu dubte i et responem aquí.' : 'Escribe tu duda y te respondemos aquí.', "meIr('consulta')"]);
+  items.push(['', '📄 ' + (ca ? 'Els meus documents' : 'Mis documentos'), ca ? 'Puja i guarda els teus papers amb seguretat.' : 'Sube y guarda tus papeles de forma segura.', "meIr('documentos')"]);
   items.push(['sn-b3', '📝 ' + (ca ? 'Fes el teu currículum' : 'Haz tu currículum'), ca ? 'En pocs minuts, llest per enviar.' : 'En pocos minutos, listo para enviar.', "showScreen('cv');renderCVScreen()"]);
   host.innerHTML = items.map(([c, t, d, on]) => snFichaHtml(c, t, d, on)).join('');
   snCarrusel(host);
@@ -6152,8 +6646,12 @@ async function renderDashboard(){
 
   window.__MIS_TRAMITES = [];
   const tramitesOrdenados = (tramites || []).slice().sort((x, y) => ((x.estado==='hecho'||x.estado==='anulado') - (y.estado==='hecho'||y.estado==='anulado')) || String(y.fecha_inicio||'').localeCompare(String(x.fecha_inicio||'')));
-  const tramitesHtml = (tramites && tramites.length)
-    ? tramitesOrdenados.map(tr => {
+  const trCerradoMio = x => x.estado === 'hecho' || x.estado === 'anulado';
+  const tramitesAbiertosMios = tramitesOrdenados.filter(x => !trCerradoMio(x));
+  const tramitesCerradosMios = tramitesOrdenados.filter(trCerradoMio).sort((x, y) => String(y.fecha_fin || y.creado_en || '').localeCompare(String(x.fecha_fin || x.creado_en || '')));
+  const historicoTramitesHtml = tramitesHistoricoHtml(tramitesCerradosMios);
+  const tramitesHtml = tramitesAbiertosMios.length
+    ? tramitesAbiertosMios.map(tr => {
         const chipClass = tr.estado === 'anulado' ? 'anulado' : tr.estado === 'hecho' ? 'hecho' : (tr.estado === 'derivado_logos' ? 'derivado' : 'en-curso');
         const chipLabel = tr.estado === 'anulado' ? (LANG==='ca'?'Anul·lat':'Anulado') : tr.estado === 'hecho' ? t.hecho : (tr.estado === 'derivado_logos' ? t.derivado : t.enCurso);
         const fechas = tr.fecha_inicio ? `${LANG==='ca' ? 'Iniciat' : 'Iniciado'}: ${fmtFechaCorta(tr.fecha_inicio, LANG==='ca')}${tr.fecha_fin ? ` · ${tr.estado==='anulado' ? (LANG==='ca' ? 'Anul·lat' : 'Anulado') : (LANG==='ca' ? 'Acabat' : 'Terminado')}: ${fmtFechaCorta(tr.fecha_fin, LANG==='ca')}` : ''}` : '';
@@ -6169,7 +6667,7 @@ async function renderDashboard(){
         const quien = tr.estado === 'derivado_logos' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🤝 ${esCAt ? 'Amb l\'ajuda de Logos' : 'Con ayuda de Logos'}</span>` : (tr.estado === 'en_curso' ? `<br><span class="subtle" style="font-size:11px;margin:0;">🟢 ${esCAt ? 'Ho fas tu' : 'Lo haces tú'}</span>` : '');
         return `<div class="list-row" style="flex-direction:column;align-items:stretch;"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span>${tr.nombre_servicio}${fechas ? `<br><span class="subtle" style="font-size:11px;margin:0;">${fechas}</span>` : ''}${quien}</span><span class="chip ${chipClass}">${chipLabel}</span></div>${botones}</div>`;
       }).join('')
-    : '';
+    : ((tramites && tramites.length) ? `<div class="empty-note">${LANG==='ca' ? 'Ara mateix no tens cap tràmit en marxa. 🎉' : 'Ahora mismo no tienes ningún trámite en marcha. 🎉'}</div>` : '');
   const btnEmpezarTramite = `<div style="margin-top:12px;${(tramites && tramites.length) ? '' : 'padding:14px;border:1.5px dashed var(--ochre);border-radius:14px;background:var(--ochre-soft);'}">
       ${(tramites && tramites.length) ? '' : `<p style="margin:0 0 10px;font-size:13.5px;line-height:1.5;"><strong>${LANG==='ca' ? 'Encara no has començat cap tràmit.' : 'Todavía no has empezado ningún trámite.'}</strong> ${LANG==='ca' ? 'Mira què necessites i comença des d\'aquí; si et costa, Logos t\'ajuda.' : 'Mira qué necesitas y empieza desde aquí; si te cuesta, Logos te ayuda.'}</p>`}
       <button class="primary-btn" style="margin:0;background:var(--ochre);" onclick="irANecesidades()">🔎 ${(tramites && tramites.length) ? (LANG==='ca' ? 'Començar un altre tràmit' : 'Empezar otro trámite') : (LANG==='ca' ? 'Veure què necessito i començar' : 'Ver qué necesito y empezar')}</button>
@@ -6214,7 +6712,7 @@ async function renderDashboard(){
   const citasHtml = (citas && citas.length)
     ? citasOrd.map(c => `
         <div class="list-row">
-          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
+          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)} ${citaEsTelefono(c) ? `<span class="chip" style="background:#EFEAFB;color:#5B3FA0;">📞 ${LANG==='ca' ? 'Per telèfon' : 'Por teléfono'}</span>` : `<span class="chip" style="background:#EAF1FB;color:#1B4E95;">🏢 ${LANG==='ca' ? 'Presencial' : 'Presencial'}</span>`}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
           <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}')">✖ ${LANG==='ca' ? 'Cancel·lar cita' : 'Cancelar cita'}</button>
         </div>${citaRespuestaHtml(c)}`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
@@ -6242,7 +6740,7 @@ async function renderDashboard(){
   const gridAccesosHtml = `
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:16px 0 20px;">
       ${gridAccesos.map(a => `
-        <div class="quick-card" onclick="document.getElementById('sec-${a.id}').scrollIntoView({behavior:'smooth', block:'start'})">
+        <div class="quick-card" onclick="meIr('${a.id}')">
           <div class="icon-badge" style="background:${a.bg};color:${a.color};">${a.icon}</div>
           <h4>${a.titulo}</h4>
           <p>${a.sub}</p>
@@ -6251,20 +6749,20 @@ async function renderDashboard(){
 
   const caSn = LANG === 'ca', proximasSn = (citas || []).filter(c => c.fecha >= hoyLocalIso()).sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora)).slice(0, 2);
   const nombreSn = (perfil && perfil.nombre_completo) || '';
-  const accSn = (ic, txt, id, n, prim) => `<button class="sn-acc" onclick="${id.startsWith('fn:') ? id.slice(3) : `document.getElementById('sec-${id}').scrollIntoView({behavior:'smooth', block:'start'})`}"><span class="sn-acc-i${prim ? ' sn-prim' : ''}">${ic}</span><span class="sn-acc-l">${txt}</span>${n ? `<span class="sn-acc-n">${n}</span>` : ''}</button>`;
+  const accSn = (ic, txt, id, n, prim) => `<button class="sn-acc" onclick="${id.startsWith('fn:') ? id.slice(3) : `meIr('${id}')`}"><span class="sn-acc-i${prim ? ' sn-prim' : ''}">${ic}</span><span class="sn-acc-l">${txt}</span>${n ? `<span class="sn-acc-n">${n}</span>` : ''}</button>`;
   const nAvisosSn = (proximasSn.length ? 1 : 0) + (consultas || []).filter(c => c.estado === 'respondida').length + (avisosProyecto || []).length;
   const inicioSn = `<div class="sn-wrap">
     <div class="sn-top">
       <div class="sn-hola" style="margin:0;">${caSn ? 'Hola' : 'Hola'}${nombreSn ? ', ' + escAttr(nombreSn.split(' ')[0]) : ''}</div>
       <div class="sn-top-ic">
-        <button class="sn-ic" title="${caSn ? 'Escriure un missatge a Logos' : 'Escribir un mensaje a Logos'}" aria-label="${caSn ? 'Missatge' : 'Mensaje'}" onclick="document.getElementById('sec-consulta').scrollIntoView({behavior:'smooth',block:'start'})">💬</button>
+        <button class="sn-ic" title="${caSn ? 'Escriure un missatge a Logos' : 'Escribir un mensaje a Logos'}" aria-label="${caSn ? 'Missatge' : 'Mensaje'}" onclick="meIr('consulta')">💬</button>
         <a class="sn-ic" href="tel:+34630461560" title="${caSn ? 'Trucar a Logos' : 'Llamar a Logos'}" aria-label="${caSn ? 'Trucar' : 'Llamar'}">📞</a>
-        <button class="sn-ic" title="${caSn ? 'Recordatoris' : 'Recordatorios'}" aria-label="${caSn ? 'Recordatoris' : 'Recordatorios'}" onclick="document.getElementById('sec-recordatorios').scrollIntoView({behavior:'smooth',block:'start'})">🔔${nAvisosSn ? `<span class="sn-ic-n">${nAvisosSn}</span>` : ''}</button>
+        <button class="sn-ic" title="${caSn ? 'Recordatoris' : 'Recordatorios'}" aria-label="${caSn ? 'Recordatoris' : 'Recordatorios'}" onclick="meIr('recordatorios')">🔔${nAvisosSn ? `<span class="sn-ic-n">${nAvisosSn}</span>` : ''}</button>
       </div>
     </div>
     <div class="sn-fecha">${new Date().toLocaleDateString(caSn ? 'ca-ES' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     <div class="sn-sec-t">${caSn ? 'Properes cites' : 'Próximas citas'}</div>
-    <div class="sn-citas">${proximasSn.length ? proximasSn.map(c => snCitaHtml(c, escAttr(nombreSn), "document.getElementById('sec-citas').scrollIntoView({behavior:'smooth',block:'start'})")).join('') : `<div class="sn-vacio">${caSn ? 'No tens cap cita. Pots demanar-ne una aquí sota.' : 'No tienes ninguna cita. Puedes pedir una aquí debajo.'}</div>`}</div>
+    <div class="sn-citas">${proximasSn.length ? proximasSn.map(c => snCitaHtml(c, escAttr(nombreSn), "meIr('citas')")).join('') : `<div class="sn-vacio">${caSn ? 'No tens cap cita. Pots demanar-ne una aquí sota.' : 'No tienes ninguna cita. Puedes pedir una aquí debajo.'}</div>`}</div>
     <button class="sn-cta" onclick="showScreen('cita');renderCitaForm()">${caSn ? 'Demanar cita a Logos' : 'Pedir cita en Logos'}</button>
     <div class="sn-sec-t">${caSn ? 'Accessos ràpids' : 'Accesos rápidos'}</div>
     <div class="sn-accesos">
@@ -6286,50 +6784,20 @@ async function renderDashboard(){
     ${inicioSn}
     <div style="height:18px;"></div>
 
-    <div id="sec-recordatorios"></div>
-    ${recordatoriosHtml}
-    ${contactoLogosBloqueHtml(LANG==='ca')}
-    <div id="sec-emprendimiento"></div>
-    ${emprendimientoHtml}
-
-    ${(mensajesNuevos && false) ? `
-    <div class="info-box info-box-gold" style="margin-bottom:16px;cursor:pointer;" onclick="showScreen('familias');renderFamilias()">
-      <p style="margin:0;"><strong>💬 ${mensajesNuevos} ${LANG==='ca' ? (mensajesNuevos === 1 ? 'missatge nou' : 'missatges nous') + ' de Joves en acció' : (mensajesNuevos === 1 ? 'mensaje nuevo' : 'mensajes nuevos') + ' de Jóvenes en acción'}</strong> →</p>
-    </div>` : ''}
-
-    <div id="sec-avisos"></div>
-    ${avisosProyecto.length ? `
-    <div class="panel-card" style="margin-bottom:16px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">📣</div>
-        <h3 style="margin:0;">${LANG==='ca' ? 'Avisos del projecte' : 'Avisos del proyecto'}</h3>
+    <div class="me-hub" id="me-hub">
+      <div class="me-hub-t">${LANG==='ca' ? 'La meva carpeta' : 'Mi carpeta'}<small>${LANG==='ca' ? 'Tot el que és teu a Logos, en un sol lloc' : 'Todo lo tuyo en Logos, en un solo sitio'}</small></div>
+      <div class="me-tabs" role="tablist">
+        ${meTab('citas', '📅', LANG==='ca' ? 'Cites' : 'Citas', (citas || []).filter(c => c.fecha >= hoyLocalIso()).length, 'c1')}
+        ${meTab('tramites', '🗂️', LANG==='ca' ? 'Tràmits' : 'Trámites', (tramites || []).filter(x => x.estado !== 'hecho').length, 'c2')}
+        ${meTab('documentos', '📄', LANG==='ca' ? 'Documents' : 'Documentos', (documentos || []).length, 'c3')}
+        ${meTab('consulta', '💬', LANG==='ca' ? 'Consultes' : 'Consultas', (consultas || []).filter(c => c.estado === 'respondida').length, 'c4', (consultas || []).some(c => c.estado === 'respondida'))}
+        ${meTab('recordatorios', '🔔', LANG==='ca' ? 'Avisos' : 'Avisos', nAvisosSn, 'c5', nAvisosSn > 0)}
+        ${meTab('qr', '🔳', LANG==='ca' ? 'El meu QR' : 'Mi QR', 0, 'c6')}
+        ${meTab('mas', '⚙️', LANG==='ca' ? 'Més' : 'Más', 0, 'c7')}
       </div>
-      ${avisosProyecto.map(av => `
-        <div style="padding:8px 0;border-bottom:1px solid var(--line);">
-          <p class="subtle" style="margin:0 0 2px;font-size:11px;">${av.proyectos ? av.proyectos.nombre : ''} · ${new Date(av.creado_en).toLocaleDateString(LANG==='ca'?'ca-ES':'es-ES')}</p>
-          <p style="margin:0;font-weight:700;font-size:13.5px;">${av.titulo}</p>
-          <p style="margin:2px 0 0;font-size:13px;white-space:pre-line;">${escAttr(av.mensaje)}</p>
-          ${avisosPersonales[av.id] ? `<p style="margin:6px 0 0;padding:7px 10px;background:var(--gold-soft);border-radius:8px;font-size:13px;white-space:pre-line;"><strong>${LANG==='ca' ? 'Per a tu:' : 'Para ti:'}</strong> ${escAttr(avisosPersonales[av.id])}</p>` : ''}
-        </div>`).join('')}
-    </div>` : ''}
-
-    <div id="sec-qr"></div>
-    <div class="panel-card" style="margin-top:16px;text-align:center;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;text-align:left;">
-        <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">🔳</div>
-        <h3 style="margin:0;">${LANG==='ca' ? 'El meu QR' : 'Mi QR'}</h3>
-      </div>
-      ${qrHtml(perfil, nombre)}
     </div>
-
-    <div id="sec-consulta"></div>
-    <div style="display:flex;align-items:center;gap:10px;margin:16px 0 8px;">
-      <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">💬</div>
-      <h3 style="margin:0;font-size:14px;font-family:var(--font-display);font-weight:600;color:var(--teal-dark);">${LANG==='ca' ? 'La meva consulta d\'orientació' : 'Mi consulta de orientación'}</h3>
-    </div>
-    ${consultasHtml || `<div class="panel-card"><p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'No tens cap consulta oberta.' : 'No tienes ninguna consulta abierta.'}</p><button class="link-btn" onclick="irANecesidades()">${LANG==='ca' ? 'Fer una consulta →' : 'Hacer una consulta →'}</button></div>`}
-
-    <div id="sec-citas"></div>
+    <section class="me-pane" data-me="citas">
+<div id="sec-citas"></div>
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:var(--good-soft);color:var(--good);margin:0;">📅</div>
@@ -6339,7 +6807,11 @@ async function renderDashboard(){
       <button class="primary-btn" style="background:var(--ochre);margin-top:10px;margin-bottom:0;" onclick="showScreen('cita');renderCitaForm()">${(citas || []).length ? (LANG==='ca' ? '➕ Demanar una altra cita' : '➕ Pedir otra cita') : (LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita')}</button>
     </div>
 
-    <div id="sec-tramites"></div>
+    
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button><button onclick="meIr('documentos')">${LANG==='ca' ? '📄 Preparar els meus documents' : '📄 Preparar mis documentos'}</button><button onclick="meIr('tramites')">${LANG==='ca' ? '🗂️ Veure els meus tràmits' : '🗂️ Ver mis trámites'}</button></div>
+    </section>
+    <section class="me-pane" data-me="tramites">
+<div id="sec-tramites"></div>
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">🗂️</div>
@@ -6348,26 +6820,13 @@ async function renderDashboard(){
       ${tramitesHtml}
       ${btnEmpezarTramite}
     </div>
+    ${historicoTramitesHtml}
 
-    <div id="sec-consentimiento"></div>
-    ${!(perfil && perfil.consentimiento_firmado) ? `
-    <div class="panel-card" style="margin-top:16px;">
-      <h3 style="margin:0 0 8px;">✅ ${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
-      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Encara no has signat el consentiment.' : 'Todavía no has firmado el consentimiento.'}</p>
-      <button class="primary-btn" style="margin:0;" onclick="abrirFormDesdeMenu('consent')">${LANG==='ca' ? 'Signar el consentiment' : 'Firmar el consentimiento'}</button>
-    </div>` : `
-    <div class="panel-card" style="margin-top:16px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">✅</div>
-        <h3 style="margin:0;">${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
-      </div>
-      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca'
-        ? `Vas signar el teu consentiment de protecció de dades${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, true) : ''}.`
-        : `Firmaste tu consentimiento de protección de datos${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, false) : ''}.`}</p>
-      <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
-    </div>`}
-
-    <div id="sec-documentos"></div>
+    
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="meIr('documentos')">${LANG==='ca' ? '📄 Pujar un document' : '📄 Subir un documento'}</button><button onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita perquè t\'ajudin' : '📅 Pedir cita para que te ayuden'}</button><button onclick="irANecesidades()">${LANG==='ca' ? '🧭 Què necessito?' : '🧭 ¿Qué necesito?'}</button></div>
+    </section>
+    <section class="me-pane" data-me="documentos">
+<div id="sec-documentos"></div>
     <div class="panel-card" style="margin-top:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">📄</div>
@@ -6392,6 +6851,82 @@ async function renderDashboard(){
       </div>
     </div>
 
+
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="meIr('tramites')">${LANG==='ca' ? '🗂️ Els meus tràmits' : '🗂️ Mis trámites'}</button><button onclick="showScreen('cv');renderCVScreen()">${LANG==='ca' ? '📝 Fer el meu currículum' : '📝 Hacer mi currículum'}</button><button onclick="meIr('citas')">${LANG==='ca' ? '📅 Les meves cites' : '📅 Mis citas'}</button></div>
+    </section>
+    <section class="me-pane" data-me="consulta">
+<div id="sec-consulta"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin:16px 0 8px;">
+      <div class="icon-badge" style="background:#E7ECFF;color:#33449E;margin:0;">💬</div>
+      <h3 style="margin:0;font-size:14px;font-family:var(--font-display);font-weight:600;color:var(--teal-dark);">${LANG==='ca' ? 'La meva consulta d\'orientació' : 'Mi consulta de orientación'}</h3>
+    </div>
+    ${consultasHtml || `<div class="panel-card"><p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'No tens cap consulta oberta.' : 'No tienes ninguna consulta abierta.'}</p><button class="link-btn" onclick="irANecesidades()">${LANG==='ca' ? 'Fer una consulta →' : 'Hacer una consulta →'}</button></div>`}
+
+        ${contactoLogosBloqueHtml(LANG==='ca')}
+
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="showScreen('cita');renderCitaForm()">${LANG==='ca' ? '📅 Demanar cita' : '📅 Pedir cita'}</button><button onclick="irANecesidades()">${LANG==='ca' ? '🧭 Què necessito?' : '🧭 ¿Qué necesito?'}</button><button onclick="toggleAsistenteChat()">${LANG==='ca' ? '🧑‍💼 Tècnic virtual' : '🧑‍💼 Técnico virtual'}</button></div>
+    </section>
+    <section class="me-pane" data-me="recordatorios">
+<div id="sec-recordatorios"></div>
+    ${recordatoriosHtml}
+    
+    <div id="sec-avisos"></div>
+    ${avisosProyecto.length ? `
+    <div class="panel-card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:var(--ochre-soft);color:#7A4A1F;margin:0;">📣</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'Avisos del projecte' : 'Avisos del proyecto'}</h3>
+      </div>
+      ${avisosProyecto.map(av => `
+        <div style="padding:8px 0;border-bottom:1px solid var(--line);">
+          <p class="subtle" style="margin:0 0 2px;font-size:11px;">${av.proyectos ? av.proyectos.nombre : ''} · ${new Date(av.creado_en).toLocaleDateString(LANG==='ca'?'ca-ES':'es-ES')}</p>
+          <p style="margin:0;font-weight:700;font-size:13.5px;">${av.titulo}</p>
+          <p style="margin:2px 0 0;font-size:13px;white-space:pre-line;">${escAttr(av.mensaje)}</p>
+          ${avisosPersonales[av.id] ? `<p style="margin:6px 0 0;padding:7px 10px;background:var(--gold-soft);border-radius:8px;font-size:13px;white-space:pre-line;"><strong>${LANG==='ca' ? 'Per a tu:' : 'Para ti:'}</strong> ${escAttr(avisosPersonales[av.id])}</p>` : ''}
+        </div>`).join('')}
+    </div>` : ''}
+
+    
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="meIr('citas')">${LANG==='ca' ? '📅 Les meves cites' : '📅 Mis citas'}</button><button onclick="meIr('consulta')">${LANG==='ca' ? '💬 Les meves consultes' : '💬 Mis consultas'}</button></div>
+    </section>
+    <section class="me-pane" data-me="qr">
+<div id="sec-qr"></div>
+    <div class="panel-card" style="margin-top:16px;text-align:center;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;text-align:left;">
+        <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">🔳</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'El meu QR' : 'Mi QR'}</h3>
+      </div>
+      ${qrHtml(perfil, nombre)}
+    </div>
+
+    
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="meIr('citas')">${LANG==='ca' ? '📅 Les meves cites' : '📅 Mis citas'}</button><button onclick="meIr('mas')">${LANG==='ca' ? '⚙️ Més opcions' : '⚙️ Más opciones'}</button></div>
+    </section>
+    <section class="me-pane" data-me="mas">
+<div id="sec-emprendimiento"></div>
+    ${emprendimientoHtml}
+
+    <div id="sec-consentimiento"></div>
+    ${!(perfil && perfil.consentimiento_firmado) ? `
+    <div class="panel-card" style="margin-top:16px;">
+      <h3 style="margin:0 0 8px;">✅ ${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
+      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca' ? 'Encara no has signat el consentiment.' : 'Todavía no has firmado el consentimiento.'}</p>
+      <button class="primary-btn" style="margin:0;" onclick="abrirFormDesdeMenu('consent')">${LANG==='ca' ? 'Signar el consentiment' : 'Firmar el consentimiento'}</button>
+    </div>` : `
+    <div class="panel-card" style="margin-top:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="icon-badge" style="background:#EFEFEF;color:var(--ink);margin:0;">✅</div>
+        <h3 style="margin:0;">${LANG==='ca' ? 'El meu consentiment' : 'Mi consentimiento'}</h3>
+      </div>
+      <p class="subtle" style="margin:0 0 8px;">${LANG==='ca'
+        ? `Vas signar el teu consentiment de protecció de dades${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, true) : ''}.`
+        : `Firmaste tu consentimiento de protección de datos${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, false) : ''}.`}</p>
+      <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
+    </div>`}
+
+    
+    <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="abrirFormDesdeMenu('datos')">${LANG==='ca' ? '📝 Les meves dades' : '📝 Mis datos'}</button><button onclick="showScreen('config');renderConfigScreen()">${LANG==='ca' ? '⚙️ Configuració' : '⚙️ Configuración'}</button></div>
+    </section>
     <button class="logout-btn" onclick="cerrarSesion()">${t.cerrarSesion}</button>
   `;
 
@@ -6402,6 +6937,7 @@ async function renderDashboard(){
   window.__documentosActuales = documentos || [];
   snAcompInteres();
   snCarrusel('#profile-content .sn-accesos', 5000);
+  meMostrar((() => { try { return localStorage.getItem('logos_me_tab') || 'citas'; } catch(e){ return 'citas'; } })());
 }
 
 // Contestar a una cita: confirmar, pedir otro día/hora o avisar de que no se puede ir. Le llega al personal de Logos.
@@ -6414,6 +6950,8 @@ function citaRespuestaHtml(c){
       ${c.respuesta_usuario === 'confirma' ? '' : `<button class="link-btn" style="font-size:12px;border:1px solid var(--good);color:var(--good);border-radius:999px;padding:3px 11px;" onclick="responderCita('${c.id}','confirma')">✅ ${ca ? 'Confirmo' : 'Confirmo'}</button>`}
       <button class="link-btn" style="font-size:12px;border:1px solid var(--ochre);color:#7A4A1F;border-radius:999px;padding:3px 11px;" onclick="responderCita('${c.id}','otra_hora')">🔁 ${ca ? 'Demanar un altre dia/hora' : 'Pedir otro día/hora'}</button>
       <button class="link-btn" style="font-size:12px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:3px 11px;" onclick="responderCita('${c.id}','no_puede')">❌ ${ca ? 'No puc venir' : 'No puedo ir'}</button>
+      ${citaEsTelefono(c) ? `<button class="link-btn" style="font-size:12px;border:1px solid #2463B8;color:#1B4E95;border-radius:999px;padding:3px 11px;" onclick="cambiarModoCita('${c.id}','presencial')">🏢 ${ca ? 'Millor presencial' : 'Mejor presencial'}</button>`
+        : `<button class="link-btn" style="font-size:12px;border:1px solid #7A4FC4;color:#5B3FA0;border-radius:999px;padding:3px 11px;" onclick="cambiarModoCita('${c.id}','telefono')">📞 ${ca ? 'Millor per telèfon' : 'Mejor por teléfono'}</button>`}
     </div></div>`;
 }
 async function responderCita(id, tipo){
@@ -6534,22 +7072,59 @@ async function renderCitaForm(){
 
   const misCitasBloque = await misCitasPedidasHtml();
   const diasHtml = dias.map(d => {
-    const iso = hoyLocalIso(d);
-    const label = d.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
-    return `<button class="life-card" style="padding:10px 6px;" data-dia="${iso}" onclick="seleccionarDiaCita('${iso}')"><span style="font-size:12.5px;font-weight:700;">${label}</span></button>`;
+    const iso = hoyLocalIso(d), loc = esCA ? 'ca-ES' : 'es-ES';
+    const manana = Math.round((d - new Date(new Date().toDateString())) / 864e5) === 1;
+    return `<button class="ct-dia" data-dia="${iso}" onclick="seleccionarDiaCita('${iso}')"><small>${manana ? (esCA ? 'Demà' : 'Mañana') : d.toLocaleDateString(loc, { weekday:'short' }).replace('.', '')}</small><strong>${d.getDate()}</strong><span>${d.toLocaleDateString(loc, { month:'short' }).replace('.', '')}</span></button>`;
   }).join('');
 
+  window.__citaHoraSel = null;
+  const pasosCt = [esCA ? 'Com' : 'Cómo', ...(tecnicos.length ? [esCA ? 'Amb qui' : 'Con quién'] : []), esCA ? 'Dia' : 'Día', esCA ? 'Hora' : 'Hora', esCA ? 'Confirmar' : 'Confirmar'];
   document.getElementById('cita-content').innerHTML = `
-    <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
+    <div class="ct-hero"><div class="ct-hero-i">📅</div><div><h2>${esCA ? 'Demana la teva cita' : 'Pide tu cita'}</h2><p>${esCA ? 'En 4 passos, sense esperes. A Logos o per telèfon.' : 'En 4 pasos, sin esperas. En Logos o por teléfono.'}</p></div></div>
+    <div class="ct-pasos" id="ct-pasos">${pasosCt.map((p, i) => `<span data-i="${i}"><b>${i + 1}</b>${p}</span>`).join('')}</div>
     ${logosEstadoHtml()}
     ${misCitasBloque}
-    ${tecnicos.length ? `<div class="cita-paso"><span class="cita-num">1</span> ${esCA ? 'Amb qui vols la cita?' : '¿Con quién quieres la cita?'}</div>
+    <div class="cita-paso"><span class="cita-num">1</span> ${esCA ? 'Com vols la cita?' : '¿Cómo quieres la cita?'}</div>
+    <div id="cita-modos">${citaModosHtml()}</div>
+    ${tecnicos.length ? `<div class="cita-paso"><span class="cita-num">2</span> ${esCA ? 'Amb qui vols la cita?' : '¿Con quién quieres la cita?'}</div>
     <div id="cita-tecnicos" class="cita-tec-lista">${citaTecnicosHtml(tecnicos)}</div>
-    <div class="cita-paso"><span class="cita-num">2</span> ${esCA ? 'Tria el dia' : 'Elige el día'}</div>` : `<p class="subtle">${esCA ? 'Tria un dia per veure les hores disponibles.' : 'Elige un día para ver las horas disponibles.'}</p>`}
-    <div class="life-grid" id="cita-dias">${diasHtml}</div>
+    <div class="cita-paso"><span class="cita-num">3</span> ${esCA ? 'Tria el dia' : 'Elige el día'}</div>` : `<div class="cita-paso"><span class="cita-num">2</span> ${esCA ? 'Tria el dia' : 'Elige el día'}</div>`}
+    <div class="ct-dias" id="cita-dias">${diasHtml}</div>
     <p class="subtle" style="font-size:12px;margin-top:10px;">🕘 ${logosHorarioTexto()}</p>
     <div id="cita-horas" style="margin-top:16px;"></div>
+    <div id="ct-resumen"></div>
   `;
+  ctPasos();
+}
+// Pasos de arriba: se marcan solos según lo que ya ha elegido la persona
+function ctPasos(){
+  const el = document.getElementById('ct-pasos'); if(!el) return;
+  const conTec = (window.__tecnicosCita || []).length > 0;
+  const hechos = [true, ...(conTec ? [true] : []), !!window.__citaDia, !!window.__citaHoraSel];
+  [...el.children].forEach((s, i) => { s.classList.toggle('ok', !!hechos[i] && i < hechos.length); s.classList.toggle('on', i === hechos.findIndex(x => !x) || (i === hechos.length && hechos.every(Boolean))); });
+}
+function ctElegirHora(fecha, hora){
+  const esCA = LANG === 'ca';
+  window.__citaHoraSel = hora;
+  document.querySelectorAll('#cita-horas .ct-hora').forEach(b => b.classList.toggle('sel', b.dataset.h === hora));
+  const tec = window.__citaTec || '', tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
+  const porTel = window.__citaModo === 'telefono';
+  const telCita = porTel ? String((document.getElementById('cita-tel-in') || {}).value || window.__citaTel || '').trim() : '';
+  const d = new Date(fecha + 'T00:00:00'), loc = esCA ? 'ca-ES' : 'es-ES';
+  const r = document.getElementById('ct-resumen'); if(!r) return;
+  r.innerHTML = `<div class="ct-res">
+    <div class="ct-res-t">${esCA ? 'La teva cita' : 'Tu cita'}</div>
+    <div class="ct-res-f"><div class="ct-res-cal"><small>${d.toLocaleDateString(loc, { month:'short' }).replace('.', '')}</small><strong>${d.getDate()}</strong><span>${d.toLocaleDateString(loc, { weekday:'short' }).replace('.', '')}</span></div>
+      <div class="ct-res-x">
+        <div><b>🕘 ${hora}</b> h</div>
+        <div>${porTel ? `📞 ${esCA ? 'Per telèfon' : 'Por teléfono'}${telCita ? ' · ' + escAttr(telCita) : ''}` : `🏢 ${esCA ? 'A Logos' : 'En Logos'} · C/ de la Pau del Protectorat, 14`}</div>
+        <div>👤 ${tecNombre ? escAttr(tecNombre) : (esCA ? 'La primera persona disponible' : 'La primera persona disponible')}</div>
+      </div></div>
+    <button class="ct-ok" onclick="reservarCita('${fecha}','${hora}', true)">✅ ${esCA ? 'Confirmar la cita' : 'Confirmar la cita'}</button>
+    <button class="ct-cambiar" onclick="window.__citaHoraSel=null;document.getElementById('ct-resumen').innerHTML='';document.querySelectorAll('#cita-horas .ct-hora').forEach(b=>b.classList.remove('sel'));ctPasos()">${esCA ? 'Canviar l\'hora' : 'Cambiar la hora'}</button>
+  </div>`;
+  ctPasos();
+  setTimeout(() => r.scrollIntoView({ behavior:'smooth', block: window.innerWidth < 760 ? 'end' : 'nearest' }), 40);
 }
 
 async function seleccionarDiaCita(fechaIso){
@@ -6598,8 +7173,22 @@ async function seleccionarDiaCita(fechaIso){
     cont.innerHTML = `<div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);"><p style="margin:0;">${esCA ? `${escAttr(tecNombre)} no atén cites aquest dia. Tria un altre dia o «La primera persona disponible».` : `${escAttr(tecNombre)} no atiende citas este día. Elige otro día o «La primera persona disponible».`}</p></div>`;
     return;
   }
-  const titulo = tec ? `<div class="cita-paso"><span class="cita-num">3</span> ${esCA ? `Hores lliures amb ${escAttr(tecNombre)}` : `Horas libres con ${escAttr(tecNombre)}`}</div>`
-    : ((window.__tecnicosCita || []).length ? `<div class="cita-paso"><span class="cita-num">3</span> ${esCA ? 'Tria l\'hora' : 'Elige la hora'}</div>` : '');
+  const titulo = tec ? `<div class="cita-paso"><span class="cita-num">4</span> ${esCA ? `Hores lliures amb ${escAttr(tecNombre)}` : `Horas libres con ${escAttr(tecNombre)}`}</div>`
+    : `<div class="cita-paso"><span class="cita-num">${(window.__tecnicosCita || []).length ? 4 : 3}</span> ${esCA ? 'Tria l\'hora' : 'Elige la hora'}</div>`;
+  const fichaHora = s => {
+    const ocupadas = ocupadasPorHora[s] || 0, yaMia = (window.__misCitasHoras || []).includes(fechaIso + ' ' + s);
+    const lleno = ocupadas >= horario.tecnicos_simultaneos || ocupTec.has(s) || yaMia;
+    return `<button class="ct-hora${lleno ? ' lleno' : ''}" data-h="${s}" ${lleno ? 'disabled' : `onclick="ctElegirHora('${fechaIso}','${s}')"`} title="${yaMia ? (esCA ? 'ja hi tens cita' : 'ya tienes cita') : (lleno ? (esCA ? 'complet' : 'completo') : '')}">${s}${yaMia ? '<small>✓</small>' : ''}</button>`;
+  };
+  const libres = slots.filter(s => !(((ocupadasPorHora[s] || 0) >= horario.tecnicos_simultaneos) || ocupTec.has(s))).length;
+  const manana = slots.filter(s => logosMin(s) < 15 * 60), tarde = slots.filter(s => logosMin(s) >= 15 * 60);
+  const dSel = new Date(fechaIso + 'T00:00:00');
+  window.__citaHoraSel = null; { const rr = document.getElementById('ct-resumen'); if(rr) rr.innerHTML = ''; } ctPasos();
+  cont.innerHTML = `${titulo}<div class="ct-horas-cab">${dSel.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { weekday:'long', day:'numeric', month:'long' })} · <b>${libres}</b> ${esCA ? (libres === 1 ? 'hora lliure' : 'hores lliures') : (libres === 1 ? 'hora libre' : 'horas libres')}</div>
+    ${manana.length ? `<div class="ct-franja"><span>☀️ ${esCA ? 'Matí' : 'Mañana'}</span><div class="ct-horas">${manana.map(fichaHora).join('')}</div></div>` : ''}
+    ${tarde.length ? `<div class="ct-franja"><span>🌙 ${esCA ? 'Tarda' : 'Tarde'}</span><div class="ct-horas">${tarde.map(fichaHora).join('')}</div></div>` : ''}`;
+  if(window.innerWidth < 760) cont.scrollIntoView({ behavior:'smooth', block:'start' });
+  return;
   let primerTarde = true;
   const slotsHtml = slots.map((s, i) => {
     const ocupadas = ocupadasPorHora[s] || 0;
@@ -6615,6 +7204,47 @@ async function seleccionarDiaCita(fechaIso){
 
   cont.innerHTML = `${titulo}${slotsHtml}`;
   if(window.innerWidth < 760) cont.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// --- Presencial o por teléfono (SQL 48). Por teléfono: Logos llama a la persona a la hora de la cita ---
+const LOGOS_TEL_CITAS = '630 46 15 60';
+function citaModosHtml(){
+  const esCA = LANG === 'ca', m = window.__citaModo || 'presencial';
+  const tel = window.__citaTel != null ? window.__citaTel : ((window.__perfilActual || {}).telefono || '');
+  return `<div class="cita-modos">
+    <button type="button" class="cita-modo ${m === 'presencial' ? 'cita-sel' : ''}" onclick="elegirModoCita('presencial')"><span class="cita-modo-i">🏢</span><span><strong>${esCA ? 'Presencial a Logos' : 'Presencial en Logos'}</strong><small>C/ de la Pau del Protectorat, 14 · Tarragona</small></span></button>
+    <button type="button" class="cita-modo ${m === 'telefono' ? 'cita-sel' : ''}" onclick="elegirModoCita('telefono')"><span class="cita-modo-i">📞</span><span><strong>${esCA ? 'Per telèfon' : 'Por teléfono'}</strong><small>${esCA ? 'Et truquem nosaltres. No cal que vinguis.' : 'Te llamamos nosotros. No hace falta venir.'}</small></span></button>
+  </div>
+  ${m === 'telefono' ? `<div class="cita-tel">
+    <label for="cita-tel-in">${esCA ? 'A quin telèfon et truquem?' : '¿A qué teléfono te llamamos?'}</label>
+    <input id="cita-tel-in" type="tel" inputmode="tel" autocomplete="tel" value="${escAttr(tel)}" placeholder="600 000 000" oninput="window.__citaTel=this.value">
+    <ul><li>${esCA ? `El tècnic et trucarà des del <strong>${LOGOS_TEL_CITAS}</strong> a l'hora de la cita.` : `El técnico te llamará desde el <strong>${LOGOS_TEL_CITAS}</strong> a la hora de la cita.`}</li>
+    <li>${esCA ? 'Procura estar en un lloc tranquil i tenir els papers a mà.' : 'Procura estar en un lugar tranquilo y tener los papeles a mano.'}</li>
+    <li>${esCA ? 'Si no pots atendre la trucada, cancel·la la cita.' : 'Si no puedes atender la llamada, cancela la cita.'}</li></ul>
+  </div>` : ''}`;
+}
+function elegirModoCita(m){
+  window.__citaModo = m === 'telefono' ? 'telefono' : 'presencial';
+  const c = document.getElementById('cita-modos'); if(c) c.innerHTML = citaModosHtml();
+  if(m === 'telefono'){ const i = document.getElementById('cita-tel-in'); if(i && !i.value) i.focus(); }
+}
+function citaEsTelefono(c){ return !!c && (c.modalidad === 'telefono' || /^📞/.test(String(c.motivo || ''))); }
+function citaTelDe(c){ return (c && c.telefono_contacto) || (String((c && c.motivo) || '').match(/(\+?\d[\d\s]{7,})/) || [])[1] || ''; }
+async function cambiarModoCita(id, modo){
+  const esCA = LANG === 'ca';
+  let tel = '';
+  if(modo === 'telefono'){
+    tel = prompt(esCA ? 'A quin telèfon et truquem?' : '¿A qué teléfono te llamamos?', (window.__perfilActual || {}).telefono || '');
+    if(tel === null) return; tel = tel.trim();
+    if(tel.replace(/\D/g, '').length < 9){ alert(esCA ? 'Escriu un telèfon vàlid.' : 'Escribe un teléfono válido.'); return; }
+  }
+  let { error } = await sb.from('citas').update(modo === 'telefono' ? { modalidad: 'telefono', telefono_contacto: tel } : { modalidad: 'presencial' }).eq('id', id);
+  if(error){ alert(/modalidad|column|schema/i.test(error.message || '') ? (esCA ? 'Encara no es pot canviar: Logos ha d\'activar aquesta opció (SQL 48). Truca al ' + LOGOS_TEL_CITAS + '.' : 'Todavía no se puede cambiar: Logos tiene que activar esta opción (SQL 48). Llama al ' + LOGOS_TEL_CITAS + '.') : error.message); return; }
+  try {
+    const p = window.__perfilActual || {};
+    await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'cita_respuesta', mensaje: `${p.nombre_completo || CURRENT_USER.email} cambia su cita a ${modo === 'telefono' ? 'POR TELÉFONO (llamar al ' + tel + ')' : 'PRESENCIAL en Logos'}.` });
+  } catch(e){}
+  renderDashboard();
 }
 
 // --- Elegir técnico (SQL 39). Si el SQL no está ejecutado, la lista sale vacía y todo funciona como antes ---
@@ -6639,7 +7269,7 @@ function elegirTecnicoCita(clave){
   else { const d = document.getElementById('cita-dias'); if(d && window.innerWidth < 760) d.scrollIntoView({ behavior:'smooth', block:'center' }); }
 }
 
-async function reservarCita(fecha, hora){
+async function reservarCita(fecha, hora, yaConfirmado){
   const esCA = LANG === 'ca';
   if(window.__reservandoCita) return;
   window.__reservandoCita = true;
@@ -6648,10 +7278,24 @@ async function reservarCita(fecha, hora){
   } catch(e){}
   const tec = window.__citaTec || '';
   const tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
-  if(tec && !confirm(esCA ? `Confirmes la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('ca-ES', { weekday:'long', day:'numeric', month:'long' })} a les ${hora} amb ${tecNombre}?` : `¿Confirmas la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} a las ${hora} con ${tecNombre}?`)){ window.__reservandoCita = false; return; }
-  let { error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, tec ? { tecnico_clave: tec } : {}));
+  const porTel = window.__citaModo === 'telefono';
+  const telCita = porTel ? String((document.getElementById('cita-tel-in') || {}).value || window.__citaTel || '').trim() : '';
+  if(porTel && telCita.replace(/\D/g, '').length < 9){
+    window.__reservandoCita = false;
+    alert(esCA ? 'Escriu el telèfon on et truquem (pas 1).' : 'Escribe el teléfono donde te llamamos (paso 1).');
+    const i = document.getElementById('cita-tel-in'); if(i){ i.scrollIntoView({ behavior:'smooth', block:'center' }); i.focus(); }
+    return;
+  }
+  if(porTel && !tec && !yaConfirmado && !confirm(esCA ? `Confirmes la cita per telèfon el ${new Date(fecha + 'T00:00:00').toLocaleDateString('ca-ES', { weekday:'long', day:'numeric', month:'long' })} a les ${hora}? Et trucarem al ${telCita}.` : `¿Confirmas la cita por teléfono el ${new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} a las ${hora}? Te llamaremos al ${telCita}.`)){ window.__reservandoCita = false; return; }
+  if(tec && !yaConfirmado && !confirm(esCA ? `Confirmes la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('ca-ES', { weekday:'long', day:'numeric', month:'long' })} a les ${hora} amb ${tecNombre}?` : `¿Confirmas la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} a las ${hora} con ${tecNombre}?`)){ window.__reservandoCita = false; return; }
+  const extraModo = porTel ? { modalidad: 'telefono', telefono_contacto: telCita } : {};
+  let { error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, tec ? { tecnico_clave: tec } : {}, extraModo));
+  if(error && porTel && /modalidad|telefono_contacto|schema cache|column/i.test(error.message || '')){
+    // Sin el SQL 48: la cita por teléfono se guarda igual, con la marca en el motivo
+    ({ error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora, motivo: '📞 Cita por teléfono · llamar al ' + telCita }, tec ? { tecnico_clave: tec } : {})));
+  }
   if(error && tec && /tecnico_clave|schema cache|column/i.test(error.message || '')){
-    ({ error } = await sb.from('citas').insert({ usuario_id: CURRENT_USER.id, fecha, hora }));
+    ({ error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, porTel ? { motivo: '📞 Cita por teléfono · llamar al ' + telCita } : {})));
   }
   if(error){
     document.getElementById('cita-horas').insertAdjacentHTML('afterbegin',
@@ -6668,7 +7312,7 @@ async function reservarCita(fecha, hora){
     await sb.from('notificaciones').insert({
       usuario_id: CURRENT_USER.id,
       tipo: 'cita_nueva',
-      mensaje: `${nombreAviso} ha pedido cita para el ${fechaFmt} a las ${hora}${tecNombre ? ' con ' + tecNombre : ((window.__tecnicosCita || []).length ? ' (con la primera persona disponible)' : '')}.`
+      mensaje: `${nombreAviso} ha pedido cita${porTel ? ' POR TELÉFONO' : ''} para el ${fechaFmt} a las ${hora}${tecNombre ? ' con ' + tecNombre : ((window.__tecnicosCita || []).length ? ' (con la primera persona disponible)' : '')}.${porTel ? ' Hay que llamarle al ' + telCita + '.' : ''}`
     });
   } catch(e) { /* no bloquear la reserva si falla el aviso */ }
 
@@ -7737,34 +8381,79 @@ function agregarMensajeAsistente(texto, quien){
   msgs.scrollTop = msgs.scrollHeight;
   return div;
 }
-async function enviarMensajeAsistente(){
+// El asistente trabaja como un técnico más: usa la función «asistente-tecnico» (y la antigua «asistente» si aún no está subida)
+async function llamarAsistente(nombre, payload){
+  const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/' + nombre, {
+    signal: AbortSignal.timeout(60000), method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await tokenParaFunciones()), 'apikey': SUPABASE_KEY },
+    body: JSON.stringify(payload)
+  });
+  if(!res.ok) throw new Error('http ' + res.status);
+  return await res.json();
+}
+function asistenteContexto(){
+  let horario = ''; try { horario = logosHorarioTexto(); } catch(e){}
+  const act = document.querySelector('.screen.active');
+  return { lang: LANG, horario, pantalla: act ? act.id : '', logueado: !!CURRENT_USER,
+    areas: (TAXONOMIA || []).map(a => ({ id: a.id, nombre: (a.nombre && (a.nombre[LANG] || a.nombre.es)) || a.id })) };
+}
+async function enviarMensajeAsistente(textoDirecto){
   const input = document.getElementById('asistente-input');
-  const mensaje = input.value.trim();
+  const mensaje = String(textoDirecto || input.value || '').trim();
   if(!mensaje) return;
   input.value = '';
+  document.querySelectorAll('#asistente-msgs .asis-sug').forEach(x => x.remove());
   agregarMensajeAsistente(mensaje, 'user');
   const historialPrevio = window.__asistenteHistorial.slice();
   window.__asistenteHistorial.push({ role:'user', content: mensaje });
-  const pensando = agregarMensajeAsistente('…', 'bot');
-  try {
-    const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/asistente', {
-      signal: AbortSignal.timeout(60000),
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (await tokenParaFunciones()), 'apikey': SUPABASE_KEY },
-      body: JSON.stringify({
-        mensaje,
-        historial: historialPrevio,
-        ambito: 'ciudadania'
-      })
-    });
-    const data = await res.json();
-    const texto = data.respuesta || (LANG==='ca' ? 'No he pogut respondre ara mateix. Torna-ho a provar en un moment.' : 'No he podido responder ahora mismo. Inténtalo de nuevo en un momento.');
-    pensando.textContent = texto;
-    window.__asistenteHistorial.push({ role:'assistant', content: texto });
-  } catch(e){
-    pensando.textContent = LANG==='ca' ? 'Error de connexió. Torna-ho a provar en un moment.' : 'Error de conexión. Inténtalo de nuevo en un momento.';
+  const pensando = agregarMensajeAsistente('', 'bot');
+  pensando.innerHTML = '<span class="asis-esc"><i></i><i></i><i></i></span>';
+  let data = null;
+  try { data = await llamarAsistente('asistente-tecnico', { mensaje, historial: historialPrevio, contexto: asistenteContexto() }); } catch(e){}
+  if(!data || !data.respuesta){
+    try { data = await llamarAsistente('asistente', { mensaje, historial: historialPrevio, ambito: 'ciudadania' }); } catch(e){ data = null; }
+  }
+  if(!data){ pensando.textContent = LANG==='ca' ? 'Error de connexió. Torna-ho a provar en un moment o truca al 630 46 15 60.' : 'Error de conexión. Inténtalo de nuevo en un momento o llama al 630 46 15 60.'; return; }
+  const texto = data.respuesta || (LANG==='ca' ? 'No he pogut respondre ara mateix. Torna-ho a provar en un moment.' : 'No he podido responder ahora mismo. Inténtalo de nuevo en un momento.');
+  pensando.textContent = texto;
+  window.__asistenteHistorial.push({ role:'assistant', content: texto });
+  const acc = Array.isArray(data.acciones) ? data.acciones : [];
+  if(acc.length){
+    window.__asisAcc = window.__asisAcc || [];
+    const cont = document.createElement('div'); cont.className = 'asis-acc';
+    cont.innerHTML = acc.map(a => { window.__asisAcc.push(a); return `<button onclick="ejecutarAccionAsistente(${window.__asisAcc.length - 1}, this)">${asisIcono(a)} ${escAttr(a.etiqueta || '')}</button>`; }).join('');
+    const msgs = document.getElementById('asistente-msgs'); msgs.appendChild(cont); msgs.scrollTop = msgs.scrollHeight;
   }
 }
+function asisIcono(a){ return { pedir_cita: a.modalidad === 'telefono' ? '📞' : '📅', ver_area: '🧭', avisar_tecnico: '🧑‍💼', llamar: '📞', whatsapp: '💬', ir: '➡️' }[a.tipo] || '•'; }
+async function ejecutarAccionAsistente(i, btn){
+  const a = (window.__asisAcc || [])[i]; if(!a) return;
+  const esCA = LANG === 'ca', cerrar = () => document.getElementById('asistente-panel').classList.remove('open');
+  if(a.tipo === 'pedir_cita'){ if(!CURRENT_USER) return; if(a.modalidad) window.__citaModo = a.modalidad; cerrar(); showScreen('cita'); renderCitaForm(); return; }
+  if(a.tipo === 'ver_area'){ cerrar(); showNecesidades(a.area_id); return; }
+  if(a.tipo === 'llamar'){ location.href = 'tel:+34630461560'; return; }
+  if(a.tipo === 'whatsapp'){ window.open('https://wa.me/34630461560', '_blank', 'noopener'); return; }
+  if(a.tipo === 'ir'){
+    cerrar();
+    const d = a.destino;
+    if(d === 'curriculum'){ showScreen('cv'); renderCVScreen(); }
+    else if(d === 'aula_virtual'){ showScreen('aulaciudadano'); renderAulaCiudadano(); }
+    else if(d === 'empleo'){ showScreen('empleo'); renderBusquedaEmpleo(); }
+    else if(d === 'mis_datos'){ abrirFormDesdeMenu('datos'); }
+    else irAMiEspacio({ documentos: 'documentos', mis_tramites: 'tramites' }[d] || 'citas');
+    return;
+  }
+  if(a.tipo === 'avisar_tecnico'){
+    if(!CURRENT_USER || btn.disabled) return;
+    btn.disabled = true;
+    const resumen = String(a.resumen || window.__asistenteHistorial.filter(m => m.role === 'user').map(m => m.content).join(' / ')).slice(0, 1500);
+    const { error } = await sb.from('consultas_orientacion').insert({ usuario_id: CURRENT_USER.id, texto_consulta: '🧑‍💼 [Desde el técnico virtual] ' + resumen });
+    if(error){ btn.disabled = false; agregarMensajeAsistente((esCA ? 'No s\'ha pogut enviar: ' : 'No se ha podido enviar: ') + error.message, 'bot'); return; }
+    btn.textContent = esCA ? '✅ Enviat a l\'equip' : '✅ Enviado al equipo';
+    agregarMensajeAsistente(esCA ? 'Fet ✅ Un tècnic de Logos ja té el teu cas. Et respondrà a «El meu espai» (Consulta). Si és urgent, truca al 630 46 15 60.' : 'Hecho ✅ Un técnico de Logos ya tiene tu caso. Te responderá en «Mi espacio» (Consulta). Si es urgente, llama al 630 46 15 60.', 'bot');
+  }
+}
+function asistenteSugerir(t){ enviarMensajeAsistente(t); }
 function enviarMensajeAsistenteEnter(ev){
   if(ev.key === 'Enter') enviarMensajeAsistente();
 }
@@ -7830,7 +8519,7 @@ function giPausar(si, reanudarEn){
 }
 function guiaAuto(){
   __GI.auto = !__GI.auto; __GI.pausa = false;
-  const b = document.querySelector('#guia-ov .gi-pp'); if(b) b.textContent = __GI.auto ? '⏸ ' + __GI.L('Pausa', 'Pausa') : '▶ ' + __GI.L('Automático', 'Automàtic');
+  const b = document.querySelector('#guia-ov .gi-pp'); if(b){ b.textContent = __GI.auto ? '❚❚' : '▶'; b.setAttribute('aria-label', __GI.auto ? __GI.L('Pausa', 'Pausa') : __GI.L('Automático', 'Automàtic')); }
   giTemporizar();
 }
 function guiaIrA(n){
@@ -7838,23 +8527,50 @@ function guiaIrA(n){
   guiaCerrar();
   if(go && go.run) setTimeout(go.run, 60);
 }
+function giTxt(x){ return String(x || '').replace(/<[^>]+>/g, ''); }
+function giPortada(s){
+  if(!s) return '';
+  if(s.img && GI_IMGS[s.img]) return `<img class="gi-cov-img" src="${GI_IMGS[s.img]}" alt="">`;
+  if(s.hero && GI_IMGS.av) return `<img class="gi-cov-av" src="${GI_IMGS.av}" alt=""><span class="gi-cov-e gi-cov-e2">${s.e || '👋'}</span>`;
+  return `<span class="gi-cov-e">${s.e || '✨'}</span>`;
+}
 function guiaPintar(){
   const { i, slides, L } = __GI; const s = slides[i]; const ult = i === slides.length - 1;
   const ov = document.getElementById('guia-ov');
-  ov.innerHTML = `<div class="gi-card">
-    <div class="gi-top"><span>${i + 1} / ${slides.length}<button class="gi-pp" onclick="guiaAuto()">${__GI.auto ? '⏸ ' + L('Pausa', 'Pausa') : '▶ ' + L('Automático', 'Automàtic')}</button></span><button class="gi-x" onclick="guiaCerrar()" aria-label="${L('Cerrar', 'Tancar')}">✕</button></div>
-    <div class="gi-prog"><i></i></div>
-    <div class="gi-body" id="gi-body" style="${__GI.dir < 0 ? 'animation-name:giInL;' : ''}" onscroll="giPausar(false, 12000)">
-      ${s.hero ? `<div class="gi-hero"><img class="gi-av" src="${GI_IMGS.av}" alt=""><div class="gi-bub">${s.hero}</div></div>` : (s.img ? `<img class="gi-pic" src="${GI_IMGS[s.img]}" alt="">` : `<div class="gi-emoji">${s.e}</div>`)}
-      <h3 class="gi-t">${s.t}</h3>
-      ${s.p ? `<p class="gi-p">${s.p}</p>` : ''}
-      ${s.l ? `<ul class="gi-l">${s.l.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}
-      ${s.go ? `<button class="gi-go" onclick="guiaIrA()">${s.go.txt} →</button>` : ''}
+  const lado = (k, cls) => {
+    const x = slides[k];
+    if(!x) return `<div class="gi-side ${cls} gi-vacia" aria-hidden="true"></div>`;
+    return `<button class="gi-side ${cls}" onclick="guiaIr(${k})" aria-label="${escAttr(giTxt(x.t))}"><div class="gi-cov">${giPortada(x)}</div><span class="gi-cap">${giTxt(x.t)}</span></button>`;
+  };
+  ov.innerHTML = `<div class="gi-wrap">
+    <div class="gi-head">
+      <div><h2>${L('Guía rápida', 'Guia ràpida')}</h2><p>${L('Todo lo que puedes hacer, paso a paso.', 'Tot el que pots fer, pas a pas.')}</p></div>
+      <button class="gi-x" onclick="guiaCerrar()" aria-label="${L('Cerrar', 'Tancar')}">✕</button>
     </div>
-    <div class="gi-dots">${slides.map((_, k) => `<button class="gi-dot${k === i ? ' on' : ''}" onclick="guiaIr(${k})" aria-label="${k + 1}"></button>`).join('')}</div>
-    <div class="gi-nav">
-      <button class="gi-prev" ${i === 0 ? 'disabled' : ''} onclick="guiaIr(${i - 1})">← ${L('Anterior', 'Anterior')}</button>
-      <button class="gi-next" onclick="guiaIr(${i + 1})">${ult ? L('¡Listo!', 'Fet!') : L('Siguiente', 'Següent') + ' →'}</button>
+    <div class="gi-stage">
+      ${lado(i - 1, 'gi-izq')}
+      <div class="gi-card" style="${__GI.dir < 0 ? 'animation-name:giCovL;' : ''}">
+        <div class="gi-cov gi-cov-main">${giPortada(s)}<span class="gi-cap">${i + 1} / ${slides.length} · ${giTxt(s.t)}</span></div>
+        <div class="gi-prog"><i></i></div>
+        <div class="gi-body" id="gi-body" onscroll="giPausar(false, 12000)">
+          ${s.hero ? `<div class="gi-bub">${s.hero}</div>` : ''}
+          <h3 class="gi-t">${s.t}</h3>
+          ${s.p ? `<p class="gi-p">${s.p}</p>` : ''}
+          ${s.l ? `<ul class="gi-l">${s.l.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}
+          ${s.go ? `<button class="gi-go" onclick="guiaIrA()">${s.go.txt} →</button>` : ''}
+        </div>
+        <div class="gi-nav">
+          <button class="gi-prev" ${i === 0 ? 'disabled' : ''} onclick="guiaIr(${i - 1})">← ${L('Anterior', 'Anterior')}</button>
+          <button class="gi-next" onclick="guiaIr(${i + 1})">${ult ? L('¡Listo!', 'Fet!') : L('Siguiente', 'Següent') + ' →'}</button>
+        </div>
+      </div>
+      ${lado(i + 1, 'gi-der')}
+      <button class="gi-arr gi-arr-l" ${i === 0 ? 'disabled' : ''} onclick="guiaIr(${i - 1})" aria-label="${L('Anterior', 'Anterior')}">‹</button>
+      <button class="gi-arr gi-arr-r" onclick="guiaIr(${i + 1})" aria-label="${L('Siguiente', 'Següent')}">›</button>
+    </div>
+    <div class="gi-foot">
+      <div class="gi-dots">${slides.map((_, k) => `<button class="gi-dot${k === i ? ' on' : ''}" onclick="guiaIr(${k})" aria-label="${k + 1}"></button>`).join('')}</div>
+      <button class="gi-pp" onclick="guiaAuto()" aria-label="${__GI.auto ? L('Pausa', 'Pausa') : L('Automático', 'Automàtic')}">${__GI.auto ? '❚❚' : '▶'}</button>
     </div>
   </div>`;
   giTemporizar();
