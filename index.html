@@ -559,6 +559,7 @@
 body{font-size:15.5px;}
 @media (max-width:700px){ #profile-content .sn-wrap{padding:0 14px;} }
 /* ===== «Mis necesidades» y áreas, estilo Sanitas ===== */
+#catalogo-panel{scroll-margin-top:12px;}
 #screen-home > .content, #screen-necesidades > .content{max-width:960px;width:100%;margin-left:auto !important;margin-right:auto !important;box-sizing:border-box;}
 @media (min-width:701px){ #screen-home > .content, #screen-necesidades > .content{padding-left:24px !important;padding-right:24px !important;} }
 .nh-hero{position:relative;z-index:2;background:linear-gradient(135deg,#163F7A 0%,#2463B8 58%,#3B82D9 100%);color:#fff;border-radius:22px;padding:16px 20px 18px;margin:0 0 14px;box-shadow:0 18px 36px -22px rgba(22,63,122,.9);}
@@ -1628,7 +1629,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v70 (Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v71 («Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2819,9 +2820,12 @@ function revelarCatalogo(bajar){
   if(bloquearSinConsentimiento()) return;
   const catalogo = document.getElementById('catalogo-panel');
   catalogo.style.display = 'block';
-  renderResumenStep(true);
-  if(bajar === true){ window.__saltoArriba = 0; setTimeout(() => catalogo.scrollIntoView({ behavior:'smooth', block:'start' }), 60); }
-  else irArriba();
+  // «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?» (también cuando la parte de arriba aún se está cargando)
+  window.__saltoArriba = 0;
+  const tk = window.__irCatTk = (window.__irCatTk || 0) + 1;
+  const ir = suave => { if(tk !== window.__irCatTk || !document.getElementById('screen-home').classList.contains('active')) return; catalogo.scrollIntoView({ behavior: suave ? 'smooth' : 'auto', block:'start' }); };
+  setTimeout(() => ir(bajar === true), 30);
+  Promise.resolve(renderResumenStep(true)).catch(() => {}).then(() => { ir(false); setTimeout(() => ir(false), 250); });
 }
 
 async function initAuth(){
