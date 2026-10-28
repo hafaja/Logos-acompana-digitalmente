@@ -894,6 +894,42 @@ body{font-size:15.5px;}
 .th-it.an .th-p{background:#B4BCC8;border-color:#F1F3F7;}
 .th-it strong{display:block;font-size:14.5px;} .th-it small{font-size:12.5px;color:var(--ink-soft);}
 .th-it.an strong{color:#8A97AB;text-decoration:line-through;}
+/* ===== Incidencias ===== */
+.inc-ov{position:fixed;inset:0;z-index:9994;background:rgba(15,25,45,.6);display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto;}
+.inc-card{background:#fff;border-radius:22px;max-width:560px;width:100%;padding:18px 18px 16px;box-shadow:0 24px 60px -20px rgba(0,0,0,.5);max-height:94vh;overflow:auto;box-sizing:border-box;}
+.inc-cab{display:flex;gap:12px;align-items:center;margin-bottom:6px;}
+.inc-cab h3{margin:0;font-size:19px;} .inc-cab small{color:var(--ink-soft);font-size:13px;}
+.inc-cab-i{width:46px;height:46px;border-radius:14px;background:#FDECEC;display:flex;align-items:center;justify-content:center;font-size:23px;flex:0 0 auto;}
+.inc-x{margin-left:auto;align-self:flex-start;background:none;border:none;font-size:18px;cursor:pointer;color:#5B6B82;}
+.inc-paso{font-size:13px;font-weight:800;color:#2463B8;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 8px;}
+.inc-dest{display:flex;flex-direction:column;gap:8px;}
+.inc-d{display:flex;gap:12px;align-items:center;text-align:left;background:#fff;border:2px solid #E2E7EF;border-radius:14px;padding:10px 12px;cursor:pointer;font-family:inherit;color:var(--ink);}
+.inc-d strong{display:block;font-size:15px;} .inc-d small{font-size:12.5px;color:var(--ink-soft);line-height:1.35;}
+.inc-d-i{width:40px;height:40px;border-radius:12px;background:#EAF1FB;display:flex;align-items:center;justify-content:center;font-size:20px;flex:0 0 auto;}
+.inc-d.sel{border-color:#2463B8;background:#F5F9FE;box-shadow:0 0 0 3px rgba(36,99,184,.12);} .inc-d.sel .inc-d-i{background:#2463B8;}
+#inc-asunto, #inc-texto{width:100%;box-sizing:border-box;border:1.5px solid #D5DCE6;border-radius:12px;padding:11px 12px;font-family:inherit;font-size:14.5px;margin:0 0 8px;resize:vertical;}
+.inc-nota{font-size:12px;color:var(--ink-soft);background:#F6F8FB;border-radius:10px;padding:8px 10px;margin:2px 0 10px;line-height:1.4;}
+.inc-env{display:block;width:100%;background:#2463B8;color:#fff;border:none;border-radius:14px;padding:14px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;}
+.inc-env:disabled{opacity:.6;}
+.inc-ok{text-align:center;padding:10px 4px;} .inc-ok-i{font-size:46px;} .inc-ok h3{margin:6px 0;} .inc-ok p{color:var(--ink-soft);margin:0 0 14px;}
+.inc-it{border:1.5px solid #E2E7EF;border-left:6px solid #C0392B;border-radius:12px;padding:10px 12px;margin:0 0 8px;background:#fff;}
+.inc-it.inc-en_curso{border-left-color:#E0A81A;} .inc-it.inc-resuelta{border-left-color:#1E8A4C;}
+.inc-it-c{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;}
+.inc-it strong{font-size:14.5px;} .inc-it small{font-size:12px;color:var(--ink-soft);}
+.inc-est{font-size:12px;white-space:nowrap;font-weight:600;}
+.inc-resp{margin-top:8px;background:#F1F5FB;border-radius:10px;padding:8px 10px;font-size:13.5px;white-space:pre-line;}
+.inc-vacio{font-size:13px;color:var(--ink-soft);background:#F6F8FB;border-radius:10px;padding:10px;text-align:center;}
+.inc-txt{font-size:13.5px;white-space:pre-line;margin:6px 0;}
+.inc-meta{font-size:11.5px;color:#8A97AB;margin-top:4px;word-break:break-word;}
+.inc-gest{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;margin-top:8px;}
+.inc-gest textarea{flex:1;min-width:200px;border:1.5px solid #D5DCE6;border-radius:10px;padding:8px;font-family:inherit;font-size:13.5px;}
+.inc-gest select{border:1.5px solid #D5DCE6;border-radius:10px;padding:7px;font-family:inherit;}
+.inc-gest button{background:#2463B8;color:#fff;border:none;border-radius:10px;padding:8px 14px;font-family:inherit;font-weight:700;cursor:pointer;}
+.inc-filtros{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;}
+.inc-filtros button{border:1.5px solid #D5DCE6;background:#fff;border-radius:999px;padding:6px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+.inc-filtros button.on{background:#1B2A44;border-color:#1B2A44;color:#fff;}
+.inc-boton{display:flex;gap:12px;align-items:center;width:100%;background:linear-gradient(135deg,#FFF5F5,#FFFFFF);border:1.5px solid #F3C9C4;border-radius:16px;padding:12px 14px;cursor:pointer;font-family:inherit;text-align:left;color:var(--ink);}
+.inc-boton strong{display:block;font-size:15px;} .inc-boton small{font-size:12.5px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -1167,6 +1203,7 @@ function hoyLocalIso(d){ d = d || new Date(); return d.getFullYear() + '-' + Str
       set: function(v){
         var id = this.id || '';
         if(!/-content$/.test(id) || !this.isConnected) return d.set.call(this, v);
+        if(Date.now() - (window.__saltoArriba || 0) < 2500){ this.__lk = null; return d.set.call(this, v); }   // recién llegado a la pantalla: se queda arriba
         var self = this, lk = self.__lk;
         if(!lk){
           var best = null;
@@ -1579,7 +1616,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v67 (histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-28 · v69 (avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2263,8 +2300,11 @@ function showScreen(name){
     const tk = window.__resetTk = (window.__resetTk || 0) + 1;
     setTimeout(() => { if(tk === window.__resetTk && window.__formVoluntario){ window.__formVoluntario = false; try { renderResumenStep(false); } catch(e){} } }, 150);
   }
+  const previaPantalla = document.querySelector('.screen.active');
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
+  // Al entrar en otra pantalla (Mi espacio, Mis necesidades, Aula Virtual…) se empieza siempre por arriba
+  if(!previaPantalla || previaPantalla.id !== 'screen-' + name) irArriba();
   document.querySelectorAll('.sidebar nav button, .sidebar-public-nav button').forEach(b=>b.classList.remove('active'));
   const homeGroup = ['detail','necesidades','encuesta'];
   const profileGroup = ['cita','cv'];
@@ -2276,6 +2316,11 @@ function showScreen(name){
   if(btn) btn.classList.add('active');
   // si la pantalla activa está dentro de «¿Qué más te ofrecemos?», el desplegable se abre solo
   if(btn && btn.closest('.menu-mas')) abrirMenuMas(true);
+}
+function irArriba(){
+  const tk = window.__saltoArriba = Date.now();
+  const sube = () => { if(window.__saltoArriba !== tk) return; try { window.scrollTo(0, 0); } catch(e){} [document.scrollingElement, document.querySelector('.main'), document.querySelector('.main-content')].forEach(el => { if(el) el.scrollTop = 0; }); };
+  sube(); requestAnimationFrame(sube); setTimeout(sube, 120); setTimeout(sube, 400);
 }
 function abrirMenuMas(abrir){
   const m = document.getElementById('menu-mas'); if(!m) return;
@@ -2611,7 +2656,7 @@ async function renderResumenStep(mostrarCatalogoYa){
         <div><strong>${saludo}${primerNombre ? ', ' + escAttr(primerNombre) : ''} <span class="nh-mano">👋</span></strong><span>📍 ${escAttr(p.municipio || 'Tarragona')}</span></div>
       </div>
       <div class="nh-acc">
-        <button onclick="revelarCatalogo()"><span>🧭</span>${esCA ? 'Què necessito?' : '¿Qué necesito?'}</button>
+        <button onclick="revelarCatalogo(true)"><span>🧭</span>${esCA ? 'Què necessito?' : '¿Qué necesito?'}</button>
         <button onclick="showScreen('cita');renderCitaForm()"><span>📅</span>${esCA ? 'Demanar cita' : 'Pedir cita'}</button>
         <button onclick="showScreen('profile');renderDashboard()"><span>👤</span>${esCA ? 'El meu espai' : 'Mi espacio'}</button>
         <button onclick="guiaAbrirAcomp()"><span>❓</span>${esCA ? 'Com funciona' : 'Cómo se usa'}</button>
@@ -2620,7 +2665,7 @@ async function renderResumenStep(mostrarCatalogoYa){
     ${recordatorioEntradaHtml}
     ${completarDatosHtml}
     ${!mostrarCatalogoYa ? `
-    <button class="primary-btn" onclick="revelarCatalogo()">
+    <button class="primary-btn" onclick="revelarCatalogo(true)">
       ${esCA ? 'Veure les meves necessitats →' : 'Ver mis necesidades →'}
     </button>` : ''}
 
@@ -2635,7 +2680,7 @@ async function renderResumenStep(mostrarCatalogoYa){
 
 function irANecesidades(){
   showScreen('home');
-  setTimeout(revelarCatalogo, 60);
+  setTimeout(() => revelarCatalogo(true), 60);
 }
 
 function abrirFormDesdeMenu(tipo){
@@ -2668,6 +2713,76 @@ function tramitesHistoricoHtml(lista){
         <small>${ok ? '✅ ' + (ca ? 'Fet' : 'Hecho') : '✖ ' + (ca ? 'Anul·lat' : 'Anulado')}${x.fecha_fin ? ' · ' + fmtFechaCorta(x.fecha_fin, ca) : ''}${d && ok ? ' · ' + (ca ? 'en ' : 'en ') + d : ''}${x.estado_previo === 'derivado_logos' || x.con_ayuda ? ' · 🤝 Logos' : ''}</small></div></div>`; }).join('')}</div>`).join('')}
   </div>`;
 }
+// ================= INCIDENCIAS (SQL 51) · común a la Intranet y a Logos Acompanya =================
+const INC_L = () => (typeof LANG_I !== 'undefined' ? LANG_I : (typeof LANG !== 'undefined' ? LANG : 'es'));
+const incT = (es, ca) => INC_L() === 'ca' ? ca : es;
+const INC_ES_INTRA = typeof LANG_I !== 'undefined';
+function incDestinos(){
+  return INC_ES_INTRA
+    ? [['rrhh', '🧑‍💼', incT('RR. HH.', 'RR. HH.'), incT('Nóminas, contrato, horarios, vacaciones, fichajes…', 'Nòmines, contracte, horaris, vacances, fitxatges…')],
+       ['administracion', '🏢', incT('Administración', 'Administració'), incT('Material, salas, organización, permisos…', 'Material, sales, organització, permisos…')],
+       ['tecnica', '🛠️', incT('Soporte técnico', 'Suport tècnic'), incT('La intranet no funciona bien: errores, no carga, no deja guardar…', 'La intranet no funciona bé: errors, no carrega, no deixa desar…')]]
+    : [['administracion', '🏢', incT('Administración de Logos', 'Administració de Logos'), incT('Citas, atención, tus datos, una queja o sugerencia…', 'Cites, atenció, les teves dades, una queixa o suggeriment…')],
+       ['tecnica', '🛠️', incT('La app no funciona bien', 'L\'app no funciona bé'), incT('Errores, no carga, no deja entrar o guardar…', 'Errors, no carrega, no deixa entrar o desar…')]];
+}
+const incNombreDestino = d => ({ rrhh: incT('RR. HH.', 'RR. HH.'), administracion: incT('Administración', 'Administració'), tecnica: incT('Soporte técnico', 'Suport tècnic') }[d] || d);
+const incEsc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function incAbrir(destinoInicial){
+  if(!CURRENT_USER){ alert(incT('Para enviar un aviso tienes que entrar con tu cuenta. También puedes llamar al 630 46 15 60.', 'Per enviar un avís has d\'entrar amb el teu compte. També pots trucar al 630 46 15 60.')); return; }
+  let ov = document.getElementById('inc-ov'); if(ov) ov.remove();
+  ov = document.createElement('div'); ov.id = 'inc-ov'; ov.className = 'inc-ov';
+  ov.addEventListener('click', e => { if(e.target === ov) ov.remove(); });
+  window.__incDestino = destinoInicial || '';
+  ov.innerHTML = `<div class="inc-card" role="dialog" aria-modal="true">
+    <div class="inc-cab"><span class="inc-cab-i">🆘</span><div><h3>${incT('Avisar de una incidencia', 'Avisar d\'una incidència')}</h3><small>${incT('Cuéntanos qué pasa y quién debe ocuparse.', 'Explica\'ns què passa i qui se n\'ha d\'ocupar.')}</small></div><button class="inc-x" onclick="document.getElementById('inc-ov').remove()" aria-label="${incT('Cerrar', 'Tancar')}">✕</button></div>
+    <div class="inc-paso">1 · ${incT('¿A quién va dirigida?', 'A qui va adreçada?')}</div>
+    <div class="inc-dest" id="inc-dest">${incDestinos().map(d => `<button type="button" class="inc-d ${window.__incDestino === d[0] ? 'sel' : ''}" data-d="${d[0]}" onclick="window.__incDestino='${d[0]}';document.querySelectorAll('#inc-dest .inc-d').forEach(b=>b.classList.toggle('sel', b.dataset.d==='${d[0]}'))"><span class="inc-d-i">${d[1]}</span><span><strong>${d[2]}</strong><small>${d[3]}</small></span></button>`).join('')}</div>
+    <div class="inc-paso">2 · ${incT('¿Qué pasa?', 'Què passa?')}</div>
+    <input id="inc-asunto" maxlength="120" placeholder="${incT('En pocas palabras (ej.: no puedo subir un documento)', 'En poques paraules (ex.: no puc pujar un document)')}">
+    <textarea id="inc-texto" rows="4" maxlength="3000" placeholder="${incT('Explícalo con detalle: qué hacías, qué esperabas y qué ha pasado.', 'Explica-ho amb detall: què feies, què esperaves i què ha passat.')}"></textarea>
+    <div class="inc-nota">ℹ️ ${incT('Se adjunta sola la pantalla en la que estás y el tipo de dispositivo, para encontrar el problema más rápido. No compartas contraseñas.', 'S\'adjunta sola la pantalla on ets i el tipus de dispositiu, per trobar el problema més ràpid. No comparteixis contrasenyes.')}</div>
+    <div id="inc-msg"></div>
+    <button class="inc-env" id="inc-env" onclick="incEnviar()">📨 ${incT('Enviar aviso', 'Enviar avís')}</button>
+  </div>`;
+  document.body.appendChild(ov);
+  setTimeout(() => { const i = document.getElementById('inc-asunto'); if(i) i.focus(); }, 60);
+}
+async function incEnviar(){
+  const msg = document.getElementById('inc-msg'), btn = document.getElementById('inc-env');
+  const destino = window.__incDestino, asunto = (document.getElementById('inc-asunto').value || '').trim(), texto = (document.getElementById('inc-texto').value || '').trim();
+  if(!destino){ msg.innerHTML = `<div class="auth-error">${incT('Elige a quién va dirigida.', 'Tria a qui va adreçada.')}</div>`; return; }
+  if(asunto.length < 3){ msg.innerHTML = `<div class="auth-error">${incT('Escribe en pocas palabras qué pasa.', 'Escriu en poques paraules què passa.')}</div>`; document.getElementById('inc-asunto').focus(); return; }
+  btn.disabled = true;
+  const act = document.querySelector('.screen.active');
+  const nombre = INC_ES_INTRA ? (typeof CURRENT_USER_NOMBRE !== 'undefined' && CURRENT_USER_NOMBRE) || CURRENT_USER.email : ((window.__perfilActual || {}).nombre_completo || CURRENT_USER.email);
+  const ver = INC_ES_INTRA ? (typeof APP_VERSION_INTRANET !== 'undefined' ? APP_VERSION_INTRANET : '') : (typeof APP_VERSION_ACOMP !== 'undefined' ? APP_VERSION_ACOMP : '');
+  const fila = { origen: INC_ES_INTRA ? 'intranet' : 'acompanya', destino, asunto, texto: texto || null, pantalla: act ? act.id.replace('screen-', '') : '', version: (String(ver).match(/v\d+/) || [String(ver).slice(0, 20)])[0],
+    dispositivo: `${window.innerWidth}x${window.innerHeight} · ${/Android|iPhone|iPad/i.test(navigator.userAgent) ? 'móvil' : 'ordenador'} · ${(navigator.userAgent.match(/(Chrome|Firefox|Safari|Edg)\/[\d.]+/) || [''])[0]}`,
+    autor_id: CURRENT_USER.id, autor_email: CURRENT_USER.email, autor_nombre: nombre };
+  const { error } = await sb.from('incidencias').insert(fila);
+  if(error){
+    btn.disabled = false;
+    msg.innerHTML = `<div class="auth-error">${/incidencias|schema cache|does not exist/i.test(error.message || '') ? incT('Los avisos de incidencias aún no están activados (falta el SQL 51). Mientras tanto llama al 630 46 15 60.', 'Els avisos d\'incidències encara no estan activats (falta l\'SQL 51). Mentrestant truca al 630 46 15 60.') : incEsc(error.message)}</div>`;
+    return;
+  }
+  if(!INC_ES_INTRA){ try { await sb.from('notificaciones').insert({ usuario_id: CURRENT_USER.id, tipo: 'incidencia', mensaje: `🆘 ${nombre} avisa de una incidencia (${incNombreDestino(destino)}): ${asunto}` }); } catch(e){} }
+  document.querySelector('#inc-ov .inc-card').innerHTML = `<div class="inc-ok"><div class="inc-ok-i">✅</div><h3>${incT('Aviso enviado', 'Avís enviat')}</h3>
+    <p>${incT(`Lo ha recibido ${incNombreDestino(destino)}. Verás la respuesta en «Mis avisos».`, `L'ha rebut ${incNombreDestino(destino)}. Veuràs la resposta a «Els meus avisos».`)}</p>
+    <button class="inc-env" onclick="document.getElementById('inc-ov').remove();if(typeof incRefrescar==='function')incRefrescar()">${incT('Entendido', 'Entesos')}</button></div>`;
+}
+// Lista «Mis avisos» (los que he enviado) con la respuesta
+async function incMisAvisosHtml(){
+  if(!CURRENT_USER) return '';
+  const { data, error } = await sb.from('incidencias').select('*').eq('autor_id', CURRENT_USER.id).order('creado_en', { ascending: false }).limit(30);
+  if(error) return '';
+  const lista = data || [];
+  if(!lista.length) return `<div class="inc-vacio">${incT('No has enviado ningún aviso.', 'No has enviat cap avís.')}</div>`;
+  return lista.map(i => `<div class="inc-it inc-${i.estado || 'abierta'}"><div class="inc-it-c"><strong>${incEsc(i.asunto)}</strong><span class="inc-est">${incEstado(i.estado || 'abierta')}</span></div>
+    <small>${incNombreDestino(i.destino)} · ${new Date(i.creado_en || Date.now()).toLocaleDateString(INC_L() === 'ca' ? 'ca-ES' : 'es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</small>
+    ${i.respuesta ? `<div class="inc-resp">💬 ${incEsc(i.respuesta)}</div>` : ''}</div>`).join('');
+}
+const incEstado = e => ({ abierta: '🔴 ' + incT('Abierta', 'Oberta'), en_curso: '🟡 ' + incT('En curso', 'En curs'), resuelta: '🟢 ' + incT('Resuelta', 'Resolta') }[e] || e);
+
 // «Mi carpeta»: una pestaña por apartado; solo se ve uno a la vez
 const ME_DE = { citas:'citas', tramites:'tramites', documentos:'documentos', consulta:'consulta', recordatorios:'recordatorios', avisos:'recordatorios', qr:'qr', mas:'mas', emprendimiento:'mas', consentimiento:'mas' };
 function meTab(k, ic, txt, n, c, alerta){
@@ -2685,15 +2800,16 @@ function meIr(k, desdeTab){
   meMostrar(k);
   const hub = document.getElementById('me-hub'); if(!hub) return;
   const tab = document.querySelector(`.me-tab[data-me="${ME_DE[k] || k}"]`); if(tab && tab.scrollIntoView) try { tab.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' }); } catch(e){}
-  if(!desdeTab || window.innerWidth < 760) setTimeout(() => hub.scrollIntoView({ behavior:'smooth', block:'start' }), 30);
+  if(!desdeTab || window.innerWidth < 760){ window.__saltoArriba = 0; setTimeout(() => hub.scrollIntoView({ behavior:'smooth', block:'start' }), 30); }
 }
-function revelarCatalogo(){
+function revelarCatalogo(bajar){
   window.__resetTk = (window.__resetTk || 0) + 1; window.__formVoluntario = false;
   if(bloquearSinConsentimiento()) return;
   const catalogo = document.getElementById('catalogo-panel');
   catalogo.style.display = 'block';
   renderResumenStep(true);
-  catalogo.scrollIntoView({ behavior:'smooth', block:'start' });
+  if(bajar === true){ window.__saltoArriba = 0; setTimeout(() => catalogo.scrollIntoView({ behavior:'smooth', block:'start' }), 60); }
+  else irArriba();
 }
 
 async function initAuth(){
@@ -6903,6 +7019,11 @@ async function renderDashboard(){
     <div class="me-sig"><span>${LANG==='ca' ? 'Següent pas' : 'Siguiente paso'}:</span><button onclick="meIr('citas')">${LANG==='ca' ? '📅 Les meves cites' : '📅 Mis citas'}</button><button onclick="meIr('mas')">${LANG==='ca' ? '⚙️ Més opcions' : '⚙️ Más opciones'}</button></div>
     </section>
     <section class="me-pane" data-me="mas">
+    <div class="panel-card" style="margin-top:0;">
+      <button class="inc-boton" onclick="incAbrir()"><span class="inc-cab-i">🆘</span><span><strong>${LANG==='ca' ? 'Alguna cosa no va bé?' : '¿Algo no va bien?'}</strong><small>${LANG==='ca' ? 'Avisa l\'administració de Logos o digues-nos si l\'app falla' : 'Avisa a la administración de Logos o dinos si la app falla'}</small></span></button>
+      <h4 style="margin:14px 0 8px;">📤 ${LANG==='ca' ? 'Els meus avisos' : 'Mis avisos'}</h4>
+      <div id="inc-mios-a"><div class="inc-vacio">${LANG==='ca' ? 'Carregant…' : 'Cargando…'}</div></div>
+    </div>
 <div id="sec-emprendimiento"></div>
     ${emprendimientoHtml}
 
@@ -6938,7 +7059,9 @@ async function renderDashboard(){
   snAcompInteres();
   snCarrusel('#profile-content .sn-accesos', 5000);
   meMostrar((() => { try { return localStorage.getItem('logos_me_tab') || 'citas'; } catch(e){ return 'citas'; } })());
+  incRefrescar();
 }
+async function incRefrescar(){ const h = document.getElementById('inc-mios-a'); if(h) h.innerHTML = await incMisAvisosHtml(); }
 
 // Contestar a una cita: confirmar, pedir otro día/hora o avisar de que no se puede ir. Le llega al personal de Logos.
 function citaRespuestaHtml(c){
