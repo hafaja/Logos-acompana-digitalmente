@@ -14,7 +14,7 @@
 <style>
   :root{
     --bg:#F6F8FB; --paper:#FFFFFF; --ink:#1B2A44; --ink-soft:#5D6B82; --line:#E2E7EF;
-    --teal:#2463B8; --teal-dark:#1B4E95; --ochre:#D9832E; --ochre-soft:#FBE7D3;
+    --teal:#2463B8; --teal-dark:#1B4E95; --ochre:#A9581A; --ochre-soft:#FBE7D3;
     --alert:#A8431F; --alert-soft:#FBE7DE;
     --good:#2F6B27; --good-soft:#DDEFD9;
     --sidebar-green:#2463B8; --sidebar-yellow:#F0B90B;
@@ -446,10 +446,23 @@
 .cita-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy,#1F3A5F);color:#fff;font-size:13px;}
 .cita-tec-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
 .cita-tec{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border:1.5px solid #D9DEE5;border-radius:14px;background:#fff;cursor:pointer;font:inherit;color:inherit;min-height:52px;}
-.cita-tec small{color:#6B7280;font-size:11.5px;}
+.cita-tec small{color:#5F6672;font-size:11.5px;}
 .cita-tec-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#E6F0FA;color:#1F4E79;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
 .cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
 @media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
+/* ===== Accesibilidad (WCAG 2.2 AA) ===== */
+.salta-contenido{position:absolute;left:-9999px;top:8px;z-index:10000;background:#163F7A;color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;}
+.salta-contenido:focus{left:8px;}
+:focus-visible{outline:3px solid #1B4E95 !important;outline-offset:2px !important;box-shadow:0 0 0 5px rgba(255,255,255,.9) !important;}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #1B4E95 !important;outline-offset:1px !important;}
+button,[role=button],.link-btn,a.cita-acc{min-height:24px;}
+button:not(.link-btn){min-width:24px;}
+.sr-only{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;} }
+.corr-btn{border:1.5px solid #D9CCF3;background:#F6F2FE;color:#5B3FA0;border-radius:999px;padding:5px 12px;font:700 12.5px inherit;font-family:inherit;cursor:pointer;margin:6px 0 0;}
+.corr-btn:hover{background:#EDE5FD;} .corr-btn:disabled{opacity:.6;cursor:wait;}
+.corr-aviso{font-size:12.5px;color:#5B3FA0;margin:4px 0 0;}
+.cchat-corr{border:none;background:#F6F2FE;color:#5B3FA0;border-radius:50%;width:38px;height:38px;flex:0 0 auto;cursor:pointer;font-size:16px;}
 .pj-mis-f{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;}
 .pj-mis-f:last-of-type{border-bottom:none;}
 .pj-mis-b{position:relative;border:none;background:#1B4E95;color:#fff;border-radius:999px;padding:8px 14px;font:700 13px inherit;font-family:inherit;cursor:pointer;}
@@ -495,7 +508,7 @@
 .sn-cita-tec{font-size:13.5px;font-weight:700;color:#2463B8;text-transform:uppercase;letter-spacing:.02em;}
 .sn-cita-l{font-size:13.5px;color:var(--ink-soft);}
 .sn-vacio{border:1.5px dashed #D9DFE8;border-radius:14px;padding:18px;text-align:center;color:var(--ink-soft);font-size:15px;background:#fff;}
-.sn-cta{display:block;width:100%;margin:14px 0 4px;background:#2F7BD9;color:#fff;border:none;border-radius:12px;padding:17px 18px;font-family:inherit;font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 6px 16px -8px rgba(36,99,184,.6);}
+.sn-cta{display:block;width:100%;margin:14px 0 4px;background:#1F66C1;color:#fff;border:none;border-radius:12px;padding:17px 18px;font-family:inherit;font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 6px 16px -8px rgba(36,99,184,.6);}
 .sn-cta:hover{background:#2463B8;}
 .sn-accesos{display:flex;gap:14px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin;}
 .sn-acc{flex:0 0 92px;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:inherit;padding:0;position:relative;}
@@ -959,7 +972,8 @@ body{font-size:15.5px;}
 </style>
 </head>
 <body>
-<button class="asistente-btn" onclick="toggleAsistenteChat()" title="Asistente de orientación">💬</button>
+<a class="salta-contenido" href="#contenido-principal" onclick="const m=document.querySelector('.screen.active')||document.getElementById('contenido-principal'); if(m){ m.setAttribute('tabindex','-1'); m.focus(); } return false;">Saltar al contenido principal</a>
+<button class="asistente-btn" onclick="toggleAsistenteChat()" title="Asistente de orientación" aria-label="Asistente de orientación">💬</button>
 <div class="asistente-panel" id="asistente-panel">
   <div class="asistente-header">
     <span class="asis-cab"><span class="asis-av">λ</span><span><strong>Técnico virtual de Logos</strong><small><i class="asis-on"></i> Te responde al momento</small></span></span>
@@ -1023,7 +1037,7 @@ body{font-size:15.5px;}
     <button class="sidebar-logout" onclick="cerrarSesion()" id="sidebar-logout-btn" style="display:none;">Cerrar sesión</button>
   </div>
 
-  <div class="main">
+  <div class="main" id="contenido-principal" role="main">
   <div class="nav-sec-fila" id="nav-sec-fila" style="display:none;">
     <button class="nav-sec" id="nav-back" onclick="navAtras()" aria-label="Apartado anterior"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-sec-txt" id="nav-back-txt"></span></button>
     <span class="nav-sec-titulo" id="nav-sec-titulo"></span>
@@ -1348,6 +1362,8 @@ function fmtFechaCorta(f, ca, conDia){
 }
 function setLang(lang){
   LANG = lang;
+  try { document.documentElement.lang = lang === 'ca' ? 'ca' : 'es'; } catch(e){}
+  try { const sk = document.querySelector('.salta-contenido'); if(sk) sk.textContent = lang === 'ca' ? 'Salta al contingut principal' : 'Saltar al contenido principal'; } catch(e){}
   try { localStorage.setItem('logos_lang', lang); } catch(e){}
   document.getElementById('btn-es').classList.toggle('active', lang==='es');
   document.getElementById('btn-ca').classList.toggle('active', lang==='ca');
@@ -1642,7 +1658,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-28 · v77 (Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-29 · v78 (accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2094,7 +2110,7 @@ function renderOrientacionForm(){
       : 'Explica con tus palabras qué te pasa o qué necesitas. No hace falta que sepas el nombre del trámite — un técnico de Logos leerá lo que escribas y te responderá con una orientación.'}</p>
     <div class="field">
       <textarea id="orient-texto" rows="6" maxlength="2000" oninput="const c=document.getElementById('orient-cuenta'); if(c) c.textContent=this.value.length+' / 2000'" placeholder="${esCA ? 'Per exemple: la meva mare té dificultats per caminar i no sé si té dret a alguna ajuda...' : 'Por ejemplo: mi madre tiene dificultades para caminar y no sé si tiene derecho a alguna ayuda...'}"></textarea>
-    <div id="orient-cuenta" class="subtle" style="font-size:11.5px;text-align:right;margin:2px 0 0;">0 / 2000</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0 0;">${corrBtnHtml('orient-texto')}<span id="orient-cuenta" class="subtle" style="font-size:11.5px;margin:0;">0 / 2000</span></div>
     </div>
     <button class="primary-btn" id="orient-save-btn" onclick="guardarConsultaOrientacion()">${esCA ? 'Enviar a Logos' : 'Enviar a Logos'}</button>
     <p class="subtle" style="font-size:11.5px;margin:8px 0 0;">${esCA ? 'Pots tenir fins a 2 consultes esperant resposta i enviar-ne 3 al dia.' : 'Puedes tener hasta 2 consultas esperando respuesta y enviar 3 al día.'}</p>
@@ -2781,6 +2797,7 @@ function incAbrir(destinoInicial){
     <div class="inc-paso">2 · ${incT('¿Qué pasa?', 'Què passa?')}</div>
     <input id="inc-asunto" maxlength="120" placeholder="${incT('En pocas palabras (ej.: no puedo subir un documento)', 'En poques paraules (ex.: no puc pujar un document)')}">
     <textarea id="inc-texto" rows="4" maxlength="3000" placeholder="${incT('Explícalo con detalle: qué hacías, qué esperabas y qué ha pasado.', 'Explica-ho amb detall: què feies, què esperaves i què ha passat.')}"></textarea>
+    ${typeof corrBtnHtml === 'function' ? corrBtnHtml('inc-texto') : ''}
     <div class="inc-nota">ℹ️ ${incT('Se adjunta sola la pantalla en la que estás y el tipo de dispositivo, para encontrar el problema más rápido. No compartas contraseñas.', 'S\'adjunta sola la pantalla on ets i el tipus de dispositiu, per trobar el problema més ràpid. No comparteixis contrasenyes.')}</div>
     <div id="inc-msg"></div>
     <button class="inc-env" id="inc-env" onclick="incEnviar()">📨 ${incT('Enviar aviso', 'Enviar avís')}</button>
@@ -4893,6 +4910,7 @@ function cursoChatHtml(cursoId, titulo){
     <div class="cchat-lista" id="cchat-lista-${chEsc(cursoId)}"><div class="cchat-vacio">${chT('Cargando…', 'Carregant…')}</div></div>
     <div class="cchat-form">
       <textarea id="cchat-txt-${chEsc(cursoId)}" rows="1" maxlength="2000" placeholder="${chT('Escribe un mensaje para el grupo…', 'Escriu un missatge per al grup…')}" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cursoChatEnviar('${chEsc(cursoId)}');}" oninput="this.style.height='auto';this.style.height=Math.min(120,this.scrollHeight)+'px'"></textarea>
+      ${typeof corrBtnHtml === 'function' ? `<button class="cchat-corr" type="button" title="${chT('Corregir el texto', 'Corregir el text')}" aria-label="${chT('Corregir el texto', 'Corregir el text')}" onclick="acCorregir('cchat-txt-${chEsc(cursoId)}', this)">✨</button>` : ''}
       <button class="cchat-env" onclick="cursoChatEnviar('${chEsc(cursoId)}')" aria-label="${chT('Enviar', 'Enviar')}">➤</button>
     </div>
     <div class="cchat-pie">${String(cursoId).startsWith('proy:') ? chT('Lo ven todas las personas del proyecto y el equipo de Logos.', 'Ho veuen totes les persones del projecte i l\'equip de Logos.') + ' ' + chT('No compartas datos personales (DNI, dirección…).', 'No comparteixis dades personals (DNI, adreça…).') : chT('Lo ven todas las personas del curso y el equipo de Logos. No compartas datos personales (DNI, dirección…).', 'Ho veuen totes les persones del curs i l\'equip de Logos. No comparteixis dades personals (DNI, adreça…).')}</div>
@@ -7319,7 +7337,7 @@ async function renderCitaForm(){
   const pasosCt = [esCA ? 'Com' : 'Cómo', ...(tecnicos.length ? [esCA ? 'Amb qui' : 'Con quién'] : []), esCA ? 'Dia' : 'Día', esCA ? 'Hora' : 'Hora', esCA ? 'Confirmar' : 'Confirmar'];
   document.getElementById('cita-content').innerHTML = `
     <div class="ct-hero"><div class="ct-hero-i">📅</div><div><h2>${esCA ? 'Demana la teva cita' : 'Pide tu cita'}</h2><p>${esCA ? 'En 4 passos, sense esperes. A Logos o per telèfon.' : 'En 4 pasos, sin esperas. En Logos o por teléfono.'}</p></div></div>
-    <div class="ct-pasos" id="ct-pasos">${pasosCt.map((p, i) => `<span data-i="${i}"><b>${i + 1}</b>${p}</span>`).join('')}</div>
+    <div class="ct-pasos" id="ct-pasos" tabindex="0" role="region" aria-label="${esCA ? 'Passos per demanar cita' : 'Pasos para pedir cita'}">${pasosCt.map((p, i) => `<span data-i="${i}"><b>${i + 1}</b>${p}</span>`).join('')}</div>
     ${logosEstadoHtml()}
     ${misCitasBloque}
     <div class="cita-paso"><span class="cita-num">1</span> ${esCA ? 'Com vols la cita?' : '¿Cómo quieres la cita?'}</div>
@@ -8149,6 +8167,7 @@ async function renderEncuestaForm(){
     <div class="field">
       <label>${esCA ? 'Tens alguna altra suggerència o comentari per millorar els nostres serveis?' : '¿Tienes alguna otra sugerencia o comentario para mejorar nuestros servicios?'}</label>
       <textarea id="enc-comentario" rows="3" maxlength="1000"></textarea>
+      ${corrBtnHtml('enc-comentario')}
     </div>
     <button class="primary-btn" id="enc-save-btn" onclick="guardarEncuesta()">${esCA ? 'Enviar' : 'Enviar'}</button>
   `;
@@ -8649,6 +8668,79 @@ function agregarMensajeAsistente(texto, quien){
   return div;
 }
 // El asistente trabaja como un técnico más: usa la función «asistente-tecnico» (y la antigua «asistente» si aún no está subida)
+// ---------- Accesibilidad (WCAG 2.2 AA): nombres para botones con solo icono, ventanas como diálogo y tecla Esc ----------
+(function(){
+  const SIMB = { '✕': ['Cerrar', 'Tancar'], '×': ['Cerrar', 'Tancar'], '➤': ['Enviar', 'Enviar'], '‹': ['Anterior', 'Anterior'], '›': ['Siguiente', 'Següent'], '←': ['Volver', 'Tornar'], '→': ['Seguir', 'Continuar'], '☰': ['Menú', 'Menú'], '🔍': ['Buscar', 'Cercar'], '🔎': ['Buscar', 'Cercar'], '✨': ['Corregir el texto', 'Corregir el text'], '💬': ['Mensajes', 'Missatges'], '🗑️': ['Borrar', 'Esborrar'], '✏️': ['Editar', 'Editar'], '⏸': ['Pausa', 'Pausa'], '▶': ['Reproducir', 'Reproduir'] };
+  const ca = () => (typeof LANG !== 'undefined' ? LANG : 'es') === 'ca';
+  const sinLetras = t => !/[A-Za-zÀ-ÿ0-9]/.test(t);
+  function arreglar(raiz){
+    (raiz.querySelectorAll ? raiz : document).querySelectorAll('button:not([aria-label]), a[href]:not([aria-label]), [role=button]:not([aria-label])').forEach(b => {
+      const t = (b.textContent || '').trim();
+      if(t && !sinLetras(t)) return;
+      const nombre = b.getAttribute('title') || (SIMB[t] ? SIMB[t][ca() ? 1 : 0] : '');
+      if(nombre) b.setAttribute('aria-label', nombre);
+    });
+    (raiz.querySelectorAll ? raiz : document).querySelectorAll('img:not([alt])').forEach(i => i.setAttribute('alt', ''));
+    (raiz.querySelectorAll ? raiz : document).querySelectorAll('input:not([type=hidden]):not([aria-label]):not([id]), textarea:not([aria-label]):not([id])').forEach(i => { if(i.placeholder) i.setAttribute('aria-label', i.placeholder); });
+    (raiz.querySelectorAll ? raiz : document).querySelectorAll('input[id]:not([aria-label]), textarea[id]:not([aria-label]), select[id]:not([aria-label])').forEach(i => {
+      if(i.type === 'hidden' || i.closest('label') || document.querySelector('label[for="' + i.id + '"]')) return;
+      const lab = i.closest('.field') ? i.closest('.field').querySelector('label') : null;
+      const n = (lab && lab.textContent.trim()) || i.placeholder || i.title;
+      if(n) i.setAttribute('aria-label', n.slice(0, 120));
+    });
+  }
+  let ultimoFoco = null;
+  function dialogo(el){
+    if(!el || el.dataset.a11y) return; el.dataset.a11y = '1';
+    el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+    const tit = el.querySelector('h2, h3, strong'); if(tit && !el.getAttribute('aria-label')) el.setAttribute('aria-label', tit.textContent.trim().slice(0, 80));
+    ultimoFoco = document.activeElement;
+    setTimeout(() => { const f = el.querySelector('input, textarea, select, button, [href]'); if(f && !el.contains(document.activeElement)) try { f.focus({ preventScroll: true }); } catch(e){} }, 50);
+  }
+  const esVentana = n => n.nodeType === 1 && n.parentNode === document.body && /(^|-)ov$|-overlay$|^ov-/.test(n.id || '') && getComputedStyle(n).position === 'fixed';
+  const mo = new MutationObserver(ms => {
+    ms.forEach(m => {
+      m.addedNodes.forEach(n => { if(n.nodeType !== 1) return; if(esVentana(n)) dialogo(n); arreglar(n); });
+      m.removedNodes.forEach(n => { if(n.nodeType === 1 && n.dataset && n.dataset.a11y && ultimoFoco && document.contains(ultimoFoco)) try { ultimoFoco.focus({ preventScroll: true }); } catch(e){} });
+    });
+  });
+  document.addEventListener('DOMContentLoaded', () => { arreglar(document); try { mo.observe(document.body, { childList: true, subtree: true }); } catch(e){} });
+  // Esc cierra la ventana abierta (la de más arriba)
+  document.addEventListener('keydown', e => {
+    if(e.key !== 'Escape') return;
+    const vs = [...document.querySelectorAll('body > [role=dialog]')];
+    const v = vs[vs.length - 1]; if(!v) return;
+    const cerrar = [...v.querySelectorAll('button')].find(b => /^(✕|×)$/.test((b.textContent || '').trim()) || /cerrar|tancar/i.test(b.getAttribute('aria-label') || ''));
+    if(cerrar) cerrar.click(); else v.remove();
+  });
+})();
+
+// ---------- Autocorrección con el asistente: arregla ortografía, acentos y puntuación sin cambiar lo que dice ----------
+function corrBtnHtml(id){
+  return `<button type="button" class="corr-btn" data-para="${id}" onclick="acCorregir('${id}', this)" title="${LANG === 'ca' ? 'Corregeix l\'ortografia i la puntuació sense canviar el que dius' : 'Corrige la ortografía y la puntuación sin cambiar lo que dices'}">✨ ${LANG === 'ca' ? 'Corregir el text' : 'Corregir el texto'}</button>`;
+}
+async function acCorregir(id, btn){
+  const ta = document.getElementById(id); if(!ta) return;
+  const original = ta.value; if(!original.trim()){ ta.focus(); return; }
+  if(!CURRENT_USER){ alert(LANG === 'ca' ? 'Entra amb el teu compte per fer servir la correcció.' : 'Entra con tu cuenta para usar la corrección.'); return; }
+  const txtBtn = btn ? btn.innerHTML : '';
+  if(btn){ btn.disabled = true; btn.innerHTML = '⏳'; }
+  let r = null; try { r = await llamarAsistente('asistente-tecnico', { modo: 'corregir', texto: original }); } catch(e){}
+  if(btn){ btn.disabled = false; btn.innerHTML = txtBtn; }
+  const nuevo = r && typeof r.texto === 'string' ? r.texto : '';
+  if(!nuevo){ alert(LANG === 'ca' ? 'Ara mateix no s\'ha pogut corregir. Pots enviar-ho igualment.' : 'Ahora mismo no se ha podido corregir. Puedes enviarlo igualmente.'); return; }
+  if(ta.value !== original) return;   // la persona siguió escribiendo: no se pisa
+  if(nuevo === original){ corrAviso(ta, LANG === 'ca' ? '✅ El text ja estava bé.' : '✅ El texto ya estaba bien.'); return; }
+  ta.value = nuevo; ta.dispatchEvent(new Event('input', { bubbles: true }));
+  window.__corrDeshacer = window.__corrDeshacer || {}; window.__corrDeshacer[id] = original;
+  corrAviso(ta, `✨ ${LANG === 'ca' ? 'Text corregit.' : 'Texto corregido.'} <button type="button" class="link-btn" style="font-size:12px;" onclick="corrDeshacer('${id}')">${LANG === 'ca' ? 'Desfer' : 'Deshacer'}</button>`);
+}
+function corrDeshacer(id){ const ta = document.getElementById(id), o = (window.__corrDeshacer || {})[id]; if(ta && o != null){ ta.value = o; ta.dispatchEvent(new Event('input', { bubbles: true })); } const a = document.getElementById('corr-aviso-' + id); if(a) a.remove(); }
+function corrAviso(ta, html){
+  const id = 'corr-aviso-' + ta.id; let a = document.getElementById(id);
+  if(!a){ a = document.createElement('div'); a.id = id; a.className = 'corr-aviso'; a.setAttribute('role', 'status'); ta.insertAdjacentElement('afterend', a); }
+  a.innerHTML = html; clearTimeout(a._t); a._t = setTimeout(() => { if(a.isConnected) a.remove(); }, 12000);
+}
 async function llamarAsistente(nombre, payload){
   const res = await fetch('https://foxtlpyfedwsvttzorql.supabase.co/functions/v1/' + nombre, {
     signal: AbortSignal.timeout(60000), method: 'POST',
