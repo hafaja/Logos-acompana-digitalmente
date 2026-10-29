@@ -450,6 +450,13 @@
 .cita-tec-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#E6F0FA;color:#1F4E79;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
 .cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
 @media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
+.cifras-logos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 6px;}
+.cifras-logos[hidden]{display:none;}
+.cifras-logos .cf{background:linear-gradient(135deg,#163F7A,#1F66C1);color:#fff;border-radius:18px;padding:14px 12px;text-align:center;}
+.cifras-logos .cf.b{background:linear-gradient(135deg,#7A4A1F,#A9581A);}
+.cifras-logos .cf strong{display:block;font-size:30px;font-weight:800;line-height:1.1;}
+.cifras-logos .cf span{display:block;font-size:13px;opacity:.95;margin-top:4px;}
+.cifras-logos .cf-pie{grid-column:1/-1;text-align:center;font-size:12px;color:#5F6672;}
 /* ===== Botón «Aa»: ayudas para ver y leer mejor ===== */
 .a11y-btn{position:fixed;bottom:22px;left:22px;width:56px;height:56px;border-radius:50%;background:#163F7A;color:#fff;border:3px solid #fff;font:800 21px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 10px 24px rgba(22,35,63,.3);z-index:200;display:flex;align-items:center;justify-content:center;}
 @media (max-width:760px){ body > .a11y-btn{bottom:74px;left:14px;width:48px;height:48px;font-size:18px;} }
@@ -1090,6 +1097,7 @@ body{font-size:15.5px;}
     </div>
     <div class="content">
       <div id="entrada-panel"></div>
+      <div id="cifras-logos" class="cifras-logos" hidden></div>
       <div id="catalogo-panel" style="display:none;">
         <div id="guia-card-host"></div>
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
@@ -1400,6 +1408,7 @@ function fmtFechaCorta(f, ca, conDia){
 function setLang(lang){
   LANG = lang;
   try { document.documentElement.lang = lang === 'ca' ? 'ca' : 'es'; } catch(e){}
+  try { if(document.getElementById('cifras-logos') && !document.getElementById('cifras-logos').hidden) pintarCifrasLogos(); } catch(e){}
   try { const ab = document.getElementById('a11y-btn'); if(ab){ const t = lang === 'ca' ? 'Ajudes per veure i llegir millor' : 'Ayudas para ver y leer mejor'; ab.setAttribute('aria-label', t); ab.title = t; } } catch(e){}
   try { const sk = document.querySelector('.salta-contenido'); if(sk) sk.textContent = lang === 'ca' ? 'Salta al contingut principal' : 'Saltar al contenido principal'; } catch(e){}
   try { localStorage.setItem('logos_lang', lang); } catch(e){}
@@ -1696,7 +1705,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-29 · v79 (botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-30 · v80 (portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -8706,6 +8715,28 @@ function agregarMensajeAsistente(texto, quien){
   return div;
 }
 // El asistente trabaja como un técnico más: usa la función «asistente-tecnico» (y la antigua «asistente» si aún no está subida)
+// ---------- Logos en cifras (portada): solo totales, sin datos personales (SQL-62) ----------
+function cfContar(el, fin){
+  if(!el) return; const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('a11y-quieto');
+  if(quieto){ el.textContent = fin.toLocaleString('es-ES'); return; }
+  const t0 = performance.now(), dur = 1400;
+  const paso = t => { const k = Math.min(1, (t - t0) / dur), v = Math.round(fin * (1 - Math.pow(1 - k, 3))); el.textContent = v.toLocaleString('es-ES'); if(k < 1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
+}
+async function pintarCifrasLogos(){
+  const host = document.getElementById('cifras-logos'); if(!host) return;
+  let d = null; try { const r = await sb.rpc('cifras_publicas'); if(!r.error) d = r.data; } catch(e){}
+  if(!d || !d.intervenciones){ host.hidden = true; return; }
+  const ca = typeof LANG !== 'undefined' && LANG === 'ca';
+  host.innerHTML = `<div class="cf"><strong id="cf-n1">0</strong><span>${ca ? 'vegades hem acompanyat persones' : 'veces hemos acompañado a personas'}</span></div>
+    <div class="cf b"><strong id="cf-n2">0</strong><span>${ca ? 'persones ateses' : 'personas atendidas'}</span></div>
+    <div class="cf-pie">${ca ? `Cada atenció compta. Només el ${d.anio}: ${Number(d.intervenciones_anio).toLocaleString('es-ES')}.` : `Cada atención cuenta. Solo en ${d.anio}: ${Number(d.intervenciones_anio).toLocaleString('es-ES')}.`}</div>`;
+  host.hidden = false;
+  host.setAttribute('aria-label', (ca ? 'Logos en xifres' : 'Logos en cifras'));
+  cfContar(document.getElementById('cf-n1'), Number(d.intervenciones)); cfContar(document.getElementById('cf-n2'), Number(d.personas || 0));
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(pintarCifrasLogos, 600));
+
 // ---------- Botón «Aa»: ayudas para ver y leer mejor (se recuerdan en este móvil u ordenador) ----------
 const A11Y_CLAVE = 'logos_ayudas_lectura';
 function a11yLeer(){ try { return JSON.parse(localStorage.getItem(A11Y_CLAVE) || '{}') || {}; } catch(e){ return {}; } }
