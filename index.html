@@ -450,6 +450,42 @@
 .cita-tec-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#E6F0FA;color:#1F4E79;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
 .cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
 @media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
+/* ===== Botón «Aa»: ayudas para ver y leer mejor ===== */
+.a11y-btn{position:fixed;bottom:22px;left:22px;width:56px;height:56px;border-radius:50%;background:#163F7A;color:#fff;border:3px solid #fff;font:800 21px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 10px 24px rgba(22,35,63,.3);z-index:200;display:flex;align-items:center;justify-content:center;}
+@media (max-width:760px){ body > .a11y-btn{bottom:74px;left:14px;width:48px;height:48px;font-size:18px;} }
+.a11y-ov{position:fixed;inset:0;z-index:10001;background:rgba(15,30,60,.5);display:flex;align-items:flex-end;justify-content:center;padding:12px;}
+@media (min-width:761px){ .a11y-ov{align-items:center;} }
+.a11y-caja{background:#fff;border-radius:22px;max-width:440px;width:100%;padding:18px 18px 14px;box-shadow:0 20px 50px rgba(0,0,0,.3);max-height:92vh;overflow:auto;}
+.a11y-caja h2{margin:0 0 4px;font-size:21px;color:#163F7A;}
+.a11y-caja .a11y-sub{margin:0 0 14px;color:#5F6672;font-size:14px;}
+.a11y-op{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#F3F7FC;border:2px solid #D5E1F0;border-radius:16px;padding:14px;margin:0 0 10px;cursor:pointer;font:inherit;color:#16233F;}
+.a11y-op .ic{font-size:30px;width:44px;text-align:center;flex:0 0 44px;}
+.a11y-op strong{display:block;font-size:17px;}
+.a11y-op small{display:block;color:#5F6672;font-size:13px;margin-top:2px;}
+.a11y-op .est{margin-left:auto;font-weight:800;font-size:13px;padding:4px 10px;border-radius:999px;background:#E3E8EF;color:#3B4352;white-space:nowrap;}
+.a11y-op[aria-pressed=true]{border-color:#1F66C1;background:#E8F1FC;}
+.a11y-op[aria-pressed=true] .est{background:#1F66C1;color:#fff;}
+.a11y-tam{display:flex;gap:8px;margin-left:auto;}
+.a11y-tam button{flex:0 0 auto;min-width:46px;padding:0 8px;height:46px;border-radius:12px;border:2px solid #D5E1F0;background:#fff;font-weight:800;cursor:pointer;color:#16233F;}
+.a11y-tam button[aria-pressed=true]{background:#1F66C1;border-color:#1F66C1;color:#fff;}
+.a11y-pie{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:6px;}
+.a11y-pie button{font:inherit;}
+.a11y-cerrar{background:#163F7A;color:#fff;border:0;border-radius:999px;padding:12px 22px;font-weight:800;font-size:16px;cursor:pointer;}
+.a11y-quitar{background:none;border:0;color:#1F66C1;text-decoration:underline;cursor:pointer;font-size:14px;}
+.a11y-leyendo{position:fixed;left:50%;transform:translateX(-50%);bottom:140px;z-index:10002;background:#163F7A;color:#fff;border-radius:999px;padding:10px 12px 10px 18px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 24px rgba(0,0,0,.3);font-weight:700;}
+.a11y-leyendo button{background:#fff;color:#163F7A;border:0;border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer;}
+/* letra más grande */
+html.a11y-t1 .main, html.a11y-t1 body > .a11y-leyendo{zoom:1.15;}
+html.a11y-t2 .main{zoom:1.32;}
+/* más contraste */
+html.a11y-contraste .main{filter:contrast(1.25);}
+html.a11y-contraste .main a{text-decoration:underline !important;}
+html.a11y-contraste .main p, html.a11y-contraste .main small, html.a11y-contraste .main .subtle, html.a11y-contraste .main label{color:#111 !important;}
+/* texto más espaciado */
+html.a11y-espacio .main{letter-spacing:.04em;word-spacing:.14em;}
+html.a11y-espacio .main p, html.a11y-espacio .main li, html.a11y-espacio .main label, html.a11y-espacio .main small{line-height:1.8 !important;}
+/* sin movimiento */
+html.a11y-quieto *, html.a11y-quieto *::before, html.a11y-quieto *::after{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
 /* ===== Accesibilidad (WCAG 2.2 AA) ===== */
 .salta-contenido{position:absolute;left:-9999px;top:8px;z-index:10000;background:#163F7A;color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;}
 .salta-contenido:focus{left:8px;}
@@ -973,6 +1009,7 @@ body{font-size:15.5px;}
 </head>
 <body>
 <a class="salta-contenido" href="#contenido-principal" onclick="const m=document.querySelector('.screen.active')||document.getElementById('contenido-principal'); if(m){ m.setAttribute('tabindex','-1'); m.focus(); } return false;">Saltar al contenido principal</a>
+<button class="a11y-btn" id="a11y-btn" onclick="a11yAbrir()" aria-haspopup="dialog" aria-label="Ayudas para ver y leer mejor" title="Ayudas para ver y leer mejor"><span aria-hidden="true">Aa</span></button>
 <button class="asistente-btn" onclick="toggleAsistenteChat()" title="Asistente de orientación" aria-label="Asistente de orientación">💬</button>
 <div class="asistente-panel" id="asistente-panel">
   <div class="asistente-header">
@@ -1363,6 +1400,7 @@ function fmtFechaCorta(f, ca, conDia){
 function setLang(lang){
   LANG = lang;
   try { document.documentElement.lang = lang === 'ca' ? 'ca' : 'es'; } catch(e){}
+  try { const ab = document.getElementById('a11y-btn'); if(ab){ const t = lang === 'ca' ? 'Ajudes per veure i llegir millor' : 'Ayudas para ver y leer mejor'; ab.setAttribute('aria-label', t); ab.title = t; } } catch(e){}
   try { const sk = document.querySelector('.salta-contenido'); if(sk) sk.textContent = lang === 'ca' ? 'Salta al contingut principal' : 'Saltar al contenido principal'; } catch(e){}
   try { localStorage.setItem('logos_lang', lang); } catch(e){}
   document.getElementById('btn-es').classList.toggle('active', lang==='es');
@@ -1658,7 +1696,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-29 · v78 (accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-29 · v79 (botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -8668,6 +8706,61 @@ function agregarMensajeAsistente(texto, quien){
   return div;
 }
 // El asistente trabaja como un técnico más: usa la función «asistente-tecnico» (y la antigua «asistente» si aún no está subida)
+// ---------- Botón «Aa»: ayudas para ver y leer mejor (se recuerdan en este móvil u ordenador) ----------
+const A11Y_CLAVE = 'logos_ayudas_lectura';
+function a11yLeer(){ try { return JSON.parse(localStorage.getItem(A11Y_CLAVE) || '{}') || {}; } catch(e){ return {}; } }
+function a11yGuardar(o){ try { localStorage.setItem(A11Y_CLAVE, JSON.stringify(o)); } catch(e){} }
+function a11yAplicar(){
+  const o = a11yLeer(), h = document.documentElement;
+  h.classList.toggle('a11y-t1', o.tam === 1); h.classList.toggle('a11y-t2', o.tam === 2);
+  h.classList.toggle('a11y-contraste', !!o.contraste); h.classList.toggle('a11y-espacio', !!o.espacio); h.classList.toggle('a11y-quieto', !!o.quieto);
+  const b = document.getElementById('a11y-btn'); if(b) b.style.outline = (o.tam || o.contraste || o.espacio || o.quieto) ? '3px solid #E0A526' : '';
+}
+function a11yT(es, ca){ return (typeof LANG !== 'undefined' && LANG === 'ca') ? ca : es; }
+function a11yAbrir(){
+  document.getElementById('a11y-ov')?.remove();
+  const o = a11yLeer(), si = a11yT('Sí', 'Sí'), no = a11yT('No', 'No');
+  const op = (k, ic, t, d) => `<button type="button" class="a11y-op" aria-pressed="${!!o[k]}" onclick="a11yCambiar('${k}')"><span class="ic" aria-hidden="true">${ic}</span><span><strong>${t}</strong><small>${d}</small></span><span class="est">${o[k] ? si : no}</span></button>`;
+  const tb = (n, txt, et) => `<button type="button" aria-pressed="${(o.tam || 0) === n}" aria-label="${et}" onclick="a11yCambiar('tam', ${n})">${txt}</button>`;
+  document.body.insertAdjacentHTML('beforeend', `<div class="a11y-ov" id="a11y-ov" onclick="if(event.target===this)a11yCerrar()">
+    <div class="a11y-caja" role="dialog" aria-modal="true" aria-labelledby="a11y-tit">
+      <h2 id="a11y-tit">Aa · ${a11yT('Ver y leer mejor', 'Veure i llegir millor')}</h2>
+      <p class="a11y-sub">${a11yT('Toca lo que te ayude. Se queda guardado en este móvil u ordenador.', 'Toca el que t\'ajudi. Queda desat en aquest mòbil o ordinador.')}</p>
+      <div class="a11y-op" style="cursor:default;"><span class="ic" aria-hidden="true">🔠</span><span><strong>${a11yT('Letra más grande', 'Lletra més gran')}</strong></span>
+        <span class="a11y-tam">${tb(0, 'A', a11yT('Letra normal', 'Lletra normal'))}${tb(1, 'A+', a11yT('Letra grande', 'Lletra gran'))}${tb(2, 'A++', a11yT('Letra muy grande', 'Lletra molt gran'))}</span></div>
+      <button type="button" class="a11y-op" onclick="a11yLeerPagina()"><span class="ic" aria-hidden="true">🔊</span><span><strong>${a11yT('Escuchar esta página', 'Escoltar aquesta pàgina')}</strong><small>${a11yT('El móvil te lee en voz alta lo que hay en pantalla', 'El mòbil et llegeix en veu alta el que hi ha a la pantalla')}</small></span><span class="est">▶</span></button>
+      ${op('contraste', '🌓', a11yT('Más contraste', 'Més contrast'), a11yT('Colores más fuertes y letra más oscura', 'Colors més forts i lletra més fosca'))}
+      ${op('espacio', '↔️', a11yT('Texto más separado', 'Text més separat'), a11yT('Más espacio entre letras y líneas', 'Més espai entre lletres i línies'))}
+      ${op('quieto', '⏸️', a11yT('Sin movimiento', 'Sense moviment'), a11yT('Para las animaciones', 'Atura les animacions'))}
+      <div class="a11y-pie"><button type="button" class="a11y-quitar" onclick="a11yGuardar({});a11yAplicar();a11yAbrir()">${a11yT('Quitar todo', 'Treure-ho tot')}</button>
+        <button type="button" class="a11y-cerrar" onclick="a11yCerrar()">✓ ${a11yT('Listo', 'Fet')}</button></div>
+    </div></div>`);
+  setTimeout(() => { const f = document.querySelector('#a11y-ov .a11y-op button, #a11y-ov button'); if(f) f.focus(); }, 30);
+}
+function a11yCerrar(){ document.getElementById('a11y-ov')?.remove(); const b = document.getElementById('a11y-btn'); if(b) b.focus(); }
+function a11yCambiar(k, v){
+  const o = a11yLeer();
+  if(k === 'tam') o.tam = v; else o[k] = !o[k];
+  a11yGuardar(o); a11yAplicar(); a11yAbrir();
+}
+function a11yLeerPagina(){
+  if(!('speechSynthesis' in window)){ alert(a11yT('Este navegador no puede leer en voz alta.', 'Aquest navegador no pot llegir en veu alta.')); return; }
+  a11yCerrar();
+  const zona = document.querySelector('.screen.active') || document.getElementById('contenido-principal') || document.body;
+  const txt = (zona.innerText || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\uFE0F]/gu, ' ').replace(/\s*\n+\s*/g, '. ').replace(/(\.\s*){2,}/g, '. ').trim();
+  if(!txt) return;
+  speechSynthesis.cancel();
+  const lang = a11yT('es-ES', 'ca-ES');
+  const trozos = txt.match(/[^.!?]{1,220}[.!?]?/g) || [txt];
+  const voces = speechSynthesis.getVoices(), voz = voces.find(v => v.lang === lang) || voces.find(v => v.lang && v.lang.startsWith(lang.slice(0, 2)));
+  trozos.forEach((t, i) => { const u = new SpeechSynthesisUtterance(t); u.lang = lang; if(voz) u.voice = voz; u.rate = .92; if(i === trozos.length - 1) u.onend = a11yPararLectura; speechSynthesis.speak(u); });
+  document.getElementById('a11y-leyendo')?.remove();
+  document.body.insertAdjacentHTML('beforeend', `<div class="a11y-leyendo" id="a11y-leyendo" role="status"><span>🔊 ${a11yT('Leyendo…', 'Llegint…')}</span><button type="button" onclick="a11yPararLectura()">■ ${a11yT('Parar', 'Aturar')}</button></div>`);
+}
+function a11yPararLectura(){ try { speechSynthesis.cancel(); } catch(e){} document.getElementById('a11y-leyendo')?.remove(); }
+a11yAplicar();
+document.addEventListener('DOMContentLoaded', a11yAplicar);
+
 // ---------- Accesibilidad (WCAG 2.2 AA): nombres para botones con solo icono, ventanas como diálogo y tecla Esc ----------
 (function(){
   const SIMB = { '✕': ['Cerrar', 'Tancar'], '×': ['Cerrar', 'Tancar'], '➤': ['Enviar', 'Enviar'], '‹': ['Anterior', 'Anterior'], '›': ['Siguiente', 'Següent'], '←': ['Volver', 'Tornar'], '→': ['Seguir', 'Continuar'], '☰': ['Menú', 'Menú'], '🔍': ['Buscar', 'Cercar'], '🔎': ['Buscar', 'Cercar'], '✨': ['Corregir el texto', 'Corregir el text'], '💬': ['Mensajes', 'Missatges'], '🗑️': ['Borrar', 'Esborrar'], '✏️': ['Editar', 'Editar'], '⏸': ['Pausa', 'Pausa'], '▶': ['Reproducir', 'Reproduir'] };
