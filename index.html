@@ -1742,7 +1742,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-30 · v83 (vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-30 · v84 (los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2511,6 +2511,36 @@ if(document.readyState === 'loading') document.addEventListener('DOMContentLoade
 // ve y edita sus propios datos, nunca los de otra).
 const SUPABASE_URL = 'https://foxtlpyfedwsvttzorql.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Ght82ml0pvg0_nQvunlXVA_u0WjRscq';
+
+// ===== Avisos técnicos automáticos: cada fallo se apunta solo en el Panel técnico (SQL-68) =====
+(function(){
+  const APP = 'acompanya', enviados = {}; let n = 0;
+  const firma = t => { let h = 0; for(let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return 'f' + (h >>> 0).toString(36); };
+  const version = () => { try { return (String(APP_VERSION_ACOMP).match(/v\d+/) || [''])[0]; } catch(e){ return ''; } };
+  window.reportarFallo = function(tipo, mensaje, detalle){
+    try {
+      mensaje = String(mensaje || '').replace(/\s+/g, ' ').trim().slice(0, 600); if(!mensaje) return;
+      if(/ResizeObserver loop|^Script error\.?$|chrome-extension|moz-extension|safari-extension|Non-Error promise rejection/i.test(mensaje + ' ' + (detalle || ''))) return;
+      const f = firma(APP + tipo + mensaje.replace(/\d+/g, '#'));
+      if(enviados[f] || n >= 25 || typeof sb === 'undefined' || !sb.rpc) return; enviados[f] = 1; n++;
+      const act = document.querySelector('.screen.active');
+      sb.rpc('reportar_error', { p: { app: APP, tipo, mensaje, firma: f, detalle: String(detalle || '').slice(0, 4000), pantalla: act ? act.id.replace('screen-', '') : '', version: version(), navegador: navigator.userAgent.slice(0, 200) } }).then(() => {}, () => {});
+    } catch(e){}
+  };
+  window.addEventListener('error', e => { if(e && e.message) reportarFallo('js', e.message, (e.filename || '').split('/').pop() + ':' + (e.lineno || '') + ':' + (e.colno || '') + '\n' + ((e.error && e.error.stack) || '')); });
+  window.addEventListener('unhandledrejection', e => { const r = e && e.reason; reportarFallo('js', 'Promesa: ' + ((r && r.message) || String(r)), (r && r.stack) || ''); });
+  // Fallos de red o del servidor al hablar con la base de datos (no los «no tienes permiso» ni los datos que faltan, que son normales)
+  if(window.fetch && !window.__fetchVigilado){ window.__fetchVigilado = true;
+    const f0 = window.fetch.bind(window);
+    window.fetch = function(u, o){
+      const url = String((u && u.url) || u || '');
+      const nuestro = url.includes('.supabase.co') && !url.includes('reportar_error') && String((o && o.method) || 'GET').toUpperCase() !== 'OPTIONS';
+      return f0(u, o).then(r => { if(nuestro && r.status >= 500) reportarFallo('datos', 'El servidor ha respondido con error ' + r.status, url.replace(/^https:\/\/[^/]+/, '').split('?')[0]); return r; },
+        err => { if(nuestro && navigator.onLine && !/abort/i.test(String(err && err.name))) reportarFallo('red', 'No se puede conectar con la base de datos', url.replace(/^https:\/\/[^/]+/, '').split('?')[0] + ' · ' + (err && err.message)); throw err; });
+    };
+  }
+})();
+
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let CURRENT_USER = null;
