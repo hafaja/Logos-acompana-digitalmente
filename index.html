@@ -492,6 +492,16 @@
 .vid-play span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(242,188,44,.96);color:#16325A;font-size:24px;display:flex;align-items:center;justify-content:center;padding-left:4px;box-shadow:0 8px 22px rgba(0,0,0,.35);}
 .vid iframe,.vid video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;}
 .anu-vid{flex-direction:column;align-items:stretch;} .anu-vid .vid{border-radius:12px;margin-top:4px;}
+.consent-legal{max-height:420px;overflow:auto;}
+.cons-imagen{border:2px solid #E0A526;border-radius:12px;padding:8px 12px;margin:10px 0 0;} .cons-imagen legend{font-weight:700;font-size:13.5px;padding:0 6px;}
+.cons-der{background:#F3F7FC;border-radius:12px;padding:10px 12px;margin:0 0 10px;font-size:14px;}
+.cons-der-img{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;} .cons-der-img .link-btn{margin:0;}
+.cons-der-nota{margin:8px 0 0;font-size:13px;} .cons-der-nota .link-btn{margin:0;font-size:13px;}
+.cons-der-mas{margin-top:10px;} .cons-der-mas summary{cursor:pointer;font-weight:700;color:#5F6672;font-size:13.5px;} .cons-der-mas p{font-size:13px;margin:8px 0;}
+.cons-der-b{display:block;width:100%;margin:6px 0 0;padding:10px 12px;border-radius:12px;border:1.5px solid #CBD5E1;background:#fff;font:inherit;font-weight:700;cursor:pointer;color:#16233F;text-align:left;min-height:44px;}
+.cons-der-b.rojo{border-color:#E5484D;color:#B91C1C;}
+.cons-ov{position:fixed;inset:0;z-index:10001;background:rgba(15,30,60,.5);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;}
+.cons-ov-c{background:#fff;border-radius:18px;max-width:680px;width:100%;padding:16px 18px;}
 /* ===== Botón «Aa»: ayudas para ver y leer mejor ===== */
 .a11y-btn{position:fixed;bottom:22px;left:22px;width:56px;height:56px;border-radius:50%;background:#163F7A;color:#fff;border:3px solid #fff;font:800 21px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 10px 24px rgba(22,35,63,.3);z-index:200;display:flex;align-items:center;justify-content:center;}
 @media (max-width:760px){ body > .a11y-btn{bottom:74px;left:14px;width:48px;height:48px;font-size:18px;} }
@@ -1742,7 +1752,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-30 · v84 (los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-30 · v89 (arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2530,13 +2540,31 @@ const SUPABASE_KEY = 'sb_publishable_Ght82ml0pvg0_nQvunlXVA_u0WjRscq';
   window.addEventListener('error', e => { if(e && e.message) reportarFallo('js', e.message, (e.filename || '').split('/').pop() + ':' + (e.lineno || '') + ':' + (e.colno || '') + '\n' + ((e.error && e.error.stack) || '')); });
   window.addEventListener('unhandledrejection', e => { const r = e && e.reason; reportarFallo('js', 'Promesa: ' + ((r && r.message) || String(r)), (r && r.stack) || ''); });
   // Fallos de red o del servidor al hablar con la base de datos (no los «no tienes permiso» ni los datos que faltan, que son normales)
+  ['pagehide', 'beforeunload'].forEach(ev => window.addEventListener(ev, () => { window.__saliendo = true; setTimeout(() => { window.__saliendo = false; }, 5000); }));   // si al final no se sale (p. ej. un enlace de correo), se vuelve a vigilar   // al recargar o cerrar se cortan las peticiones: no es un fallo
   if(window.fetch && !window.__fetchVigilado){ window.__fetchVigilado = true;
     const f0 = window.fetch.bind(window);
+    // Datos cifrados campo a campo (SQL-70): se descifran solos al leer, con los permisos de quien lee
+    const descifrarRespuesta = async (r, url, o) => {
+      try {
+        if(!r.ok || !/\.supabase\.co\/rest\/v1\//.test(url) || url.includes('descifrar_lote') || !/json/.test(r.headers.get('content-type') || '')) return r;
+        const txt = await r.clone().text();
+        if(txt.indexOf('"enc:v1:') < 0) return r;
+        const lista = [...new Set((txt.match(/"enc:v1:[A-Za-z0-9+/=]+"/g) || []).map(x => x.slice(1, -1)))];
+        if(!lista.length) return r;
+        const hv = k => { const h = o && o.headers; if(!h) return null; return h.get ? h.get(k) : (h[k] || h[k.toLowerCase()] || null); };
+        const base = url.split('/rest/v1/')[0];
+        const d = await f0(base + '/rest/v1/rpc/descifrar_lote', { method: 'POST', headers: { apikey: hv('apikey') || '', Authorization: hv('Authorization') || hv('authorization') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ p: lista }) }).then(x => x.ok ? x.json() : null).catch(() => null);
+        if(!Array.isArray(d)) return r;
+        let nuevo = txt;
+        lista.forEach((c, i) => { nuevo = nuevo.split(JSON.stringify(c)).join(JSON.stringify(d[i] == null ? '🔒' : d[i])); });
+        return new Response(nuevo, { status: r.status, statusText: r.statusText, headers: r.headers });
+      } catch(e){ return r; }
+    };
     window.fetch = function(u, o){
       const url = String((u && u.url) || u || '');
       const nuestro = url.includes('.supabase.co') && !url.includes('reportar_error') && String((o && o.method) || 'GET').toUpperCase() !== 'OPTIONS';
-      return f0(u, o).then(r => { if(nuestro && r.status >= 500) reportarFallo('datos', 'El servidor ha respondido con error ' + r.status, url.replace(/^https:\/\/[^/]+/, '').split('?')[0]); return r; },
-        err => { if(nuestro && navigator.onLine && !/abort/i.test(String(err && err.name))) reportarFallo('red', 'No se puede conectar con la base de datos', url.replace(/^https:\/\/[^/]+/, '').split('?')[0] + ' · ' + (err && err.message)); throw err; });
+      return f0(u, o).then(async r => { if(nuestro && r.status >= 500) reportarFallo('datos', 'El servidor ha respondido con error ' + r.status, url.replace(/^https:\/\/[^/]+/, '').split('?')[0]); return descifrarRespuesta(r, url, o); },
+        err => { if(nuestro && navigator.onLine && !window.__saliendo && document.visibilityState === 'visible' && !/abort/i.test(String(err && err.name))) reportarFallo('red', 'No se puede conectar con la base de datos', url.replace(/^https:\/\/[^/]+/, '').split('?')[0] + ' · ' + (err && err.message)); throw err; });
     };
   }
 })();
@@ -2741,13 +2769,14 @@ function avisoEsperaHtml(a, esCA, margen){
 }
 
 async function renderResumenStep(mostrarCatalogoYa){
+  if(!CURRENT_USER) return;   // la sesión se cerró mientras esperaba (p. ej. al salir): no hay nada que pintar
   const el = document.getElementById('entrada-panel');
   const catalogo = document.getElementById('catalogo-panel');
   const t = T1[LANG];
   const esCA = LANG === 'ca';
   const p = window.__perfilActual || {};
-  const nombre = p.nombre_completo || CURRENT_USER.email;
-  const inicial = nombre.trim().charAt(0).toUpperCase();
+  const nombre = p.nombre_completo || CURRENT_USER.email || '';
+  const inicial = (nombre.trim().charAt(0) || '·').toUpperCase();
 
   catalogo.style.display = mostrarCatalogoYa ? 'block' : 'none';
   { const gb = document.getElementById('btn-guia-top'); if(gb) gb.style.display = 'none'; }  // en el resumen la guía ya sale bajo el nombre
@@ -6647,55 +6676,73 @@ async function descargarCertificadoPDF(){
   }
 }
 
+// Texto legal del consentimiento · versión 2 (oct. 2026, revisada con el jurista). Se usa en la pantalla, en el alta presencial y en el PDF.
+const CONSENT_VERSION = 'v2.1-2026-10';
 function textoLegalConsentimientoHtml(esCA){
+  const L = (es, ca) => esCA ? ca : es;
+  const h = t => `<h3 style="font-size:13.5px;margin:16px 0 4px;">${t}</h3>`;
+  const p = t => `<p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${t}</p>`;
+  const ul = items => `<ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">${items.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  const enc = [
+    ['Supabase Inc.', L('Base de datos y archivos de Logos Acompanya y de la intranet', 'Base de dades i arxius de Logos Acompanya i de la intranet')],
+    ['Netlify Inc.', L('Alojamiento de la web de la entidad', 'Allotjament del web de l\'entitat')],
+    ['GitHub Inc. (Microsoft)', L('Alojamiento de las aplicaciones Logos Acompanya e intranet', 'Allotjament de les aplicacions Logos Acompanya i intranet')],
+    ['Nominalia Internet S.L.', L('Dominio logostgn.cat y correo electrónico', 'Domini logostgn.cat i correu electrònic')],
+    ['Google (Cloud Translation)', L('Traducción en directo, solo cuando se usa el traductor', 'Traducció en directe, només quan es fa servir el traductor')],
+    ['Anthropic PBC', L('Asistente de orientación con inteligencia artificial, solo cuando se le escribe', 'Assistent d\'orientació amb intel·ligència artificial, només quan s\'hi escriu')]
+  ];
   return `
-    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '1. Responsable del tractament' : '1. Responsable del tratamiento'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0;">Associació Logos Projectes Socials · NIF: G55725436<br>
-    ${esCA ? 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona' : 'Calle de la Pau del Protectorat, 14, 43004 Tarragona'}<br>
-    ${esCA ? 'Correu electrònic' : 'Correo electrónico'}: info@logostgn.cat</p>
+    ${h(L('1. Responsable del tratamiento', '1. Responsable del tractament'))}
+    ${p(`Associació Logos Projectes Socials · NIF: G55725436<br>${L('Calle de la Pau del Protectorat, 14, 43004 Tarragona', 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona')}<br>${L('Correo electrónico', 'Correu electrònic')}: info@logostgn.cat`)}
 
-    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '2. Finalitat del tractament' : '2. Finalidad del tratamiento'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${esCA ? 'Les dades personals facilitades seran tractades per:' : 'Los datos personales facilitados serán tratados para:'}</p>
-    <ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">
-      <li>${esCA ? 'La gestió administrativa, operativa i funcional de la participació en programes i serveis.' : 'La gestión administrativa, operativa y funcional de la participación en programas y servicios.'}</li>
-      <li>${esCA ? 'El compliment d\'obligacions legals derivades de subvencions i convenis.' : 'El cumplimiento de obligaciones legales derivadas de subvenciones y convenios.'}</li>
-      <li>${esCA ? 'Comunicacions informatives relacionades amb els serveis de l\'entitat.' : 'Comunicaciones informativas relacionadas con los servicios de la entidad.'}</li>
-      <li>${esCA ? 'Elaboració d\'estadístiques i memòries amb dades anonimitzades.' : 'Elaboración de estadísticas y memorias con datos anonimizados.'}</li>
-      <li>${esCA ? 'Justificació de les subvencions rebudes.' : 'Justificación de las subvenciones recibidas.'}</li>
-      <li>${esCA ? 'Conservació de les dades durant els terminis legals establerts.' : 'Conservación de los datos durante los plazos legales establecidos.'}</li>
-    </ul>
+    ${h(L('2. Lugar donde se te atiende', '2. Lloc on se t\'atén'))}
+    ${p(L('La atención presencial se presta en un lugar identificable y localizable: la sede de la entidad, en la Calle de la Pau del Protectorat, 14, 43004 Tarragona, en el horario publicado, o en el espacio de un programa que se te indique por escrito con su dirección. La atención a distancia se presta a través de Logos Acompanya, por teléfono o por correo electrónico.',
+      'L\'atenció presencial es presta en un lloc identificable i localitzable: la seu de l\'entitat, al Carrer de la Pau del Protectorat, 14, 43004 Tarragona, en l\'horari publicat, o a l\'espai d\'un programa que se t\'indiqui per escrit amb la seva adreça. L\'atenció a distància es presta a través de Logos Acompanya, per telèfon o per correu electrònic.'))}
 
-    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '3. Legitimació' : '3. Legitimación'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${esCA ? 'El tractament es basa en la Llei orgànica 3/2018 (LOPDGDD) i el Reglament (UE) 2016/679 (RGPD):' : 'El tratamiento se basa en la Ley orgánica 3/2018 (LOPDGDD) y el Reglamento (UE) 2016/679 (RGPD):'}</p>
-    <ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">
-      <li>${esCA ? 'El consentiment exprés de la persona interessada (Art. 6.1.a RGPD).' : 'El consentimiento expreso de la persona interesada (Art. 6.1.a RGPD).'}</li>
-      <li>${esCA ? 'El compliment d\'obligacions legals (Art. 6.1.c RGPD).' : 'El cumplimiento de obligaciones legales (Art. 6.1.c RGPD).'}</li>
-      <li>${esCA ? 'El compliment d\'una missió d\'interès públic vinculada als programes socials (Art. 6.1.e RGPD).' : 'El cumplimiento de una misión de interés público vinculada a los programas sociales (Art. 6.1.e RGPD).'}</li>
-      <li>${esCA ? 'Per a dades especialment sensibles, el tractament es realitza conforme a l\'Art. 9.2 del RGPD.' : 'Para datos especialmente sensibles, el tratamiento se realiza conforme al Art. 9.2 del RGPD.'}</li>
-    </ul>
+    ${h(L('3. Finalidad del tratamiento', '3. Finalitat del tractament'))}
+    ${p(L('Los datos personales facilitados serán tratados para:', 'Les dades personals facilitades seran tractades per a:'))}
+    ${ul([L('La gestión administrativa, operativa y funcional de tu participación en programas y servicios.', 'La gestió administrativa, operativa i funcional de la teva participació en programes i serveis.'),
+      L('Contactarte por teléfono, WhatsApp o correo electrónico para tus citas, trámites y seguimiento.', 'Contactar-te per telèfon, WhatsApp o correu electrònic per a les teves cites, tràmits i seguiment.'),
+      L('El cumplimiento de obligaciones legales derivadas de subvenciones y convenios, y su justificación.', 'El compliment d\'obligacions legals derivades de subvencions i convenis, i la seva justificació.'),
+      L('La elaboración de estadísticas y memorias con datos anonimizados.', 'L\'elaboració d\'estadístiques i memòries amb dades anonimitzades.')])}
 
-    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '4. Destinataris' : '4. Destinatarios'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${esCA ? 'Les dades no seran cedides a tercers excepte:' : 'Los datos no serán cedidos a terceros excepto:'}</p>
-    <ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">
-      <li>${esCA ? 'Administracions públiques que ho requereixin per obligació legal.' : 'Administraciones públicas que lo requieran por obligación legal.'}</li>
-      <li>${esCA ? 'Entitats col·laboradores o finançadores quan sigui necessari.' : 'Entidades colaboradoras o financiadoras cuando sea necesario.'}</li>
-      <li>${esCA ? 'Proveïdors amb contracte d\'encarregat del tractament (Art. 28 RGPD).' : 'Proveedores con contrato de encargado del tratamiento (Art. 28 RGPD).'}</li>
-    </ul>
+    ${h(L('4. Legitimación', '4. Legitimació'))}
+    ${p(L('El tratamiento se basa en el Reglamento (UE) 2016/679 (RGPD) y en la Ley Orgánica 3/2018 (LOPDGDD):', 'El tractament es basa en el Reglament (UE) 2016/679 (RGPD) i en la Llei orgànica 3/2018 (LOPDGDD):'))}
+    ${ul([L('La prestación del servicio de acompañamiento que solicitas (art. 6.1.b RGPD).', 'La prestació del servei d\'acompanyament que sol·licites (art. 6.1.b RGPD).'),
+      L('El cumplimiento de obligaciones legales (art. 6.1.c RGPD).', 'El compliment d\'obligacions legals (art. 6.1.c RGPD).'),
+      L('El cumplimiento de una misión de interés público vinculada a los programas sociales (art. 6.1.e RGPD).', 'El compliment d\'una missió d\'interès públic vinculada als programes socials (art. 6.1.e RGPD).'),
+      L('Para datos especialmente protegidos, el art. 9.2 del RGPD.', 'Per a dades especialment protegides, l\'art. 9.2 del RGPD.'),
+      L('Tu consentimiento expreso y voluntario (art. 6.1.a RGPD), solo para dos cosas opcionales: recibir información de actividades, cursos y novedades de Logos, y el uso de tu imagen y voz (apartado 10).', 'El teu consentiment exprés i voluntari (art. 6.1.a RGPD), només per a dues coses opcionals: rebre informació d\'activitats, cursos i novetats de Logos, i l\'ús de la teva imatge i veu (apartat 10).')])}
 
-    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '5. Drets de la persona interessada' : '5. Derechos de la persona interesada'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0;">${esCA
-      ? 'Pots exercir els drets d\'accés, rectificació, supressió, oposició, limitació i portabilitat escrivint a info@logostgn.cat amb un document identificatiu adjunt. En cas de desacord, pots presentar una reclamació a l\'Agència Espanyola de Protecció de Dades (www.aepd.es).'
-      : 'Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a info@logostgn.cat con un documento identificativo adjunto. En caso de desacuerdo, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es).'}</p>
+    ${h(L('5. Destinatarios', '5. Destinataris'))}
+    ${p(L('Los datos no se ceden a terceros, excepto:', 'Les dades no se cedeixen a tercers, excepte:'))}
+    ${ul([L('Administraciones públicas que lo requieran por obligación legal. En el proyecto «Mirada Endavant», los datos imprescindibles se comunican al Departamento de Derechos Sociales e Inclusión de la Generalitat de Catalunya para justificar la subvención (Orden DSO/283/2023).', 'Administracions públiques que ho requereixin per obligació legal. En el projecte «Mirada Endavant», les dades imprescindibles es comuniquen al Departament de Drets Socials i Inclusió de la Generalitat de Catalunya per justificar la subvenció (Ordre DSO/283/2023).'),
+      L('Entidades colaboradoras o financiadoras, cuando sea necesario para el programa.', 'Entitats col·laboradores o finançadores, quan sigui necessari per al programa.')])}
 
-    <h3 style="font-size:13.5px;margin:16px 0 4px;">${esCA ? '6. Conservació de les dades' : '6. Conservación de los datos'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0;">${esCA
-      ? 'Les dades es conservaran mentre existeixi relació amb l\'entitat i durant els terminis legals exigits. Posteriorment, es suprimiran o anonimitzaran.'
-      : 'Los datos se conservarán mientras exista relación con la entidad y durante los plazos legales exigidos. Posteriormente, se suprimirán o anonimizarán.'}</p>
+    ${h(L('6. Proveedores tecnológicos (encargados del tratamiento)', '6. Proveïdors tecnològics (encarregats del tractament)'))}
+    ${p(L('Para prestar el servicio, Logos utiliza estos proveedores, que tratan los datos solo por cuenta de Logos y siguiendo sus instrucciones (art. 28 RGPD):', 'Per prestar el servei, Logos fa servir aquests proveïdors, que tracten les dades només per compte de Logos i seguint les seves instruccions (art. 28 RGPD):'))}
+    <table style="width:100%;border-collapse:collapse;font-size:11.5px;margin:4px 0 6px;">${enc.map(([n, d]) => `<tr><td style="border:1px solid #ddd;padding:4px 6px;font-weight:700;width:38%;">${n}</td><td style="border:1px solid #ddd;padding:4px 6px;">${d}</td></tr>`).join('')}</table>
+    ${p(L('Todos cumplen el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD) y aplican medidas de seguridad adecuadas. Cuando alguno trata datos fuera del Espacio Económico Europeo, se aplican las garantías del capítulo V del RGPD: la decisión de adecuación de la Comisión Europea para el Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo aprobadas por la Comisión.',
+      'Tots compleixen el Reglament (UE) 2016/679 (RGPD) i la Llei orgànica 3/2018 (LOPDGDD) i apliquen mesures de seguretat adequades. Quan algun tracta dades fora de l\'Espai Econòmic Europeu, s\'apliquen les garanties del capítol V del RGPD: la decisió d\'adequació de la Comissió Europea per al Marc de Privadesa de Dades UE-EUA o les clàusules contractuals tipus aprovades per la Comissió.'))}
 
-    <h3 style="font-size:13.5px;margin:16px 0 4px;color:#7A4A1F;">${esCA ? 'Clàusula sobre responsabilitat en tràmits' : 'Cláusula sobre responsabilidad en trámites'}</h3>
-    <p style="font-size:12px;line-height:1.6;margin:0;">${esCA
-      ? "L'Associació Logos Projectes Socials presta un servei d'acompanyament, suport i orientació en la realització de tràmits administratius i gestions digitals. L'entitat no és responsable del resultat final dels tràmits, ni de la seva resolució, terminis de resposta, incidències tècniques o eventual denegació, ja que aquests depenen exclusivament dels organismes i administracions competents."
-      : "La Associació Logos Projectes Socials presta un servicio de acompañamiento, apoyo y orientación en la realización de trámites administrativos y gestiones digitales. La entidad no es responsable del resultado final de los trámites, ni de su resolución, plazos de respuesta, incidencias técnicas o eventual denegación, ya que estos dependen exclusivamente de los organismos y administraciones competentes."}</p>
+    ${h(L('7. Seguridad de los datos', '7. Seguretat de les dades'))}
+    ${p(L('Los datos viajan cifrados (HTTPS) y se guardan cifrados en los servidores. Además, los datos más sensibles —notas de seguimiento, nombres de referencia, nombres de menores y de docentes— se guardan con un cifrado adicional (AES-256) cuya clave solo conoce el sistema. Solo accede el personal autorizado de Logos, con usuario personal y verificación en dos pasos.',
+      'Les dades viatgen xifrades (HTTPS) i es guarden xifrades als servidors. A més, les dades més sensibles —notes de seguiment, noms de referència, noms de menors i de docents— es guarden amb un xifratge addicional (AES-256) la clau del qual només coneix el sistema. Només hi accedeix el personal autoritzat de Logos, amb usuari personal i verificació en dos passos.'))}
+
+    ${h(L('8. Tus derechos y cómo retirar el consentimiento', '8. Els teus drets i com retirar el consentiment'))}
+    ${p(L('Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad. Puedes <strong>retirar tu consentimiento en cualquier momento</strong>, sin que afecte a lo hecho antes de retirarlo (art. 7.3 RGPD): desde Logos Acompanya (Mi espacio › Mi consentimiento › «Retirar mi consentimiento» o «Pedir que borren mis datos»), escribiendo a info@logostgn.cat o en la sede. Se te responderá en un plazo máximo de un mes. Los datos que la ley obliga a conservar se guardarán bloqueados solo el tiempo exigido (art. 17.3 RGPD). Si no estás de acuerdo, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).',
+      'Pots exercir els drets d\'accés, rectificació, supressió, oposició, limitació i portabilitat. Pots <strong>retirar el teu consentiment en qualsevol moment</strong>, sense que afecti el que s\'ha fet abans de retirar-lo (art. 7.3 RGPD): des de Logos Acompanya (El meu espai › El meu consentiment › «Retirar el meu consentiment» o «Demanar que esborrin les meves dades»), escrivint a info@logostgn.cat o a la seu. Se\'t respondrà en un termini màxim d\'un mes. Les dades que la llei obliga a conservar es guardaran bloquejades només el temps exigit (art. 17.3 RGPD). Si no hi estàs d\'acord, pots reclamar davant l\'Agència Espanyola de Protecció de Dades (www.aepd.es).'))}
+
+    ${h(L('9. Conservación de los datos', '9. Conservació de les dades'))}
+    ${p(L('Los datos se conservarán mientras exista relación con la entidad y durante los plazos legales exigidos. Después se suprimirán o anonimizarán.', 'Les dades es conservaran mentre existeixi relació amb l\'entitat i durant els terminis legals exigits. Després se suprimiran o anonimitzaran.'))}
+
+    ${h(L('10. Imagen, voz y difusión pública (opcional y voluntario)', '10. Imatge, veu i difusió pública (opcional i voluntari)'))}
+    ${p(L('Solo si marcas esta autorización (es opcional): Logos podrá usar fotos, vídeos o grabaciones de tu voz tomados en sus actividades, y tu testimonio, para darlos a conocer públicamente en Logos Acompanya, la web logostgn.cat, redes sociales y memorias, con finalidades informativas, educativas y de difusión. Si no la marcas, no cambia nada en la atención que recibes. Puedes cambiar tu decisión cuando quieras desde la app o en la sede.',
+      'Només si marques aquesta autorització (és opcional): Logos podrà fer servir fotos, vídeos o enregistraments de la teva veu presos a les seves activitats, i el teu testimoni, per donar-los a conèixer públicament a Logos Acompanya, al web logostgn.cat, a xarxes socials i a memòries, amb finalitats informatives, educatives i de difusió. Si no la marques, no canvia res en l\'atenció que reps. Pots canviar la teva decisió quan vulguis des de l\'app o a la seu.'))}
+
+    <h3 style="font-size:13.5px;margin:16px 0 4px;color:#7A4A1F;">${L('Cláusula sobre responsabilidad en trámites', 'Clàusula sobre responsabilitat en tràmits')}</h3>
+    ${p(L('La Associació Logos Projectes Socials presta un servicio de acompañamiento, apoyo y orientación en la realización de trámites administrativos y gestiones digitales. La entidad no es responsable del resultado final de los trámites, ni de su resolución, plazos de respuesta, incidencias técnicas o eventual denegación, ya que estos dependen exclusivamente de los organismos y administraciones competentes.',
+      'L\'Associació Logos Projectes Socials presta un servei d\'acompanyament, suport i orientació en la realització de tràmits administratius i gestions digitals. L\'entitat no és responsable del resultat final dels tràmits, ni de la seva resolució, terminis de resposta, incidències tècniques o eventual denegació, ja que aquests depenen exclusivament dels organismes i administracions competents.'))}
   `;
 }
 
@@ -6744,7 +6791,7 @@ async function generarPdfMultipagina(contenedor, nombreArchivo){
 
 async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
   const esCA = LANG === 'ca';
-  const boton = document.getElementById('btn-descargar-mi-consent');
+  const boton = document.getElementById('btn-descargar-mi-consent') || (window.event && window.event.currentTarget instanceof HTMLElement ? window.event.currentTarget : null) || document.createElement('button');
   const textoOriginal = boton.textContent;
   boton.textContent = esCA ? 'Generant PDF…' : 'Generando PDF…';
   boton.disabled = true;
@@ -6768,6 +6815,7 @@ async function descargarMiConsentimientoPDF(nombre, dni, fechaFirma){
       <p style="font-size:12.5px;line-height:1.7;margin-top:16px;">${esCA
         ? 'La persona identificada anteriorment AUTORITZA el tractament de les seves dades personals per part de la Associació Logos - Projectes Socials, d\'acord amb la normativa detallada anteriorment.'
         : 'La persona identificada anteriormente AUTORIZA el tratamiento de sus datos personales por parte de la Associació Logos - Projectes Socials, de acuerdo con la normativa detallada anteriormente.'}</p>
+      ${(() => { const pf = window.__perfilActual || {}; const m = v => v ? '☑' : '☐'; return `<p style="font-size:12.5px;line-height:1.8;margin-top:8px;">${m(true)} ${esCA ? 'Tractament de dades (obligatori)' : 'Tratamiento de datos (obligatorio)'}<br>${m(pf.consentimiento_cesion_organismos !== false)} ${esCA ? 'Comunicació als organismes públics que ho requereixin (obligatori)' : 'Comunicación a los organismos públicos que lo requieran (obligatorio)'}<br>${m(pf.consentimiento_contacto)} ${esCA ? 'Rebre informació d\'activitats, cursos i novetats (opcional)' : 'Recibir información de actividades, cursos y novedades (opcional)'}<br>${m(pf.consentimiento_imagen_voz)} ${esCA ? 'Imatge, veu i difusió pública (opcional)' : 'Imagen, voz y difusión pública (opcional)'}${pf.consentimiento_version ? `<br><span style="font-size:11px;color:#666;">${esCA ? 'Versió del document' : 'Versión del documento'}: ${pf.consentimiento_version}</span>` : ''}</p>`; })()}
       <div style="margin-top:40px;">
         <div style="text-align:center;">
           ${firmaImg
@@ -7247,6 +7295,7 @@ async function renderDashboard(){
       <p class="subtle" style="margin:0 0 8px;">${LANG==='ca'
         ? `Vas signar el teu consentiment de protecció de dades${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, true) : ''}.`
         : `Firmaste tu consentimiento de protección de datos${perfil.consentimiento_fecha ? ' el ' + fmtFechaCorta(perfil.consentimiento_fecha, false) : ''}.`}</p>
+      ${consDerechosHtml(perfil)}
       <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfil.nombre_completo||nombre).replace(/'/g,"\\'")}', '${perfil.dni_nie||''}', '${perfil.consentimiento_fecha||''}')">⬇️ ${LANG==='ca' ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
     </div>`}
 
@@ -7998,7 +8047,7 @@ function renderConsentStep(avisoBloqueo){
       <div class="panel-card">
         <p style="margin:0 0 8px;">${esCA ? `Vas signar el consentiment${perfFirmado.consentimiento_fecha ? ' el ' + fF : ''}. Només cal signar-lo una vegada.` : `Firmaste el consentimiento${perfFirmado.consentimiento_fecha ? ' el ' + fF : ''}. Solo hace falta firmarlo una vez.`}</p>
         <p class="subtle" style="margin:0 0 10px;">${esCA ? 'Si vols canviar alguna autorització, contacta amb Logos.' : 'Si quieres cambiar alguna autorización, contacta con Logos.'}</p>
-        <button class="link-btn" onclick="descargarMiConsentimientoPDF('${(perfFirmado.nombre_completo||'').replace(/'/g,"\\'")}', '${perfFirmado.dni_nie||''}', '${perfFirmado.consentimiento_fecha||''}')">⬇️ ${esCA ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
+        <button class="link-btn" id="btn-descargar-mi-consent" onclick="descargarMiConsentimientoPDF('${(perfFirmado.nombre_completo||'').replace(/'/g,"\\'")}', '${perfFirmado.dni_nie||''}', '${perfFirmado.consentimiento_fecha||''}')">⬇️ ${esCA ? 'Descarregar el meu consentiment (PDF)' : 'Descargar mi consentimiento (PDF)'}</button>
         <button class="primary-btn" style="margin-top:12px;" onclick="showScreen('home');try{revelarCatalogo()}catch(e){}">${esCA ? 'Continuar' : 'Continuar'}</button>
       </div>`;
     return;
@@ -8011,71 +8060,8 @@ function renderConsentStep(avisoBloqueo){
     </div>` : ''}
     <h2 class="screen-title">${esCA ? 'Document de consentiment per al tractament de dades personals' : 'Documento de consentimiento para el tratamiento de datos personales'}</h2>
 
-    <div class="panel-card">
-      <h3>${esCA ? '1. Responsable del tractament' : '1. Responsable del tratamiento'}</h3>
-      <p style="margin:0;">Associació Logos Projectes Socials<br>
-      NIF: G55725436<br>
-      ${esCA ? 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona' : 'Calle de la Pau del Protectorat, 14, 43004 Tarragona'}<br>
-      ${esCA ? 'Correu electrònic' : 'Correo electrónico'}: info@logostgn.cat</p>
-    </div>
-
-    <div class="panel-card">
-      <h3>${esCA ? '2. Finalitat del tractament' : '2. Finalidad del tratamiento'}</h3>
-      <p style="margin:0 0 6px;">${esCA ? 'Les dades personals facilitades seran tractades per:' : 'Los datos personales facilitados serán tratados para:'}</p>
-      <ul style="margin:0;padding-left:18px;">
-        <li>${esCA ? 'La gestió administrativa, operativa i funcional de la participació en programes i serveis.' : 'La gestión administrativa, operativa y funcional de la participación en programas y servicios.'}</li>
-        <li>${esCA ? 'El compliment d\'obligacions legals derivades de subvencions i convenis.' : 'El cumplimiento de obligaciones legales derivadas de subvenciones y convenios.'}</li>
-        <li>${esCA ? 'Comunicacions informatives relacionades amb els serveis de l\'entitat.' : 'Comunicaciones informativas relacionadas con los servicios de la entidad.'}</li>
-        <li>${esCA ? 'Elaboració d\'estadístiques i memòries amb dades anonimitzades.' : 'Elaboración de estadísticas y memorias con datos anonimizados.'}</li>
-        <li>${esCA ? 'Justificació de les subvencions rebudes.' : 'Justificación de las subvenciones recibidas.'}</li>
-        <li>${esCA ? 'Conservació de les dades durant els terminis legals establerts.' : 'Conservación de los datos durante los plazos legales establecidos.'}</li>
-      </ul>
-    </div>
-
-    <div class="panel-card">
-      <h3>${esCA ? '3. Legitimació' : '3. Legitimación'}</h3>
-      <p style="margin:0 0 6px;">${esCA
-        ? 'El tractament es basa en la Llei orgànica 3/2018 (LOPDGDD) i el Reglament (UE) 2016/679 (RGPD):'
-        : 'El tratamiento se basa en la Ley orgánica 3/2018 (LOPDGDD) y el Reglamento (UE) 2016/679 (RGPD):'}</p>
-      <ul style="margin:0;padding-left:18px;">
-        <li>${esCA ? 'El consentiment exprés de la persona interessada (Art. 6.1.a RGPD).' : 'El consentimiento expreso de la persona interesada (Art. 6.1.a RGPD).'}</li>
-        <li>${esCA ? 'El compliment d\'obligacions legals (Art. 6.1.c RGPD).' : 'El cumplimiento de obligaciones legales (Art. 6.1.c RGPD).'}</li>
-        <li>${esCA ? 'El compliment d\'una missió d\'interès públic vinculada als programes socials (Art. 6.1.e RGPD).' : 'El cumplimiento de una misión de interés público vinculada a los programas sociales (Art. 6.1.e RGPD).'}</li>
-        <li>${esCA ? 'Per a dades especialment sensibles, el tractament es realitza conforme a l\'Art. 9.2 del RGPD.' : 'Para datos especialmente sensibles, el tratamiento se realiza conforme al Art. 9.2 del RGPD.'}</li>
-      </ul>
-    </div>
-
-    <div class="panel-card">
-      <h3>${esCA ? '4. Destinataris' : '4. Destinatarios'}</h3>
-      <p style="margin:0 0 6px;">${esCA ? 'Les dades no seran cedides a tercers excepte:' : 'Los datos no serán cedidos a terceros excepto:'}</p>
-      <ul style="margin:0;padding-left:18px;">
-        <li>${esCA
-          ? 'Administracions públiques que ho requereixin per obligació legal. En el projecte "Mirada Endavant", les dades imprescindibles seran comunicades al Departament de Drets Socials i Inclusió de la Generalitat de Catalunya per a la justificació de la subvenció (Ordre DSO/283/2023).'
-          : 'Administraciones públicas que lo requieran por obligación legal. En el proyecto "Mirada Endavant", los datos imprescindibles serán comunicados al Departamento de Derechos Sociales e Inclusión de la Generalitat de Catalunya para la justificación de la subvención (Orden DSO/283/2023).'}</li>
-        <li>${esCA ? 'Entitats col·laboradores o finançadores quan sigui necessari.' : 'Entidades colaboradoras o financiadoras cuando sea necesario.'}</li>
-        <li>${esCA ? 'Proveïdors amb contracte d\'encarregat del tractament (Art. 28 RGPD).' : 'Proveedores con contrato de encargado del tratamiento (Art. 28 RGPD).'}</li>
-      </ul>
-    </div>
-
-    <div class="panel-card">
-      <h3>${esCA ? '5. Drets de la persona interessada' : '5. Derechos de la persona interesada'}</h3>
-      <p style="margin:0;">${esCA
-        ? 'Pots exercir els drets d\'accés, rectificació, supressió, oposició, limitació i portabilitat escrivint a info@logostgn.cat amb un document identificatiu adjunt. En cas de desacord, pots presentar una reclamació a l\'Agència Espanyola de Protecció de Dades (www.aepd.es).'
-        : 'Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a info@logostgn.cat con un documento identificativo adjunto. En caso de desacuerdo, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (www.aepd.es).'}</p>
-    </div>
-
-    <div class="panel-card">
-      <h3>${esCA ? '6. Conservació de les dades' : '6. Conservación de los datos'}</h3>
-      <p style="margin:0;">${esCA
-        ? 'Les dades es conservaran mentre existeixi relació amb l\'entitat i durant els terminis legals exigits. Posteriorment, es suprimiran o anonimitzaran.'
-        : 'Los datos se conservarán mientras exista relación con la entidad y durante los plazos legales exigidos. Posteriormente, se suprimirán o anonimizarán.'}</p>
-    </div>
-
-    <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
-      <h3 style="color:#7A4A1F;">${esCA ? 'Clàusula sobre responsabilitat en tràmits' : 'Cláusula sobre responsabilidad en trámites'}</h3>
-      <p style="margin:0;">${esCA
-        ? "L'Associació Logos Projectes Socials presta un servei d'acompanyament, suport i orientació en la realització de tràmits administratius i gestions digitals. L'entitat <strong>no és responsable del resultat final dels tràmits</strong>, ni de la seva resolució, terminis de resposta, incidències tècniques o eventual denegació, ja que aquests depenen exclusivament dels organismes i administracions competents."
-        : "La Associació Logos Projectes Socials presta un servicio de acompañamiento, apoyo y orientación en la realización de trámites administrativos y gestiones digitales. La entidad <strong>no es responsable del resultado final de los trámites</strong>, ni de su resolución, plazos de respuesta, incidencias técnicas o eventual denegación, ya que estos dependen exclusivamente de los organismos y administraciones competentes."}</p>
+    <div class="panel-card consent-legal" tabindex="0" role="region" aria-label="${esCA ? 'Text del consentiment' : 'Texto del consentimiento'}">
+      ${textoLegalConsentimientoHtml(esCA)}
     </div>
 
     <div class="panel-card">
@@ -8089,18 +8075,19 @@ function renderConsentStep(avisoBloqueo){
         <input type="text" id="cons-dni" placeholder="Ej: 12345678A">
       </div>
       <label class="checkbox-row"><input type="checkbox" id="cons-tractament">
-        ${esCA ? "AUTORITZO el tractament de les meves dades personals segons la normativa vigent (RGPD i LOPDGDD)." : "AUTORIZO el tratamiento de mis datos personales según la normativa vigente (RGPD y LOPDGDD)."}
+        ${esCA ? "He llegit aquest document i AUTORITZO el tractament de les meves dades personals per part de Logos per a les finalitats indicades, d'acord amb el RGPD i la LOPDGDD." : "He leído este documento y AUTORIZO el tratamiento de mis datos personales por parte de Logos para las finalidades indicadas, de acuerdo con el RGPD y la LOPDGDD."}
         <span style="color:var(--alert);">*</span>
       </label>
       <label class="checkbox-row"><input type="checkbox" id="cons-cesion">
-        ${esCA ? "AUTORITZO la cessió de les meves dades als organismes públics que així ho requereixin legalment." : "AUTORIZO la cesión de mis datos a los organismos públicos que así lo requieran legalmente."}
+        ${esCA ? "AUTORITZO la comunicació de les meves dades als organismes públics que ho requereixin legalment (per exemple, per justificar subvencions)." : "AUTORIZO la comunicación de mis datos a los organismos públicos que lo requieran legalmente (por ejemplo, para justificar subvenciones)."}
+        <span style="color:var(--alert);">*</span>
       </label>
-      <label class="checkbox-row"><input type="checkbox" id="cons-contacto">
-        ${esCA ? "AUTORITZO el contacte per vies electròniques o telefòniques." : "AUTORIZO el contacto por vías electrónicas o telefónicas."}
-      </label>
-      <label class="checkbox-row"><input type="checkbox" id="cons-imagen">
-        ${esCA ? "AUTORITZO l'ús de la meva imatge i/o veu en activitats de Logos amb finalitats informatives, educatives i de difusió." : "AUTORIZO el uso de mi imagen y/o voz en actividades de Logos con finalidades informativas, educativas y de difusión."}
-      </label>
+      <fieldset class="cons-imagen">
+        <legend>${esCA ? 'Autoritzacions opcionals · pots marcar-les o no' : 'Autorizaciones opcionales · puedes marcarlas o no'}</legend>
+        <label class="checkbox-row"><input type="checkbox" id="cons-contacto"> ${esCA ? "ACCEPTO rebre informació d'activitats, cursos i novetats de Logos per WhatsApp, correu o telèfon." : "ACEPTO recibir información de actividades, cursos y novedades de Logos por WhatsApp, correo o teléfono."}</label>
+        <label class="checkbox-row"><input type="checkbox" id="cons-imagen"> ${esCA ? "AUTORITZO que Logos difongui públicament la meva imatge, veu o testimoni (apartat 10)." : "AUTORIZO que Logos difunda públicamente mi imagen, voz o testimonio (apartado 10)."}</label>
+        <p class="subtle" style="margin:4px 0 0;font-size:12.5px;">${esCA ? "Són voluntàries: si no les marques, no canvia res en l'atenció que reps. Les pots canviar quan vulguis." : "Son voluntarias: si no las marcas, no cambia nada en la atención que recibes. Puedes cambiarlas cuando quieras."}</p>
+      </fieldset>
       <p class="subtle" style="margin-top:8px;">${esCA ? '* Obligatori per continuar.' : '* Obligatorio para continuar.'}</p>
     </div>
 
@@ -8179,9 +8166,10 @@ async function firmarConsentimientoGeneral(){
       `<div class="auth-error">${esCA ? 'Cal escriure el teu nom i DNI/NIE per continuar.' : 'Debes escribir tu nombre y DNI/NIE para continuar.'}</div>`);
     return;
   }
-  if(!document.getElementById('cons-tractament').checked){
+  if(!document.getElementById('cons-tractament').checked || !document.getElementById('cons-cesion').checked){
     document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin',
-      `<div class="auth-error">${esCA ? 'Cal marcar l\'autorització de tractament de dades per continuar.' : 'Debes marcar la autorización de tratamiento de datos para continuar.'}</div>`);
+      `<div class="auth-error">${esCA ? 'Cal marcar les dues autoritzacions obligatòries (*) per continuar.' : 'Debes marcar las dos autorizaciones obligatorias (*) para continuar.'}</div>`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
   if(firmaCanvasEstaVacia()){
@@ -8198,12 +8186,15 @@ async function firmarConsentimientoGeneral(){
     dni_nie: dniConsent,
     consentimiento_firmado: true,
     consentimiento_fecha: hoyLocalIso(),
-    consentimiento_cesion_organismos: document.getElementById('cons-cesion').checked,
-    consentimiento_contacto: document.getElementById('cons-contacto').checked,
-    consentimiento_imagen_voz: document.getElementById('cons-imagen').checked,
-    consentimiento_firma_imagen: firmaBase64
+    consentimiento_cesion_organismos: true,
+    consentimiento_contacto: !!(document.getElementById('cons-contacto') || {}).checked,
+    consentimiento_imagen_voz: !!(document.getElementById('cons-imagen') || {}).checked,
+    consentimiento_firma_imagen: firmaBase64,
+    consentimiento_version: CONSENT_VERSION,
+    consentimiento_retirado_en: null
   };
-  const { error } = await sb.from('perfiles').upsert(payload);
+  let { error } = await sb.from('perfiles').upsert(payload);
+  if(error && /consentimiento_version|consentimiento_retirado_en|schema cache/i.test(error.message || '')){ const { consentimiento_version: _v, consentimiento_retirado_en: _r, ...resto } = payload; ({ error } = await sb.from('perfiles').upsert(resto)); }
   if(error){
     document.getElementById('entrada-panel').insertAdjacentHTML('afterbegin', `<div class="auth-error">${error.message}</div>`);
     btn.disabled = false;
@@ -8782,6 +8773,47 @@ function agregarMensajeAsistente(texto, quien){
   return div;
 }
 // El asistente trabaja como un técnico más: usa la función «asistente-tecnico» (y la antigua «asistente» si aún no está subida)
+
+// ---------- Mis derechos: imagen Sí/No, retirar el consentimiento y pedir que se borren mis datos (SQL-71) ----------
+function consDerechosHtml(perfil){
+  const ca = LANG === 'ca', img = !!(perfil && perfil.consentimiento_imagen_voz), con = !!(perfil && perfil.consentimiento_contacto);
+  return `<div class="cons-der">
+    <div class="cons-der-img" style="margin-bottom:6px;"><span>📩 ${ca ? 'Informació d\'activitats i novetats' : 'Información de actividades y novedades'}: <strong>${con ? (ca ? 'SÍ' : 'SÍ') : 'NO'}</strong></span>
+      <button type="button" class="link-btn" onclick="consDerecho('${con ? 'contacto_no' : 'contacto_si'}')">${con ? (ca ? 'Canviar a NO' : 'Cambiar a NO') : (ca ? 'Canviar a SÍ' : 'Cambiar a SÍ')}</button></div>
+    <div class="cons-der-img"><span>📸 ${ca ? 'Imatge, veu i difusió pública' : 'Imagen, voz y difusión pública'}: <strong>${img ? (ca ? 'SÍ autoritzada' : 'SÍ autorizada') : (ca ? 'NO autoritzada' : 'NO autorizada')}</strong></span>
+      <button type="button" class="link-btn" onclick="consDerecho('${img ? 'imagen_no' : 'imagen_si'}')">${img ? (ca ? 'Canviar a NO' : 'Cambiar a NO') : (ca ? 'Canviar a SÍ' : 'Cambiar a SÍ')}</button></div>
+    ${perfil && perfil.consentimiento_version && perfil.consentimiento_version >= 'v2' ? '' : `<p class="cons-der-nota">ℹ️ ${ca ? 'Hi ha una versió nova del consentiment (proveïdors, seguretat i com retirar-lo).' : 'Hay una versión nueva del consentimiento (proveedores, seguridad y cómo retirarlo).'} <button type="button" class="link-btn" onclick="consVerTexto()">${ca ? 'Llegir-la' : 'Leerla'}</button></p>`}
+    <details class="cons-der-mas"><summary>${ca ? 'Retirar el meu consentiment o esborrar les meves dades' : 'Retirar mi consentimiento o borrar mis datos'}</summary>
+      <p>${ca ? 'Pots retirar el consentiment quan vulguis. Logos et respondrà en un màxim d\'un mes. Les dades que la llei obliga a conservar es guarden bloquejades només el temps exigit.' : 'Puedes retirar el consentimiento cuando quieras. Logos te responderá en un máximo de un mes. Los datos que la ley obliga a conservar se guardan bloqueados solo el tiempo exigido.'}</p>
+      <button type="button" class="cons-der-b" onclick="consDerecho('retirada')">✋ ${ca ? 'Retirar el meu consentiment' : 'Retirar mi consentimiento'}</button>
+      <button type="button" class="cons-der-b rojo" onclick="consDerecho('supresion')">🗑️ ${ca ? 'Demanar que esborrin les meves dades' : 'Pedir que borren mis datos'}</button>
+    </details></div>`;
+}
+function consVerTexto(){
+  const ca = LANG === 'ca';
+  document.getElementById('cons-ov')?.remove();
+  document.body.insertAdjacentHTML('beforeend', `<div id="cons-ov" class="cons-ov" onclick="if(event.target===this)this.remove()"><div class="cons-ov-c" role="dialog" aria-modal="true" aria-label="${ca ? 'Consentiment' : 'Consentimiento'}"><button type="button" class="link-btn" style="float:right;margin:0;" aria-label="${ca ? 'Tancar' : 'Cerrar'}" onclick="document.getElementById('cons-ov').remove()">✕</button><h2 style="font-size:17px;margin:0 0 6px;">${ca ? 'Document de consentiment (versió nova)' : 'Documento de consentimiento (versión nueva)'}</h2>${textoLegalConsentimientoHtml(ca)}</div></div>`);
+}
+async function consDerecho(tipo){
+  const ca = LANG === 'ca';
+  const preg = { contacto_si: ca ? 'Vols rebre informació d\'activitats, cursos i novetats de Logos?' : '¿Quieres recibir información de actividades, cursos y novedades de Logos?',
+    contacto_no: ca ? 'Deixar de rebre informació d\'activitats i novetats? (Els avisos de les teves cites i tràmits continuaran.)' : '¿Dejar de recibir información de actividades y novedades? (Los avisos de tus citas y trámites seguirán.)',
+    imagen_si: ca ? 'Autoritzes que Logos difongui públicament la teva imatge, veu o testimoni?' : '¿Autorizas que Logos difunda públicamente tu imagen, voz o testimonio?',
+    imagen_no: ca ? 'Retires l\'autorització d\'imatge i difusió? Logos deixarà de fer servir noves fotos o vídeos teus.' : '¿Retiras la autorización de imagen y difusión? Logos dejará de usar nuevas fotos o vídeos tuyos.',
+    retirada: ca ? 'Retirar el teu consentiment?\n\nPer tornar a fer servir Logos Acompanya hauràs de signar-lo de nou. La resta de dades que la llei obliga a conservar es guardaran bloquejades.' : '¿Retirar tu consentimiento?\n\nPara volver a usar Logos Acompanya tendrás que firmarlo de nuevo. Los datos que la ley obliga a conservar se guardarán bloqueados.',
+    supresion: ca ? 'Demanar que esborrin les teves dades?\n\nLogos ho farà en un màxim d\'un mes i t\'avisarà. Es conservarà només el que exigeix la llei, sense el teu nom.' : '¿Pedir que borren tus datos?\n\nLogos lo hará en un máximo de un mes y te avisará. Se conservará solo lo que exige la ley, sin tu nombre.' }[tipo];
+  if(!confirm(preg)) return;
+  let motivo = null;
+  if(tipo === 'retirada' || tipo === 'supresion'){ motivo = prompt(ca ? 'Vols dir-nos el motiu? (opcional)' : '¿Quieres decirnos el motivo? (opcional)') || null; }
+  const { error } = await sb.rpc('ejercer_derecho', { p_tipo: tipo, p_motivo: motivo });
+  if(error){ alert(/ejercer_derecho|schema cache|Could not find/i.test(error.message || '') ? (ca ? 'Ara mateix no es pot fer des de l\'app. Escriu a info@logostgn.cat.' : 'Ahora mismo no se puede hacer desde la app. Escribe a info@logostgn.cat.') : error.message); return; }
+  alert({ contacto_si: ca ? '✅ Fet: rebràs informació d\'activitats i novetats.' : '✅ Hecho: recibirás información de actividades y novedades.', contacto_no: ca ? '✅ Fet: ja no rebràs informació d\'activitats i novetats.' : '✅ Hecho: ya no recibirás información de actividades y novedades.', imagen_si: ca ? '✅ Fet: has autoritzat la imatge i difusió.' : '✅ Hecho: has autorizado la imagen y difusión.', imagen_no: ca ? '✅ Fet: ja no autoritzes la imatge i difusió.' : '✅ Hecho: ya no autorizas la imagen y difusión.',
+    retirada: ca ? '✅ Has retirat el teu consentiment. Logos ho ha rebut.' : '✅ Has retirado tu consentimiento. Logos lo ha recibido.', supresion: ca ? '✅ Petició enviada. Logos esborrarà les teves dades en un màxim d\'un mes.' : '✅ Petición enviada. Logos borrará tus datos en un máximo de un mes.' }[tipo]);
+  try { const { data } = await sb.from('perfiles').select('*').eq('id', CURRENT_USER.id).maybeSingle(); if(data) window.__perfilActual = data; } catch(e){}
+  if(tipo === 'retirada' || tipo === 'supresion'){ location.reload(); }
+  else { try { showScreen('profile'); renderDashboard(); } catch(e){ location.reload(); } }
+}
+
 // ---------- Logos en cifras (portada): solo totales, sin datos personales (SQL-62) ----------
 const cfMiles = v => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 function cfContar(el, fin){
@@ -8864,6 +8896,7 @@ async function pintarCanalAcomp(){
     const cls = 'anu ' + (soloImg ? 'anu-img' : (x.formato === 'cuadrado' ? 'anu-cua' : 'anu-hor')), st = soloImg ? '' : ` style="background:linear-gradient(135deg,${e[0]},${e[1]});color:${e[2]};"`;
     return x.enlace ? `<a class="${cls}"${st} href="${canalEsc(x.enlace)}" target="_blank" rel="noopener sponsored" data-anu="${canalEsc(x.id)}">${dentro}</a>` : `<div class="${cls}"${st}>${dentro}</div>`; };
   window.__canalAcomp = L;
+  L.forEach(x => { if(x && !x.video_url && x.imagen_url && canalVid(x.imagen_url)){ x.video_url = x.imagen_url; x.imagen_url = null; } });   // un enlace de YouTube puesto en «Imagen» se muestra como vídeo
   host.innerHTML = `<h2 id="canal-a-tit">📣 ${ca ? 'Novetats de Logos' : 'Novedades de Logos'}</h2>
     ${nov.length ? `<div class="canal-a-cards" tabindex="0" role="region" aria-label="${ca ? 'Notícies i anuncis' : 'Noticias y anuncios'}">${nov.map(x => { const t = txt(x), vh = x.video_url ? canalVidHtml(x.video_url, x.imagen_url, tit(x), ca ? 'Veure el vídeo' : 'Ver el vídeo', canalEsc) : ''; return `<article class="canal-a-card${x.destacado ? ' dest' : ''}">${vh || (x.imagen_url ? `<img src="${canalEsc(x.imagen_url)}" alt="" loading="lazy">` : '')}<div class="b">
       <span class="tag ${canalEsc(x.tipo)}">${TT[x.tipo] || ''}</span><strong>${canalEsc(tit(x))}</strong>${t ? `<p>${canalEsc(t.slice(0, 180))}${t.length > 180 ? '…' : ''}</p>` : ''}
