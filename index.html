@@ -457,6 +457,41 @@
 .cifras-logos .cf strong{display:block;font-size:30px;font-weight:800;line-height:1.1;}
 .cifras-logos .cf span{display:block;font-size:13px;opacity:.95;margin-top:4px;}
 .cifras-logos .cf-pie{grid-column:1/-1;text-align:center;font-size:12px;color:#5F6672;}
+/* ===== Canal de Logos en la portada: novedades y agenda ===== */
+.canal-a{margin:16px 0 10px;}
+.canal-a[hidden]{display:none;}
+.canal-a h2{font-size:19px;margin:0 0 10px;color:#163F7A;}
+.canal-a-cards{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px;}
+.canal-a-card{flex:0 0 82%;max-width:340px;scroll-snap-align:start;background:#fff;border:1px solid #D5E1F0;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;}
+.canal-a-card.dest{border:2px solid #E0A526;}
+.canal-a-card img{width:100%;aspect-ratio:16/9;object-fit:cover;}
+.canal-a-card .b{padding:12px 14px 14px;display:flex;flex-direction:column;gap:5px;flex:1;}
+.canal-a-card .tag{align-self:flex-start;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:3px 9px;border-radius:999px;background:#E8F1FC;color:#163F7A;}
+.canal-a-card .tag.evento{background:#FFF4D6;color:#6B4700;} .canal-a-card .tag.convocatoria{background:#E3F3E8;color:#1D5E35;} .canal-a-card .tag.anuncio{background:#FBE7EE;color:#8E1B45;}
+.canal-a-card strong{font-size:16px;color:#16233F;} .canal-a-card p{margin:0;font-size:14px;color:#3B4352;}
+.canal-a-card small{color:#5F6672;font-size:12.5px;}
+.canal-a-card a.ir{align-self:flex-start;margin-top:auto;background:#163F7A;color:#fff;text-decoration:none;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;}
+.canal-a-ag{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;}
+.canal-a-ag li{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #D5E1F0;border-radius:16px;padding:10px;}
+.canal-a-ag .d{flex:0 0 52px;background:#163F7A;color:#fff;border-radius:12px;text-align:center;padding:6px 0;}
+.canal-a-ag .d b{display:block;font-size:22px;line-height:1;} .canal-a-ag .d span{font-size:11.5px;text-transform:uppercase;font-weight:700;}
+.canal-a-ag .x{flex:1;min-width:0;} .canal-a-ag .x strong{display:block;font-size:15px;color:#16233F;} .canal-a-ag .x small{display:block;color:#5F6672;font-size:13px;}
+.canal-a-ag button{margin-top:4px;background:#FFF4D6;color:#5C3D00;border:0;border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;cursor:pointer;min-height:32px;}
+/* Publicidad de entidades en la portada */
+.anu-fila{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px;}
+.anu{position:relative;flex:0 0 88%;max-width:420px;scroll-snap-align:start;border-radius:18px;overflow:hidden;display:flex;align-items:center;gap:14px;min-height:150px;padding:38px 18px 18px;text-decoration:none;}
+.anu-et{position:absolute;top:8px;left:10px;z-index:2;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;background:rgba(0,0,0,.45);color:#fff;border-radius:999px;padding:2px 8px;}
+.anu-img{padding:0;min-height:0;display:block;} .anu-img img{width:100%;aspect-ratio:16/7;object-fit:cover;display:block;}
+.anu-t{position:relative;z-index:1;flex:1;min-width:0;} .anu-t strong{display:block;font-size:19px;line-height:1.15;} .anu-t p{margin:6px 0 0;font-size:14px;opacity:.95;}
+.anu-cta{display:inline-block;margin-top:10px;border-radius:999px;padding:8px 14px;font-weight:800;font-size:14px;}
+.anu-deco{position:absolute;right:-50px;top:-60px;width:180px;height:180px;border-radius:50%;border:32px solid rgba(255,255,255,.14);}
+.anu-cua .anu-foto{width:96px;height:96px;flex:0 0 96px;border-radius:14px;object-fit:cover;}
+/* Vídeos del canal */
+.vid{position:relative;aspect-ratio:16/9;background:#0F172A;overflow:hidden;}
+.vid-play{position:absolute;inset:0;width:100%;border:0;padding:0;cursor:pointer;background:linear-gradient(135deg,#16325A,#2A5182) center/cover no-repeat;}
+.vid-play span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(242,188,44,.96);color:#16325A;font-size:24px;display:flex;align-items:center;justify-content:center;padding-left:4px;box-shadow:0 8px 22px rgba(0,0,0,.35);}
+.vid iframe,.vid video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;}
+.anu-vid{flex-direction:column;align-items:stretch;} .anu-vid .vid{border-radius:12px;margin-top:4px;}
 /* ===== Botón «Aa»: ayudas para ver y leer mejor ===== */
 .a11y-btn{position:fixed;bottom:22px;left:22px;width:56px;height:56px;border-radius:50%;background:#163F7A;color:#fff;border:3px solid #fff;font:800 21px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 10px 24px rgba(22,35,63,.3);z-index:200;display:flex;align-items:center;justify-content:center;}
 @media (max-width:760px){ body > .a11y-btn{bottom:74px;left:14px;width:48px;height:48px;font-size:18px;} }
@@ -1098,6 +1133,7 @@ body{font-size:15.5px;}
     <div class="content">
       <div id="entrada-panel"></div>
       <div id="cifras-logos" class="cifras-logos" hidden></div>
+      <section id="canal-acomp" class="canal-a" hidden aria-labelledby="canal-a-tit"></section>
       <div id="catalogo-panel" style="display:none;">
         <div id="guia-card-host"></div>
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
@@ -1409,6 +1445,7 @@ function setLang(lang){
   LANG = lang;
   try { document.documentElement.lang = lang === 'ca' ? 'ca' : 'es'; } catch(e){}
   try { if(document.getElementById('cifras-logos') && !document.getElementById('cifras-logos').hidden) pintarCifrasLogos(); } catch(e){}
+  try { if(document.getElementById('canal-acomp') && !document.getElementById('canal-acomp').hidden) pintarCanalAcomp(); } catch(e){}
   try { const ab = document.getElementById('a11y-btn'); if(ab){ const t = lang === 'ca' ? 'Ajudes per veure i llegir millor' : 'Ayudas para ver y leer mejor'; ab.setAttribute('aria-label', t); ab.title = t; } } catch(e){}
   try { const sk = document.querySelector('.salta-contenido'); if(sk) sk.textContent = lang === 'ca' ? 'Salta al contingut principal' : 'Saltar al contenido principal'; } catch(e){}
   try { localStorage.setItem('logos_lang', lang); } catch(e){}
@@ -1705,7 +1742,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-30 · v80 (portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-30 · v83 (vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -8716,11 +8753,12 @@ function agregarMensajeAsistente(texto, quien){
 }
 // El asistente trabaja como un técnico más: usa la función «asistente-tecnico» (y la antigua «asistente» si aún no está subida)
 // ---------- Logos en cifras (portada): solo totales, sin datos personales (SQL-62) ----------
+const cfMiles = v => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 function cfContar(el, fin){
   if(!el) return; const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('a11y-quieto');
-  if(quieto){ el.textContent = fin.toLocaleString('es-ES'); return; }
+  if(quieto){ el.textContent = cfMiles(fin); return; }
   const t0 = performance.now(), dur = 1400;
-  const paso = t => { const k = Math.min(1, (t - t0) / dur), v = Math.round(fin * (1 - Math.pow(1 - k, 3))); el.textContent = v.toLocaleString('es-ES'); if(k < 1) requestAnimationFrame(paso); };
+  const paso = t => { const k = Math.min(1, (t - t0) / dur), v = Math.round(fin * (1 - Math.pow(1 - k, 3))); el.textContent = cfMiles(v); if(k < 1) requestAnimationFrame(paso); };
   requestAnimationFrame(paso);
 }
 async function pintarCifrasLogos(){
@@ -8730,12 +8768,90 @@ async function pintarCifrasLogos(){
   const ca = typeof LANG !== 'undefined' && LANG === 'ca';
   host.innerHTML = `<div class="cf"><strong id="cf-n1">0</strong><span>${ca ? 'vegades hem acompanyat persones' : 'veces hemos acompañado a personas'}</span></div>
     <div class="cf b"><strong id="cf-n2">0</strong><span>${ca ? 'persones ateses' : 'personas atendidas'}</span></div>
-    <div class="cf-pie">${ca ? `Cada atenció compta. Només el ${d.anio}: ${Number(d.intervenciones_anio).toLocaleString('es-ES')}.` : `Cada atención cuenta. Solo en ${d.anio}: ${Number(d.intervenciones_anio).toLocaleString('es-ES')}.`}</div>`;
+    <div class="cf-pie">${ca ? `Cada atenció compta. Només el ${d.anio}: ${cfMiles(Number(d.intervenciones_anio))}.` : `Cada atención cuenta. Solo en ${d.anio}: ${cfMiles(Number(d.intervenciones_anio))}.`}</div>`;
   host.hidden = false;
   host.setAttribute('aria-label', (ca ? 'Logos en xifres' : 'Logos en cifras'));
   cfContar(document.getElementById('cf-n1'), Number(d.intervenciones)); cfContar(document.getElementById('cf-n2'), Number(d.personas || 0));
 }
 document.addEventListener('DOMContentLoaded', () => setTimeout(pintarCifrasLogos, 600));
+
+// ---------- Canal de Logos: novedades, anuncios y agenda publicados desde la intranet (SQL-65) ----------
+function canalEsc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function canalICS(x, tit, txt){
+  const f = String(x.fecha_evento).replace(/-/g, ''), ff = String(x.fecha_fin || x.fecha_evento).replace(/-/g, '');
+  const lin = v => String(v || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/([,;])/g, '\\$1');
+  const fin = new Date(String(x.fecha_fin || x.fecha_evento) + 'T00:00:00'); fin.setDate(fin.getDate() + 1);
+  const isoD = d => d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Associacio Logos//Canal//ES', 'BEGIN:VEVENT', 'UID:' + x.id + '@logostgn.cat', 'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
+    x.hora_inicio ? 'DTSTART:' + f + 'T' + String(x.hora_inicio).slice(0, 5).replace(':', '') + '00' : 'DTSTART;VALUE=DATE:' + f,
+    x.hora_inicio ? 'DTEND:' + ff + 'T' + String(x.hora_fin || x.hora_inicio).slice(0, 5).replace(':', '') + '00' : 'DTEND;VALUE=DATE:' + isoD(fin),
+    'SUMMARY:' + lin(tit), x.lugar ? 'LOCATION:' + lin(x.lugar) : '', 'DESCRIPTION:' + lin((txt || '') + (x.enlace ? '\n' + x.enlace : '')), 'END:VEVENT', 'END:VCALENDAR'].filter(Boolean).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'logos-' + f + '.ics'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+// Vídeos del canal (YouTube, Vimeo o MP4): solo se cargan al pulsar ▶
+function canalVid(u){
+  u = String(u || '').trim(); let m;
+  if((m = u.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([\w-]{11})/i))) return { t: 'yt', src: 'https://www.youtube-nocookie.com/embed/' + m[1] + '?autoplay=1&rel=0', thumb: 'https://i.ytimg.com/vi/' + m[1] + '/hqdefault.jpg' };
+  if((m = u.match(/vimeo\.com\/(?:video\/)?(\d+)/i))) return { t: 'vimeo', src: 'https://player.vimeo.com/video/' + m[1] + '?autoplay=1&dnt=1' };
+  if(/^https:\/\/[^\s"'<>]+\.(mp4|webm|mov|m4v)(\?[^\s"'<>]*)?$/i.test(u)) return { t: 'mp4', src: u };
+  return null;
+}
+function canalVidHtml(url, poster, nombre, etiqueta, esc){
+  const v = canalVid(url); if(!v) return '';
+  const p = poster || v.thumb || '';
+  return '<div class="vid" data-src="' + esc(v.src) + '" data-t="' + v.t + '"><button type="button" class="vid-play" aria-label="' + esc(etiqueta + ': ' + nombre) + '"' + (p ? ' style="background-image:url(\'' + esc(p) + '\')"' : '') + '><span aria-hidden="true">▶</span></button></div>';
+}
+if(!window.__vidClick){ window.__vidClick = true;
+  document.addEventListener('click', function(e){
+    const b = e.target.closest && e.target.closest('.vid-play'); if(!b) return;
+    e.preventDefault(); e.stopPropagation();
+    const w = b.parentNode, src = w.getAttribute('data-src'), t = w.getAttribute('data-t'); let el;
+    if(t === 'mp4'){ el = document.createElement('video'); el.controls = true; el.autoplay = true; el.setAttribute('playsinline', ''); el.src = src; }
+    else { el = document.createElement('iframe'); el.src = src; el.title = 'Vídeo'; el.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen'); el.setAttribute('allowfullscreen', ''); }
+    w.innerHTML = ''; w.appendChild(w.ownerDocument.createTextNode('')); w.appendChild(el); w.classList.add('on');
+    try { window.dispatchEvent(new Event('logos-video')); } catch(_){}
+    setTimeout(function(){ try { el.focus(); } catch(_){} }, 50);
+  }, true);
+}
+
+async function pintarCanalAcomp(){
+  const host = document.getElementById('canal-acomp'); if(!host) return;
+  let L = null; try { const r = await sb.rpc('canal_publico', { p_donde: 'acompanya' }); if(!r.error) L = r.data; } catch(e){}
+  if(!Array.isArray(L) || !L.length){ host.hidden = true; return; }
+  const ca = typeof LANG !== 'undefined' && LANG === 'ca', loc = ca ? 'ca-ES' : 'es-ES';
+  const tit = x => ca && x.titulo_ca ? x.titulo_ca : x.titulo, txt = x => ca && x.texto_ca ? x.texto_ca : (x.texto || '');
+  const dia = (d, o) => new Date(d + 'T00:00:00').toLocaleDateString(loc, o);
+  const TT = { noticia: ca ? 'Notícia' : 'Noticia', evento: ca ? 'Activitat' : 'Actividad', anuncio: ca ? 'Anunci' : 'Anuncio', convocatoria: ca ? 'Convocatòria' : 'Convocatoria' };
+  const hoy = new Date(); const hoyIso = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
+  const ev = L.filter(x => x.fecha_evento && (x.fecha_fin || x.fecha_evento) >= hoyIso).sort((a, b) => a.fecha_evento < b.fecha_evento ? -1 : 1);
+  const nov = L.filter(x => x.tipo !== 'evento' && x.tipo !== 'publicidad').slice(0, 8);
+  const anu = L.filter(x => x.tipo === 'publicidad');
+  const EST = { azul: ['#16325A', '#1F66C1', '#FFFFFF', '#F2BC2C'], oro: ['#F2BC2C', '#FFE08A', '#16325A', '#16325A'], verde: ['#14532D', '#2E8B57', '#FFFFFF', '#FDE68A'], coral: ['#9A3412', '#EA580C', '#FFFFFF', '#FFF4D6'], violeta: ['#3B0764', '#7C3AED', '#FFFFFF', '#FDE68A'], noche: ['#0F172A', '#334155', '#FFFFFF', '#F2BC2C'] };
+  const anuHtml = x => { const e = EST[x.estilo] || EST.azul, tt = tit(x), t = txt(x), soloImg = x.imagen_url && x.formato !== 'cuadrado';
+    const et = `<span class="anu-et">${ca ? 'Publicitat' : 'Publicidad'} · ${canalEsc(x.entidad)}</span>`;
+    if(x.video_url && canalVid(x.video_url)) return `<div class="anu anu-vid" style="background:linear-gradient(135deg,${e[0]},${e[1]});color:${e[2]};">${et}${canalVidHtml(x.video_url, x.imagen_url, tt, ca ? 'Veure el vídeo' : 'Ver el vídeo', canalEsc)}<div class="anu-t"><strong>${canalEsc(tt)}</strong>${t ? `<p>${canalEsc(t.slice(0, 140))}</p>` : ''}${x.enlace ? `<a class="anu-cta" href="${canalEsc(x.enlace)}" target="_blank" rel="noopener sponsored" data-anu="${canalEsc(x.id)}" style="background:${e[3]};color:${e[0]};text-decoration:none;">${canalEsc(x.enlace_texto || (ca ? 'Més informació' : 'Más información'))} →</a>` : ''}</div></div>`;
+    const dentro = soloImg ? et + `<img src="${canalEsc(x.imagen_url)}" alt="${canalEsc(tt)}" loading="lazy">` : et + (x.imagen_url ? `<img class="anu-foto" src="${canalEsc(x.imagen_url)}" alt="" loading="lazy">` : '<i class="anu-deco" aria-hidden="true"></i>') + `<div class="anu-t"><strong>${canalEsc(tt)}</strong>${t ? `<p>${canalEsc(t.slice(0, 140))}</p>` : ''}${x.enlace ? `<span class="anu-cta" style="background:${e[3]};color:${e[0]};">${canalEsc(x.enlace_texto || (ca ? 'Més informació' : 'Más información'))} →</span>` : ''}</div>`;
+    const cls = 'anu ' + (soloImg ? 'anu-img' : (x.formato === 'cuadrado' ? 'anu-cua' : 'anu-hor')), st = soloImg ? '' : ` style="background:linear-gradient(135deg,${e[0]},${e[1]});color:${e[2]};"`;
+    return x.enlace ? `<a class="${cls}"${st} href="${canalEsc(x.enlace)}" target="_blank" rel="noopener sponsored" data-anu="${canalEsc(x.id)}">${dentro}</a>` : `<div class="${cls}"${st}>${dentro}</div>`; };
+  window.__canalAcomp = L;
+  host.innerHTML = `<h2 id="canal-a-tit">📣 ${ca ? 'Novetats de Logos' : 'Novedades de Logos'}</h2>
+    ${nov.length ? `<div class="canal-a-cards" tabindex="0" role="region" aria-label="${ca ? 'Notícies i anuncis' : 'Noticias y anuncios'}">${nov.map(x => { const t = txt(x), vh = x.video_url ? canalVidHtml(x.video_url, x.imagen_url, tit(x), ca ? 'Veure el vídeo' : 'Ver el vídeo', canalEsc) : ''; return `<article class="canal-a-card${x.destacado ? ' dest' : ''}">${vh || (x.imagen_url ? `<img src="${canalEsc(x.imagen_url)}" alt="" loading="lazy">` : '')}<div class="b">
+      <span class="tag ${canalEsc(x.tipo)}">${TT[x.tipo] || ''}</span><strong>${canalEsc(tit(x))}</strong>${t ? `<p>${canalEsc(t.slice(0, 180))}${t.length > 180 ? '…' : ''}</p>` : ''}
+      <small>${canalEsc(dia(String(x.publicar_desde).slice(0, 10), { day: 'numeric', month: 'long' }))}</small>
+      ${x.enlace ? `<a class="ir" href="${canalEsc(x.enlace)}" target="_blank" rel="noopener">${canalEsc(x.enlace_texto || (ca ? 'Més informació' : 'Más información'))} →</a>` : ''}</div></article>`; }).join('')}</div>` : ''}
+    ${ev.length ? `<h2 style="margin-top:10px;">🗓️ ${ca ? 'Properes activitats' : 'Próximas actividades'}</h2><ul class="canal-a-ag">${ev.slice(0, 6).map(x => `<li><div class="d"><b>${canalEsc(dia(x.fecha_evento, { day: 'numeric' }))}</b><span>${canalEsc(dia(x.fecha_evento, { month: 'short' }))}</span></div>
+      <div class="x"><strong>${canalEsc(tit(x))}</strong><small>${canalEsc([dia(x.fecha_evento, { weekday: 'long' }), x.hora_inicio ? String(x.hora_inicio).slice(0, 5) + (x.hora_fin ? '–' + String(x.hora_fin).slice(0, 5) : '') : '', x.lugar].filter(Boolean).join(' · '))}</small>
+      <button type="button" onclick="(function(){const q=(window.__canalAcomp||[]).find(z=>z.id==='${canalEsc(x.id)}'); if(q) canalICS(q, ${ca ? "q.titulo_ca||q.titulo" : 'q.titulo'}, ${ca ? "q.texto_ca||q.texto" : 'q.texto'});})()">📅 ${ca ? 'Afegir al meu calendari' : 'Añadir a mi calendario'}</button></div></li>`).join('')}</ul>` : ''}
+    ${anu.length ? `<h2 style="margin-top:12px;">🤝 ${ca ? 'Entitats que ens acompanyen' : 'Entidades que nos acompañan'}</h2><div class="anu-fila" tabindex="0" role="region" aria-label="${ca ? 'Publicitat' : 'Publicidad'}">${anu.map(anuHtml).join('')}</div>` : ''}`;
+  host.hidden = false;
+  if(anu.length){
+    const contar = (ids, que) => { try { sb.rpc('canal_contar', { p_ids: ids, p_que: que }); } catch(e){} };
+    const fila = host.querySelector('.anu-fila');
+    fila.addEventListener('click', e => { const a = e.target.closest('a[data-anu]'); if(a) contar([a.dataset.anu], 'clic'); });
+    if(!window.__anuVistos){ window.__anuVistos = true; if('IntersectionObserver' in window){ const io = new IntersectionObserver(en => { if(en[0].isIntersecting){ io.disconnect(); contar(anu.slice(0, 30).map(x => x.id), 'vista'); } }, { threshold: .4 }); io.observe(fila); } }
+  }
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(pintarCanalAcomp, 700));
 
 // ---------- Botón «Aa»: ayudas para ver y leer mejor (se recuerdan en este móvil u ordenador) ----------
 const A11Y_CLAVE = 'logos_ayudas_lectura';
