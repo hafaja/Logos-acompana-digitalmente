@@ -10,7 +10,12 @@
 <meta name="theme-color" content="#1B2A44">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://foxtlpyfedwsvttzorql.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" as="script" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" crossorigin>
+<!-- La tipografía ya no frena la primera pantalla: se pinta con la letra del sistema y cambia cuando llega -->
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
   :root{
     --bg:#F6F8FB; --paper:#FFFFFF; --ink:#1B2A44; --ink-soft:#5D6B82; --line:#E2E7EF;
@@ -1058,6 +1063,71 @@ body{font-size:15.5px;}
 .th-det[open] > summary{margin-bottom:6px;}
 .th-det > summary:hover .th-flecha{background:#EAF1FB;}
 </style>
+<style>
+  /* ===== LogosNav: ruta, favoritas, buscador (Ctrl+K), «Mis páginas» y «Sigue con…» ===== */
+  .lnav-ruta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:0 0 16px;padding:7px 10px;background:#fff;border:1.5px solid #E2E7EF;border-radius:12px;font-family:var(--font-body);font-size:13px;}
+  .lnav-migas{display:flex;align-items:center;flex-wrap:wrap;gap:2px;list-style:none;margin:0;padding:0;min-width:0;}
+  .lnav-migas li{display:flex;align-items:center;min-width:0;}
+  .lnav-migas li + li::before{content:'›';color:#8A97AB;margin:0 5px;font-weight:700;}
+  .lnav-migas li[aria-current] span{font-weight:800;color:#1B2A44;}
+  .lnav-mig{background:none;border:none;padding:4px 6px;border-radius:7px;font:inherit;font-weight:700;color:#1B4E95;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(27,78,149,.25);text-underline-offset:3px;}
+  .lnav-mig:hover{background:#EEF3FB;text-decoration-color:currentColor;}
+  .lnav-mig-g{color:#5D6B82;}
+  .lnav-estrella{background:none;border:1.5px solid transparent;border-radius:8px;font-size:19px;line-height:1;padding:3px 6px;color:#6B7890;cursor:pointer;}
+  .lnav-estrella:hover{border-color:#E2E7EF;color:#B07D00;}
+  .lnav-estrella.on{color:#C99500;}
+  .lnav-hueco{flex:1;}
+  .lnav-acc{display:inline-flex;align-items:center;gap:6px;background:#F6F8FB;border:1.5px solid #E2E7EF;border-radius:999px;padding:5px 12px;font:inherit;font-weight:700;color:#1B4E95;cursor:pointer;white-space:nowrap;}
+  .lnav-acc:hover{background:#EEF3FB;border-color:#2463B8;}
+  .lnav-acc kbd, .lnav-link kbd{font:600 10.5px/1 var(--font-body);background:#fff;border:1px solid #CBD3DF;border-bottom-width:2px;border-radius:5px;padding:2px 5px;color:#5D6B82;}
+  .lnav-ruta button:focus-visible, .lnav-rel button:focus-visible, .lnav-dock button:focus-visible, .lnav-caja button:focus-visible{outline:3px solid #F2BC2C;outline-offset:2px;}
+  .lnav-rel{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:26px 0 8px;padding:12px 14px;border-top:2px dashed #E2E7EF;font-family:var(--font-body);}
+  .lnav-rel-t{font-weight:800;font-size:13px;color:#5D6B82;margin-right:2px;}
+  .lnav-chip{background:#fff;border:1.5px solid #2463B8;color:#1B4E95;border-radius:999px;padding:7px 14px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;}
+  .lnav-chip:hover{background:#2463B8;color:#fff;}
+  .lnav-dock{display:none;}
+  .lnav-ov{position:fixed;inset:0;z-index:10000;background:rgba(18,30,52,.45);display:flex;align-items:flex-start;justify-content:center;padding:9vh 16px 16px;}
+  .lnav-caja{background:#fff;color:#1B2A44;width:100%;max-width:560px;max-height:78vh;display:flex;flex-direction:column;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden;font-family:var(--font-body);}
+  .lnav-bus{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1.5px solid #E2E7EF;font-size:18px;}
+  .lnav-bus input{flex:1;min-width:0;border:none;outline:none;font:600 17px var(--font-body);color:#1B2A44;padding:6px 2px;background:transparent;}
+  .lnav-x{background:#F6F8FB;border:1.5px solid #E2E7EF;border-radius:9px;width:34px;height:34px;font-size:15px;cursor:pointer;color:#1B2A44;flex:none;}
+  .lnav-lista{list-style:none;margin:0;padding:6px;overflow:auto;}
+  .lnav-sec{font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#5D6B82;padding:10px 10px 4px;}
+  .lnav-op{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;}
+  .lnav-op[aria-selected="true"]{background:#2463B8;color:#fff;}
+  .lnav-op[aria-selected="true"] small{color:#DCE6F5;}
+  .lnav-op-ic{width:26px;text-align:center;font-size:17px;flex:none;}
+  .lnav-op-t{display:flex;flex-direction:column;min-width:0;font-weight:700;font-size:14.5px;}
+  .lnav-op-t small{font-weight:600;font-size:12px;color:#5D6B82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .lnav-vacio{padding:16px 12px;color:#5D6B82;}
+  .lnav-pie{padding:8px 14px;border-top:1.5px solid #E2E7EF;font-size:12px;color:#5D6B82;background:#F9FAFC;}
+  .lnav-cab{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px;}
+  .lnav-cab h2{margin:0;font-size:19px;}
+  .lnav-caja h3{margin:12px 16px 4px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#5D6B82;}
+  .lnav-mis{list-style:none;margin:0;padding:0 8px;overflow:auto;}
+  .lnav-mi{display:flex;align-items:center;gap:4px;}
+  .lnav-mi-b{flex:1;display:flex;align-items:center;gap:10px;text-align:left;background:none;border:none;border-radius:10px;padding:9px 8px;font:inherit;color:inherit;cursor:pointer;min-width:0;}
+  .lnav-mi-b:hover{background:#EEF3FB;}
+  .lnav-cuando{margin-left:auto;color:#5D6B82;font-size:12px;font-weight:600;white-space:nowrap;}
+  .lnav-quitar{background:none;border:none;color:#5D6B82;font-size:14px;padding:8px;border-radius:8px;cursor:pointer;}
+  .lnav-quitar:hover{background:#FBE4E1;color:#C0392B;}
+  .lnav-nota{margin:4px 16px 8px;font-size:13.5px;color:#5D6B82;}
+  .lnav-pie2{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 16px;border-top:1.5px solid #E2E7EF;margin-top:10px;}
+  .lnav-link{background:none;border:none;color:#1B4E95;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;padding:4px;}
+  .lnav-aviso{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:#1B2A44;color:#fff;padding:10px 16px;border-radius:10px;font:600 14px var(--font-body);opacity:0;pointer-events:none;transition:.2s;z-index:10001;}
+  .lnav-aviso.on{opacity:1;transform:translate(-50%,0);}
+  @media (max-width:760px){
+    .lnav-acc{display:none;}
+    .lnav-ruta{padding:5px 8px;margin-bottom:12px;font-size:12.5px;}
+    .lnav-migas li:has(> .lnav-mig-g){display:none;}
+    body.lnav-on .lnav-dock{display:flex;gap:4px;flex:none;}
+    .lnav-dock button{width:40px;height:38px;border-radius:10px;border:1.5px solid #E2E7EF;background:#fff;font-size:17px;cursor:pointer;padding:0;}
+    .lnav-ov{padding-top:12px;}
+    .lnav-caja{max-height:calc(100vh - 90px);}
+  }
+  @media print{ .lnav-ruta,.lnav-rel,.lnav-dock{display:none !important;} }
+  @media (prefers-reduced-motion: reduce){ .lnav-aviso{transition:none;} }
+</style>
 </head>
 <body>
 <a class="salta-contenido" href="#contenido-principal" onclick="const m=document.querySelector('.screen.active')||document.getElementById('contenido-principal'); if(m){ m.setAttribute('tabindex','-1'); m.focus(); } return false;">Saltar al contenido principal</a>
@@ -1752,7 +1822,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-30 · v89 (arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-10-31 · v90 (navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2505,7 +2575,8 @@ loadData();
 </script>
 
 <!-- ===================== MÓDULO 1: Mi espacio (Supabase) ===================== -->
-<script src="https://unpkg.com/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" crossorigin></script>
+<script>window.supabase || document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"><\/script>');   // reserva si jsDelivr falla</script>
 <script>
 (function(){ function cargar(){
   ['html2canvas/1.4.1/html2canvas.min.js','jspdf/2.5.1/jspdf.umd.min.js','qrcode-generator/1.4.4/qrcode.min.js'].forEach(function(u){
@@ -9396,6 +9467,357 @@ function guiaTarjetaAcomp(){
   window.addEventListener('appinstalled', function(){ cerrado = true; const v = document.getElementById('instalar-banner'); if(v) v.remove(); });
   if(quiere) setTimeout(mostrar, 1500);
 })();
+</script>
+<script>
+// Adaptador de LogosNav para Logos Acompanya
+window.LOGOSNAV_APP = {
+  id: 'acompanya',
+  lang: () => LANG,
+  usuario: () => (CURRENT_USER && CURRENT_USER.email) || '',
+  dentro: () => !!(CURRENT_USER && document.querySelector('.screen.active')),
+  pantalla: () => document.querySelector('.screen.active'),
+  contenedor: pant => pant,
+  ponerRuta: (cont, r) => { const f = cont.querySelector(':scope > .nav-sec-fila'); if(f) f.after(r); else cont.insertBefore(r, cont.firstChild); },
+  rutaEnSuSitio: (cont, r) => { const f = cont.querySelector(':scope > .nav-sec-fila'); return f ? f.nextElementSibling === r : cont.firstElementChild === r; },
+  botones: () => Array.from(document.querySelectorAll('.sidebar nav button[data-target], .sidebar-public-nav button[data-target]')),
+  clave: b => b.dataset.target,
+  grupo: b => {
+    const mas = b.closest('.menu-mas'); if(mas){ const t = mas.querySelector('.menu-mas-toggle'); return t ? t.childNodes[0].textContent.trim() : ''; }
+    if(b.closest('.sidebar-public-nav')){ let x = b.previousElementSibling; while(x && !x.classList.contains('section-label')) x = x.previousElementSibling; return x ? x.textContent.trim() : ''; }
+    return '';
+  },
+  botonActivo: () => document.querySelector('.sidebar nav button[data-target].active, .sidebar-public-nav button[data-target].active'),
+  claveInicio: () => 'home',
+  subtitulo: p => {
+    const pant = document.querySelector('.screen.active'); if(!pant) return '';
+    if(pant.id.replace('screen-', '') === p.el.dataset.target) return '';
+    const h = pant.querySelector('.screen-title'); if(!h) return '';
+    return h.textContent.replace(/^[^A-Za-zÀ-ÿ0-9¿¡]+/, '').replace(/\s+/g, ' ').trim().slice(0, 60);
+  },
+  envolver: ['setLang'],
+  iconos: { home: '🏠', 'home#3': '📝', 'home#4': '🧭', profile: '👤', cv: '📄', encuesta: '⭐', panel: '🗂️', admin: '🛡️' },
+  relacionados: {
+    home: ['profile', 'aulaciudadano', 'queofrecemos'],
+    profile: ['cv', 'empleo', 'aulaciudadano'],
+    cv: ['empleo', 'profile'],
+    empleo: ['cv', 'aulaciudadano', 'emprendimiento'],
+    aulaciudadano: ['voluntariado', 'empleo', 'profile'],
+    voluntariado: ['aulaciudadano', 'queofrecemos'],
+    cuidados: ['voluntariado', 'queofrecemos'],
+    emprendimiento: ['aulaciudadano', 'empleo'],
+    queofrecemos: ['aulaciudadano', 'voluntariado', 'empleo'],
+    traductor: ['profile', 'home'],
+    config: ['profile', 'traductor'],
+    encuesta: ['profile', 'home'],
+    webredes: ['queofrecemos', 'home'],
+    verificarcert: ['aulaciudadano'],
+    jovenes: ['aulaciudadano', 'voluntariado'],
+    familias: ['queofrecemos', 'cuidados']
+  },
+  sinonimos: {
+    home: 'inicio portada necesidades consentimiento datos', profile: 'mi espacio citas tramites documentos mensajes perfil',
+    cv: 'curriculum cv trabajo', encuesta: 'opinion valoracion', traductor: 'traducir idioma traduccion', config: 'configuracion ajustes contraseña idioma',
+    aulaciudadano: 'cursos clases formacion aula', voluntariado: 'voluntario ayudar', empleo: 'trabajo empleo ofertas',
+    cuidados: 'cuidar compañia mayores', emprendimiento: 'negocio proyecto emprender', queofrecemos: 'servicios ofertas ayuda',
+    webredes: 'web redes sociales instagram facebook', verificarcert: 'certificado diploma verificar', panel: 'panel logos tecnicos', admin: 'administrador'
+  }
+};
+
+/* ================= LogosNav · navegación común de Logos Intranet y Logos Acompanya =================
+   · Ruta («Inicio › Grupo › Página»): cada nivel se puede pulsar.
+   · ☆ Favoritas y 🕘 Mis páginas (últimas visitadas), guardadas en este navegador para cada persona.
+   · 🔎 Buscador de páginas (Ctrl + K): solo muestra lo que cada perfil puede ver; en la intranet también busca personas.
+   · «Sigue con…»: accesos a las páginas relacionadas al final de cada pantalla.
+   · Móvil: 🏠 🔎 🕘 en la barra de abajo, junto al botón «Menú».
+   Cada aplicación define window.LOGOSNAV_APP (adaptador) antes de este bloque. */
+(function(){
+  const A = window.LOGOSNAV_APP; if(!A) return;
+  const L = (es, ca) => A.lang() === 'ca' ? ca : es;
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const ICONO = /^\s*((?:\p{Extended_Pictographic}|\p{Emoji_Presentation})(?:️|‍(?:\p{Extended_Pictographic}|\p{Emoji_Presentation})|\p{Emoji_Modifier})*)\s*/u;
+
+  // ---------- páginas que ve esta persona (salen de su menú: así se respetan los permisos) ----------
+  function textoBoton(b){
+    let t = ''; b.childNodes.forEach(n => { if(n.nodeType === 3 || !(n.classList && (n.classList.contains('cmp-n') || n.classList.contains('nav-badge') || n.classList.contains('nav-solo')))) t += n.textContent; });
+    return t.replace(/\s+/g, ' ').trim();
+  }
+  function oculto(b){
+    if(b.classList.contains('rol-oculto') || b.style.display === 'none') return true;
+    let x = b.parentElement;
+    while(x && !x.classList.contains('sidebar')){ if(x.classList.contains('rol-oculto') || (x.style && x.style.display === 'none')) return true; x = x.parentElement; }
+    return false;
+  }
+  function paginas(){
+    const vistos = {};
+    return A.botones().filter(b => !oculto(b)).map(b => {
+      const base = A.clave(b); vistos[base] = (vistos[base] || 0) + 1;
+      const k = vistos[base] > 1 ? base + '#' + vistos[base] : base;
+      const txt = textoBoton(b); const m = ICONO.exec(txt);
+      return { k, el: b, ic: m ? m[1] : ((A.iconos || {})[k] || (A.iconos || {})[base] || '•'), l: (m ? txt.slice(m[0].length) : txt).trim(), g: A.grupo(b) || '' };
+    }).filter(p => p.l);
+  }
+  function pagina(k){ return paginas().find(p => p.k === k); }
+
+  // ---------- dónde estoy ----------
+  function actual(){
+    if(!A.dentro()) return null;
+    const per = A.persona && A.persona();
+    if(per) return { k: 'p:' + per.id, ic: '👤', l: per.nombre || L('Ficha', 'Fitxa'), g: L('Personas usuarias', 'Persones usuàries'), padre: A.clavePersonas, persona: per.id };
+    const b = A.botonActivo(); if(!b) return null;
+    const p = paginas().find(x => x.el === b); if(!p) return null;
+    const sub = A.subtitulo ? A.subtitulo(p) : '';
+    return Object.assign({}, p, { sub: sub && norm(sub) !== norm(p.l) ? sub : '' });
+  }
+
+  // ---------- favoritas y últimas páginas ----------
+  const CLAVE = () => 'logosnav:' + A.id + ':' + (A.usuario() || '');
+  function leer(){ try { const d = JSON.parse(localStorage.getItem(CLAVE()) || '{}'); return { fav: d.fav || [], rec: d.rec || [] }; } catch(e){ return { fav: [], rec: [] }; } }
+  function guardar(d){ try { localStorage.setItem(CLAVE(), JSON.stringify(d)); } catch(e){} }
+  const corto = p => ({ k: p.k, ic: p.ic, l: p.l, g: p.g || '', t: Date.now() });
+  function anotar(p){
+    if(!p) return; const d = leer();
+    if(d.rec[0] && d.rec[0].k === p.k){ if(d.rec[0].l !== p.l){ d.rec[0].l = p.l; guardar(d); } return; }
+    d.rec = [corto(p)].concat(d.rec.filter(x => x.k !== p.k)).slice(0, 12); guardar(d);
+  }
+  function esFav(k){ return leer().fav.some(x => x.k === k); }
+  function cambiarFav(p){
+    if(!p) return; const d = leer();
+    if(d.fav.some(x => x.k === p.k)) d.fav = d.fav.filter(x => x.k !== p.k); else d.fav = d.fav.concat([corto(p)]).slice(-12);
+    guardar(d); pintar(true);
+    aviso(esFav(p.k) ? L('⭐ Añadida a favoritas', '⭐ Afegida a preferides') : L('Quitada de favoritas', 'Treta de preferides'));
+  }
+
+  // ---------- ir a una página ----------
+  function ir(k){
+    cerrarTodo();
+    if(String(k).indexOf('p:') === 0){ A.abrirPersona(k.slice(2)); return; }
+    const p = pagina(k);
+    if(!p){ aviso(L('Esta página ya no está en tu menú.', 'Aquesta pàgina ja no és al teu menú.')); return; }
+    try { document.querySelector('.sidebar') && document.querySelector('.sidebar').classList.remove('menu-open'); } catch(e){}
+    p.el.click();
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e){ window.scrollTo(0, 0); }
+  }
+  window.lnavIr = ir;
+
+  // ---------- barra de ruta ----------
+  function rutaHtml(p){
+    const inicio = A.claveInicio();
+    const partes = [`<li><button type="button" class="lnav-mig" onclick="lnavIr('${esc(inicio)}')">🏠 ${L('Inicio', 'Inici')}</button></li>`];
+    if(p.k !== inicio){
+      if(p.padre){ const pp = pagina(p.padre); if(pp) partes.push(`<li><button type="button" class="lnav-mig" onclick="lnavIr('${esc(pp.k)}')">${esc(pp.l)}</button></li>`); }
+      else if(p.g) partes.push(`<li><button type="button" class="lnav-mig lnav-mig-g" onclick="lnavBuscar(${esc(JSON.stringify(p.g))})" title="${esc(L('Ver las páginas de este grupo', 'Veure les pàgines d\'aquest grup'))}">${esc(p.g)}</button></li>`);
+      if(p.sub) partes.push(`<li><button type="button" class="lnav-mig" onclick="lnavIr('${esc(p.k)}')">${esc(p.l)}</button></li><li aria-current="page"><span>${esc(p.sub)}</span></li>`);
+      else partes.push(`<li aria-current="page"><span>${esc(p.l)}</span></li>`);
+    }
+    const fav = esFav(p.k);
+    return `<ol class="lnav-migas">${partes.join('')}</ol>
+      <button type="button" class="lnav-estrella${fav ? ' on' : ''}" onclick="lnavFav()" aria-pressed="${fav}" title="${esc(fav ? L('Quitar de favoritas', 'Treure de preferides') : L('Añadir a favoritas', 'Afegir a preferides'))}" aria-label="${esc(fav ? L('Quitar de favoritas', 'Treure de preferides') : L('Añadir a favoritas', 'Afegir a preferides'))}">${fav ? '★' : '☆'}</button>
+      <span class="lnav-hueco"></span>
+      <button type="button" class="lnav-acc" onclick="lnavBuscar()" title="${esc(L('Buscar una página', 'Cercar una pàgina'))} (Ctrl + K)">🔎 <span>${L('Buscar', 'Cercar')}</span> <kbd>Ctrl K</kbd></button>
+      <button type="button" class="lnav-acc" onclick="lnavMis()">🕘 <span>${L('Mis páginas', 'Les meves pàgines')}</span></button>`;
+  }
+  window.lnavFav = () => cambiarFav(actual());
+
+  // ---------- «Sigue con…» ----------
+  function relHtml(p){
+    const claves = (A.relacionados[p.persona ? '_persona' : String(p.k).split('#')[0]] || []);
+    const items = claves.map(pagina).filter(Boolean).filter(x => x.k !== p.k).slice(0, 4);
+    if(!items.length) return '';
+    return `<span class="lnav-rel-t">➡️ ${L('Sigue con', 'Continua amb')}</span>` + items.map(x => `<button type="button" class="lnav-chip" onclick="lnavIr('${esc(x.k)}')">${x.ic} ${esc(x.l)}</button>`).join('');
+  }
+
+  // ---------- pintar en la pantalla activa ----------
+  let ultimaFirma = '', tAnotar = null;
+  function pintar(forzar){
+    const pant = A.pantalla();
+    document.body.classList.toggle('lnav-on', !!(pant && A.dentro()));
+    dock();
+    if(!pant || !A.dentro()) return;
+    const p = actual(); if(!p) { quitar(pant); return; }
+    // se apunta en «últimas páginas» solo si se queda en ella (no los pasos intermedios)
+    clearTimeout(tAnotar); tAnotar = setTimeout(() => { const q = actual(); if(q && q.k === p.k) anotar(q); }, 900);
+    const firma = [p.k, p.sub || '', p.l, A.lang(), esFav(p.k)].join('|');
+    let r = pant.querySelector('.lnav-ruta'), rel = pant.querySelector('.lnav-rel');
+    const cont = A.contenedor(pant);
+    if(!cont) return;
+    if(!r){ r = document.createElement('nav'); r.className = 'lnav-ruta'; r.setAttribute('aria-label', L('Dónde estás', 'On ets')); }
+    if(!rel){ rel = document.createElement('div'); rel.className = 'lnav-rel'; }
+    if(r.parentNode !== cont || !A.rutaEnSuSitio(cont, r)) A.ponerRuta(cont, r);
+    if(rel.parentNode !== cont || cont.lastElementChild !== rel) cont.appendChild(rel);
+    if(forzar || firma !== ultimaFirma || !r.firstChild){ r.innerHTML = rutaHtml(p); const h = relHtml(p); rel.innerHTML = h; rel.style.display = h ? '' : 'none'; ultimaFirma = firma; }
+    document.querySelectorAll('.lnav-ruta, .lnav-rel').forEach(x => { if(!pant.contains(x)) x.remove(); });
+  }
+  function quitar(pant){ (pant || document).querySelectorAll('.lnav-ruta, .lnav-rel').forEach(x => x.remove()); }
+  let tPintar = null;
+  function programar(ms, suave){
+    if(suave && tPintar) return;   // cambios seguidos (cifras animadas…): no se retrasa sin fin
+    clearTimeout(tPintar); tPintar = setTimeout(() => { tPintar = null; try { pintar(); } catch(e){ console.warn('LogosNav', e); } }, ms == null ? 60 : ms);
+  }
+  window.lnavRefrescar = () => programar(0);
+
+  // ---------- móvil: botones en la barra de abajo ----------
+  function dock(){
+    const sb = document.querySelector('.sidebar'); if(!sb) return;
+    let d = document.getElementById('lnav-dock');
+    if(!d){
+      d = document.createElement('div'); d.id = 'lnav-dock'; d.className = 'lnav-dock';
+      const tg = sb.querySelector('.mobile-menu-toggle');
+      if(tg) tg.parentNode.insertBefore(d, tg); else sb.appendChild(d);
+    }
+    const firma = A.lang();
+    if(d.dataset.f !== firma){
+      d.dataset.f = firma;
+      d.innerHTML = `<button type="button" onclick="lnavIr(window.LOGOSNAV_APP.claveInicio())" aria-label="${esc(L('Inicio', 'Inici'))}">🏠</button>
+        <button type="button" onclick="lnavBuscar()" aria-label="${esc(L('Buscar una página', 'Cercar una pàgina'))}">🔎</button>
+        <button type="button" onclick="lnavMis()" aria-label="${esc(L('Mis páginas', 'Les meves pàgines'))}">🕘</button>`;
+    }
+  }
+
+  // ---------- ventanas: buscador y «Mis páginas» ----------
+  let volverFoco = null;
+  function cerrarTodo(){ const o = document.getElementById('lnav-ov'); if(o){ o.remove(); if(volverFoco && document.contains(volverFoco)) try { volverFoco.focus(); } catch(e){} } }
+  function ventana(html, etiqueta){
+    cerrarTodo(); volverFoco = document.activeElement;
+    const ov = document.createElement('div'); ov.id = 'lnav-ov'; ov.className = 'lnav-ov';
+    ov.innerHTML = `<div class="lnav-caja" role="dialog" aria-modal="true" aria-label="${esc(etiqueta)}">${html}</div>`;
+    ov.addEventListener('mousedown', e => { if(e.target === ov) cerrarTodo(); });
+    document.body.appendChild(ov); return ov;
+  }
+  function filaHtml(x, i, extra){
+    return `<li role="option" id="lnav-op-${i}" class="lnav-op" data-k="${esc(x.k)}" aria-selected="false"><span class="lnav-op-ic">${x.ic || '•'}</span><span class="lnav-op-t">${esc(x.l)}${x.g ? `<small>${esc(x.g)}</small>` : ''}</span>${extra || ''}</li>`;
+  }
+  const SIN = x => norm(x).replace(/[^a-z0-9ñç ]/g, ' ');
+  function puntuar(p, q){
+    const t = SIN(p.l), g = SIN(p.g), sin = SIN((A.sinonimos[String(p.k).split('#')[0]] || ''));
+    const palabras = q.split(/\s+/).filter(Boolean); let s = 0;
+    for(const w of palabras){
+      if(t.startsWith(w)) s += 6; else if(t.split(' ').some(x => x.startsWith(w))) s += 5; else if(w.length >= 4 && t.includes(w)) s += 3;
+      else if(sin.split(' ').some(x => x.startsWith(w))) s += 3; else if(g.includes(w)) s += 1; else return 0;
+    }
+    return s;
+  }
+  let tPersonas = null, nBusq = 0;
+  window.lnavBuscar = function(inicial){
+    const ov = ventana(`
+      <div class="lnav-bus"><span aria-hidden="true">🔎</span>
+        <input id="lnav-q" type="text" role="combobox" aria-expanded="true" aria-controls="lnav-lista" aria-autocomplete="list" autocomplete="off" spellcheck="false"
+          placeholder="${esc(A.personas ? L('¿Adónde quieres ir? Página o persona…', 'On vols anar? Pàgina o persona…') : L('¿Adónde quieres ir?', 'On vols anar?'))}">
+        <button type="button" class="lnav-x" onclick="lnavCerrar()" aria-label="${esc(L('Cerrar', 'Tancar'))}">✕</button></div>
+      <ul id="lnav-lista" class="lnav-lista" role="listbox" aria-label="${esc(L('Resultados', 'Resultats'))}"></ul>
+      <div class="lnav-pie">↑ ↓ ${L('para moverte', 'per moure\'t')} · Enter ${L('para abrir', 'per obrir')} · Esc ${L('para cerrar', 'per tancar')}</div>`, L('Buscar una página', 'Cercar una pàgina'));
+    const inp = ov.querySelector('#lnav-q'), lista = ov.querySelector('#lnav-lista');
+    let sel = 0;
+    const marcar = i => {
+      const ops = [...lista.querySelectorAll('.lnav-op')]; if(!ops.length){ inp.removeAttribute('aria-activedescendant'); return; }
+      sel = Math.max(0, Math.min(ops.length - 1, i));
+      ops.forEach((o, j) => o.setAttribute('aria-selected', j === sel ? 'true' : 'false'));
+      inp.setAttribute('aria-activedescendant', ops[sel].id); ops[sel].scrollIntoView({ block: 'nearest' });
+    };
+    const pintarLista = (q) => {
+      const qq = SIN(q).trim(), todas = paginas(); let html = '', i = 0;
+      const sec = (t, items, extra) => { if(!items.length) return; html += `<li class="lnav-sec" role="presentation">${t}</li>` + items.map(x => filaHtml(x, i++, extra)).join(''); };
+      if(!qq){
+        const d = leer(), vale = x => String(x.k).indexOf('p:') === 0 || todas.some(p => p.k === x.k);
+        sec('⭐ ' + L('Favoritas', 'Preferides'), d.fav.filter(vale));
+        sec('🕘 ' + L('Últimas páginas', 'Darreres pàgines'), d.rec.filter(vale).filter(x => !d.fav.some(f => f.k === x.k)).slice(0, 6));
+        sec('📂 ' + L('Todas tus páginas', 'Totes les teves pàgines'), todas);
+      } else {
+        sec('📂 ' + L('Páginas', 'Pàgines'), todas.map(p => [p, puntuar(p, qq)]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]).map(x => x[0]).slice(0, 12));
+        html += '<li class="lnav-sec lnav-pers" role="presentation" style="display:none"></li>';
+      }
+      if(!html) html = `<li class="lnav-vacio" role="presentation">${L('No hay ninguna página con ese nombre.', 'No hi ha cap pàgina amb aquest nom.')}</li>`;
+      lista.innerHTML = html; marcar(0);
+      // personas (solo intranet; con los permisos de cada uno)
+      clearTimeout(tPersonas);
+      if(A.personas && qq.length >= 2){
+        const n = ++nBusq;
+        tPersonas = setTimeout(async () => {
+          let ps = []; try { ps = await A.personas(q.trim()); } catch(e){}
+          if(n !== nBusq || !document.contains(lista) || !ps.length) return;
+          const vacio = lista.querySelector('.lnav-vacio'); if(vacio) vacio.remove();
+          const base = lista.querySelectorAll('.lnav-op').length;
+          const cab = lista.querySelector('.lnav-pers'); cab.style.display = ''; cab.textContent = '👤 ' + L('Personas', 'Persones');
+          cab.insertAdjacentHTML('afterend', ps.map((x, j) => filaHtml({ k: 'p:' + x.id, ic: '👤', l: x.nombre, g: x.det || '' }, base + j)).join(''));
+          if(!base) marcar(0);
+        }, 220);
+      }
+    };
+    inp.addEventListener('input', () => pintarLista(inp.value));
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'ArrowDown'){ e.preventDefault(); marcar(sel + 1); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); marcar(sel - 1); }
+      else if(e.key === 'Enter'){ e.preventDefault(); const o = lista.querySelectorAll('.lnav-op')[sel]; if(o) abrirOp(o); }
+      else if(e.key === 'Escape'){ e.preventDefault(); cerrarTodo(); }
+    });
+    lista.addEventListener('click', e => { const o = e.target.closest('.lnav-op'); if(o) abrirOp(o); });
+    lista.addEventListener('mousemove', e => { const o = e.target.closest('.lnav-op'); if(o){ const i = [...lista.querySelectorAll('.lnav-op')].indexOf(o); if(i !== sel) marcar(i); } });
+    if(typeof inicial === 'string'){ inp.value = inicial; }
+    pintarLista(inp.value); setTimeout(() => inp.focus(), 20);
+  };
+  function abrirOp(o){
+    const k = o.dataset.k;
+    if(k.indexOf('p:') === 0){ const d = leer(); const x = { k, ic: '👤', l: (o.querySelector('.lnav-op-t').firstChild || {}).textContent || '', g: L('Personas usuarias', 'Persones usuàries') }; d.rec = [corto(x)].concat(d.rec.filter(r => r.k !== k)).slice(0, 12); guardar(d); }
+    ir(k);
+  }
+  window.lnavCerrar = cerrarTodo;
+
+  window.lnavMis = function(){
+    const d = leer(), todas = paginas(), vale = x => String(x.k).indexOf('p:') === 0 || todas.some(p => p.k === x.k);
+    const fav = d.fav.filter(vale), rec = d.rec.filter(vale).slice(0, 10);
+    const cuando = t => { const m = Math.round((Date.now() - t) / 60000); return m < 1 ? L('ahora', 'ara') : m < 60 ? m + ' min' : m < 1440 ? Math.round(m / 60) + ' h' : Math.round(m / 1440) + ' d'; };
+    const fila = (x, quitar) => `<li class="lnav-mi"><button type="button" class="lnav-mi-b" onclick="lnavIr('${esc(x.k)}')"><span class="lnav-op-ic">${x.ic || '•'}</span><span class="lnav-op-t">${esc(x.l)}${x.g ? `<small>${esc(x.g)}</small>` : ''}</span>${quitar ? '' : `<small class="lnav-cuando">${cuando(x.t)}</small>`}</button>${quitar ? `<button type="button" class="lnav-quitar" onclick="lnavQuitarFav('${esc(x.k)}')" aria-label="${esc(L('Quitar de favoritas', 'Treure de preferides') + ': ' + x.l)}">✕</button>` : ''}</li>`;
+    const ov = ventana(`
+      <div class="lnav-cab"><h2>🕘 ${L('Mis páginas', 'Les meves pàgines')}</h2><button type="button" class="lnav-x" onclick="lnavCerrar()" aria-label="${esc(L('Cerrar', 'Tancar'))}">✕</button></div>
+      <h3>⭐ ${L('Favoritas', 'Preferides')}</h3>
+      ${fav.length ? `<ul class="lnav-mis">${fav.map(x => fila(x, true)).join('')}</ul>` : `<p class="lnav-nota">${L('Aún no tienes. Pulsa la ☆ al lado de la ruta de cualquier página para tenerla aquí siempre.', 'Encara no en tens. Prem la ☆ al costat de la ruta de qualsevol pàgina per tenir-la aquí sempre.')}</p>`}
+      <h3>🕘 ${L('Últimas páginas visitadas', 'Darreres pàgines visitades')}</h3>
+      ${rec.length ? `<ul class="lnav-mis">${rec.map(x => fila(x, false)).join('')}</ul>` : `<p class="lnav-nota">${L('Todavía no hay ninguna.', 'Encara no n\'hi ha cap.')}</p>`}
+      <div class="lnav-pie2"><button type="button" class="lnav-link" onclick="lnavBuscar()">🔎 ${L('Buscar otra página', 'Cercar una altra pàgina')} <kbd>Ctrl K</kbd></button>${rec.length ? `<button type="button" class="lnav-link" onclick="lnavBorrarHist()">${L('Borrar historial', 'Esborrar historial')}</button>` : ''}</div>`, L('Mis páginas', 'Les meves pàgines'));
+    ov.addEventListener('keydown', e => { if(e.key === 'Escape'){ e.preventDefault(); cerrarTodo(); } });
+    setTimeout(() => { const b = ov.querySelector('.lnav-mi-b, .lnav-x'); if(b) b.focus(); }, 20);
+  };
+  window.lnavQuitarFav = k => { const d = leer(); d.fav = d.fav.filter(x => x.k !== k); guardar(d); pintar(true); window.lnavMis(); };
+  window.lnavBorrarHist = () => { const d = leer(); d.rec = []; guardar(d); window.lnavMis(); };
+
+  // ---------- aviso corto ----------
+  function aviso(t){
+    let a = document.getElementById('lnav-aviso');
+    if(!a){ a = document.createElement('div'); a.id = 'lnav-aviso'; a.className = 'lnav-aviso'; a.setAttribute('role', 'status'); document.body.appendChild(a); }
+    a.textContent = t; a.classList.add('on'); clearTimeout(a._t); a._t = setTimeout(() => a.classList.remove('on'), 2200);
+  }
+
+  // ---------- teclado: Ctrl + K (o ⌘ + K) ----------
+  document.addEventListener('keydown', e => {
+    if((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')){
+      if(!A.dentro()) return;
+      e.preventDefault();
+      if(document.getElementById('lnav-ov') && document.getElementById('lnav-q')) cerrarTodo(); else window.lnavBuscar();
+    }
+  });
+
+  // ---------- cuándo repintar ----------
+  ['showScreen'].concat(A.envolver || []).forEach(nombre => {
+    const orig = window[nombre]; if(typeof orig !== 'function') return;
+    window[nombre] = function(){ const r = orig.apply(this, arguments); programar(); return r; };
+  });
+  document.addEventListener('click', e => { if(e.target.closest && e.target.closest('.sidebar nav button, .sidebar-public-nav button')) programar(); }, true);
+  window.addEventListener('popstate', () => programar(120));
+  window.addEventListener('resize', () => programar(200));
+  // las pantallas se vuelven a dibujar al cargar sus datos: si la ruta desaparece, se vuelve a poner
+  const main = document.querySelector('.main');
+  if(main && window.MutationObserver){
+    new MutationObserver(() => {
+      const pant = A.pantalla();
+      if(!pant || !A.dentro()) return;
+      const cont = A.contenedor(pant);
+      if(cont && (!cont.querySelector(':scope > .lnav-ruta') || cont.lastElementChild == null || !cont.lastElementChild.classList.contains('lnav-rel'))) programar(150, true);
+      else if(A.persona && A.persona() && ultimaFirma.split('|')[2] !== (A.persona().nombre || ultimaFirma.split('|')[2])) programar(150, true);
+    }).observe(main, { childList: true, subtree: true });
+  }
+  programar(400);
+})();
+
 </script>
 </body>
 </html>
