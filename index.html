@@ -1663,8 +1663,15 @@ const LINKS_LUIS = {
   'asociacionismo': [LL_('Buscador de trámites sobre asociaciones', 'Cercador de tràmits sobre associacions', 'https://tramits.gencat.cat/ca/tramits/cercador/?queryNat=associacions')],
   'ocio': [LL_('Centros cívicos de Tarragona', 'Centres cívics de Tarragona', 'https://www.tarragona.cat/centrescivics')]
 };
-// Necesidades que, según el catálogo de trabajo, aún no tienen enlace: la persona se dirige a Logos
-const SIN_ENLACE_LUIS = ['alquiler', 'compra-vivienda', 'vivienda-social', 'ayudas-alquiler', 'emergencia-habitacional', 'suministros', 'accesibilidad-vivienda'];
+// Vivienda: Logos NO trabaja este tema (decisión de David). Se muestran solo los enlaces oficiales, sin «Necesito ayuda de Logos».
+const VIVIENDA_NECS = ['alquiler', 'compra-vivienda', 'vivienda-social', 'ayudas-alquiler', 'emergencia-habitacional', 'suministros', 'accesibilidad-vivienda'];
+const VIV_OFICIALES = [
+  LL_('Agència de l\'Habitatge de Catalunya: ayudas y trámites de vivienda', 'Agència de l\'Habitatge de Catalunya: ajuts i tràmits d\'habitatge', 'https://habitatge.gencat.cat/'),
+  LL_('Oficina de Vivienda de Tarragona (Servei Municipal de l\'Habitatge)', 'Oficina d\'Habitatge de Tarragona (Servei Municipal de l\'Habitatge)', 'http://www.tarracohabitatge.cat/')
+];
+VIVIENDA_NECS.forEach(id => { LINKS_LUIS[id] = VIV_OFICIALES; });
+// Necesidades que aún no tienen enlace: la persona se dirige a Logos
+const SIN_ENLACE_LUIS = [];
 // Accesos rápidos de «Mi situación»: certificado digital y citas previas, para que la persona los haga desde el móvil
 const ACCESOS_CITAS = [
   { i: '🔐', es: 'Certificado digital: idCAT Mòbil', ca: 'Certificat digital: idCAT Mòbil', d_es: 'Para identificarte en los trámites online desde el móvil.', d_ca: 'Per identificar-te als tràmits en línia des del mòbil.', u: 'https://idcat.aoc.cat/' },
@@ -1822,7 +1829,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-10-31 · v90 (navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-11-01 · v91 (vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1917,7 +1924,7 @@ function accionesLogosHtml(esCA){
 }
 function itemTramiteHtml(item, i, esCA){
   const sinSesion = !CURRENT_USER;
-  const ayuda = sinSesion
+  const ayuda = (item.viv || VIVIENDA_NECS.includes(item.necId)) ? '' : sinSesion
     ? `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`
     : `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramite(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`;
   return `<div class="nec-item" id="nec-item-${i}">
@@ -2088,6 +2095,8 @@ function necesidadesAcordeonHtml(a){
   const esCA = LANG === 'ca';
   __NEC_ITEMS = [];
   const bloques = [];
+  if(a.id === 'cat-vivienda') bloques.push(`<div class="nec-card" style="border-color:#E0A526;background:#FFF8E6;"><div class="nec-card-t">ℹ️ ${esCA ? 'Logos no porta temes d\'habitatge' : 'Logos no lleva temas de vivienda'}</div>
+    <p class="nec-item-d" style="margin:0;">${esCA ? 'Per a ajuts al lloguer, habitatge social o qualsevol tràmit d\'habitatge, adreça\'t a l\'Oficina d\'Habitatge de Tarragona o a l\'Agència de l\'Habitatge de Catalunya (enllaços de sota). Si et pots quedar sense casa o és urgent, ves als Serveis Socials del teu ajuntament. Per a altres tràmits, feina o formació, Logos sí que t\'ajuda.' : 'Para ayudas al alquiler, vivienda social o cualquier trámite de vivienda, dirígete a la Oficina de Vivienda de Tarragona o a la Agència de l\'Habitatge de Catalunya (enlaces de abajo). Si puedes quedarte sin casa o es urgente, ve a los Servicios Sociales de tu ayuntamiento. Para otros trámites, empleo o formación, Logos sí te ayuda.'}</p></div>`);
   if(IS_ADMIN) bloques.push(`<div class="nec-admin" style="margin:6px 0 12px;"><h5 style="margin:0 0 4px;">🛠️ ${esCA ? 'Mode administració' : 'Modo administración'}</h5><div class="nec-item-d" style="margin:0;">${esCA ? 'Pots treure un tràmit amb la ✕ o afegir-ne un de nou al final de cada prestació.' : 'Puedes quitar un trámite con la ✕ o añadir uno nuevo al final de cada prestación.'}</div></div>`);
   // «Documentos y certificados»: datos completos de la persona. «Citas previas»: certificado digital y citas.
   if(a.id === 'cat-documentos' || a.id === 'cat-citas'){
@@ -2109,7 +2118,7 @@ function necesidadesAcordeonHtml(a){
   }
   // Accesos directos oficiales de la categoría (los de la propuesta), con «Lo hago yo / Necesito ayuda de Logos»
   if(a.accesos && a.id !== 'cat-citas'){
-    const filas = a.accesos.map(x => { const it = { titulo: esCA ? x[1] : x[0], url: x[2], desc: '', sid: null, nombre: a.nombre.es + ' — ' + x[0], necId: null, origen: 'base' }; __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
+    const filas = a.accesos.map(x => { const it = { titulo: esCA ? x[1] : x[0], url: x[2], desc: '', sid: null, nombre: a.nombre.es + ' — ' + x[0], necId: null, origen: 'base', viv: a.id === 'cat-vivienda' }; __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
     bloques.push(`<div class="nec-card"><div class="nec-card-t">⚡ ${esCA ? 'Accessos directes' : 'Accesos directos'}</div>${filas}</div>`);
   }
   const necesidades = a.necesidades.map(n => {
@@ -2138,7 +2147,7 @@ function necesidadesAcordeonHtml(a){
       __NEC_ITEMS.push({ nombre: n.nombre.es });
       const idx = __NEC_ITEMS.length - 1;
       const textoViv = a.id === 'cat-vivienda'
-        ? (esCA ? 'Les ajudes d\'habitatge són moltes i canvien constantment. Perquè no et perdis, Logos et diu quines n\'hi ha ara i quines et corresponen.' : 'Las ayudas de vivienda son muchas y cambian constantemente. Para que no te pierdas, Logos te dice cuáles hay ahora y cuáles te corresponden.')
+        ? (esCA ? 'Logos no porta temes d\'habitatge: adreça\'t a l\'Oficina d\'Habitatge de Tarragona o a l\'Agència de l\'Habitatge de Catalunya.' : 'Logos no lleva temas de vivienda: dirígete a la Oficina de Vivienda de Tarragona o a la Agència de l\'Habitatge de Catalunya.')
         : (esCA ? 'Per a això et recomanem anar directament a Logos: truca\'ns o demana cita i t\'acompanyem.' : 'Para esto te recomendamos dirigirte directamente a Logos: llámanos o pide cita y te acompañamos.');
       const btnAyuda = CURRENT_USER
         ? `<button class="nec-btn nec-btn-ayuda" onclick="avisarLogosNecesidad(${idx})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`
@@ -9340,7 +9349,7 @@ function guiaSlidesAcomp(){
       p: L('En cada trámite verás dos botones. Tú eliges:', 'A cada tràmit veuràs dos botons. Tu tries:'),
       l: [L('<strong>🔗 Lo hago yo</strong>: te lleva a la web oficial y lo haces tú.', '<strong>🔗 Ho faig jo</strong>: et porta a la web oficial i ho fas tu.'),
           L('<strong>🤝 Necesito ayuda de Logos</strong>: avisamos a una persona del equipo, que te contacta y te acompaña.', '<strong>🤝 Necessito ajuda de Logos</strong>: avisem una persona de l\'equip, que et contacta i t\'acompanya.'),
-          L('En algunos temas, como la vivienda, las ayudas cambian cada poco: ahí lo mejor es pedir ayuda a Logos.', 'En alguns temes, com l\'habitatge, els ajuts canvien sovint: aquí el millor és demanar ajuda a Logos.')] },
+          L('<strong>Vivienda</strong>: Logos no lleva este tema. Ahí verás solo los enlaces oficiales (Oficina de Vivienda de Tarragona y Agència de l\'Habitatge).', '<strong>Habitatge</strong>: Logos no porta aquest tema. Hi veuràs només els enllaços oficials (Oficina d\'Habitatge de Tarragona i Agència de l\'Habitatge).')] },
     { e: '🤔', t: L('¿No sabes por dónde empezar?', 'No saps per on començar?'),
       p: L('No pasa nada. Hay una opción para eso:', 'No passa res. Hi ha una opció per a això:'),
       l: [L('Pulsa <strong>«Contarlo →»</strong> y explica tu situación con tus palabras.', 'Prem <strong>«Explicar-ho →»</strong> i explica la teva situació amb les teves paraules.'),
