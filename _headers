@@ -1,0 +1,7 @@
+# Cabeceras de seguridad · Logos Acompanya (Netlify). Este archivo va en la raíz del repositorio con el nombre exacto: _headers
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https://foxtlpyfedwsvttzorql.supabase.co; connect-src 'self' https://foxtlpyfedwsvttzorql.supabase.co wss://foxtlpyfedwsvttzorql.supabase.co; frame-src 'self' blob: https://www.youtube-nocookie.com https://player.vimeo.com https://foxtlpyfedwsvttzorql.supabase.co; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
