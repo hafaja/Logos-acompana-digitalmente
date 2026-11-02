@@ -94,6 +94,7 @@
 
   .mobile-menu-toggle{display:none;}
   .mobile-menu-header{display:none;}
+  .logo-movil-wrap{display:none;}
   @media (max-width: 760px){
     #app{flex-direction:column;}
     .sidebar{width:100%;height:56px;position:sticky;bottom:0;top:auto;order:2;flex-direction:row;align-items:center;justify-content:center;padding:0;border-right:none;border-top:1.5px solid var(--line);z-index:150;}
@@ -110,6 +111,13 @@
     .sidebar.menu-open .mobile-menu-overlay{display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:56px;background:var(--teal);z-index:160;}
     .mobile-menu-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1.5px solid rgba(255,255,255,.15);font-family:var(--font-display);font-weight:700;font-size:17px;flex-shrink:0;color:#fff;}
     .mobile-menu-header button{background:none;border:none;font-size:22px;line-height:1;cursor:pointer;color:#fff;padding:4px 6px;}
+    /* Logo en el móvil: sobre blanco, con su identidad original */
+    .mobile-menu-header{background:#fff;border-bottom:3px solid var(--ochre,#E0A526);padding:10px 16px;}
+    .mobile-menu-header button{color:#1E4E8C;}
+    .logo-menu{height:44px;width:auto;display:block;}
+    .logo-movil-wrap{display:flex;flex-direction:column;align-items:center;margin:14px auto 4px;}
+    .logo-movil{width:min(50vw,190px);height:auto;display:block;background:#fff;padding:10px 16px;border-radius:20px;box-shadow:0 6px 22px -10px rgba(22,35,63,.28);border:1px solid #EEF1F6;}
+    .logo-movil-wrap::after{content:'';width:46px;height:3px;border-radius:3px;margin-top:12px;background:linear-gradient(90deg,#E0A526,#F5CF5B,#E0A526);}
     .mobile-menu-scroll{flex:1;overflow-y:auto;padding:12px 14px;-webkit-overflow-scrolling:touch;}
     .sidebar nav button{flex:0 0 auto;text-align:left;font-size:14.5px;padding:14px 12px;white-space:normal;width:100%;border-bottom:1px solid rgba(255,255,255,.12);border-radius:0;color:#fff;}
     .sidebar-public-nav button{color:#fff;border-bottom:1px solid rgba(255,255,255,.12);padding:14px 12px;width:100%;text-align:left;border-radius:0;}
@@ -165,10 +173,10 @@
   .nec-lista{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
   .nec-det{background:var(--paper);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;}
   .nec-det[open]{border-color:var(--ochre);box-shadow:0 8px 20px -10px rgba(0,0,0,.15);}
-  .nec-det summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px;font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--ink);}
-  .nec-det summary::-webkit-details-marker{display:none;}
-  .nec-det summary::after{content:'▾';color:var(--ochre);font-size:16px;margin-left:auto;transition:transform .15s;}
-  .nec-det[open] summary::after{transform:rotate(180deg);}
+  .nec-det > summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px;font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--ink);}
+  .nec-det > summary::-webkit-details-marker{display:none;}
+  .nec-det > summary::after{content:'▾';color:var(--ochre);font-size:16px;margin-left:auto;transition:transform .15s;}
+  .nec-det[open] > summary::after{transform:rotate(180deg);}
   .nec-n{background:var(--ochre-soft);color:#7A4A1F;border-radius:999px;font-size:11.5px;font-weight:800;min-width:22px;text-align:center;padding:1px 7px;}
   .nec-n:empty{display:none;}
   .nec-det-c{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;}
@@ -176,13 +184,20 @@
   .nec-x{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);color:var(--alert,#B0392F);font-weight:800;font-size:13px;cursor:pointer;line-height:1;}
   .nec-x:hover{background:#FBE0E0;}
   .nec-x.nec-x-sum{position:static;margin-left:auto;flex:0 0 auto;}
-  .nec-det.adm summary::after{margin-left:4px;}
+  .nec-det.adm > summary::after{margin-left:4px;}
   .nec-admin{border:1.5px dashed var(--ochre);border-radius:12px;padding:12px 14px;background:var(--ochre-soft);}
   .nec-admin h5{margin:0 0 8px;font-size:12.5px;color:#7A4A1F;text-transform:uppercase;letter-spacing:.04em;}
   .nec-admin input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-family:var(--font-body);font-size:13.5px;margin-bottom:8px;background:#fff;}
   .nec-admin .rest{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;padding:4px 0;}
   .nec-item-t{font-weight:700;font-size:14px;color:var(--ink);line-height:1.35;padding-right:30px;}
   .nec-item-d{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:3px;}
+  .nec-rev{display:inline-block;font-size:11px;font-weight:700;color:#1F6B3A;background:#E7F5EC;border:1px solid #BFE3CB;border-radius:999px;padding:1px 8px;margin:4px 0 0;}
+  .nec-meta{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+  .nec-nota{font-size:12.5px;color:#7A5200;background:#FFF8E6;border-radius:8px;padding:6px 9px;margin-top:6px;}
+  details.nec-req,details.nec-req[open]{margin:6px 0 0;font-size:12.5px;border:0;background:none;box-shadow:none;padding:0;border-radius:0;}
+  .nec-req > summary{cursor:pointer;color:#1E4E8C;font-weight:600;font-size:12.5px;padding:2px 0;display:list-item;list-style:disclosure-closed inside;}
+  .nec-req[open] > summary{list-style-type:disclosure-open;}
+  .nec-req p{margin:4px 0 0;color:var(--ink);line-height:1.45;}
   .nec-item-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
   .nec-btn{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:9px 14px;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;}
   .nec-btn-yo{background:var(--teal);border-color:var(--teal);color:#fff;}
@@ -731,12 +746,12 @@ body{font-size:15.5px;}
 #screen-necesidades .nec-det{border-radius:18px;transition:box-shadow .15s,border-color .15s;}
 #screen-necesidades .nec-det:hover{border-color:#9CC0EC;}
 #screen-necesidades .nec-det[open]{border-color:#2463B8;}
-#screen-necesidades .nec-det summary{padding:15px 18px;}
-#screen-necesidades .nec-det summary::before{content:'';width:10px;height:10px;border-radius:50%;background:#2463B8;opacity:.35;flex:0 0 auto;}
-#screen-necesidades .nec-det[open] summary::before{opacity:1;}
-#screen-necesidades .nec-det summary > span:first-child{margin-right:auto;}
-#screen-necesidades .nec-det summary::after{content:'›';color:#9AA6B8;font-size:24px;margin-left:8px;transform:rotate(90deg);}
-#screen-necesidades .nec-det[open] summary::after{transform:rotate(-90deg);color:#2463B8;}
+#screen-necesidades .nec-det > summary{padding:15px 18px;}
+#screen-necesidades .nec-det > summary::before{content:'';width:10px;height:10px;border-radius:50%;background:#2463B8;opacity:.35;flex:0 0 auto;}
+#screen-necesidades .nec-det[open] > summary::before{opacity:1;}
+#screen-necesidades .nec-det > summary > span:first-child{margin-right:auto;}
+#screen-necesidades .nec-det > summary::after{content:'›';color:#9AA6B8;font-size:24px;margin-left:8px;transform:rotate(90deg);}
+#screen-necesidades .nec-det[open] > summary::after{transform:rotate(-90deg);color:#2463B8;}
 #screen-necesidades .nec-n{background:#EAF1FB;color:#1B4E95;}
 #screen-necesidades .nec-card{border-radius:18px;background:linear-gradient(180deg,#F5F9FE,#fff);border-color:#CFE0F5;}
 #screen-necesidades .nec-item{background:#fff;border-radius:14px;}
@@ -1155,8 +1170,8 @@ body{font-size:15.5px;}
     <button class="mobile-menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('menu-open')">☰ Menú</button>
     <div class="mobile-menu-overlay">
       <div class="mobile-menu-header">
-        <span>Menú</span>
-        <button onclick="document.querySelector('.sidebar').classList.remove('menu-open')">✕</button>
+        <img class="logo-menu" alt="Logos · Transformem el discurs social">
+        <button aria-label="Cerrar el menú" onclick="document.querySelector('.sidebar').classList.remove('menu-open')">✕</button>
       </div>
       <div class="mobile-menu-scroll" onclick="document.querySelector('.sidebar').classList.remove('menu-open')">
     <nav>
@@ -1204,6 +1219,8 @@ body{font-size:15.5px;}
     <button class="nav-sec" id="nav-fwd" onclick="navAdelante()" aria-label="Apartado siguiente"><span class="nav-sec-txt" id="nav-fwd-txt"></span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </div>
   <div class="screen active" id="screen-home">
+    <div class="logo-movil-wrap"><img class="logo-movil" alt="Logos · Transformem el discurs social"></div>
+    <script>(function(){ var o = document.querySelector('.sidebar-logo-img'); if(!o) return; document.querySelectorAll('.logo-movil, .logo-menu').forEach(function(i){ i.src = o.src; }); })();</script>
     <div class="topbar" style="justify-content:space-between;">
       <button class="link-btn" id="btn-guia-top" onclick="guiaAbrirAcomp()" style="margin:0;">❓ Cómo se usa</button>
       <button class="link-btn" id="instalar-btn-top" hidden onclick="logosInstalarApp()" style="margin:0;">📲 <span data-es="Instalar la app" data-ca="Instal·lar l'app">Instalar la app</span></button>
@@ -1428,6 +1445,7 @@ function hoyLocalIso(d){ d = d || new Date(); return d.getFullYear() + '-' + Str
 <script>
 let SERVICIOS = [];
 let TAXONOMIA = [];
+let CATALOGO_LOGOS = null;   // catálogo revisado por Logos (content/catalogo-logos.json)
 let LANG = (function(){ try { return localStorage.getItem('logos_lang') === 'ca' ? 'ca' : 'es'; } catch(e){ return 'es'; } })();
 let CURRENT_AMBITO = null;
 let ENLACES_ESTADO = {};
@@ -1438,6 +1456,8 @@ async function loadData(){
       fetch('content/servicios.json'),
       fetch('content/taxonomia.json')
     ]);
+    // Catálogo revisado por Logos: si falta o falla, la app sigue igual que antes
+    try { const rc = await fetch('content/catalogo-logos.json', { cache: 'no-cache' }); if(rc.ok){ const d = await rc.json(); if(d && Array.isArray(d.entradas)) CATALOGO_LOGOS = d; } } catch(e) {}
     SERVICIOS = (await resServ.json()).servicios;
     TAXONOMIA = (await resTax.json()).ambitos;
     ajustarTaxonomia();
@@ -1787,6 +1807,7 @@ function necIndice(){
   (TAXONOMIA || []).forEach(a => (a.necesidades || []).forEach(n => {
     let titulos = (LINKS_LUIS[n.id] || []).map(l => l.es + ' ' + l.ca).join(' ');
     (n.servicios_ids || []).forEach(sid => { const sv = SERVICIOS.find(x => x.id === sid); if(sv) titulos += ' ' + sv.nombre.es + ' ' + sv.nombre.ca; });
+    catalogoDeNecesidad(n.id).forEach(e => { titulos += ' ' + e.nombre.es + ' ' + e.nombre.ca; });
     idx.push({ tipo:'nec', em:a.icono, es:n.nombre.es, ca:n.nombre.ca, sub_es:a.nombre.es, sub_ca:a.nombre.ca, amb:a.id, nec:n.id, txt:necNorm(n.nombre.es + ' ' + n.nombre.ca + ' ' + titulos + ' ' + a.nombre.es + ' ' + a.nombre.ca) });
   }));
   return idx;
@@ -1832,7 +1853,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-02 · v94 (logo con su identidad original sobre blanco en el menú; instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-11-02 · v95 (necesidades: catálogo de ayudas revisado por Logos, con descripción, organismo y requisitos de cada una; logo con su identidad original sobre blanco en el menú; instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1876,6 +1897,9 @@ function enlaceDeTramite(nombre){
   if(s && s.enlace_oficial) return s.enlace_oficial;
   for(const a of (TAXONOMIA || [])){
     for(const nec of a.necesidades){
+      for(const e of catalogoDeNecesidad(nec.id)){
+        if((nec.nombre.es + ' — ' + e.nombre.es).trim().toLowerCase() === n || e.nombre.es.trim().toLowerCase() === n) return e.url;
+      }
       for(const l of (LINKS_LUIS[nec.id] || [])){
         if((nec.nombre.es + ' — ' + l.es).trim().toLowerCase() === n || l.es.trim().toLowerCase() === n) return l.u;
       }
@@ -1925,6 +1949,18 @@ function accionesLogosHtml(esCA){
     <a class="nec-btn nec-btn-wa" href="https://wa.me/${c.tel}" target="_blank" rel="noopener">💬 WhatsApp${c.nombre === 'Logos' ? '' : ' · ' + c.nombre.split(' ')[0]}</a>`).join('')}
     ${CURRENT_USER ? `<button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCA ? 'Demanar cita a Logos' : 'Pedir cita en Logos'}</button>` : ''}`;
 }
+// Catálogo revisado por Logos: entradas de una necesidad y qué sustituyen de lo que había
+const CAT_ALIAS = { 'prestaciones-familiares':'hijos', 'discapacidad-salud':'discapacidad-situacion', 'dependencia-salud':'dependencia-situacion' };
+function catalogoDeNecesidad(necId){
+  if(!CATALOGO_LOGOS) return [];
+  const id = CAT_ALIAS[necId] || necId;
+  return CATALOGO_LOGOS.entradas.filter(e => (e.necesidades || []).includes(id));
+}
+function catalogoSustituye(necId, item){
+  if(!CATALOGO_LOGOS || !CATALOGO_LOGOS.sustituye) return false;
+  const lista = CATALOGO_LOGOS.sustituye[CAT_ALIAS[necId] || necId]; if(!lista) return false;
+  return lista.includes('*') || lista.includes(item.sid) || lista.includes(item.tituloEs);
+}
 function itemTramiteHtml(item, i, esCA){
   const sinSesion = !CURRENT_USER;
   const ayuda = (item.viv || VIVIENDA_NECS.includes(item.necId)) ? '' : sinSesion
@@ -1934,11 +1970,21 @@ function itemTramiteHtml(item, i, esCA){
     ${IS_ADMIN && item.necId ? `<button class="nec-x" title="${esCA ? 'Treure aquest tràmit' : 'Quitar este trámite'}" onclick="quitarItemCatalogo(${i})">✕</button>` : ''}
     <div class="nec-item-t">${escAttr(item.titulo)}</div>
     ${item.desc ? `<div class="nec-item-d">${item.desc}</div>` : ''}
+    ${item.rev ? catalogoDetalleHtml(item.rev, esCA) : ''}
     <div class="nec-item-b">
       <a class="nec-btn nec-btn-yo" href="${item.url}" target="_blank" rel="noopener" onclick="registrarTramiteApp(__NEC_ITEMS[${i}].nombre, 'solo')">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>
       ${ayuda}
       ${item.sid ? `<button class="nec-btn nec-btn-info" onclick="showDetail('${item.sid}')">ℹ️ ${esCA ? 'Més informació' : 'Más información'}</button>` : ''}
     </div></div>`;
+}
+function catalogoDetalleHtml(e, esCA){
+  const L = esCA ? 'ca' : 'es';
+  const t = o => escAttr((o && (o[L] || o.es)) || '');
+  return `<div class="nec-meta">🏛️ ${t(e.organismo)}${e.naturaleza ? ' · ' + t(e.naturaleza) : ''}</div>
+    ${e.nota ? `<div class="nec-nota">ℹ️ ${t(e.nota)}</div>` : ''}
+    ${e.requisitos ? `<details class="nec-req"><summary>${esCA ? 'Requisits principals' : 'Requisitos principales'}</summary><p>${t(e.requisitos)}</p>
+      <p class="subtle" style="font-size:11.5px;">${esCA ? 'Són orientatius: comprova a l\'enllaç oficial que el termini estigui obert i les condicions exactes.' : 'Son orientativos: comprueba en el enlace oficial que el plazo esté abierto y las condiciones exactas.'}</p></details>` : ''}
+    <span class="nec-rev">✔ ${esCA ? 'Revisat per Logos' : 'Revisado por Logos'}</span>`;
 }
 async function pedirAyudaTramite(i){
   const it = __NEC_ITEMS[i]; if(!it) return;
@@ -2127,15 +2173,20 @@ function necesidadesAcordeonHtml(a){
   const necesidades = a.necesidades.map(n => {
     const nombreN = n.nombre[LANG];
     const items = [];
+    // Primero, lo revisado por Logos (catálogo del Excel); después, lo que había y no sustituye
+    catalogoDeNecesidad(n.id).forEach(e => items.push({ titulo: e.nombre[LANG] || e.nombre.es, url: e.url, desc: escAttr((e.descripcion && (e.descripcion[LANG] || e.descripcion.es)) || ''), sid: null, nombre: n.nombre.es + ' — ' + e.nombre.es, necId: n.id, origen: 'base', rev: e, viv: e.ayuda_logos === false }));
+    const antes = [];
     const luis = LINKS_LUIS[n.id];
     if(luis){
-      luis.forEach(l => items.push({ titulo: l[LANG], url: l.u, desc: '', sid: null, nombre: n.nombre.es + ' — ' + l.es, necId: n.id, origen: 'base' }));
+      luis.forEach(l => antes.push({ titulo: l[LANG], tituloEs: l.es, url: l.u, desc: '', sid: null, nombre: n.nombre.es + ' — ' + l.es, necId: n.id, origen: 'base' }));
     } else if(!SIN_ENLACE_LUIS.includes(n.id)){
       (n.servicios_ids || []).forEach(sid => {
         const s = SERVICIOS.find(x => x.id === sid);
-        if(s && s.enlace_oficial) items.push({ titulo: s.nombre[LANG], url: s.enlace_oficial, desc: s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 110) : '', sid: s.id, nombre: s.nombre.es, necId: n.id, origen: 'base' });
+        if(s && s.enlace_oficial) antes.push({ titulo: s.nombre[LANG], tituloEs: s.nombre.es, url: s.enlace_oficial, desc: s.para_que_sirve ? (s.para_que_sirve[LANG] || '').slice(0, 110) : '', sid: s.id, nombre: s.nombre.es, necId: n.id, origen: 'base' });
       });
     }
+    const urlsRev = new Set(items.map(x => x.url));
+    antes.filter(x => !catalogoSustituye(n.id, x) && !urlsRev.has(x.url)).forEach(x => items.push(x));
     // Ajustes de la administración: ocultar trámites y añadir otros
     const ajustes = CATALOGO_AJUSTES.filter(x => esTramiteAj(x) && x.necesidad_id === n.id);
     const ocultas = ajustes.filter(x => x.oculto);  // (ajustes ya contiene solo trámites)
