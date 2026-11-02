@@ -1,0 +1,1391 @@
+{
+ "_info": "Catálogo revisado por Logos (hoja «Revisados» del Excel). Se genera con generar.py; no editar a mano.",
+ "revisado": "2026-11-02",
+ "sustituye": {
+  "ingreso-minimo-vital": [
+   "*"
+  ],
+  "hijos": [
+   "*"
+  ],
+  "embarazo-nacimiento": [
+   "*"
+  ],
+  "conciliacion": [
+   "*"
+  ],
+  "impuestos": [
+   "*"
+  ],
+  "pensiones": [
+   "*"
+  ],
+  "jubilacion": [
+   "*"
+  ],
+  "ayudas-economicas": [
+   "*"
+  ],
+  "autonomia-personal": [
+   "*"
+  ],
+  "desempleo": [
+   "Prestación por desempleo con certificado digital"
+  ],
+  "renta-garantizada": [
+   "Renta garantizada de ciudadanía: complemento activable"
+  ],
+  "cuidado-familiares": [
+   "ayuda-cuidadores-no-profesionales",
+   "cuidado-familiares-saad",
+   "inss-cume"
+  ]
+ },
+ "entradas": [
+  {
+   "n": 1,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Ingreso Mínimo Vital (IMV)",
+    "ca": "Ingrés mínim vital (IMV)"
+   },
+   "descripcion": {
+    "es": "Prestación periódica que garantiza una renta mínima al hogar.",
+    "ca": "Prestació periòdica que garanteix una renda mínima a la llar."
+   },
+   "requisitos": {
+    "es": "Residencia legal, vulnerabilidad económica y unidad de convivencia según normativa.",
+    "ca": "Residència legal, vulnerabilitat econòmica i unitat de convivència segons la normativa."
+   },
+   "organismo": {
+    "es": "INSS/Gene",
+    "ca": "INSS/Gene"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/ingres-minim-vital?moda=1",
+   "necesidades": [
+    "ingreso-minimo-vital"
+   ]
+  },
+  {
+   "n": 2,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Complemento de ayuda para la infancia (CAPI)",
+    "ca": "Complement d'ajuda per a la infància (CAPI)"
+   },
+   "descripcion": {
+    "es": "Importe mensual por cada menor dentro del sistema IMV.",
+    "ca": "Import mensual per cada menor dins del sistema de l'IMV."
+   },
+   "requisitos": {
+    "es": "Menores y umbrales específicos de renta, patrimonio y activos; se pide con el IMV.",
+    "ca": "Menors i llindars específics de renda, patrimoni i actius; es demana amb l'IMV."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/ingres-minim-vital?moda=1",
+   "necesidades": [
+    "ingreso-minimo-vital",
+    "hijos"
+   ]
+  },
+  {
+   "n": 3,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Prestación contributiva por desempleo",
+    "ca": "Prestació contributiva per desocupació"
+   },
+   "descripcion": {
+    "es": "Prestación por pérdida involuntaria del trabajo.",
+    "ca": "Prestació per pèrdua involuntària de la feina."
+   },
+   "requisitos": {
+    "es": "Situación legal de desempleo y, en general, al menos 360 días cotizados.",
+    "ca": "Situació legal de desocupació i, en general, almenys 360 dies cotitzats."
+   },
+   "organismo": {
+    "es": "SEPE",
+    "ca": "SEPE"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas/proteccion-por-desempleo/solicitud-de-prestaciones.html",
+   "necesidades": [
+    "desempleo"
+   ]
+  },
+  {
+   "n": 4,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Subsidio por cotización insuficiente",
+    "ca": "Subsidi per cotització insuficient"
+   },
+   "descripcion": {
+    "es": "Apoyo por desempleo sin cotizaciones suficientes para el paro contributivo.",
+    "ca": "Suport per desocupació sense prou cotitzacions per a l'atur contributiu."
+   },
+   "requisitos": {
+    "es": "En general, al menos 90 días cotizados; rentas o cargas familiares y demás condiciones.",
+    "ca": "En general, almenys 90 dies cotitzats; rendes o càrregues familiars i altres condicions."
+   },
+   "organismo": {
+    "es": "SEPE",
+    "ca": "SEPE"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-cotizaciones-insuficientes-he-trabajado-menos-de-un-anyo.html",
+   "necesidades": [
+    "desempleo"
+   ]
+  },
+  {
+   "n": 5,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Subsidio tras agotamiento del paro",
+    "ca": "Subsidi després d'esgotar l'atur"
+   },
+   "descripcion": {
+    "es": "Protección asistencial después de terminar la prestación contributiva.",
+    "ca": "Protecció assistencial quan s'acaba la prestació contributiva."
+   },
+   "requisitos": {
+    "es": "Agotamiento y requisitos de renta/cargas familiares y actividad.",
+    "ca": "Esgotament i requisits de renda, càrregues familiars i activitat."
+   },
+   "organismo": {
+    "es": "SEPE",
+    "ca": "SEPE"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-agotamiento-prestacion-contributiva.html",
+   "necesidades": [
+    "desempleo"
+   ]
+  },
+  {
+   "n": 6,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Subsidio para mayores de 52 años",
+    "ca": "Subsidi per a majors de 52 anys"
+   },
+   "descripcion": {
+    "es": "Subsidio mensual que cotiza para la jubilación.",
+    "ca": "Subsidi mensual que cotitza per a la jubilació."
+   },
+   "requisitos": {
+    "es": "52 años o más; requisitos especiales de cotización, rentas y demanda de empleo.",
+    "ca": "52 anys o més; requisits especials de cotització, rendes i demanda d'ocupació."
+   },
+   "organismo": {
+    "es": "SEPE",
+    "ca": "SEPE"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/tengo-mas-de-52.html",
+   "necesidades": [
+    "desempleo"
+   ]
+  },
+  {
+   "n": 7,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Subsidio para personas emigrantes retornadas",
+    "ca": "Subsidi per a persones emigrants retornades"
+   },
+   "descripcion": {
+    "es": "Subsidio para ciertos españoles que regresan tras trabajar en el extranjero.",
+    "ca": "Subsidi per a certs espanyols que tornen després de treballar a l'estranger."
+   },
+   "requisitos": {
+    "es": "Trabajo previo en países admitidos, retorno, desempleo y rentas.",
+    "ca": "Feina prèvia en països admesos, retorn, desocupació i rendes."
+   },
+   "organismo": {
+    "es": "SEPE",
+    "ca": "SEPE"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-de-emigrante-retornado.html",
+   "necesidades": [
+    "desempleo"
+   ]
+  },
+  {
+   "n": 8,
+   "ambito": "Estatal",
+   "area": "Rentas y desempleo",
+   "nombre": {
+    "es": "Complemento de Apoyo al Empleo (CAE)",
+    "ca": "Complement de suport a l'ocupació (CAE)"
+   },
+   "descripcion": {
+    "es": "Permite cobrar temporalmente la prestación o el subsidio a la vez que se trabaja, en los casos permitidos.",
+    "ca": "Permet cobrar temporalment la prestació o el subsidi alhora que es treballa, en els casos permesos."
+   },
+   "requisitos": {
+    "es": "Prestación reconocida, empleo compatible y límites reglamentarios.",
+    "ca": "Prestació reconeguda, feina compatible i límits reglamentaris."
+   },
+   "organismo": {
+    "es": "SEPE",
+    "ca": "SEPE"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/complemento-apoyo-empleo-subsidio.html",
+   "necesidades": [
+    "desempleo"
+   ],
+   "url_excel": "https://www.sepe.es/HomeSepe/prestaciones-desempleo/subsidio-desempleo/subsidio-agotamiento-prestacion-contributiva.html"
+  },
+  {
+   "n": 9,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Prestación por nacimiento y cuidado de menor",
+    "ca": "Prestació per naixement i cura de menor"
+   },
+   "descripcion": {
+    "es": "Sustitución de ingresos durante permiso por nacimiento, adopción o cuidado.",
+    "ca": "Substitueix els ingressos durant el permís per naixement, adopció o cura."
+   },
+   "requisitos": {
+    "es": "Alta o asimilada, cotización mínima en función de edad y situación protegida.",
+    "ca": "Alta o situació assimilada, cotització mínima segons l'edat i situació protegida."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/nacimiento-adopcion-prestaciones-familiares/nacimiento-adopcion-embarazo.html",
+   "necesidades": [
+    "embarazo-nacimiento"
+   ]
+  },
+  {
+   "n": 10,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Subsidio no contributivo por nacimiento",
+    "ca": "Subsidi no contributiu per naixement"
+   },
+   "descripcion": {
+    "es": "Protección económica en supuestos de nacimiento sin cotización suficiente.",
+    "ca": "Protecció econòmica en casos de naixement sense prou cotització."
+   },
+   "requisitos": {
+    "es": "Reunir las condiciones del subsidio especial; no confundir con la ayuda por nacimiento catalana.",
+    "ca": "Complir les condicions del subsidi especial; no s'ha de confondre amb l'ajut català per naixement."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/solicitar-periodos-prestacion-nacimiento-cuidado-menor.html",
+   "necesidades": [
+    "embarazo-nacimiento"
+   ]
+  },
+  {
+   "n": 11,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Pago único por nacimiento o adopción en supuestos especiales",
+    "ca": "Pagament únic per naixement o adopció en supòsits especials"
+   },
+   "descripcion": {
+    "es": "Ayuda estatal por nacimiento/adopción para ciertos hogares.",
+    "ca": "Ajut estatal per naixement o adopció per a certes llars."
+   },
+   "requisitos": {
+    "es": "Familia numerosa o monoparental o progenitor con discapacidad; umbrales de ingresos.",
+    "ca": "Família nombrosa o monoparental o progenitor amb discapacitat; llindars d'ingressos."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/prestacion-nacimiento-adopcion-cuidado-menor.html?categoria=nacimiento-adopcion-embarazo",
+   "necesidades": [
+    "embarazo-nacimiento",
+    "familia-numerosa",
+    "familia-monoparental"
+   ]
+  },
+  {
+   "n": 12,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Prestación por parto o adopción múltiples",
+    "ca": "Prestació per part o adopció múltiples"
+   },
+   "descripcion": {
+    "es": "Pago único cuando nacen o se adoptan varios menores simultáneamente.",
+    "ca": "Pagament únic quan neixen o s'adopten diversos menors alhora."
+   },
+   "requisitos": {
+    "es": "Dos o más menores en el mismo parto o adopción y condiciones de residencia.",
+    "ca": "Dos o més menors en el mateix part o adopció i condicions de residència."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/prestacion-nacimiento-adopcion-cuidado-menor.html?categoria=nacimiento-adopcion-embarazo",
+   "necesidades": [
+    "embarazo-nacimiento"
+   ]
+  },
+  {
+   "n": 13,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Deducción por maternidad",
+    "ca": "Deducció per maternitat"
+   },
+   "descripcion": {
+    "es": "Deducción de IRPF, con posibilidad de abono anticipado.",
+    "ca": "Deducció de l'IRPF, amb possibilitat de cobrament anticipat."
+   },
+   "requisitos": {
+    "es": "Madre con hijo menor de 3 años y requisitos de cotización/prestación o mutualidad.",
+    "ca": "Mare amb fill menor de 3 anys i requisits de cotització, prestació o mutualitat."
+   },
+   "organismo": {
+    "es": "Agencia Tributaria",
+    "ca": "Agència Tributària"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-relacionadas-hijos-descendientes.html",
+   "necesidades": [
+    "hijos",
+    "impuestos"
+   ]
+  },
+  {
+   "n": 14,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Incremento de deducción por guardería",
+    "ca": "Increment de la deducció per llar d'infants"
+   },
+   "descripcion": {
+    "es": "Incremento fiscal por gastos en custodia infantil autorizada.",
+    "ca": "Increment fiscal per despeses de llar d'infants autoritzada."
+   },
+   "requisitos": {
+    "es": "Derecho a deducción por maternidad y pagos en centro autorizado, con límites.",
+    "ca": "Dret a la deducció per maternitat i pagaments en un centre autoritzat, amb límits."
+   },
+   "organismo": {
+    "es": "Agencia Tributaria",
+    "ca": "Agència Tributària"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-relacionadas-hijos-descendientes.html",
+   "necesidades": [
+    "conciliacion",
+    "impuestos"
+   ],
+   "url_excel": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-relacionadas-hijos-descendientes/deduccion-ascendiente-dos-hijos-separado-matrimonial.html"
+  },
+  {
+   "n": 15,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Prestación CUME por cuidado de menores con enfermedad grave",
+    "ca": "Prestació CUME per cura de menors amb malaltia greu"
+   },
+   "descripcion": {
+    "es": "Compensa reducción de jornada para atender menor con cáncer u otra enfermedad grave.",
+    "ca": "Compensa la reducció de jornada per atendre un menor amb càncer o una altra malaltia greu."
+   },
+   "requisitos": {
+    "es": "Reducción de jornada, cotización y enfermedad incluida en normativa.",
+    "ca": "Reducció de jornada, cotització i malaltia inclosa en la normativa."
+   },
+   "organismo": {
+    "es": "Mutua/INSS",
+    "ca": "Mútua/INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/",
+   "necesidades": [
+    "conciliacion",
+    "cuidado-familiares"
+   ],
+   "url_excel": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-personas-discapacidad/deduccion-ascendiente-discapacidad-cargo.html",
+   "nota": {
+    "es": "Se pide en la mutua de la empresa donde trabajas.",
+    "ca": "Es demana a la mútua de l'empresa on treballes."
+   }
+  },
+  {
+   "n": 16,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Prestación por riesgo durante el embarazo",
+    "ca": "Prestació per risc durant l'embaràs"
+   },
+   "descripcion": {
+    "es": "Cobertura al suspender la actividad laboral por riesgos del puesto.",
+    "ca": "Cobertura quan se suspèn la feina per riscos del lloc de treball."
+   },
+   "requisitos": {
+    "es": "Riesgo laboral acreditado y falta de adaptación/reubicación segura.",
+    "ca": "Risc laboral acreditat i que no es pugui adaptar o canviar el lloc de manera segura."
+   },
+   "organismo": {
+    "es": "Mutua/INSS",
+    "ca": "Mútua/INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/certificado-embarazo-lactancia.html?categoria=nacimiento-adopcion-embarazo",
+   "necesidades": [
+    "embarazo-nacimiento"
+   ]
+  },
+  {
+   "n": 17,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Prestación por riesgo durante la lactancia natural",
+    "ca": "Prestació per risc durant la lactància natural"
+   },
+   "descripcion": {
+    "es": "Cobertura económica por suspensión del empleo ante riesgos durante lactancia.",
+    "ca": "Cobertura econòmica quan se suspèn la feina per riscos durant la lactància."
+   },
+   "requisitos": {
+    "es": "Riesgo laboral acreditado, menor de 9 meses y requisitos legales.",
+    "ca": "Risc laboral acreditat, menor de 9 mesos i requisits legals."
+   },
+   "organismo": {
+    "es": "Mutua/INSS",
+    "ca": "Mútua/INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/certificado-embarazo-lactancia.html?categoria=nacimiento-adopcion-embarazo",
+   "necesidades": [
+    "embarazo-nacimiento",
+    "conciliacion"
+   ]
+  },
+  {
+   "n": 18,
+   "ambito": "Estatal",
+   "area": "Natalidad y conciliación",
+   "nombre": {
+    "es": "Cotización computable en períodos de cuidado familiar",
+    "ca": "Cotització computable en períodes de cura familiar"
+   },
+   "descripcion": {
+    "es": "Efectos sobre cotización en determinadas excedencias o cuidado familiar.",
+    "ca": "Efectes sobre la cotització en determinades excedències o cures familiars."
+   },
+   "requisitos": {
+    "es": "Excedencia o período legal reconocido; no es necesariamente una subvención monetaria.",
+    "ca": "Excedència o període legal reconegut; no és necessàriament un ajut en diners."
+   },
+   "organismo": {
+    "es": "TGSS/INSS",
+    "ca": "TGSS/INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/solicitar-periodos-prestacion-nacimiento-cuidado-menor.html",
+   "necesidades": [
+    "conciliacion"
+   ]
+  },
+  {
+   "n": 19,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Asignación por hijo o menor a cargo con discapacidad",
+    "ca": "Assignació per fill o menor a càrrec amb discapacitat"
+   },
+   "descripcion": {
+    "es": "Prestación familiar por menor o hijo con discapacidad en supuestos protegidos.",
+    "ca": "Prestació familiar per menor o fill amb discapacitat en els casos protegits."
+   },
+   "requisitos": {
+    "es": "Grado y edades exigidos; compatibilidades específicas con IMV.",
+    "ca": "Grau i edats exigits; compatibilitats específiques amb l'IMV."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/prestacion-familiar-cuidado-hijos-discapacidad.html",
+   "necesidades": [
+    "hijos",
+    "discapacidad-situacion"
+   ]
+  },
+  {
+   "n": 20,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Pensión por incapacidad permanente",
+    "ca": "Pensió per incapacitat permanent"
+   },
+   "descripcion": {
+    "es": "Pensión/indemnización por pérdida de capacidad laboral.",
+    "ca": "Pensió o indemnització per pèrdua de capacitat laboral."
+   },
+   "requisitos": {
+    "es": "Incapacidad en grado reconocido y requisitos profesionales/cotización.",
+    "ca": "Incapacitat en grau reconegut i requisits professionals i de cotització."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/pension-incapacidad-permanente.html",
+   "necesidades": [
+    "pensiones"
+   ]
+  },
+  {
+   "n": 21,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Pensión contributiva de jubilación",
+    "ca": "Pensió contributiva de jubilació"
+   },
+   "descripcion": {
+    "es": "Pensión por dejar de trabajar por edad.",
+    "ca": "Pensió per deixar de treballar per edat."
+   },
+   "requisitos": {
+    "es": "Edad y cotización exigidas, con modalidades diferentes.",
+    "ca": "Edat i cotització exigides, amb modalitats diferents."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/servicio/pension-jubilacion.html",
+   "necesidades": [
+    "pensiones",
+    "jubilacion"
+   ]
+  },
+  {
+   "n": 22,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Pensión no contributiva de jubilación",
+    "ca": "Pensió no contributiva de jubilació"
+   },
+   "descripcion": {
+    "es": "Pensión para mayores sin derecho contributivo y recursos limitados.",
+    "ca": "Pensió per a persones grans sense dret contributiu i amb pocs recursos."
+   },
+   "requisitos": {
+    "es": "65 años o más, 10 años de residencia en España (dos consecutivos anteriores), carencia de rentas.",
+    "ca": "65 anys o més, 10 anys de residència a Espanya (dos de consecutius just abans) i manca de rendes."
+   },
+   "organismo": {
+    "es": "Generalitat / IMSERSO",
+    "ca": "Generalitat / IMSERSO"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Pensio-no-contributiva-per-jubilacio-00001",
+   "necesidades": [
+    "pensiones",
+    "jubilacion"
+   ]
+  },
+  {
+   "n": 23,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Pensión no contributiva de incapacidad",
+    "ca": "Pensió no contributiva d'invalidesa"
+   },
+   "descripcion": {
+    "es": "Pensión para personas con discapacidad y escasos ingresos.",
+    "ca": "Pensió per a persones amb discapacitat i pocs ingressos."
+   },
+   "requisitos": {
+    "es": "18-64 años, discapacidad al menos 65 %, residencia exigida y carencia de rentas.",
+    "ca": "18-64 anys, discapacitat d'almenys el 65 %, residència exigida i manca de rendes."
+   },
+   "organismo": {
+    "es": "Generalitat / IMSERSO",
+    "ca": "Generalitat / IMSERSO"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Pensio-no-contributiva-per-invalidesa-00001",
+   "necesidades": [
+    "pensiones",
+    "discapacidad-situacion"
+   ],
+   "url_excel": "https://tramits.gencat.cat/es/"
+  },
+  {
+   "n": 24,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Pensión de viudedad",
+    "ca": "Pensió de viduïtat"
+   },
+   "descripcion": {
+    "es": "Prestación por fallecimiento del cónyuge o pareja en casos cubiertos.",
+    "ca": "Prestació per la mort del cònjuge o la parella en els casos coberts."
+   },
+   "requisitos": {
+    "es": "Vínculo y requisitos del causante; reglas específicas para parejas de hecho.",
+    "ca": "Vincle i requisits de la persona morta; regles específiques per a parelles de fet."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/",
+   "necesidades": [
+    "pensiones"
+   ]
+  },
+  {
+   "n": 25,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Pensión de orfandad",
+    "ca": "Pensió d'orfandat"
+   },
+   "descripcion": {
+    "es": "Prestación para hijos tras fallecimiento del progenitor.",
+    "ca": "Prestació per als fills després de la mort del pare o la mare."
+   },
+   "requisitos": {
+    "es": "Fallecimiento del causante, edad/estudios/discapacidad y demás condiciones.",
+    "ca": "Mort del causant, edat, estudis o discapacitat i altres condicions."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/",
+   "necesidades": [
+    "pensiones"
+   ]
+  },
+  {
+   "n": 26,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Prestación en favor de familiares",
+    "ca": "Prestació en favor de familiars"
+   },
+   "descripcion": {
+    "es": "Protección por fallecimiento para ciertos familiares dependientes.",
+    "ca": "Protecció per mort per a certs familiars que en depenien."
+   },
+   "requisitos": {
+    "es": "Parentesco, convivencia/dependencia y requisitos específicos.",
+    "ca": "Parentiu, convivència o dependència i requisits específics."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/",
+   "necesidades": [
+    "pensiones"
+   ]
+  },
+  {
+   "n": 27,
+   "ambito": "Estatal",
+   "area": "Pensiones y discapacidad",
+   "nombre": {
+    "es": "Complemento para reducción de brecha de género en pensiones",
+    "ca": "Complement per reduir la bretxa de gènere en les pensions"
+   },
+   "descripcion": {
+    "es": "Complemento para ciertas pensiones contributivas vinculadas a hijos.",
+    "ca": "Complement per a certes pensions contributives vinculat als fills."
+   },
+   "requisitos": {
+    "es": "Ser titular de pensión incluida y reunir supuestos legales; no es universal.",
+    "ca": "Ser titular d'una pensió inclosa i complir els supòsits legals; no és universal."
+   },
+   "organismo": {
+    "es": "INSS",
+    "ca": "INSS"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://prestaciones.seg-social.es/",
+   "necesidades": [
+    "pensiones",
+    "jubilacion"
+   ]
+  },
+  {
+   "n": 28,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Bono social eléctrico",
+    "ca": "Bo social elèctric"
+   },
+   "descripcion": {
+    "es": "Descuento sobre suministro eléctrico regulado del hogar.",
+    "ca": "Descompte en el subministrament elèctric regulat de la llar."
+   },
+   "requisitos": {
+    "es": "Contrato PVPC, potencia admisible y condiciones de vulnerabilidad.",
+    "ca": "Contracte PVPC, potència admesa i condicions de vulnerabilitat."
+   },
+   "organismo": {
+    "es": "Comercializadora eléctrica de referencia / MITECO",
+    "ca": "Comercialitzadora elèctrica de referència / MITECO"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://www.miteco.gob.es/es/energia/pobreza-energetica/pe-001/preguntas-frecuentes-bono-social.html",
+   "necesidades": [
+    "suministros"
+   ],
+   "nota": {
+    "es": "Logos no lleva temas de vivienda ni suministros: lo pides tú en tu compañía eléctrica.",
+    "ca": "Logos no porta temes d'habitatge ni subministraments: ho demanes tu a la teva companyia elèctrica."
+   },
+   "ayuda_logos": false
+  },
+  {
+   "n": 29,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Bono social térmico",
+    "ca": "Bo social tèrmic"
+   },
+   "descripcion": {
+    "es": "Apoyo anual para calefacción, agua caliente y otros usos térmicos.",
+    "ca": "Ajut anual per a calefacció, aigua calenta i altres usos tèrmics."
+   },
+   "requisitos": {
+    "es": "Ser beneficiario del bono social eléctrico en fecha de referencia y reglas de gestión.",
+    "ca": "Ser beneficiari del bo social elèctric en la data de referència i regles de gestió."
+   },
+   "organismo": {
+    "es": "Administración autonómica / MITECO",
+    "ca": "Administració autonòmica / MITECO"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://www.miteco.gob.es/es/energia/pobreza-energetica/pe-001/preguntas-frecuentes-bono-social.html",
+   "necesidades": [
+    "suministros"
+   ],
+   "nota": {
+    "es": "Se cobra automáticamente si tienes el bono social eléctrico.",
+    "ca": "Es cobra automàticament si tens el bo social elèctric."
+   },
+   "ayuda_logos": false
+  },
+  {
+   "n": 30,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Deducción estatal por familia numerosa",
+    "ca": "Deducció estatal per família nombrosa"
+   },
+   "descripcion": {
+    "es": "Deducción fiscal y posible abono anticipado.",
+    "ca": "Deducció fiscal i possible cobrament anticipat."
+   },
+   "requisitos": {
+    "es": "Título o acreditación válida y actividad/prestación/pensión que dé derecho.",
+    "ca": "Títol o acreditació vàlida i activitat, prestació o pensió que en doni dret."
+   },
+   "organismo": {
+    "es": "Agencia Tributaria",
+    "ca": "Agència Tributària"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-relacionadas-hijos-descendientes/deduccion-familia-numerosa.html",
+   "necesidades": [
+    "familia-numerosa",
+    "impuestos"
+   ]
+  },
+  {
+   "n": 31,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Deducción por ascendiente o descendiente con discapacidad",
+    "ca": "Deducció per ascendent o descendent amb discapacitat"
+   },
+   "descripcion": {
+    "es": "Deducción fiscal por familiar con discapacidad a cargo.",
+    "ca": "Deducció fiscal per un familiar amb discapacitat a càrrec."
+   },
+   "requisitos": {
+    "es": "Discapacidad reconocida, parentesco y requisitos fiscales.",
+    "ca": "Discapacitat reconeguda, parentiu i requisits fiscals."
+   },
+   "organismo": {
+    "es": "Agencia Tributaria",
+    "ca": "Agència Tributària"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-personas-discapacidad/deduccion-ascendiente-discapacidad-cargo/importe-deduccion.html",
+   "necesidades": [
+    "impuestos",
+    "discapacidad-situacion"
+   ]
+  },
+  {
+   "n": 32,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Deducción por ascendiente con dos hijos",
+    "ca": "Deducció per ascendent amb dos fills"
+   },
+   "descripcion": {
+    "es": "Deducción para determinados ascendientes separados o sin vínculo matrimonial.",
+    "ca": "Deducció per a determinats ascendents separats o sense vincle matrimonial."
+   },
+   "requisitos": {
+    "es": "Dos hijos a cargo, derecho a mínimo de descendientes y ausencia de anualidades alimenticias, entre otros.",
+    "ca": "Dos fills a càrrec, dret al mínim per descendents i no rebre anualitats per aliments, entre altres."
+   },
+   "organismo": {
+    "es": "Agencia Tributaria",
+    "ca": "Agència Tributària"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/deducciones-relacionadas-hijos-descendientes/deduccion-ascendiente-dos-hijos-separado-matrimonial.html",
+   "necesidades": [
+    "impuestos",
+    "familia-monoparental"
+   ]
+  },
+  {
+   "n": 33,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Mínimos familiares y otros beneficios del IRPF",
+    "ca": "Mínims familiars i altres beneficis de l'IRPF"
+   },
+   "descripcion": {
+    "es": "Reducción de carga fiscal por hijos, ascendientes y discapacidad.",
+    "ca": "Reducció de la càrrega fiscal per fills, ascendents i discapacitat."
+   },
+   "requisitos": {
+    "es": "Composición familiar, edad, convivencia, dependencia e ingresos.",
+    "ca": "Composició familiar, edat, convivència, dependència i ingressos."
+   },
+   "organismo": {
+    "es": "Agencia Tributaria",
+    "ca": "Agència Tributària"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://sede.agenciatributaria.gob.es/Sede/ciudadanos-familias-personas-discapacidad/minimo-personal-familiar.html",
+   "necesidades": [
+    "impuestos"
+   ]
+  },
+  {
+   "n": 34,
+   "ambito": "Estatal",
+   "area": "Fiscalidad, energía y cultura",
+   "nombre": {
+    "es": "Bono Cultural Joven",
+    "ca": "Bo Cultural Jove"
+   },
+   "descripcion": {
+    "es": "Ayuda cultural para jóvenes que cumplen 18 años en la convocatoria.",
+    "ca": "Ajut cultural per a joves que fan 18 anys l'any de la convocatòria."
+   },
+   "requisitos": {
+    "es": "Cumplir 18 años en el ejercicio convocado y demás condiciones; plazo anual.",
+    "ca": "Fer 18 anys en l'exercici convocat i altres condicions; termini anual."
+   },
+   "organismo": {
+    "es": "Ministerio de Cultura",
+    "ca": "Ministeri de Cultura"
+   },
+   "naturaleza": {
+    "es": "Descuento, bonificación o ventaja",
+    "ca": "Descompte, bonificació o avantatge"
+   },
+   "url": "https://bonoculturajoven.gob.es/",
+   "necesidades": [
+    "cultura"
+   ]
+  },
+  {
+   "n": 35,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Renta Garantizada de Ciudadanía (RGC)",
+    "ca": "Renda garantida de ciutadania (RGC)"
+   },
+   "descripcion": {
+    "es": "Ingreso periódico para hogares en situación de insuficiencia de recursos.",
+    "ca": "Ingrés periòdic per a llars sense prou recursos."
+   },
+   "requisitos": {
+    "es": "Haber solicitado IMV, empadronamiento y residencia en Cataluña, recursos insuficientes y requisitos personales/de trabajo según modalidad.",
+    "ca": "Haver demanat l'IMV, empadronament i residència a Catalunya, recursos insuficients i requisits personals o laborals segons la modalitat."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials / SOC",
+    "ca": "Generalitat - Drets Socials / SOC"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/ca/tramits/tramits-temes/rgc-i-complement-activables",
+   "necesidades": [
+    "renta-garantizada"
+   ]
+  },
+  {
+   "n": 36,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Prestación complementaria de prestaciones estatales",
+    "ca": "Prestació complementària de prestacions estatals"
+   },
+   "descripcion": {
+    "es": "Complementa determinadas prestaciones estatales hasta límites regulados.",
+    "ca": "Complementa determinades prestacions estatals fins als límits regulats."
+   },
+   "requisitos": {
+    "es": "Prestación estatal compatible, haber solicitado IMV, renta insuficiente y requisitos según modalidad activable/no activable.",
+    "ca": "Prestació estatal compatible, haver demanat l'IMV, renda insuficient i requisits segons la modalitat activable o no activable."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials",
+    "ca": "Generalitat - Drets Socials"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/rgc_complement_estatal_activable",
+   "necesidades": [
+    "renta-garantizada"
+   ]
+  },
+  {
+   "n": 37,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Ayuda autonómica por nacimiento, adopción, tutela o acogida",
+    "ca": "Ajut autonòmic per naixement, adopció, tutela o acolliment"
+   },
+   "descripcion": {
+    "es": "Prestación única para familias que incorporan un menor.",
+    "ca": "Prestació única per a famílies que incorporen un menor."
+   },
+   "requisitos": {
+    "es": "Límite de ingresos; nacimiento/acogida/otro hecho protegible; solicitud en plazo.",
+    "ca": "Límit d'ingressos; naixement, acolliment o un altre fet protegit; sol·licitud dins de termini."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials",
+    "ca": "Generalitat - Drets Socials"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-per-a-families-amb-infants",
+   "necesidades": [
+    "embarazo-nacimiento",
+    "hijos"
+   ]
+  },
+  {
+   "n": 38,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Prestación por menor en situación de riesgo",
+    "ca": "Prestació per menor en situació de risc"
+   },
+   "descripcion": {
+    "es": "Ayuda para mantenimiento de menor valorado en riesgo social.",
+    "ca": "Ajut per mantenir un menor valorat en risc social."
+   },
+   "requisitos": {
+    "es": "Compromiso socioeducativo firmado, valoración de riesgo y límite de ingresos.",
+    "ca": "Compromís socioeducatiu signat, valoració de risc i límit d'ingressos."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials",
+    "ca": "Generalitat - Drets Socials"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-economica-per-a-persones-menors-dedat-en-situacio-de-risc",
+   "necesidades": [
+    "hijos"
+   ]
+  },
+  {
+   "n": 39,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Fondo de garantía por impago de pensiones alimenticias",
+    "ca": "Fons de garantia per impagament de pensions d'aliments"
+   },
+   "descripcion": {
+    "es": "Apoyo en situaciones de impago de pensiones reconocidas judicialmente.",
+    "ca": "Suport quan no es paguen pensions reconegudes per un jutjat."
+   },
+   "requisitos": {
+    "es": "Resolución judicial, ejecución impagada, residencia legal y límites de renta; en alimentos puede requerirse reconocimiento previo del fondo estatal.",
+    "ca": "Resolució judicial, execució impagada, residència legal i límits de renda; per als aliments pot caldre el reconeixement previ del fons estatal."
+   },
+   "organismo": {
+    "es": "Generalitat / órgano competente",
+    "ca": "Generalitat / òrgan competent"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/ca/tramits/tramits-temes/Fons-per-cobrir-limpagament-de-pensions-i-prestacions-alimentaries-o-compensatories",
+   "necesidades": [
+    "familia-monoparental",
+    "ayudas-economicas"
+   ]
+  },
+  {
+   "n": 41,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Prestación para jóvenes extutelados",
+    "ca": "Prestació per a joves extutelats"
+   },
+   "descripcion": {
+    "es": "Pago periódico temporal para apoyar la autonomía de jóvenes extutelados.",
+    "ca": "Pagament periòdic temporal per donar suport a l'autonomia de joves extutelats."
+   },
+   "requisitos": {
+    "es": "Extutela, edad y recursos limitados, residencia y plan individual.",
+    "ca": "Haver estat tutelat, edat i recursos limitats, residència i pla individual."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials",
+    "ca": "Generalitat - Drets Socials"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-economica-per-a-joves-extutelats",
+   "necesidades": [
+    "ayudas-economicas"
+   ]
+  },
+  {
+   "n": 42,
+   "ambito": "Autonómico",
+   "area": "Rentas y protección familiar",
+   "nombre": {
+    "es": "Prestación para gastos de mantenimiento del hogar",
+    "ca": "Prestació per a despeses de manteniment de la llar"
+   },
+   "descripcion": {
+    "es": "Prestación especial para mantener gastos esenciales tras determinadas pérdidas económicas del hogar.",
+    "ca": "Prestació especial per mantenir les despeses essencials després de certes pèrdues econòmiques de la llar."
+   },
+   "requisitos": {
+    "es": "Fallecimiento de cónyuge o familiar hasta segundo grado con quien compartía gastos y renta limitada. Atención: la ficha 2026 solo muestra recursos/certificados; consultar posibilidad de alta nueva.",
+    "ca": "Mort del cònjuge o d'un familiar fins al segon grau amb qui es compartien despeses i renda limitada. Atenció: la fitxa del 2026 només mostra recursos i certificats; cal consultar si es poden fer altes noves."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials",
+    "ca": "Generalitat - Drets Socials"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacions-per-al-manteniment-de-les-despeses-de-la-llar-per-a-determinats-collectius",
+   "necesidades": [
+    "ayudas-economicas"
+   ]
+  },
+  {
+   "n": 43,
+   "ambito": "Autonómico",
+   "area": "Discapacidad y dependencia",
+   "nombre": {
+    "es": "PUA: productos de apoyo y autonomía para discapacidad",
+    "ca": "PUA: productes de suport i autonomia per a persones amb discapacitat"
+   },
+   "descripcion": {
+    "es": "Subvención de transporte, adaptaciones y productos de apoyo.",
+    "ca": "Subvenció de transport, adaptacions i productes de suport."
+   },
+   "requisitos": {
+    "es": "Discapacidad y gasto subvencionable; convocatoria y plazo anual.",
+    "ca": "Discapacitat i despesa subvencionable; convocatòria i termini anual."
+   },
+   "organismo": {
+    "es": "Generalitat - Drets Socials",
+    "ca": "Generalitat - Drets Socials"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-datencio-social-a-les-persones-amb-discapacitat-PUA?moda=1",
+   "necesidades": [
+    "ayudas-economicas",
+    "discapacidad-situacion"
+   ],
+   "url_excel": "https://tramits.gencat.cat/es/tramits/tramits-temes/Prestacio-per-a-families-amb-infants"
+  },
+  {
+   "n": 44,
+   "ambito": "Autonómico",
+   "area": "Discapacidad y dependencia",
+   "nombre": {
+    "es": "Prestación de dependencia: cuidados en el entorno familiar",
+    "ca": "Prestació de dependència: cures en l'entorn familiar"
+   },
+   "descripcion": {
+    "es": "Ayuda económica en ciertos cuidados prestados por familiares.",
+    "ca": "Ajut econòmic per determinades cures que fan els familiars."
+   },
+   "requisitos": {
+    "es": "Dependencia reconocida, PIA y condiciones de la persona cuidadora.",
+    "ca": "Dependència reconeguda, PIA i condicions de la persona cuidadora."
+   },
+   "organismo": {
+    "es": "Generalitat - Dependència",
+    "ca": "Generalitat - Dependència"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia",
+   "necesidades": [
+    "dependencia-situacion",
+    "cuidado-familiares",
+    "apoyo-cuidadores"
+   ]
+  },
+  {
+   "n": 45,
+   "ambito": "Autonómico",
+   "area": "Discapacidad y dependencia",
+   "nombre": {
+    "es": "Prestación de dependencia vinculada a un servicio",
+    "ca": "Prestació de dependència vinculada a un servei"
+   },
+   "descripcion": {
+    "es": "Financia total/parcialmente servicios reconocidos cuando procede.",
+    "ca": "Finança totalment o parcialment serveis reconeguts quan correspon."
+   },
+   "requisitos": {
+    "es": "Dependencia reconocida, PIA, servicio acreditado y capacidad económica.",
+    "ca": "Dependència reconeguda, PIA, servei acreditat i capacitat econòmica."
+   },
+   "organismo": {
+    "es": "Generalitat - Dependència",
+    "ca": "Generalitat - Dependència"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia",
+   "necesidades": [
+    "dependencia-situacion"
+   ]
+  },
+  {
+   "n": 46,
+   "ambito": "Autonómico",
+   "area": "Discapacidad y dependencia",
+   "nombre": {
+    "es": "Prestación económica de asistencia personal",
+    "ca": "Prestació econòmica d'assistència personal"
+   },
+   "descripcion": {
+    "es": "Financiación de asistencia para autonomía y participación.",
+    "ca": "Finançament d'assistència per a l'autonomia i la participació."
+   },
+   "requisitos": {
+    "es": "Grado de dependencia, PIA y requisitos de contratación/servicio.",
+    "ca": "Grau de dependència, PIA i requisits de contractació o servei."
+   },
+   "organismo": {
+    "es": "Generalitat - Dependència",
+    "ca": "Generalitat - Dependència"
+   },
+   "naturaleza": {
+    "es": "Prestación o subsidio",
+    "ca": "Prestació o subsidi"
+   },
+   "url": "https://tramits.gencat.cat/es/tramits/tramits-temes/Reconeixement-de-la-situacio-de-dependencia",
+   "necesidades": [
+    "dependencia-situacion",
+    "autonomia-personal"
+   ]
+  }
+ ]
+}
