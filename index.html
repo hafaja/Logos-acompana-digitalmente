@@ -1205,6 +1205,7 @@ body{font-size:15.5px;}
   <div class="screen active" id="screen-home">
     <div class="topbar" style="justify-content:space-between;">
       <button class="link-btn" id="btn-guia-top" onclick="guiaAbrirAcomp()" style="margin:0;">❓ Cómo se usa</button>
+      <button class="link-btn" id="instalar-btn-top" hidden onclick="logosInstalarApp()" style="margin:0;">📲 <span data-es="Instalar la app" data-ca="Instal·lar l'app">Instalar la app</span></button>
       <div class="lang-toggle">
         <button id="btn-es" class="lang-btn active" onclick="setLang('es')">ES</button>
         <button id="btn-ca" class="lang-btn" onclick="setLang('ca')">CA</button>
@@ -1534,6 +1535,7 @@ function setLang(lang){
   const T = lang === 'ca'
     ? { homeTitle:'En què et podem ajudar?', homeSub:'Troba el tràmit o l\'ajut que necessites a Tarragona.', trustTitle:'Aquí trobaràs el que necessites', trustBody:'De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada.', backHome:'← Inici', noSeTitle:'No sé exactament què necessito', noSeSub:'Explica\'ns la teva situació i t\'ajudem a trobar-ho' }
     : { homeTitle:'¿En qué podemos ayudarte?', homeSub:'Encuentra el trámite o la ayuda que necesitas en Tarragona.', trustTitle:'Aquí encuentras lo que necesitas', trustBody:'De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.', backHome:'← Inicio', noSeTitle:'No sé exactamente qué necesito', noSeSub:'Cuéntanos tu situación y te ayudamos a encontrarlo' };
+  { const ib = document.querySelector('#instalar-btn-top span'); if(ib) ib.textContent = lang === 'ca' ? ib.dataset.ca : ib.dataset.es; }
   { const gt = document.getElementById('btn-guia-top'), gn = document.getElementById('nav-guia-btn'); const gl = lang === 'ca' ? '❓ Com es fa servir' : '❓ Cómo se usa'; if(gt) gt.textContent = gl; if(gn) gn.textContent = gl; }
   document.getElementById('home-title').textContent = T.homeTitle;
   document.getElementById('home-sub').textContent = T.homeSub;
@@ -1829,7 +1831,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-01 · v91 (vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-11-02 · v93 (instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2649,6 +2651,29 @@ const SUPABASE_KEY = 'sb_publishable_Ght82ml0pvg0_nQvunlXVA_u0WjRscq';
   }
 })();
 
+// Cuentas del personal de Logos: no tienen ficha de persona usuaria. Si intentan usar una parte que la necesita
+// (emprendimiento, currículum, citas…), en vez del error técnico de la base de datos se explica qué pasa.
+(function(){
+  const f1 = window.fetch;
+  window.fetch = async function(input, init){
+    const r = await f1.apply(this, arguments);
+    try {
+      const url = typeof input === 'string' ? input : (input && input.url) || '';
+      if(r.status === 409 && /\/rest\/v1\//.test(url)){
+        const t = await r.clone().text();
+        if(/23503/.test(t) && /usuario_id_fkey|perfil_id_fkey/.test(t)){
+          const ca = typeof LANG !== 'undefined' && LANG === 'ca';
+          const msg = (typeof IS_STAFF !== 'undefined' && IS_STAFF)
+            ? (ca ? 'Has entrat amb un compte del personal de Logos, que no té fitxa de persona usuària. Aquesta part només funciona amb un compte de persona usuària: per provar-la, entra amb un compte de prova.' : 'Has entrado con una cuenta del personal de Logos, que no tiene ficha de persona usuaria. Esta parte solo funciona con una cuenta de persona usuaria: para probarla, entra con una cuenta de prueba.')
+            : (ca ? 'Encara no tens la fitxa completa. Ves a «Completar les meves dades» i torna-ho a provar.' : 'Todavía no tienes la ficha completa. Ve a «Completar mis datos» y vuelve a probar.');
+          const j = JSON.parse(t); j.message = msg; j.details = null; j.hint = null;
+          return new Response(JSON.stringify(j), { status: 409, statusText: r.statusText, headers: r.headers });
+        }
+      }
+    } catch(e){}
+    return r;
+  };
+})();
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let CURRENT_USER = null;
@@ -9443,38 +9468,66 @@ function guiaTarjetaAcomp(){
 })();
 </script>
 <script>
-// ---- Instalar la app en el móvil (el QR de Logos lleva aquí con ?instalar=1) ----
+// ---- Instalar la app en el móvil: sale solo al entrar desde el móvil (con el QR o no), con el botón «Instalar»
+//      donde el navegador lo permite (Android) y con los pasos donde no (iPhone, navegadores de dentro de WhatsApp/Instagram…) ----
 (function(){
   let diferido = null, cerrado = false;
   const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
   if(standalone) return;
+  const ua = navigator.userAgent || '';
   const quiere = /[?&]instalar=1/.test(location.search);
-  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const ios = /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  const movil = ios || /Android|Mobile/i.test(ua);
+  // navegadores «de dentro» de otras apps: desde ahí no se puede instalar
+  const dentroApp = /FBAN|FBAV|Instagram|WhatsApp|Line\/|MicroMessenger|Snapchat|TikTok|; wv\)|GSA\//i.test(ua);
   const esCA = () => (typeof LANG !== 'undefined' && LANG === 'ca');
-  let descartado = false; try { descartado = localStorage.getItem('logos-instalar-descartado') === '1'; } catch(e){}
-  function mostrar(){
-    if(cerrado || document.getElementById('instalar-banner')) return;
-    const ca = esCA();
-    const pasos = diferido ? '' : (ios
-      ? (ca ? 'Toca <strong>Compartir</strong> ⬆️ i després <strong>«Afegir a la pantalla d\'inici»</strong>.' : 'Toca <strong>Compartir</strong> ⬆️ y luego <strong>«Añadir a pantalla de inicio»</strong>.')
-      : (ca ? 'Al menú del navegador (⋮) tria <strong>«Instal·lar aplicació»</strong> o <strong>«Afegir a la pantalla d\'inici»</strong>.' : 'En el menú del navegador (⋮) elige <strong>«Instalar aplicación»</strong> o <strong>«Añadir a la pantalla de inicio»</strong>.'));
+  const T = (es, ca) => esCA() ? ca : es;
+  const DIAS = 7;   // si dice «Ahora no», no se vuelve a ofrecer en 7 días (con el QR, siempre)
+  let descartado = false;
+  try { const v = localStorage.getItem('logos-instalar-descartado'); descartado = !!v && (v === '1' ? false : (Date.now() - Number(v)) < DIAS * 864e5); } catch(e){}
+  function pasosHtml(){
+    if(dentroApp) return T('Estás dentro de otra app (WhatsApp, Instagram…). Toca <strong>⋮</strong> o <strong>…</strong> y elige <strong>«Abrir en el navegador»</strong> (Chrome o Safari). Allí podrás instalarla.', 'Ets dins d\'una altra app (WhatsApp, Instagram…). Toca <strong>⋮</strong> o <strong>…</strong> i tria <strong>«Obrir al navegador»</strong> (Chrome o Safari). Allà la podràs instal·lar.');
+    if(ios) return '<ol style="margin:4px 0 0;padding-left:20px;"><li>' + T('Toca <strong>Compartir</strong> <span aria-hidden="true">⬆️</span> (abajo en Safari, arriba en Chrome).', 'Toca <strong>Compartir</strong> <span aria-hidden="true">⬆️</span> (a baix al Safari, a dalt al Chrome).') + '</li><li>' + T('Elige <strong>«Añadir a pantalla de inicio»</strong>.', 'Tria <strong>«Afegir a la pantalla d\'inici»</strong>.') + '</li><li>' + T('Pulsa <strong>«Añadir»</strong>.', 'Prem <strong>«Afegir»</strong>.') + '</li></ol>';
+    return '<ol style="margin:4px 0 0;padding-left:20px;"><li>' + T('Toca el menú <strong>⋮</strong> del navegador.', 'Toca el menú <strong>⋮</strong> del navegador.') + '</li><li>' + T('Elige <strong>«Instalar aplicación»</strong> o <strong>«Añadir a pantalla de inicio»</strong>.', 'Tria <strong>«Instal·lar aplicació»</strong> o <strong>«Afegir a la pantalla d\'inici»</strong>.') + '</li></ol>';
+  }
+  function mostrar(forzar){
+    if(!forzar && cerrado) return;
+    const v = document.getElementById('instalar-banner'); if(v) v.remove();
     const b = document.createElement('div');
-    b.id = 'instalar-banner';
-    b.style.cssText = 'position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;background:#fff;border:2px solid #C99A2E;border-radius:14px;padding:12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.25);font-size:14px;line-height:1.45;color:#1B2A44;max-width:460px;margin:0 auto;';
-    b.innerHTML = '<div style="font-weight:700;margin-bottom:4px;">📲 ' + (ca ? 'Instal·la Logos Acompanya al teu mòbil' : 'Instala Logos Acompanya en tu móvil') + '</div>'
-      + '<div>' + (diferido ? (ca ? 'Així la tindràs a la pantalla d\'inici, com qualsevol altra aplicació.' : 'Así la tendrás en la pantalla de inicio, como cualquier otra aplicación.') : pasos) + '</div>'
-      + '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px;">'
-      + '<button id="instalar-no" style="background:none;border:0;color:#666;font-size:13px;padding:6px 8px;">' + (ca ? 'Ara no' : 'Ahora no') + '</button>'
-      + (diferido ? '<button id="instalar-si" style="background:#1B2A44;color:#fff;border:0;border-radius:10px;padding:8px 16px;font-weight:700;">' + (ca ? 'Instal·lar' : 'Instalar') + '</button>' : '')
+    b.id = 'instalar-banner'; b.setAttribute('role', 'dialog'); b.setAttribute('aria-labelledby', 'instalar-tit');
+    b.style.cssText = 'position:fixed;left:10px;right:10px;bottom:10px;z-index:9999;background:#fff;border:2px solid #C99A2E;border-radius:16px;padding:14px 16px;box-shadow:0 8px 28px rgba(0,0,0,.28);font-size:15px;line-height:1.5;color:#1B2A44;max-width:460px;margin:0 auto;';
+    b.innerHTML = '<div style="display:flex;gap:12px;align-items:flex-start;"><img src="icon-192.png" alt="" width="48" height="48" style="border-radius:12px;flex:none;">'
+      + '<div style="flex:1;"><div id="instalar-tit" style="font-weight:800;font-size:16px;margin-bottom:2px;">📲 ' + T('Instala Logos Acompanya en tu móvil', 'Instal·la Logos Acompanya al teu mòbil') + '</div>'
+      + '<div>' + (diferido ? T('Gratis y sin tienda de aplicaciones. La tendrás en la pantalla de inicio, como cualquier otra app.', 'Gratis i sense botiga d\'aplicacions. La tindràs a la pantalla d\'inici, com qualsevol altra app.') : pasosHtml()) + '</div></div></div>'
+      + '<div style="display:flex;gap:10px;justify-content:flex-end;align-items:center;margin-top:12px;">'
+      + '<button type="button" id="instalar-no" style="background:none;border:0;color:#4A5160;font-size:14px;padding:10px 10px;min-height:44px;cursor:pointer;">' + T('Ahora no', 'Ara no') + '</button>'
+      + (diferido ? '<button type="button" id="instalar-si" style="background:#1B2A44;color:#fff;border:0;border-radius:12px;padding:10px 22px;font-weight:800;font-size:16px;min-height:46px;cursor:pointer;">⬇️ ' + T('Instalar ahora', 'Instal·lar ara') + '</button>'
+         : (dentroApp ? '<button type="button" id="instalar-copiar" style="background:#1B2A44;color:#fff;border:0;border-radius:12px;padding:10px 16px;font-weight:700;min-height:44px;cursor:pointer;">📋 ' + T('Copiar el enlace', 'Copiar l\'enllaç') + '</button>'
+         : '<button type="button" id="instalar-ok" style="background:#1B2A44;color:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700;min-height:44px;cursor:pointer;">' + T('Entendido', 'Entesos') + '</button>'))
       + '</div>';
     document.body.appendChild(b);
-    document.getElementById('instalar-no').onclick = function(){ cerrado = true; b.remove(); try { localStorage.setItem('logos-instalar-descartado', '1'); } catch(e){} };
+    const cerrar = (recordar) => { cerrado = true; b.remove(); if(recordar){ try { localStorage.setItem('logos-instalar-descartado', String(Date.now())); } catch(e){} } };
+    document.getElementById('instalar-no').onclick = () => cerrar(true);
+    const ok = document.getElementById('instalar-ok'); if(ok) ok.onclick = () => cerrar(false);
+    const cp = document.getElementById('instalar-copiar');
+    if(cp) cp.onclick = async () => { const url = location.origin + location.pathname + '?instalar=1'; try { await navigator.clipboard.writeText(url); cp.textContent = '✅ ' + T('Copiado: pégalo en Chrome o Safari', 'Copiat: enganxa\'l al Chrome o Safari'); } catch(e){ prompt(T('Copia este enlace y ábrelo en Chrome o Safari:', 'Copia aquest enllaç i obre\'l al Chrome o Safari:'), url); } };
     const si = document.getElementById('instalar-si');
-    if(si) si.onclick = async function(){ try { diferido.prompt(); await diferido.userChoice; } catch(e){} cerrado = true; b.remove(); };
+    if(si) si.onclick = async function(){ try { diferido.prompt(); const r = await diferido.userChoice; if(r && r.outcome === 'accepted') diferido = null; } catch(e){} cerrar(false); };
   }
-  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); diferido = e; if(quiere || !descartado) setTimeout(function(){ const v = document.getElementById('instalar-banner'); if(v) v.remove(); mostrar(); }, quiere ? 600 : 15000); });
-  window.addEventListener('appinstalled', function(){ cerrado = true; const v = document.getElementById('instalar-banner'); if(v) v.remove(); });
-  if(quiere) setTimeout(mostrar, 1500);
+  window.logosInstalarApp = () => { cerrado = false; mostrar(true); };
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); diferido = e;
+    const b = document.getElementById('instalar-btn-top'); if(b) b.hidden = false;
+    // si ya se ve el aviso con los pasos, se cambia por el botón «Instalar ahora»
+    if(document.getElementById('instalar-banner')) mostrar(true);
+    else if(quiere || (!descartado && !cerrado)) setTimeout(() => { if(!cerrado) mostrar(); }, (quiere || movil) ? 600 : 15000);
+  });
+  window.addEventListener('appinstalled', function(){ cerrado = true; diferido = null; const v = document.getElementById('instalar-banner'); if(v) v.remove(); const b = document.getElementById('instalar-btn-top'); if(b) b.hidden = true; });
+  // En el móvil se ofrece siempre (salvo «Ahora no» reciente); con el QR, siempre
+  if(movil){
+    const b = document.getElementById('instalar-btn-top'); if(b) b.hidden = false;
+    if(quiere || !descartado) setTimeout(() => { if(!cerrado && !document.getElementById('instalar-banner')) mostrar(); }, quiere ? 1200 : 3500);
+  }
 })();
 </script>
 <script>
