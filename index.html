@@ -1265,7 +1265,7 @@ body{font-size:15.5px;}
   </div>
 
   <div class="screen" id="screen-necesidades">
-    <div class="topbar"><button class="back-btn" onclick="showScreen('home')" id="back-to-home">← Inicio</button></div>
+    <div class="topbar"><button class="back-btn" onclick="volverANecesidades()" id="back-to-home">← Mis necesidades</button></div>
     <div class="content">
       <div class="amb-hero" id="amb-hero"><div class="nh-deco"></div><span class="amb-hero-i" id="ambito-icono"></span><div><h2 class="screen-title" id="ambito-title"></h2><p class="subtle" id="ambito-sub"></p></div></div>
       <div id="necesidades-list"></div>
@@ -1554,8 +1554,8 @@ function setLang(lang){
   document.getElementById('btn-es').classList.toggle('active', lang==='es');
   document.getElementById('btn-ca').classList.toggle('active', lang==='ca');
   const T = lang === 'ca'
-    ? { homeTitle:'En què et podem ajudar?', homeSub:'Troba el tràmit o l\'ajut que necessites a Tarragona.', trustTitle:'Aquí trobaràs el que necessites', trustBody:'De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada.', backHome:'← Inici', noSeTitle:'No sé exactament què necessito', noSeSub:'Explica\'ns la teva situació i t\'ajudem a trobar-ho' }
-    : { homeTitle:'¿En qué podemos ayudarte?', homeSub:'Encuentra el trámite o la ayuda que necesitas en Tarragona.', trustTitle:'Aquí encuentras lo que necesitas', trustBody:'De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.', backHome:'← Inicio', noSeTitle:'No sé exactamente qué necesito', noSeSub:'Cuéntanos tu situación y te ayudamos a encontrarlo' };
+    ? { homeTitle:'En què et podem ajudar?', homeSub:'Troba el tràmit o l\'ajut que necessites a Tarragona.', trustTitle:'Aquí trobaràs el que necessites', trustBody:'De manera ràpida, humana i professional: informació oficial explicada amb claredat, i sempre amb la font a la vista abans de compartir cap dada.', backHome:'← Les meves necessitats', noSeTitle:'No sé exactament què necessito', noSeSub:'Explica\'ns la teva situació i t\'ajudem a trobar-ho' }
+    : { homeTitle:'¿En qué podemos ayudarte?', homeSub:'Encuentra el trámite o la ayuda que necesitas en Tarragona.', trustTitle:'Aquí encuentras lo que necesitas', trustBody:'De manera rápida, humana y profesional: información oficial explicada con claridad, y siempre con la fuente a la vista antes de compartir ningún dato.', backHome:'← Mis necesidades', noSeTitle:'No sé exactamente qué necesito', noSeSub:'Cuéntanos tu situación y te ayudamos a encontrarlo' };
   { const ib = document.querySelector('#instalar-btn-top span'); if(ib) ib.textContent = lang === 'ca' ? ib.dataset.ca : ib.dataset.es; }
   { const gt = document.getElementById('btn-guia-top'), gn = document.getElementById('nav-guia-btn'); const gl = lang === 'ca' ? '❓ Com es fa servir' : '❓ Cómo se usa'; if(gt) gt.textContent = gl; if(gn) gn.textContent = gl; }
   document.getElementById('home-title').textContent = T.homeTitle;
@@ -1596,7 +1596,7 @@ function renderAmbitos(){
     const ej = a.desc ? a.desc[LANG] : (a.necesidades || []).slice(0, 3).map(n => n.nombre[LANG]).join(' · ');
     const sub = ej || (esCA ? 'Properament' : 'Próximamente');
     return `
-    <div class="quick-card" style="position:relative;--ac:${AMB_ACENTO[i % AMB_ACENTO.length]};--acs:${col.bg};" onclick="showNecesidades('${escAttr(a.id)}')">
+    <div class="quick-card" data-amb="${escAttr(a.id)}" style="position:relative;--ac:${AMB_ACENTO[i % AMB_ACENTO.length]};--acs:${col.bg};" onclick="showNecesidades('${escAttr(a.id)}')">
       ${IS_ADMIN ? `<button class="nec-x" title="${esCA ? 'Treure aquesta àrea' : 'Quitar esta área'}" onclick="event.stopPropagation();quitarAreaCatalogo('${escAttr(a.id)}')">✕</button>` : ''}
       <div class="icon-badge" style="background:${col.bg};color:${col.color};font-size:20px;">${a.icono}</div>
       <h4>${a.nombre[LANG]}</h4>
@@ -1633,8 +1633,11 @@ async function showNecesidades(ambitoId, silent){
     ? 'Toca una prestació per veure els seus tràmits i enllaços.'
     : 'Toca una prestación para ver sus trámites y enlaces.');
   const list = document.getElementById('necesidades-list');
-
+  // Si se vuelve a pintar la misma área (idioma, sesión, administración), se quedan abiertas las mismas prestaciones
+  const abiertas = (list.dataset.amb === ambitoId) ? Array.from(list.querySelectorAll('details.nec-det[open]')).map(d => d.dataset.nec) : [];
   list.innerHTML = necesidadesAcordeonHtml(a);
+  list.dataset.amb = ambitoId;
+  abiertas.forEach(id => { const d = list.querySelector(`details.nec-det[data-nec="${id}"]`); if(d) d.open = true; });
 
   if(!silent) showScreen('necesidades');
 }
@@ -1853,7 +1856,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-02 · v95 (necesidades: catálogo de ayudas revisado por Logos, con descripción, organismo y requisitos de cada una; logo con su identidad original sobre blanco en el menú; instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-11-03 · v96 (necesidades: al volver atrás se vuelve a la lista de áreas o al mismo sitio, sin pasar por el Inicio; necesidades: catálogo de ayudas revisado por Logos, con descripción, organismo y requisitos de cada una; logo con su identidad original sobre blanco en el menú; instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2547,7 +2550,10 @@ function navPintar(){
 window.addEventListener('popstate', function(e){
   const st = e.state; if(!st || !st.s) return;
   window.__navIdx = st.i || 0; window.__navRestaurando = true;
+  const desde = navPantallaActiva();
+  if(st.s === 'necesidades' && st.amb && st.amb !== CURRENT_AMBITO){ try { showNecesidades(st.amb, true); } catch(err){} }
   try { showScreen(st.s); } finally { window.__navRestaurando = false; }
+  if(st.s === 'home' && (desde === 'necesidades' || desde === 'detail')){ const amb = CURRENT_AMBITO; revelarCatalogo(); setTimeout(() => { const t = amb && document.querySelector(`#ambitos-grid [data-amb="${amb}"]`); if(t) t.scrollIntoView({ block:'center' }); }, 320); }
   const mapa = { profile:() => renderDashboard(), cita:() => renderCitaForm(), config:() => renderConfigScreen(), traductor:() => renderTraductorScreen(), aulaciudadano:() => renderAulaCiudadano(), voluntariado:() => renderVoluntariado(), empleo:() => renderBusquedaEmpleo(), cuidados:() => renderCuidadosCompania(), emprendimiento:() => renderEmprendimientoScreen(), queofrecemos:() => renderQueOfrecemos(), webredes:() => renderWebRedes(), verificarcert:() => renderVerificarCertificado() };
   try { if(mapa[st.s]) mapa[st.s](); } catch(err){}
   navPintar();
@@ -2575,7 +2581,7 @@ function showScreen(name){
   if(!window.__navRestaurando){
     try {
       const cur = history.state && history.state.s;
-      if(cur !== name){ window.__navIdx++; window.__navMax = window.__navIdx; history.pushState({ s:name, i:window.__navIdx }, '', location.pathname + location.search); }
+      if(cur !== name){ window.__navIdx++; window.__navMax = window.__navIdx; history.pushState(Object.assign({ s:name, i:window.__navIdx }, name === 'necesidades' && CURRENT_AMBITO ? { amb: CURRENT_AMBITO } : {}), '', location.pathname + location.search); }
     } catch(e){}
   }
   setTimeout(navPintar, 0);
@@ -2585,10 +2591,14 @@ function showScreen(name){
     setTimeout(() => { if(tk === window.__resetTk && window.__formVoluntario){ window.__formVoluntario = false; try { renderResumenStep(false); } catch(e){} } }, 150);
   }
   const previaPantalla = document.querySelector('.screen.active');
+  if(previaPantalla && previaPantalla.id === 'screen-necesidades' && name !== 'necesidades') necGuardarPosicion();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
+  // Al volver a las necesidades desde una ficha (botón «Volver» o atrás del móvil) se vuelve al mismo sitio
+  const volviendoNec = name === 'necesidades' && previaPantalla && previaPantalla.id === 'screen-detail' && window.__necPos;
   // Al entrar en otra pantalla (Mi espacio, Mis necesidades, Aula Virtual…) se empieza siempre por arriba
-  if(!previaPantalla || previaPantalla.id !== 'screen-' + name) irArriba();
+  if(volviendoNec) necRecuperarPosicion();
+  else if(!previaPantalla || previaPantalla.id !== 'screen-' + name) irArriba();
   document.querySelectorAll('.sidebar nav button, .sidebar-public-nav button').forEach(b=>b.classList.remove('active'));
   const homeGroup = ['detail','necesidades','encuesta'];
   const profileGroup = ['cita','cv'];
@@ -2600,6 +2610,29 @@ function showScreen(name){
   if(btn) btn.classList.add('active');
   // si la pantalla activa está dentro de «¿Qué más te ofrecemos?», el desplegable se abre solo
   if(btn && btn.closest('.menu-mas')) abrirMenuMas(true);
+}
+// Posición dentro de un área de necesidades: qué prestaciones estaban abiertas y hasta dónde se había bajado
+function necScrollEl(){ const m = document.querySelector('.main'); return (m && m.scrollHeight > m.clientHeight + 5 && getComputedStyle(m).overflowY !== 'visible') ? m : null; }
+function necGuardarPosicion(){
+  const list = document.getElementById('necesidades-list'); if(!list) return;
+  const m = necScrollEl();
+  window.__necPos = { amb: list.dataset.amb || CURRENT_AMBITO, y: m ? m.scrollTop : (window.scrollY || 0),
+    abiertas: Array.from(list.querySelectorAll('details.nec-det[open]')).map(d => d.dataset.nec) };
+}
+function necRecuperarPosicion(){
+  const pos = window.__necPos; if(!pos) return;
+  window.__saltoArriba = 0;
+  const list = document.getElementById('necesidades-list');
+  if(list) (pos.abiertas || []).forEach(id => { const d = list.querySelector(`details.nec-det[data-nec="${id}"]`); if(d) d.open = true; });
+  const ir = () => { const m = necScrollEl(); if(m) m.scrollTop = pos.y; else window.scrollTo(0, pos.y); };
+  ir(); requestAnimationFrame(ir); setTimeout(ir, 120);
+}
+// «← Mis necesidades»: vuelve a la lista de áreas («¿En qué podemos ayudarte?»), no a la portada
+function volverANecesidades(){
+  const amb = CURRENT_AMBITO;
+  showScreen('home'); revelarCatalogo();
+  // se deja a la vista el área de la que se viene
+  setTimeout(() => { const t = amb && document.querySelector(`#ambitos-grid [data-amb="${amb}"]`); if(t) t.scrollIntoView({ block:'center' }); }, 320);
 }
 function irArriba(){
   const tk = window.__saltoArriba = Date.now();
