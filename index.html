@@ -468,6 +468,8 @@
 .cita-tec-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;}
 .cita-tec{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border:1.5px solid #D9DEE5;border-radius:14px;background:#fff;cursor:pointer;font:inherit;color:inherit;min-height:52px;}
 .cita-tec small{color:#5F6672;font-size:11.5px;}
+.cita-tec{position:relative;}
+.cita-tec-ok{margin-left:auto;font-weight:800;color:var(--teal-dark,#1E5C6B);font-size:16px;}
 .cita-tec-av{flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#E6F0FA;color:#1F4E79;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
 .cita-tec.cita-sel,.life-card.cita-sel{border-color:var(--navy,#1F3A5F);box-shadow:0 0 0 2px var(--navy,#1F3A5F) inset;background:#F3F7FC;}
 @media (max-width:480px){.cita-tec-lista{grid-template-columns:1fr 1fr;}.cita-tec{padding:8px 10px;}}
@@ -1856,7 +1858,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-03 · v96 (necesidades: al volver atrás se vuelve a la lista de áreas o al mismo sitio, sin pasar por el Inicio; necesidades: catálogo de ayudas revisado por Logos, con descripción, organismo y requisitos de cada una; logo con su identidad original sobre blanco en el menú; instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
+const APP_VERSION_ACOMP = '2026-11-03 · v97 (citas: elegir hasta dos personas del equipo, con las horas libres de las dos; necesidades: al volver atrás se vuelve a la lista de áreas o al mismo sitio, sin pasar por el Inicio; necesidades: catálogo de ayudas revisado por Logos, con descripción, organismo y requisitos de cada una; logo con su identidad original sobre blanco en el menú; instalar en el móvil: aviso al entrar desde el móvil, botón «Instalar ahora» y pasos para iPhone; aviso claro si una cuenta del personal usa una parte de persona usuaria; vivienda: Logos no lleva este tema, solo enlaces oficiales; navegación fácil: ruta, favoritas, Mis páginas, buscador Ctrl+K y «Sigue con»; carga más rápida; arreglos del Panel técnico: inicio tras cerrar sesión y PDF del consentimiento; consentimiento: 2 autorizaciones obligatorias + 2 opcionales (información de actividades; imagen y difusión); consentimiento nuevo v2: lugar de atención, proveedores, seguridad y cifrado; 2 autorizaciones obligatorias + imagen Sí/No; retirar el consentimiento y pedir borrar los datos desde la app; datos cifrados; un enlace de YouTube puesto como imagen se muestra como vídeo; los fallos técnicos se apuntan solos en el Panel técnico de la intranet; vídeos en las novedades y en la publicidad; portada: publicidad de entidades que nos acompañan; portada: novedades de Logos y próximas actividades con «añadir a mi calendario»; portada: Logos en cifras (veces que hemos acompañado y personas atendidas); botón «Aa» para ver y leer mejor: letra grande, escuchar la página, contraste, espaciado, sin movimiento; accesibilidad WCAG 2.2 AA: contraste, foco visible, saltar al contenido, nombres en botones con icono, ventanas accesibles con Esc, idioma de la página, menos movimiento; ✨ corregir el texto con el asistente (consultas, incidencias, encuesta y mensajes); Mis proyectos: mensajes del grupo de cada proyecto; encuesta: comprobación obligatoria en el servidor, también para el equipo; encuesta de satisfacción solo tras una atención, una vez por atención; límites anti-abuso en consultas, incidencias y avisos; horario: el miércoles por la mañana sin cita (atención al público) y por la tarde, de 16 a 20 h, con cita; Mi historial con Logos en desplegable; «Mis necesidades» lleva directamente a «¿En qué podemos ayudarte?»; Mi historial con Logos: trámites, fichas de atención y actuaciones en una línea de tiempo; avisar de una incidencia a la administración o al soporte técnico, con «Mis avisos»; al entrar en Mi espacio, Mis necesidades u otra pantalla se empieza siempre por arriba; histórico de mis trámites; pedir cita más claro: pasos, días en calendario, horas en fichas y resumen para confirmar; Mi espacio ordenado en «Mi carpeta» con pestañas y siguiente paso; QR más pequeño; citas presenciales o por teléfono; técnico virtual que da cita y pasa el caso a un técnico; Aula Virtual con menú, lista de cursos y tareas pendientes; guía rápida en carrusel; Mis necesidades y cada área con estilo Sanitas: cabecera azul, recordatorios con iconos, temas con color; Mi espacio centrado en el ordenador y en el móvil; fichas pequeñas que pasan solas en el Inicio, con ‹ pausa ›; mensaje, teléfono y campanita arriba; botón Menú con los colores de Logos; inicio estilo Sanitas, azul y letra Figtree; mensajes del curso y WhatsApp del docente; pedir otra cita; aviso falso del SQL 12/13 arreglado; elegir técnico al pedir cita; sin ideas de proyecto repetidas)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -7047,7 +7049,7 @@ function snCitaHtml(c, nombre, onclick){
   const mes = d.toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { month: 'short' }).replace('.', '');
   return `<div class="sn-cita" onclick="${onclick || ''}"><div class="sn-cita-f"><div class="sn-cita-d">${d.getDate()}</div><div class="sn-cita-m">${mes}</div><div class="sn-cita-h">${String(c.hora || '').slice(0, 5)}h</div></div>
     <div class="sn-cita-i"><div class="sn-cita-p">${nombre || ''}</div><div class="sn-cita-t">${c.motivo && !/^📞 Cita por teléfono/.test(c.motivo) ? String(c.motivo).replace(/</g, '&lt;') : (citaEsTelefono(c) ? (ca ? 'Cita per telèfon' : 'Cita por teléfono') : (ca ? 'Cita a Logos' : 'Cita en Logos'))}</div>
-    ${c.tecnico_nombre ? `<div class="sn-cita-tec">${String(c.tecnico_nombre).replace(/</g, '&lt;')}</div>` : ''}${citaEsTelefono(c)
+    ${citaConQuien(c) ? `<div class="sn-cita-tec">${String(citaConQuien(c)).replace(/</g, '&lt;')}</div>` : ''}${citaEsTelefono(c)
       ? `<div class="sn-cita-l sn-cita-tel">📞 ${ca ? 'Per telèfon · et truquem' : 'Por teléfono · te llamamos'}${citaTelDe(c) ? (ca ? ' al ' : ' al ') + String(citaTelDe(c)).replace(/</g, '&lt;') : ''}</div>`
       : `<div class="sn-cita-l">🏢 Associació Logos · C/ de la Pau del Protectorat, 14</div>`}</div></div>`;
 }
@@ -7248,10 +7250,10 @@ async function renderDashboard(){
       <h3 style="color:#7A4A1F;margin-bottom:8px;">🔔 ${LANG==='ca' ? 'Recordatoris' : 'Recordatorios'}</h3>
       ${avisoEsperaHtml(avisoEsperaPanel, LANG==='ca')}
       ${proximaCita ? `<p style="margin:0 0 6px;font-size:13.5px;">${proximaCita.urgente ? `<span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Cita important' : 'Cita importante'}</span> ` : (proximaCita.creada_por_email ? `<span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span> ` : '')}${esCitaHoy
-        ? (LANG==='ca' ? `Tens una cita <strong>avui</strong> a les ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' amb ' + escAttr(proximaCita.tecnico_nombre) : ''}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' con ' + escAttr(proximaCita.tecnico_nombre) : ''}.`)
+        ? (LANG==='ca' ? `Tens una cita <strong>avui</strong> a les ${proximaCita.hora.slice(0,5)}${citaConQuien(proximaCita) ? ' amb ' + escAttr(citaConQuien(proximaCita)) : ''}.` : `Tienes una cita <strong>hoy</strong> a las ${proximaCita.hora.slice(0,5)}${citaConQuien(proximaCita) ? ' con ' + escAttr(citaConQuien(proximaCita)) : ''}.`)
         : (LANG==='ca'
-            ? `Et falten <strong>${diasHastaCita} dia${diasHastaCita===1?'':'s'}</strong> per a la teva cita (${fmtFecha(proximaCita.fecha)} a les ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' amb ' + escAttr(proximaCita.tecnico_nombre) : ''}).`
-            : `Te falta${diasHastaCita===1?'n':'n'} <strong>${diasHastaCita} día${diasHastaCita===1?'':'s'}</strong> para tu cita (${fmtFecha(proximaCita.fecha)} a las ${proximaCita.hora.slice(0,5)}${proximaCita.tecnico_nombre ? ' con ' + escAttr(proximaCita.tecnico_nombre) : ''}).`)}</p>` : ''}
+            ? `Et falten <strong>${diasHastaCita} dia${diasHastaCita===1?'':'s'}</strong> per a la teva cita (${fmtFecha(proximaCita.fecha)} a les ${proximaCita.hora.slice(0,5)}${citaConQuien(proximaCita) ? ' amb ' + escAttr(citaConQuien(proximaCita)) : ''}).`
+            : `Te falta${diasHastaCita===1?'n':'n'} <strong>${diasHastaCita} día${diasHastaCita===1?'':'s'}</strong> para tu cita (${fmtFecha(proximaCita.fecha)} a las ${proximaCita.hora.slice(0,5)}${citaConQuien(proximaCita) ? ' con ' + escAttr(citaConQuien(proximaCita)) : ''}).`)}</p>` : ''}
       ${consultasPendientesCount > 0 ? `<p style="margin:0;font-size:13.5px;">${LANG==='ca'
         ? `Tens ${consultasPendientesCount} consulta${consultasPendientesCount>1?'s':''} pendent${consultasPendientesCount>1?'s':''} de resposta.`
         : `Tienes ${consultasPendientesCount} consulta${consultasPendientesCount>1?'s':''} pendiente${consultasPendientesCount>1?'s':''} de respuesta.`}</p>` : ''}
@@ -7262,7 +7264,7 @@ async function renderDashboard(){
   const citasHtml = (citas && citas.length)
     ? citasOrd.map(c => `
         <div class="list-row">
-          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)} ${citaEsTelefono(c) ? `<span class="chip" style="background:#EFEAFB;color:#5B3FA0;">📞 ${LANG==='ca' ? 'Per telèfon' : 'Por teléfono'}</span>` : `<span class="chip" style="background:#EAF1FB;color:#1B4E95;">🏢 ${LANG==='ca' ? 'Presencial' : 'Presencial'}</span>`}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
+          <span>${fmtFecha(c.fecha)} · ${c.hora.slice(0,5)} ${citaEsTelefono(c) ? `<span class="chip" style="background:#EFEAFB;color:#5B3FA0;">📞 ${LANG==='ca' ? 'Per telèfon' : 'Por teléfono'}</span>` : `<span class="chip" style="background:#EAF1FB;color:#1B4E95;">🏢 ${LANG==='ca' ? 'Presencial' : 'Presencial'}</span>`}${citaConQuien(c) ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(citaConQuien(c))}</span>` : ''}${c.urgente ? ` <span class="chip" style="background:#fde2e2;color:#b00020;">🔴 ${LANG==='ca' ? 'Urgent' : 'Urgente'}</span>` : ''}${c.creada_por_email ? ` <span class="chip gold">${LANG==='ca' ? 'Cita posada per Logos' : 'Cita puesta por Logos'}</span>` : ''}${c.motivo ? `<br><span class="subtle" style="font-size:12px;margin:0;">${escAttr(c.motivo)}</span>` : ''}</span>
           <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}')">✖ ${LANG==='ca' ? 'Cancel·lar cita' : 'Cancelar cita'}</button>
         </div>${citaRespuestaHtml(c)}`).join('')
     : `<div class="empty-note">${LANG==='ca' ? 'No tens cap cita demanada.' : 'No tienes ninguna cita pedida.'}</div>`;
@@ -7620,7 +7622,7 @@ async function misCitasPedidasHtml(){
   return `<div class="panel-card" style="margin-bottom:14px;">
     <h3 style="margin-bottom:8px;">📅 ${ca ? 'Les teves cites demanades' : 'Tus citas pedidas'}</h3>
     <p class="subtle" style="margin:0 0 6px;font-size:12.5px;">${data.length < MAX_CITAS_FUTURAS ? (ca ? `➕ Pots demanar una altra cita a sota (fins a ${MAX_CITAS_FUTURAS} a la vegada).` : `➕ Puedes pedir otra cita aquí debajo (hasta ${MAX_CITAS_FUTURAS} a la vez).`) : ''}</p>
-    ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}${c.tecnico_nombre ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(c.tecnico_nombre)}</span>` : ''}</span>
+    ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}${citaConQuien(c) ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(citaConQuien(c))}</span>` : ''}</span>
       <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}','cita')">✖ ${ca ? 'Cancel·lar cita' : 'Cancelar cita'}</button></div>`).join('')}
   </div>`;
 }
@@ -7666,7 +7668,7 @@ async function renderCitaForm(){
   window.__horarioAtencion = horario;
   window.__citaDia = null;
   const tecnicos = await cargarTecnicosCita();
-  if(window.__citaTec && !tecnicos.some(t => t.clave === window.__citaTec)) window.__citaTec = '';
+  window.__citaTecs = citaTecsSel().filter(k => tecnicos.some(t => t.clave === k)); window.__citaTec = window.__citaTecs[0] || '';
 
   const dias = [];
   const hoy = new Date();
@@ -7716,7 +7718,7 @@ function ctElegirHora(fecha, hora){
   const esCA = LANG === 'ca';
   window.__citaHoraSel = hora;
   document.querySelectorAll('#cita-horas .ct-hora').forEach(b => b.classList.toggle('sel', b.dataset.h === hora));
-  const tec = window.__citaTec || '', tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
+  const tec = citaTecsSel().join(','), tecNombre = citaTecsNombre(esCA);
   const porTel = window.__citaModo === 'telefono';
   const telCita = porTel ? String((document.getElementById('cita-tel-in') || {}).value || window.__citaTel || '').trim() : '';
   const d = new Date(fecha + 'T00:00:00'), loc = esCA ? 'ca-ES' : 'es-ES';
@@ -7743,17 +7745,19 @@ async function seleccionarDiaCita(fechaIso){
   cont.innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
   window.__citaDia = fechaIso;
   document.querySelectorAll('#cita-dias [data-dia]').forEach(b => b.classList.toggle('cita-sel', b.dataset.dia === fechaIso));
-  const tec = window.__citaTec || '';
-  const tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
+  const tecsSel = citaTecsSel(), tec = tecsSel.join(',');
+  const tecNombre = citaTecsNombre(esCA);
 
-  const [{ data: ocupacion }, dispTec] = await Promise.all([
+  // Con dos personas, una hora solo vale si está libre y dentro del horario de LAS DOS
+  const [{ data: ocupacion }, ...dispTecs] = await Promise.all([
     sb.rpc('citas_disponibilidad', { p_fecha: fechaIso }),
-    tec ? sb.rpc('tecnico_disponibilidad', { p_fecha: fechaIso, p_clave: tec }).then(r => r.error ? null : r.data, () => null) : Promise.resolve(null)
+    ...tecsSel.map(k => sb.rpc('tecnico_disponibilidad', { p_fecha: fechaIso, p_clave: k }).then(r => r.error ? null : r.data, () => null))
   ]);
-  if(window.__citaDia !== fechaIso || (window.__citaTec || '') !== tec) return; // el usuario ya ha cambiado de día o de técnico
-  const ocupTec = new Set(((dispTec && dispTec.ocupadas) || []).map(h => String(h).slice(0,5)));
-  const tramosTec = dispTec && Array.isArray(dispTec.tramos) && dispTec.tramos.length ? dispTec.tramos : null;
-  const enTramoTec = s => !tramosTec || tramosTec.some(t => logosMin(s) >= logosMin(String(t[0]).slice(0,5)) && logosMin(s) < logosMin(String(t[1]).slice(0,5)));
+  if(window.__citaDia !== fechaIso || citaTecsSel().join(',') !== tec) return; // el usuario ya ha cambiado de día o de técnico
+  const ocupTec = new Set(); dispTecs.forEach(d => ((d && d.ocupadas) || []).forEach(h => ocupTec.add(String(h).slice(0,5))));
+  const tramosLista = dispTecs.map(d => d && Array.isArray(d.tramos) && d.tramos.length ? d.tramos : null);
+  const tramosTec = tramosLista.some(Boolean) ? true : null;
+  const enTramoTec = s => tramosLista.every(tr => !tr || tr.some(t => logosMin(s) >= logosMin(String(t[0]).slice(0,5)) && logosMin(s) < logosMin(String(t[1]).slice(0,5))));
   const ocupadasPorHora = {};
   (ocupacion || []).forEach(o => { ocupadasPorHora[o.hora.slice(0,5)] = o.ocupadas; });
 
@@ -7779,7 +7783,7 @@ async function seleccionarDiaCita(fechaIso){
   const finBloque1 = null;
   if(tramosTec){ for(let i = slots.length - 1; i >= 0; i--){ if(!enTramoTec(slots[i])) slots.splice(i, 1); } }
   if(!slots.length){
-    cont.innerHTML = `<div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);"><p style="margin:0;">${esCA ? `${escAttr(tecNombre)} no atén cites aquest dia. Tria un altre dia o «La primera persona disponible».` : `${escAttr(tecNombre)} no atiende citas este día. Elige otro día o «La primera persona disponible».`}</p></div>`;
+    cont.innerHTML = `<div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);"><p style="margin:0;">${tecsSel.length > 1 ? (esCA ? `Aquest dia no hi ha cap hora en què et puguin atendre ${escAttr(tecNombre)} alhora. Tria un altre dia o una sola persona.` : `Ese día no hay ninguna hora en la que puedan atenderte ${escAttr(tecNombre)} a la vez. Elige otro día o una sola persona.`) : (esCA ? `${escAttr(tecNombre)} no atén cites aquest dia. Tria un altre dia o «La primera persona disponible».` : `${escAttr(tecNombre)} no atiende citas este día. Elige otro día o «La primera persona disponible».`)}</p></div>`;
     return;
   }
   const titulo = tec ? `<div class="cita-paso"><span class="cita-num">4</span> ${esCA ? `Hores lliures amb ${escAttr(tecNombre)}` : `Horas libres con ${escAttr(tecNombre)}`}</div>`
@@ -7864,18 +7868,31 @@ async function cargarTecnicosCita(){
   window.__tecnicosCita = lista; window.__tecnicosCitaT = Date.now();
   return lista;
 }
+// Hasta DOS personas del equipo para la misma cita (SQL 74). Sin el SQL 74 se guarda solo la primera.
+function citaTecsSel(){ return (window.__citaTecs || []).filter(Boolean).slice(0, 2); }
+function citaTecsNombre(esCA){
+  const n = citaTecsSel().map(k => ((window.__tecnicosCita || []).find(t => t.clave === k) || {}).nombre || '').filter(Boolean);
+  return n.join(esCA ? ' i ' : ' y ');
+}
+function citaConQuien(c){ return c ? [c.tecnico_nombre, c.tecnico2_nombre].filter(Boolean).join(LANG === 'ca' ? ' i ' : ' y ') : ''; }
 function citaTecnicosHtml(tecnicos){
-  const esCA = LANG === 'ca', sel = window.__citaTec || '';
+  const esCA = LANG === 'ca', sel = citaTecsSel();
   const ini = n => String(n || '?').trim().split(/\s+/).slice(0,2).map(x => x[0] || '').join('').toUpperCase();
-  return `<button type="button" class="cita-tec ${!sel ? 'cita-sel' : ''}" onclick="elegirTecnicoCita('')"><span class="cita-tec-av" style="background:var(--ochre);">⚡</span><span><strong>${esCA ? 'La primera persona disponible' : 'La primera persona disponible'}</strong><br><small>${esCA ? 'Recomanat: més hores lliures' : 'Recomendado: más horas libres'}</small></span></button>`
-    + tecnicos.map(t => `<button type="button" class="cita-tec ${sel === t.clave ? 'cita-sel' : ''}" onclick="elegirTecnicoCita('${escAttr(t.clave)}')"><span class="cita-tec-av">${escAttr(ini(t.nombre))}</span><span><strong>${escAttr(t.nombre)}</strong></span></button>`).join('');
+  return `<p class="subtle" style="font-size:12.5px;margin:0 0 8px;grid-column:1/-1;">👥 ${esCA ? 'Pots triar fins a <strong>2 persones</strong> per a la mateixa cita.' : 'Puedes elegir hasta <strong>2 personas</strong> para la misma cita.'}</p>`
+    + `<button type="button" class="cita-tec ${!sel.length ? 'cita-sel' : ''}" aria-pressed="${!sel.length}" onclick="elegirTecnicoCita('')"><span class="cita-tec-av" style="background:var(--ochre);">⚡</span><span><strong>${esCA ? 'La primera persona disponible' : 'La primera persona disponible'}</strong><br><small>${esCA ? 'Recomanat: més hores lliures' : 'Recomendado: más horas libres'}</small></span></button>`
+    + tecnicos.map(t => { const i = sel.indexOf(t.clave);
+      return `<button type="button" class="cita-tec ${i >= 0 ? 'cita-sel' : ''}" aria-pressed="${i >= 0}" onclick="elegirTecnicoCita('${escAttr(t.clave)}')"><span class="cita-tec-av">${escAttr(ini(t.nombre))}</span><span><strong>${escAttr(t.nombre)}</strong>${i >= 0 && sel.length > 1 ? `<br><small>${i === 0 ? (esCA ? '1a persona' : '1.ª persona') : (esCA ? '2a persona' : '2.ª persona')}</small>` : ''}</span>${i >= 0 ? '<span class="cita-tec-ok" aria-hidden="true">✓</span>' : ''}</button>`; }).join('');
 }
 function elegirTecnicoCita(clave){
-  window.__citaTec = clave || '';
+  let sel = citaTecsSel();
+  if(!clave) sel = [];
+  else if(sel.includes(clave)) sel = sel.filter(k => k !== clave);   // tocar otra vez = quitarla
+  else sel = sel.length >= 2 ? [sel[0], clave] : sel.concat(clave);  // la tercera sustituye a la segunda
+  window.__citaTecs = sel; window.__citaTec = sel[0] || '';
   const cont = document.getElementById('cita-tecnicos');
   if(cont) cont.innerHTML = citaTecnicosHtml(window.__tecnicosCita || []);
   if(window.__citaDia) seleccionarDiaCita(window.__citaDia);
-  else { const d = document.getElementById('cita-dias'); if(d && window.innerWidth < 760) d.scrollIntoView({ behavior:'smooth', block:'center' }); }
+  else if(sel.length >= 2 || !clave){ const d = document.getElementById('cita-dias'); if(d && window.innerWidth < 760) d.scrollIntoView({ behavior:'smooth', block:'center' }); }
 }
 
 async function reservarCita(fecha, hora, yaConfirmado){
@@ -7885,8 +7902,9 @@ async function reservarCita(fecha, hora, yaConfirmado){
   try {
     if((await citasFuturasPropias()).length >= MAX_CITAS_FUTURAS){ window.__reservandoCita = false; renderCitaForm(); return; }
   } catch(e){}
-  const tec = window.__citaTec || '';
-  const tecNombre = tec ? ((window.__tecnicosCita || []).find(t => t.clave === tec) || {}).nombre || '' : '';
+  const tecsR = citaTecsSel(), tec = tecsR.join(',');
+  const tecNombre = citaTecsNombre(esCA);
+  const extraTec = tecsR.length ? Object.assign({ tecnico_clave: tecsR[0] }, tecsR[1] ? { tecnico2_clave: tecsR[1] } : {}) : {};
   const porTel = window.__citaModo === 'telefono';
   const telCita = porTel ? String((document.getElementById('cita-tel-in') || {}).value || window.__citaTel || '').trim() : '';
   if(porTel && telCita.replace(/\D/g, '').length < 9){
@@ -7898,17 +7916,22 @@ async function reservarCita(fecha, hora, yaConfirmado){
   if(porTel && !tec && !yaConfirmado && !confirm(esCA ? `Confirmes la cita per telèfon el ${new Date(fecha + 'T00:00:00').toLocaleDateString('ca-ES', { weekday:'long', day:'numeric', month:'long' })} a les ${hora}? Et trucarem al ${telCita}.` : `¿Confirmas la cita por teléfono el ${new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} a las ${hora}? Te llamaremos al ${telCita}.`)){ window.__reservandoCita = false; return; }
   if(tec && !yaConfirmado && !confirm(esCA ? `Confirmes la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('ca-ES', { weekday:'long', day:'numeric', month:'long' })} a les ${hora} amb ${tecNombre}?` : `¿Confirmas la cita el ${new Date(fecha + 'T00:00:00').toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} a las ${hora} con ${tecNombre}?`)){ window.__reservandoCita = false; return; }
   const extraModo = porTel ? { modalidad: 'telefono', telefono_contacto: telCita } : {};
-  let { error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, tec ? { tecnico_clave: tec } : {}, extraModo));
+  let { error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, extraTec, extraModo));
+  if(error && extraTec.tecnico2_clave && /tecnico2|schema cache|column/i.test(error.message || '')){
+    // Sin el SQL 74 todavía: se guarda con la primera persona y la segunda va en el aviso
+    delete extraTec.tecnico2_clave;
+    ({ error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, extraTec, extraModo)));
+  }
   if(error && porTel && /modalidad|telefono_contacto|schema cache|column/i.test(error.message || '')){
     // Sin el SQL 48: la cita por teléfono se guarda igual, con la marca en el motivo
-    ({ error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora, motivo: '📞 Cita por teléfono · llamar al ' + telCita }, tec ? { tecnico_clave: tec } : {})));
+    ({ error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora, motivo: '📞 Cita por teléfono · llamar al ' + telCita }, extraTec)));
   }
   if(error && tec && /tecnico_clave|schema cache|column/i.test(error.message || '')){
     ({ error } = await sb.from('citas').insert(Object.assign({ usuario_id: CURRENT_USER.id, fecha, hora }, porTel ? { motivo: '📞 Cita por teléfono · llamar al ' + telCita } : {})));
   }
   if(error){
     document.getElementById('cita-horas').insertAdjacentHTML('afterbegin',
-      `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar. Tria una altra.' : 'Esta hora se acaba de ocupar. Elige otra.') : (error.message.includes('ya no está disponible') ? (esCA ? 'Aquesta persona ja no atén cites. Tria\'n una altra.' : 'Esta persona ya no atiende citas. Elige otra.') : error.message)}</div>`);
+      `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar' + (tecsR.length > 1 ? ' per a una de les dues persones' : '') + '. Tria una altra.' : 'Esta hora se acaba de ocupar' + (tecsR.length > 1 ? ' para una de las dos personas' : '') + '. Elige otra.') : (error.message.includes('ya no está disponible') ? (esCA ? 'Aquesta persona ja no atén cites. Tria\'n una altra.' : 'Esta persona ya no atiende citas. Elige otra.') : error.message)}</div>`);
     seleccionarDiaCita(fecha);
     window.__reservandoCita = false;
     return;
@@ -7921,7 +7944,7 @@ async function reservarCita(fecha, hora, yaConfirmado){
     await sb.from('notificaciones').insert({
       usuario_id: CURRENT_USER.id,
       tipo: 'cita_nueva',
-      mensaje: `${nombreAviso} ha pedido cita${porTel ? ' POR TELÉFONO' : ''} para el ${fechaFmt} a las ${hora}${tecNombre ? ' con ' + tecNombre : ((window.__tecnicosCita || []).length ? ' (con la primera persona disponible)' : '')}.${porTel ? ' Hay que llamarle al ' + telCita + '.' : ''}`
+      mensaje: `${nombreAviso} ha pedido cita${porTel ? ' POR TELÉFONO' : ''} para el ${fechaFmt} a las ${hora}${tecNombre ? ' con ' + citaTecsNombre(false) : ((window.__tecnicosCita || []).length ? ' (con la primera persona disponible)' : '')}.${porTel ? ' Hay que llamarle al ' + telCita + '.' : ''}`
     });
   } catch(e) { /* no bloquear la reserva si falla el aviso */ }
 
