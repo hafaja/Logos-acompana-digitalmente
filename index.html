@@ -1156,6 +1156,33 @@ body{font-size:15.5px;}
 .blog-ov-bar .b2{background:#EEF1F6;color:#1B2A44;}
 .blog-ov-in{padding:18px 18px 60px;}
 .canal-a-blog{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:0 0 14px;}
+
+/* Firma del consentimiento en el móvil (QR) */
+.fm-ov{position:fixed;inset:0;z-index:99990;background:#F4F6FA;overflow:auto;-webkit-overflow-scrolling:touch;}
+.fm-in{max-width:640px;margin:0 auto;padding:14px 16px 60px;}
+.fm-cab{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px;}
+.fm-cab img{height:44px;}
+.fm-lang button{border:1px solid #C9D6EA;background:#fff;border-radius:8px;padding:6px 10px;font-weight:800;margin-left:4px;}
+.fm-lang button.on{background:#1B2A44;color:#fff;border-color:#1B2A44;}
+.fm-in h1{font-size:24px;margin:4px 0 6px;color:#16325A;}
+.fm-int{font-size:16px;margin:0 0 12px;}
+.fm-doc{max-height:52vh;overflow:auto;background:#fff;border:1.5px solid #DCE5F2;border-radius:14px;padding:6px 16px 16px;font-size:15px;line-height:1.55;-webkit-overflow-scrolling:touch;}
+.fm-av{font-weight:700;color:#16325A;margin:10px 0;}
+.fm-bloq{opacity:.35;pointer-events:none;transition:opacity .2s;}
+.fm-bloq.on{opacity:1;pointer-events:auto;}
+.fm-ck{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid #DCE5F2;border-radius:12px;padding:12px;margin:0 0 8px;font-size:15px;line-height:1.45;}
+.fm-ck input{width:24px;height:24px;flex-shrink:0;margin-top:1px;}
+.fm-opt{border:2px solid #E0A526;border-radius:14px;padding:10px 10px 2px;margin:10px 0;}
+.fm-opt-t{font-weight:800;font-size:14px;margin:0 0 8px;}
+.fm-firma-t{font-weight:800;font-size:17px;margin:14px 0 6px;color:#16325A;}
+.fm-canvas{width:100%;height:auto;aspect-ratio:5/2;background:#fff;border:2px dashed #9AAAC4;border-radius:14px;touch-action:none;display:block;}
+.fm-borrar{border:0;background:none;color:#5B6475;font-weight:700;padding:8px 0;font-size:14px;}
+.fm-ok{display:block;width:100%;border:0;background:#1F8A4C;color:#fff;font-size:19px;font-weight:800;border-radius:14px;padding:16px;margin-top:10px;}
+.fm-ok:disabled{opacity:.6;}
+.fm-e{background:#FDECEA;color:#B03A2E;border-radius:10px;padding:10px 12px;font-weight:700;margin:8px 0 0;}
+.fm-fin{text-align:center;font-size:56px;padding:40px 10px;}
+.fm-fin h2{font-size:24px;margin:10px 0 8px;color:#16325A;}
+.fm-fin p{font-size:16px;color:#3B4456;}
 </style>
 <style>
   /* ===== LogosNav: ruta, favoritas, buscador (Ctrl+K), «Mis páginas» y «Sigue con…» ===== */
@@ -1934,7 +1961,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-04 · v104 (blog de Logos: artículos con portada, imágenes, vídeos y colores en «Novedades»; citas: días que no trabaja la persona sin horas; citas cada 45 min)';
+const APP_VERSION_ACOMP = '2026-11-04 · v105 (firmar el consentimiento del alta presencial en el propio móvil con el QR; blog de Logos; citas cada 45 min)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -9509,6 +9536,71 @@ async function pintarCanalAcomp(){
   }
 }
 document.addEventListener('DOMContentLoaded', () => setTimeout(pintarCanalAcomp, 700));
+// ---------- Firmar el consentimiento en el móvil (QR del alta presencial en la Intranet) · SQL 81 ----------
+async function firmaMovilIniciar(){
+  let token = ''; try { token = new URLSearchParams(location.search).get('firma') || ''; } catch(e){}
+  if(!/^[0-9a-f]{32,64}$/i.test(token) || !sb) return;
+  const ov = document.createElement('div'); ov.id = 'fm-ov'; ov.className = 'fm-ov';
+  ov.innerHTML = '<div class="fm-in"><p style="text-align:center;margin-top:40px;">…</p></div>'; document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+  let info = null; try { const r = await sb.rpc('firma_remota_ver', { p_token: token }); if(!r.error) info = r.data; } catch(e){}
+  let esCA = (info && info.idioma === 'ca') || (typeof LANG !== 'undefined' && LANG === 'ca');
+  const pinta = () => {
+    const L = (es, ca) => esCA ? ca : es, inn = ov.querySelector('.fm-in');
+    const est = info && info.estado;
+    if(est !== 'pendiente'){
+      inn.innerHTML = `<div class="fm-cab"><img src="logo-sidebar.png" alt="Logos" onerror="this.remove()"></div><div class="fm-fin">${est === 'firmada' ? '✅' : '⌛'}<h2>${est === 'firmada' ? L('Este documento ya está firmado', 'Aquest document ja està signat') : (est === 'caducada' ? L('Este QR ha caducado', 'Aquest QR ha caducat') : L('Este QR no sirve', 'Aquest QR no serveix'))}</h2><p>${L('Pide a la persona de Logos que te enseñe un QR nuevo.', 'Demana a la persona de Logos que t\'ensenyi un QR nou.')}</p></div>`;
+      return;
+    }
+    inn.innerHTML = `<div class="fm-cab"><img src="logo-sidebar.png" alt="Logos" onerror="this.remove()"><div class="fm-lang"><button type="button" class="${esCA ? '' : 'on'}" data-l="es">ES</button><button type="button" class="${esCA ? 'on' : ''}" data-l="ca">CA</button></div></div>
+      <h1>${L('Hola', 'Hola')}${info.nombre ? ', ' + canalEsc(info.nombre) : ''} 👋</h1>
+      <p class="fm-int">${L('Lee el documento hasta el final. Después marca las casillas y firma con el dedo.', 'Llegeix el document fins al final. Després marca les caselles i signa amb el dit.')}</p>
+      <div class="fm-doc" id="fm-doc"><h2 style="font-size:15px;text-align:center;margin:10px 0 2px;">Associació Logos — Projectes Socials</h2><p style="font-size:12px;color:#666;text-align:center;margin:0 0 6px;">G55725436 · Tarragona</p>${textoLegalConsentimientoHtml(esCA)}<p style="font-size:12px;font-style:italic;text-align:center;color:#666;">— ${L('Fin del documento', 'Final del document')} —</p></div>
+      <p class="fm-av" id="fm-av">⬇️ ${L('Baja hasta el final del documento para continuar.', 'Baixa fins al final del document per continuar.')}</p>
+      <div class="fm-bloq" id="fm-bloq">
+        <label class="fm-ck"><input type="checkbox" id="fm-c1"> <span><b>*</b> ${L('He leído el documento y AUTORIZO el tratamiento de mis datos personales por parte de Logos (RGPD y LOPDGDD).', 'He llegit el document i AUTORITZO el tractament de les meves dades personals per part de Logos (RGPD i LOPDGDD).')}</span></label>
+        <label class="fm-ck"><input type="checkbox" id="fm-c2"> <span><b>*</b> ${L('AUTORIZO la comunicación de mis datos a los organismos públicos que lo requieran legalmente.', 'AUTORITZO la comunicació de les meves dades als organismes públics que ho requereixin legalment.')}</span></label>
+        <div class="fm-opt"><div class="fm-opt-t">${L('Voluntarias (si no las marcas, no cambia nada)', 'Voluntàries (si no les marques, no canvia res)')}</div>
+          <label class="fm-ck"><input type="checkbox" id="fm-c3"> <span>${L('ACEPTO recibir información de actividades, cursos y novedades de Logos por WhatsApp, correo o teléfono.', 'ACCEPTO rebre informació d\'activitats, cursos i novetats de Logos per WhatsApp, correu o telèfon.')}</span></label>
+          <label class="fm-ck"><input type="checkbox" id="fm-c4"> <span>${L('AUTORIZO la difusión pública de mi imagen, voz o testimonio (apartado 10).', 'AUTORITZO la difusió pública de la meva imatge, veu o testimoni (apartat 10).')}</span></label></div>
+        <div class="fm-firma-t">✍️ ${L('Tu firma', 'La teva signatura')}</div>
+        <canvas id="fm-canvas" width="900" height="360" class="fm-canvas"></canvas>
+        <button type="button" class="fm-borrar" id="fm-borrar">🗑️ ${L('Borrar y volver a firmar', 'Esborrar i tornar a signar')}</button>
+        <div id="fm-err"></div>
+        <button type="button" class="fm-ok" id="fm-ok">✅ ${L('Firmar', 'Signar')}</button>
+      </div>`;
+    inn.querySelectorAll('.fm-lang button').forEach(b => b.onclick = () => { esCA = b.dataset.l === 'ca'; pinta(); });
+    const doc = document.getElementById('fm-doc'), bloq = document.getElementById('fm-bloq');
+    const abrir = () => { if(bloq.classList.contains('on')) return; bloq.classList.add('on'); document.getElementById('fm-av').innerHTML = '✅ ' + L('Has llegado al final. Ahora marca las casillas y firma.', 'Has arribat al final. Ara marca les caselles i signa.'); };
+    doc.addEventListener('scroll', () => { if(doc.scrollTop + doc.clientHeight >= doc.scrollHeight - 14) abrir(); });
+    // firma con el dedo
+    const cv = document.getElementById('fm-canvas'), ctx = cv.getContext('2d'); let dib = false, trazos = 0;
+    ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#17181C';
+    const pos = ev => { const r = cv.getBoundingClientRect(), t = ev.touches ? ev.touches[0] : ev; return { x: (t.clientX - r.left) * cv.width / r.width, y: (t.clientY - r.top) * cv.height / r.height }; };
+    const ini = ev => { ev.preventDefault(); dib = true; trazos++; const p = pos(ev); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+    const mov = ev => { if(!dib) return; ev.preventDefault(); const p = pos(ev); ctx.lineTo(p.x, p.y); ctx.stroke(); };
+    const fin = () => { dib = false; };
+    cv.addEventListener('touchstart', ini, { passive: false }); cv.addEventListener('touchmove', mov, { passive: false }); cv.addEventListener('touchend', fin);
+    cv.addEventListener('mousedown', ini); cv.addEventListener('mousemove', mov); cv.addEventListener('mouseup', fin); cv.addEventListener('mouseleave', fin);
+    document.getElementById('fm-borrar').onclick = () => { ctx.clearRect(0, 0, cv.width, cv.height); trazos = 0; };
+    document.getElementById('fm-ok').onclick = async () => {
+      const err = document.getElementById('fm-err'), fallo = m => { err.innerHTML = `<div class="fm-e">${m}</div>`; };
+      if(!bloq.classList.contains('on')) return fallo(L('Primero baja hasta el final del documento.', 'Primer baixa fins al final del document.'));
+      if(!document.getElementById('fm-c1').checked || !document.getElementById('fm-c2').checked) return fallo(L('Marca las dos casillas obligatorias (*).', 'Marca les dues caselles obligatòries (*).'));
+      if(!trazos) return fallo(L('Falta tu firma.', 'Falta la teva signatura.'));
+      const b = document.getElementById('fm-ok'); b.disabled = true; b.textContent = '⏳ ' + L('Enviando…', 'Enviant…');
+      // la firma se envía recortada y en tamaño razonable
+      const out = document.createElement('canvas'); out.width = 500; out.height = 200; out.getContext('2d').drawImage(cv, 0, 0, 500, 200);
+      let ok = false, msg = '';
+      try { const r = await sb.rpc('firma_remota_firmar', { p_token: token, p_firma: out.toDataURL('image/png'), p_tratamiento: true, p_cesion: true, p_contacto: document.getElementById('fm-c3').checked, p_imagen: document.getElementById('fm-c4').checked, p_dispositivo: navigator.userAgent.slice(0, 180) }); ok = !r.error && r.data === true; msg = r.error ? r.error.message : ''; } catch(e){ msg = e.message || ''; }
+      if(!ok){ b.disabled = false; b.textContent = '✅ ' + L('Firmar', 'Signar'); return fallo(msg ? canalEsc(msg) : L('No se ha podido enviar. Puede que el QR haya caducado: pide uno nuevo.', 'No s\'ha pogut enviar. Pot ser que el QR hagi caducat: demana\'n un de nou.')); }
+      inn.innerHTML = `<div class="fm-cab"><img src="logo-sidebar.png" alt="Logos" onerror="this.remove()"></div><div class="fm-fin">✅<h2>${L('¡Firmado! Gracias', 'Signat! Gràcies')}</h2><p>${L('Ya puedes devolver el móvil o seguir con la persona de Logos. Tu firma ya ha llegado.', 'Ja pots tornar el mòbil o continuar amb la persona de Logos. La teva signatura ja ha arribat.')}</p></div>`;
+      try { history.replaceState(null, '', location.pathname); } catch(e){}
+    };
+  };
+  pinta();
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(firmaMovilIniciar, 50));
+
 
 // ---------- Botón «Aa»: ayudas para ver y leer mejor (se recuerdan en este móvil u ordenador) ----------
 const A11Y_CLAVE = 'logos_ayudas_lectura';
