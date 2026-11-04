@@ -1108,6 +1108,54 @@ body{font-size:15.5px;}
 .th-det[open] .th-flecha{transform:rotate(180deg);}
 .th-det[open] > summary{margin-bottom:6px;}
 .th-det > summary:hover .th-flecha{background:#EAF1FB;}
+
+/* ===== Blog de Logos (artículos del canal) ===== */
+.blog-art{--b-a:#1E4FA8;--b-s:#E8EEFB;--b-t:#14306B;max-width:760px;margin:0 auto;color:#1B2333;font-size:18px;line-height:1.7;}
+.blog-cab{padding:8px 0 18px;}
+.blog-cat{display:inline-block;background:var(--b-s,#E8EEFB);color:var(--b-a,#1E4FA8);font-weight:800;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:20px;}
+.blog-art h1{font-size:clamp(28px,5vw,44px);line-height:1.12;margin:14px 0 10px;color:var(--b-t);letter-spacing:-.01em;}
+.blog-sub{font-size:clamp(18px,2.6vw,22px);line-height:1.45;color:#3B4456;margin:0 0 12px;}
+.blog-meta{font-size:14px;color:#6B7385;margin:0;}
+.blog-portada{margin:6px -6px 26px;border-radius:16px;overflow:hidden;background:var(--b-s);}
+.blog-portada img{display:block;width:100%;max-height:520px;object-fit:cover;}
+.blog-entradilla{font-size:20px;line-height:1.6;font-weight:600;color:#2A3244;border-left:5px solid var(--b-a);padding:2px 0 2px 18px;margin:0 0 26px;}
+.blog-cuerpo p{margin:0 0 18px;}
+.blog-cuerpo h2{font-size:27px;line-height:1.25;margin:34px 0 12px;color:var(--b-t);}
+.blog-cuerpo h3{font-size:21px;line-height:1.3;margin:26px 0 10px;color:var(--b-t);}
+.blog-cuerpo a{color:var(--b-a);font-weight:600;}
+.blog-cuerpo ul,.blog-cuerpo ol{margin:0 0 18px;padding-inline-start:26px;}
+.blog-cuerpo li{margin:0 0 6px;}
+.blog-cuerpo li::marker{color:var(--b-a);font-weight:800;}
+.blog-cuerpo blockquote{margin:26px 0;padding:18px 22px;border-radius:14px;background:var(--b-s);color:var(--b-t);font-size:21px;line-height:1.5;font-style:italic;position:relative;}
+.blog-cuerpo blockquote::before{content:'“';position:absolute;top:-14px;left:14px;font-size:64px;line-height:1;color:var(--b-a);font-style:normal;}
+.blog-cuerpo hr{border:0;height:4px;width:80px;background:var(--b-a);border-radius:4px;margin:34px auto;}
+.blog-fig{margin:26px -6px;}
+.blog-fig img{display:block;width:100%;border-radius:14px;}
+.blog-fig figcaption{font-size:14px;color:#6B7385;text-align:center;margin-top:8px;}
+.blog-video{margin:24px -6px;border-radius:14px;overflow:hidden;}
+.blog-caja{background:var(--b-a);color:#fff;border-radius:14px;padding:18px 22px;margin:24px 0;font-size:19px;font-weight:600;line-height:1.5;}
+.blog-caja a{color:#fff;text-decoration:underline;}
+.blog-boton{margin:24px 0;}
+.blog-boton a{display:inline-block;background:var(--b-a);color:#fff !important;text-decoration:none;font-weight:800;padding:13px 22px;border-radius:12px;font-size:17px;}
+.blog-boton a:hover{filter:brightness(1.08);}
+.blog-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+.blog-tarjeta{display:flex;flex-direction:column;background:#fff;border:1px solid #E3E7EE;border-radius:16px;overflow:hidden;text-decoration:none;color:#1B2333;box-shadow:0 4px 16px rgba(20,30,50,.06);transition:transform .15s,box-shadow .15s;}
+.blog-tarjeta:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(20,30,50,.12);}
+.blog-tarjeta__img{display:block;aspect-ratio:16/9;background:var(--b-s) center/cover no-repeat;}
+.blog-tarjeta__img--color{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--b-a),var(--b-s));font-size:40px;}
+.blog-tarjeta__b{display:flex;flex-direction:column;gap:7px;padding:14px 16px 16px;}
+.blog-tarjeta__b strong{font-size:19px;line-height:1.3;}
+.blog-tarjeta__s{font-size:14.5px;line-height:1.5;color:#4B5468;}
+.blog-tarjeta__b small{font-size:13px;color:#6B7385;margin-top:auto;}
+.blog-tarjeta .blog-cat{align-self:flex-start;font-size:11px;}
+@media (max-width:640px){ .blog-art{font-size:17px;} .blog-entradilla{font-size:18px;} .blog-cuerpo h2{font-size:23px;} .blog-portada,.blog-fig,.blog-video{margin-left:0;margin-right:0;} }
+
+.blog-ov{position:fixed;inset:0;z-index:9800;background:#fff;overflow:auto;-webkit-overflow-scrolling:touch;}
+.blog-ov-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid #E3E7EE;padding:10px 16px;}
+.blog-ov-bar button{border:0;background:#1B2A44;color:#fff;font:inherit;font-weight:700;border-radius:10px;padding:9px 14px;cursor:pointer;}
+.blog-ov-bar .b2{background:#EEF1F6;color:#1B2A44;}
+.blog-ov-in{padding:18px 18px 60px;}
+.canal-a-blog{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:0 0 14px;}
 </style>
 <style>
   /* ===== LogosNav: ruta, favoritas, buscador (Ctrl+K), «Mis páginas» y «Sigue con…» ===== */
@@ -1886,7 +1934,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-04 · v103 (citas: los días que la persona del equipo no trabaja no se ofrecen horas; citas cada 45 minutos)';
+const APP_VERSION_ACOMP = '2026-11-04 · v104 (blog de Logos: artículos con portada, imágenes, vídeos y colores en «Novedades»; citas: días que no trabaja la persona sin horas; citas cada 45 min)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -9310,6 +9358,116 @@ if(!window.__vidClick){ window.__vidClick = true;
   }, true);
 }
 
+/* ===== Blog de Logos · motor común (Intranet, web logostgn.cat y Logos Acompanya) =====
+   El cuerpo del artículo se escribe con marcas sencillas (los botones del editor las ponen solas):
+     ## Subtítulo          ### Subtítulo pequeño        > Cita            - Lista         1. Lista numerada
+     ![Pie de foto](https://…imagen)     [video](https://youtube… / vimeo… / …mp4)     [[Texto del botón|https://…]]
+     !!! Caja destacada en color          ---  (línea separadora)
+     **negrita**   *cursiva*   [texto del enlace](https://…)
+   Todo el texto se escapa: no se puede meter HTML ni scripts. */
+var BLOG_COLORES = {
+  azul:    { a: '#1E4FA8', s: '#E8EEFB', t: '#14306B' },
+  verde:   { a: '#1F8A4C', s: '#E3F5EA', t: '#145C33' },
+  dorado:  { a: '#C98A00', s: '#FFF3DD', t: '#6B4A00' },
+  morado:  { a: '#6D3FC0', s: '#EFE8FB', t: '#43237D' },
+  rojo:    { a: '#C0392B', s: '#FDECEA', t: '#7A2218' },
+  turquesa:{ a: '#0E8C8C', s: '#E0F4F4', t: '#0A5858' },
+  negro:   { a: '#1B2333', s: '#EEF0F4', t: '#1B2333' }
+};
+function blogEsc(t){ return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function blogUrlOk(u){ return /^https:\/\/[^\s"'<>]+$/i.test(String(u || '')); }
+function blogInline(t){
+  var s = blogEsc(t);
+  s = s.replace(/\[([^\]\n]{1,200})\]\((https:\/\/[^\s)"'<>]{1,500})\)/g, function(_, x, u){ return '<a href="' + u + '" target="_blank" rel="noopener">' + x + '</a>'; });
+  s = s.replace(/\*\*([^*\n]{1,400})\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[\s(])\*([^*\n]{1,300})\*(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>');
+  return s;
+}
+function blogLeerMin(md){ var n = String(md || '').replace(/[#>*\[\]()!|-]/g, ' ').split(/\s+/).filter(Boolean).length; return Math.max(1, Math.round(n / 200)); }
+// Convierte el cuerpo en HTML. op: { color, video: función(url, poster, título, etiqueta, esc) → html, etiquetaVideo }
+function blogRender(md, op){
+  op = op || {};
+  var lineas = String(md || '').replace(/\r\n?/g, '\n').split('\n'), out = [], par = [], lista = null;
+  var cierraPar = function(){ if(par.length){ out.push('<p>' + par.map(blogInline).join('<br>') + '</p>'); par = []; } };
+  var cierraLista = function(){ if(lista){ out.push('<' + lista.t + '>' + lista.items.map(function(i){ return '<li>' + blogInline(i) + '</li>'; }).join('') + '</' + lista.t + '>'); lista = null; } };
+  var cierra = function(){ cierraPar(); cierraLista(); };
+  for(var i = 0; i < lineas.length; i++){
+    var l = lineas[i], tl = l.trim(), m;
+    if(!tl){ cierra(); continue; }
+    if((m = tl.match(/^(#{2,3})\s+(.+)$/))){ cierra(); out.push(m[1].length === 2 ? '<h2>' + blogInline(m[2]) + '</h2>' : '<h3>' + blogInline(m[2]) + '</h3>'); continue; }
+    if(/^-{3,}$/.test(tl)){ cierra(); out.push('<hr>'); continue; }
+    if((m = tl.match(/^!\[([^\]]*)\]\((https:\/\/[^\s)]+)\)$/))){ cierra(); out.push('<figure class="blog-fig"><img src="' + blogEsc(m[2]) + '" alt="' + blogEsc(m[1]) + '" loading="lazy">' + (m[1] ? '<figcaption>' + blogInline(m[1]) + '</figcaption>' : '') + '</figure>'); continue; }
+    if((m = tl.match(/^\[(?:video|vídeo|vídeo)\]\((https:\/\/[^\s)]+)\)$/i))){ cierra(); var vh = op.video ? op.video(m[1], '', op.titulo || 'Vídeo', op.etiquetaVideo || 'Vídeo', blogEsc) : ''; if(vh) out.push('<div class="blog-video">' + vh + '</div>'); continue; }
+    if((m = tl.match(/^\[\[([^|\]]{1,80})\|(https:\/\/[^\]\s]{1,500})\]\]$/))){ cierra(); out.push('<p class="blog-boton"><a href="' + blogEsc(m[2]) + '" target="_blank" rel="noopener">' + blogEsc(m[1]) + ' →</a></p>'); continue; }
+    if((m = tl.match(/^!!!\s*(.+)$/))){ cierra(); out.push('<div class="blog-caja">' + blogInline(m[1]) + '</div>'); continue; }
+    if((m = tl.match(/^>\s?(.*)$/))){ cierra(); var q = [m[1]]; while(i + 1 < lineas.length && /^\s*>/.test(lineas[i + 1])){ i++; q.push(lineas[i].replace(/^\s*>\s?/, '')); } out.push('<blockquote>' + q.map(blogInline).join('<br>') + '</blockquote>'); continue; }
+    if((m = tl.match(/^[-•*]\s+(.+)$/))){ cierraPar(); if(!lista || lista.t !== 'ul'){ cierraLista(); lista = { t: 'ul', items: [] }; } lista.items.push(m[1]); continue; }
+    if((m = tl.match(/^\d+[.)]\s+(.+)$/))){ cierraPar(); if(!lista || lista.t !== 'ol'){ cierraLista(); lista = { t: 'ol', items: [] }; } lista.items.push(m[1]); continue; }
+    cierraLista(); par.push(tl);
+  }
+  cierra();
+  return out.join('\n');
+}
+// Página completa del artículo (portada, títulos, autor, fecha y cuerpo). x = fila del canal; ca = catalán
+function blogArticuloHtml(x, ca, op){
+  op = op || {};
+  var c = BLOG_COLORES[x.color] || BLOG_COLORES.azul;
+  var tit = (ca && x.titulo_ca) || x.titulo || '', sub = (ca && x.subtitulo_ca) || x.subtitulo || '', ent = (ca && x.texto_ca) || x.texto || '';
+  var cuerpo = (ca && x.cuerpo_ca) || x.cuerpo || '';
+  var f = x.publicar_desde ? new Date(x.publicar_desde) : null;
+  var fecha = f ? f.toLocaleDateString(op.locale || (ca ? 'ca-ES' : 'es-ES'), { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  var min = blogLeerMin(cuerpo + ' ' + ent);
+  var portada = x.video_url && op.video && !x.imagen_url ? '<div class="blog-portada blog-portada--video">' + op.video(x.video_url, '', tit, op.etiquetaVideo || 'Vídeo', blogEsc) + '</div>'
+    : (x.imagen_url ? '<div class="blog-portada"><img src="' + blogEsc(x.imagen_url) + '" alt=""></div>' : '');
+  return '<article class="blog-art" style="--b-a:' + c.a + ';--b-s:' + c.s + ';--b-t:' + c.t + '">' +
+    '<header class="blog-cab">' + (x.categoria ? '<span class="blog-cat">' + blogEsc(x.categoria) + '</span>' : '') +
+    '<h1>' + blogEsc(tit) + '</h1>' + (sub ? '<p class="blog-sub">' + blogInline(sub) + '</p>' : '') +
+    '<p class="blog-meta">' + [x.autor_nombre ? blogEsc(x.autor_nombre) : 'Logos', fecha, min + ' min ' + (op.lectura || (ca ? 'de lectura' : 'de lectura'))].filter(Boolean).join(' · ') + '</p></header>' +
+    portada +
+    (ent ? '<p class="blog-entradilla">' + blogInline(ent).replace(/\n/g, '<br>') + '</p>' : '') +
+    '<div class="blog-cuerpo">' + blogRender(cuerpo, { video: op.video, titulo: tit, etiquetaVideo: op.etiquetaVideo }) + '</div>' +
+    (x.video_url && x.imagen_url && op.video ? '<div class="blog-video">' + op.video(x.video_url, x.imagen_url, tit, op.etiquetaVideo || 'Vídeo', blogEsc) + '</div>' : '') +
+    (x.enlace ? '<p class="blog-boton"><a href="' + blogEsc(x.enlace) + '" target="_blank" rel="noopener">' + blogEsc(x.enlace_texto || (ca ? 'Més informació' : 'Más información')) + ' →</a></p>' : '') +
+    '</article>';
+}
+// Tarjeta para listas (web, Acompanya, Intranet)
+function blogTarjetaHtml(x, ca, href, op){
+  op = op || {};
+  var c = BLOG_COLORES[x.color] || BLOG_COLORES.azul;
+  var tit = (ca && x.titulo_ca) || x.titulo || '', sub = (ca && x.subtitulo_ca) || x.subtitulo || (ca && x.texto_ca) || x.texto || '';
+  var f = x.publicar_desde ? new Date(x.publicar_desde).toLocaleDateString(op.locale || (ca ? 'ca-ES' : 'es-ES'), { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+  var img = x.imagen_url || ((typeof canalVid === 'function' && x.video_url && (canalVid(x.video_url) || {}).thumb) || '');
+  return '<a class="blog-tarjeta" href="' + blogEsc(href) + '" style="--b-a:' + c.a + ';--b-s:' + c.s + '"' + (op.onclick ? ' onclick="' + op.onclick + '"' : '') + '>' +
+    (img ? '<span class="blog-tarjeta__img" style="background-image:url(\'' + blogEsc(img) + '\')"></span>' : '<span class="blog-tarjeta__img blog-tarjeta__img--color"><span>📝</span></span>') +
+    '<span class="blog-tarjeta__b">' + (x.categoria ? '<span class="blog-cat">' + blogEsc(x.categoria) + '</span>' : '<span class="blog-cat">Blog</span>') +
+    '<strong>' + blogEsc(tit) + '</strong>' + (sub ? '<span class="blog-tarjeta__s">' + blogEsc(String(sub).slice(0, 160)) + (String(sub).length > 160 ? '…' : '') + '</span>' : '') +
+    '<small>' + blogEsc(f) + (op.leer ? ' · ' + blogEsc(op.leer) + ' →' : '') + '</small></span></a>';
+}
+
+// ---------- Blog: lector a pantalla completa ----------
+async function blogAbrirAcomp(id){
+  const ca = typeof LANG !== 'undefined' && LANG === 'ca';
+  let ov = document.getElementById('blog-ov'); if(ov) ov.remove();
+  ov = document.createElement('div'); ov.id = 'blog-ov'; ov.className = 'blog-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
+  ov.innerHTML = `<div class="blog-ov-bar"><button type="button" onclick="blogCerrarAcomp()">← ${ca ? 'Tornar' : 'Volver'}</button><button type="button" class="b2" id="blog-ov-comp">${ca ? 'Compartir' : 'Compartir'}</button></div><div class="blog-ov-in"><p style="text-align:center;color:#6B7385;">…</p></div>`;
+  document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+  try { history.pushState({ blog: id }, ''); } catch(e){}
+  let x = null; try { const r = await sb.rpc('canal_articulo', { p_id: id, p_donde: 'acompanya' }); if(!r.error) x = r.data; } catch(e){}
+  const inn = ov.querySelector('.blog-ov-in');
+  if(!x || !x.id){ inn.innerHTML = `<p style="text-align:center;">${ca ? 'Aquest article ja no està publicat.' : 'Este artículo ya no está publicado.'}</p>`; return; }
+  inn.innerHTML = blogArticuloHtml(x, ca, { video: canalVidHtml, etiquetaVideo: ca ? 'Veure el vídeo' : 'Ver el vídeo', lectura: ca ? 'de lectura' : 'de lectura' });
+  const tit = (ca && x.titulo_ca) || x.titulo, url = 'https://logostgn.cat/' + (ca ? 'blog.html' : 'es-blog.html') + '?a=' + encodeURIComponent(x.id);
+  const bc = document.getElementById('blog-ov-comp');
+  if(bc) bc.onclick = () => { if(navigator.share){ navigator.share({ title: tit, url }).catch(() => {}); } else { window.open('https://wa.me/?text=' + encodeURIComponent(tit + ' ' + url), '_blank', 'noopener'); } };
+}
+function blogCerrarAcomp(desdeAtras){
+  const ov = document.getElementById('blog-ov'); if(!ov) return;
+  ov.remove(); document.body.style.overflow = '';
+  if(!desdeAtras){ try { if(history.state && history.state.blog) history.back(); } catch(e){} }
+}
+window.addEventListener('popstate', () => { if(document.getElementById('blog-ov')) blogCerrarAcomp(true); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && document.getElementById('blog-ov')) blogCerrarAcomp(); });
+
 async function pintarCanalAcomp(){
   const host = document.getElementById('canal-acomp'); if(!host) return;
   let L = null; try { const r = await sb.rpc('canal_publico', { p_donde: 'acompanya' }); if(!r.error) L = r.data; } catch(e){}
@@ -9320,7 +9478,8 @@ async function pintarCanalAcomp(){
   const TT = { noticia: ca ? 'Notícia' : 'Noticia', evento: ca ? 'Activitat' : 'Actividad', anuncio: ca ? 'Anunci' : 'Anuncio', convocatoria: ca ? 'Convocatòria' : 'Convocatoria' };
   const hoy = new Date(); const hoyIso = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0') + '-' + String(hoy.getDate()).padStart(2, '0');
   const ev = L.filter(x => x.fecha_evento && (x.fecha_fin || x.fecha_evento) >= hoyIso).sort((a, b) => a.fecha_evento < b.fecha_evento ? -1 : 1);
-  const nov = L.filter(x => x.tipo !== 'evento' && x.tipo !== 'publicidad').slice(0, 8);
+  const nov = L.filter(x => x.tipo !== 'evento' && x.tipo !== 'publicidad' && x.tipo !== 'articulo').slice(0, 8);
+  const arts = L.filter(x => x.tipo === 'articulo').sort((a, b) => String(b.publicar_desde).localeCompare(String(a.publicar_desde)));
   const anu = L.filter(x => x.tipo === 'publicidad');
   const EST = { azul: ['#16325A', '#1F66C1', '#FFFFFF', '#F2BC2C'], oro: ['#F2BC2C', '#FFE08A', '#16325A', '#16325A'], verde: ['#14532D', '#2E8B57', '#FFFFFF', '#FDE68A'], coral: ['#9A3412', '#EA580C', '#FFFFFF', '#FFF4D6'], violeta: ['#3B0764', '#7C3AED', '#FFFFFF', '#FDE68A'], noche: ['#0F172A', '#334155', '#FFFFFF', '#F2BC2C'] };
   const anuHtml = x => { const e = EST[x.estilo] || EST.azul, tt = tit(x), t = txt(x), soloImg = x.imagen_url && x.formato !== 'cuadrado';
@@ -9332,6 +9491,7 @@ async function pintarCanalAcomp(){
   window.__canalAcomp = L;
   L.forEach(x => { if(x && !x.video_url && x.imagen_url && canalVid(x.imagen_url)){ x.video_url = x.imagen_url; x.imagen_url = null; } });   // un enlace de YouTube puesto en «Imagen» se muestra como vídeo
   host.innerHTML = `<h2 id="canal-a-tit">📣 ${ca ? 'Novetats de Logos' : 'Novedades de Logos'}</h2>
+    ${arts.length ? `<h3 style="margin:4px 0 10px;">✍️ ${ca ? 'Blog de Logos' : 'Blog de Logos'}</h3><div class="canal-a-blog">${arts.slice(0, 6).map(x => blogTarjetaHtml(x, ca, '#', { onclick: "event.preventDefault();blogAbrirAcomp('" + String(x.id).replace(/[^0-9a-f-]/gi, '') + "')", leer: ca ? 'Llegir' : 'Leer' })).join('')}</div>` : ''}
     ${nov.length ? `<div class="canal-a-cards" tabindex="0" role="region" aria-label="${ca ? 'Notícies i anuncis' : 'Noticias y anuncios'}">${nov.map(x => { const t = txt(x), vh = x.video_url ? canalVidHtml(x.video_url, x.imagen_url, tit(x), ca ? 'Veure el vídeo' : 'Ver el vídeo', canalEsc) : ''; return `<article class="canal-a-card${x.destacado ? ' dest' : ''}">${vh || (x.imagen_url ? `<img src="${canalEsc(x.imagen_url)}" alt="" loading="lazy">` : '')}<div class="b">
       <span class="tag ${canalEsc(x.tipo)}">${TT[x.tipo] || ''}</span><strong>${canalEsc(tit(x))}</strong>${t ? `<p>${canalEsc(t.slice(0, 180))}${t.length > 180 ? '…' : ''}</p>` : ''}
       <small>${canalEsc(dia(String(x.publicar_desde).slice(0, 10), { day: 'numeric', month: 'long' }))}</small>
