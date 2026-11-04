@@ -1886,7 +1886,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-04 · v101 (móviles: ya no sale «No se ha podido conectar» a todo rato — la librería de la base de datos se sirve desde la propia web y el service worker ya no bloquea las otras webs)';
+const APP_VERSION_ACOMP = '2026-11-04 · v102 (citas cada 45 minutos: la última acaba antes del cierre y no se solapan con las citas pedidas antes cada 30 minutos)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -7813,6 +7813,13 @@ async function seleccionarDiaCita(fechaIso){
   const enTramoTec = s => tramosLista.every(tr => !tr || tr.some(t => logosMin(s) >= logosMin(String(t[0]).slice(0,5)) && logosMin(s) < logosMin(String(t[1]).slice(0,5))));
   const ocupadasPorHora = {};
   (ocupacion || []).forEach(o => { ocupadasPorHora[o.hora.slice(0,5)] = o.ocupadas; });
+  // Cada cita dura «duracion_cita_minutos» (45). Una hora está ocupada si se SOLAPA con otra cita (también con las
+  // que se pidieron antes cada 30 minutos, por ejemplo 10:30 choca con 10:15).
+  const durCita = Number(horario.duracion_cita_minutos) || 45;
+  const choca = (a, b) => Math.abs(logosMin(String(a).slice(0,5)) - logosMin(String(b).slice(0,5))) < durCita;
+  const ocupadasEn = s => Object.keys(ocupadasPorHora).reduce((n, h) => n + (choca(h, s) ? (ocupadasPorHora[h] || 0) : 0), 0);
+  const tecOcupado = s => [...ocupTec].some(h => choca(h, s));
+  const yaMiaEn = s => (window.__misCitasHoras || []).some(x => x.slice(0, 10) === fechaIso && choca(x.slice(11, 16), s));
 
   const slots = [];
   const generarBloque = (inicio, fin) => {
@@ -7821,11 +7828,11 @@ async function seleccionarDiaCita(fechaIso){
     const [hFin, mFin] = fin.split(':').map(Number);
     let cursor = hIni * 60 + mIni;
     const finMin = hFin * 60 + mFin;
-    while(cursor < finMin){
+    while(cursor + durCita <= finMin){   // la última cita tiene que acabar antes del cierre
       const h = String(Math.floor(cursor/60)).padStart(2,'0');
       const m = String(cursor%60).padStart(2,'0');
       slots.push(`${h}:${m}`);
-      cursor += horario.duracion_cita_minutos;
+      cursor += durCita;
     }
   };
   { const dObj = new Date(fechaIso + 'T00:00:00'); const iso = dObj.getDay() === 0 ? 7 : dObj.getDay();
@@ -7842,11 +7849,11 @@ async function seleccionarDiaCita(fechaIso){
   const titulo = tec ? `<div class="cita-paso"><span class="cita-num">4</span> ${esCA ? `Hores lliures amb ${escAttr(tecNombre)}` : `Horas libres con ${escAttr(tecNombre)}`}</div>`
     : `<div class="cita-paso"><span class="cita-num">${(window.__tecnicosCita || []).length ? 4 : 3}</span> ${esCA ? 'Tria l\'hora' : 'Elige la hora'}</div>`;
   const fichaHora = s => {
-    const ocupadas = ocupadasPorHora[s] || 0, yaMia = (window.__misCitasHoras || []).includes(fechaIso + ' ' + s);
-    const lleno = ocupadas >= horario.tecnicos_simultaneos || ocupTec.has(s) || yaMia;
+    const ocupadas = ocupadasEn(s), yaMia = yaMiaEn(s);
+    const lleno = ocupadas >= horario.tecnicos_simultaneos || tecOcupado(s) || yaMia;
     return `<button class="ct-hora${lleno ? ' lleno' : ''}" data-h="${s}" ${lleno ? 'disabled' : `onclick="ctElegirHora('${fechaIso}','${s}')"`} title="${yaMia ? (esCA ? 'ja hi tens cita' : 'ya tienes cita') : (lleno ? (esCA ? 'complet' : 'completo') : '')}">${s}${yaMia ? '<small>✓</small>' : ''}</button>`;
   };
-  const libres = slots.filter(s => !(((ocupadasPorHora[s] || 0) >= horario.tecnicos_simultaneos) || ocupTec.has(s))).length;
+  const libres = slots.filter(s => !((ocupadasEn(s) >= horario.tecnicos_simultaneos) || tecOcupado(s) || yaMiaEn(s))).length;
   const manana = slots.filter(s => logosMin(s) < 15 * 60), tarde = slots.filter(s => logosMin(s) >= 15 * 60);
   const dSel = new Date(fechaIso + 'T00:00:00');
   window.__citaHoraSel = null; { const rr = document.getElementById('ct-resumen'); if(rr) rr.innerHTML = ''; } ctPasos();
@@ -8102,7 +8109,7 @@ function citaICS(c){
   if(!c || !c.fecha) return;
   const esCA = LANG === 'ca', tel = citaEsTelefono(c);
   const f = String(c.fecha).replace(/-/g, ''), h = String(c.hora || '').slice(0, 5).replace(':', '');
-  const fin = new Date(c.fecha + 'T' + String(c.hora || '').slice(0, 5) + ':00'); fin.setMinutes(fin.getMinutes() + ((window.__horarioAtencion || {}).duracion_cita_minutos || 30));
+  const fin = new Date(c.fecha + 'T' + String(c.hora || '').slice(0, 5) + ':00'); fin.setMinutes(fin.getMinutes() + (Number((window.__horarioAtencion || {}).duracion_cita_minutos) || 45));
   const hf = String(fin.getHours()).padStart(2, '0') + String(fin.getMinutes()).padStart(2, '0');
   const lin = v => String(v || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/([,;])/g, '\\$1');
   const tit = tel ? (esCA ? 'Cita per telèfon amb Logos' : 'Cita por teléfono con Logos') : (esCA ? 'Cita a Logos' : 'Cita en Logos');
