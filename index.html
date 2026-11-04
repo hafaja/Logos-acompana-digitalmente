@@ -1886,7 +1886,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-04 · v102 (citas cada 45 minutos: la última acaba antes del cierre y no se solapan con las citas pedidas antes cada 30 minutos)';
+const APP_VERSION_ACOMP = '2026-11-04 · v103 (citas: los días que la persona del equipo no trabaja no se ofrecen horas; citas cada 45 minutos)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -7808,7 +7808,7 @@ async function seleccionarDiaCita(fechaIso){
   ]);
   if(window.__citaDia !== fechaIso || citaTecsSel().join(',') !== tec) return; // el usuario ya ha cambiado de día o de técnico
   const ocupTec = new Set(); dispTecs.forEach(d => ((d && d.ocupadas) || []).forEach(h => ocupTec.add(String(h).slice(0,5))));
-  const tramosLista = dispTecs.map(d => d && Array.isArray(d.tramos) && d.tramos.length ? d.tramos : null);
+  const tramosLista = dispTecs.map(d => d && Array.isArray(d.tramos) ? d.tramos : null);   // [] = tiene horario propio y ese día no trabaja (SQL 79)
   const tramosTec = tramosLista.some(Boolean) ? true : null;
   const enTramoTec = s => tramosLista.every(tr => !tr || tr.some(t => logosMin(s) >= logosMin(String(t[0]).slice(0,5)) && logosMin(s) < logosMin(String(t[1]).slice(0,5))));
   const ocupadasPorHora = {};
