@@ -1183,6 +1183,12 @@ body{font-size:15.5px;}
 .fm-fin{text-align:center;font-size:56px;padding:40px 10px;}
 .fm-fin h2{font-size:24px;margin:10px 0 8px;color:#16325A;}
 .fm-fin p{font-size:16px;color:#3B4456;}
+
+/* «Lo hago yo» pausado: aviso para contactar con Logos */
+.nec-contacto{background:#FFF8E6;border:1.5px solid #F2D58A;border-radius:14px;padding:12px 14px;margin:0 0 10px;}
+.nec-contacto-t{font-weight:800;font-size:15px;color:#6B4A00;margin:0 0 4px;}
+.nec-contacto p{margin:0 0 8px;font-size:13.5px;color:#4B3A10;}
+.nec-contacto small{display:block;margin-top:8px;font-size:12px;color:#6B5A30;}
 </style>
 <style>
   /* ===== LogosNav: ruta, favoritas, buscador (Ctrl+K), «Mis páginas» y «Sigue con…» ===== */
@@ -1342,7 +1348,7 @@ body{font-size:15.5px;}
         <div id="guia-card-host"></div>
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
         <p class="subtle" id="home-sub">Encuentra el trámite o la ayuda que necesitas en Tarragona.</p>
-        <div class="panel-card" id="nec-nota" style="background:#EEF4FB;border-color:#CFE0F5;margin-bottom:12px;border-radius:16px;">💡 Puedes hacer tu trámite tú mismo/a desde esta plataforma: te llevamos al sitio correcto. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.</div>
+        <div class="panel-card" id="nec-nota" style="background:#EEF4FB;border-color:#CFE0F5;margin-bottom:12px;border-radius:16px;">💡 De momento, para cualquier trámite o ayuda, <strong>contacta con Logos</strong>: por teléfono, por WhatsApp, pidiendo cita o viniendo a la sede. Te atendemos y te acompañamos.</div>
         <div id="nec-carrusel"></div>
         <div class="nb"><span class="nb-i">🔎</span><input id="nec-q" type="search" autocomplete="off" oninput="necBuscar()" aria-label="Buscar"></div>
         <div id="nec-res" class="nb-res" aria-live="polite"></div>
@@ -1666,7 +1672,10 @@ function setLang(lang){
   document.getElementById('home-title').textContent = T.homeTitle;
   document.getElementById('home-sub').textContent = T.homeSub;
   const nn = document.getElementById('nec-nota');
-  if(nn) nn.innerHTML = (lang === 'ca')
+  if(nn && !NEC_LO_HAGO_YO) nn.innerHTML = (lang === 'ca')
+    ? '💡 De moment, per a qualsevol tràmit o ajuda, <strong>contacta amb Logos</strong>: per telèfon, per WhatsApp, demanant cita o venint a la seu. T\'atenem i t\'acompanyem.'
+    : '💡 De momento, para cualquier trámite o ayuda, <strong>contacta con Logos</strong>: por teléfono, por WhatsApp, pidiendo cita o viniendo a la sede. Te atendemos y te acompañamos.';
+  else if(nn) nn.innerHTML = (lang === 'ca')
     ? '💡 Pots fer el teu tràmit tu mateix/a des d\'aquesta plataforma: et portem al lloc correcte. I si ho prefereixes, <strong>Logos t\'ajuda</strong>: només cal que ens ho demanis.'
     : '💡 Puedes hacer tu trámite tú mismo/a desde esta plataforma: te llevamos al sitio correcto. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.';
   document.getElementById('trust-title').textContent = T.trustTitle;
@@ -1867,12 +1876,26 @@ function ncClick(i){
   const r = NEC_RAPIDOS[i];
   if(r.logos){ CURRENT_AMBITO = null; showProximamente(null); }
 }
+// «Lo hago yo» (ir directamente a la web oficial): PAUSADO mientras el catálogo no lleve a sitios precisos.
+// Para volver a activarlo: poner true.
+var NEC_LO_HAGO_YO = false;
+// Aviso de contacto con Logos (cuando «Lo hago yo» está pausado)
+function necContactoLogosHtml(esCA, corto){
+  const tel = (LOGOS_CONTACTOS_LISTA()[0] || {}).tel || '34630461560';
+  return `<div class="nec-contacto${corto ? ' corto' : ''}"><div class="nec-contacto-t">🤝 ${esCA ? 'Per a aquest tràmit, contacta amb Logos' : 'Para este trámite, contacta con Logos'}</div>
+    <p>${esCA ? 'T\'atenem i t\'acompanyem pas a pas. Tria com prefereixes:' : 'Te atendemos y te acompañamos paso a paso. Elige cómo prefieres:'}</p>
+    <div class="nec-item-b"><a class="nec-btn nec-btn-llamar" href="tel:+${tel}">📞 ${esCA ? 'Trucar' : 'Llamar'}</a><a class="nec-btn nec-btn-wa" href="https://wa.me/${tel}" target="_blank" rel="noopener">💬 WhatsApp</a>
+    ${CURRENT_USER ? `<button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCA ? 'Demanar cita' : 'Pedir cita'}</button>` : ''}</div>
+    <small>📍 C/ de la Pau del Protectorat, 14 · Tarragona${typeof logosHorarioTexto === 'function' ? ' · ' + logosHorarioTexto() : ''}</small></div>`;
+}
+function LOGOS_CONTACTOS_LISTA(){ try { return LOGOS_CONTACTOS; } catch(e){ return []; } }
 // Mismo formato que en cada trámite: «Lo hago yo» (enlace oficial) o «Necesito ayuda de Logos».
 function ncBotones(i, esCA){
   const r = NEC_RAPIDOS[i];
   const ayuda = CURRENT_USER
     ? `<button class="nc-ayuda" onclick="event.stopPropagation();ncAyuda(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`
     : `<a class="nc-ayuda" href="tel:+34630461560" onclick="event.stopPropagation()">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`;
+  if(!NEC_LO_HAGO_YO) return ayuda;
   return `<a class="nc-go" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation();ncYo(${i})">🔗 ${esCA ? 'Ho faig jo' : 'Lo hago yo'}</a>${ayuda}`;
 }
 function ncYo(i){ if(CURRENT_USER) registrarTramiteApp(NEC_RAPIDOS[i].es, 'solo'); }
@@ -1942,7 +1965,7 @@ function necBuscar(){
     const t = esCA ? e.ca : e.es, sub = esCA ? e.sub_ca : e.sub_es;
     return e.tipo === 'link'
       ? `<div class="nb-card" id="nb-card-${i}"><div style="display:flex;gap:12px;align-items:center;"><span class="nb-ri">${e.em}</span><span><strong>${escAttr(t)}</strong><br><small style="color:var(--ink-soft);">${escAttr(sub)}</small></span></div>
-          <div class="nec-item-b"><a class="nec-btn nec-btn-yo" href="${e.u}" target="_blank" rel="noopener" onclick="necYoRes(${i})">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>
+          <div class="nec-item-b">${NEC_LO_HAGO_YO ? `<a class="nec-btn nec-btn-yo" href="${e.u}" target="_blank" rel="noopener" onclick="necYoRes(${i})">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>` : ''}
           ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="necAyudaRes(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>` : `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`}</div></div>`
       : `<button class="nb-r" onclick="necAbrir('${escAttr(e.amb)}','${escAttr(e.nec)}')"><span class="nb-ri">${e.em}</span><span><strong>${escAttr(t)}</strong><small>${escAttr(sub)}</small></span></button>`;
   }).join('');
@@ -1961,7 +1984,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-04 · v105 (firmar el consentimiento del alta presencial en el propio móvil con el QR; blog de Logos; citas cada 45 min)';
+const APP_VERSION_ACOMP = '2026-11-05 · v106 (necesidades: «Lo hago yo» en pausa en todas las áreas, también vivienda; en su lugar, contactar con Logos por teléfono, WhatsApp, cita o en la sede; firma del consentimiento en el móvil)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2080,7 +2103,8 @@ function itemTramiteHtml(item, i, esCA){
     ${item.desc ? `<div class="nec-item-d">${item.desc}</div>` : ''}
     ${item.rev ? catalogoDetalleHtml(item.rev, esCA) : ''}
     <div class="nec-item-b">
-      <a class="nec-btn nec-btn-yo" href="${item.url}" target="_blank" rel="noopener" onclick="registrarTramiteApp(__NEC_ITEMS[${i}].nombre, 'solo')">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>
+      ${NEC_LO_HAGO_YO ? `<a class="nec-btn nec-btn-yo" href="${item.url}" target="_blank" rel="noopener" onclick="registrarTramiteApp(__NEC_ITEMS[${i}].nombre, 'solo')">🔗 ${esCA ? 'Ho faig jo (enllaç oficial)' : 'Lo hago yo (enlace oficial)'}</a>`
+        : ''}
       ${ayuda}
       ${item.sid ? `<button class="nec-btn nec-btn-info" onclick="showDetail('${item.sid}')">ℹ️ ${esCA ? 'Més informació' : 'Más información'}</button>` : ''}
     </div></div>`;
@@ -2253,7 +2277,7 @@ function necesidadesAcordeonHtml(a){
   __NEC_ITEMS = [];
   const bloques = [];
   if(a.id === 'cat-vivienda') bloques.push(`<div class="nec-card" style="border-color:#E0A526;background:#FFF8E6;"><div class="nec-card-t">ℹ️ ${esCA ? 'Logos no porta temes d\'habitatge' : 'Logos no lleva temas de vivienda'}</div>
-    <p class="nec-item-d" style="margin:0;">${esCA ? 'Per a ajuts al lloguer, habitatge social o qualsevol tràmit d\'habitatge, adreça\'t a l\'Oficina d\'Habitatge de Tarragona o a l\'Agència de l\'Habitatge de Catalunya (enllaços de sota). Si et pots quedar sense casa o és urgent, ves als Serveis Socials del teu ajuntament. Per a altres tràmits, feina o formació, Logos sí que t\'ajuda.' : 'Para ayudas al alquiler, vivienda social o cualquier trámite de vivienda, dirígete a la Oficina de Vivienda de Tarragona o a la Agència de l\'Habitatge de Catalunya (enlaces de abajo). Si puedes quedarte sin casa o es urgente, ve a los Servicios Sociales de tu ayuntamiento. Para otros trámites, empleo o formación, Logos sí te ayuda.'}</p></div>`);
+    <p class="nec-item-d" style="margin:0;">${esCA ? 'Per a ajuts al lloguer, habitatge social o qualsevol tràmit d\'habitatge, adreça\'t a l\'Oficina d\'Habitatge de Tarragona o a l\'Agència de l\'Habitatge de Catalunya. Si et pots quedar sense casa o és urgent, ves als Serveis Socials del teu ajuntament. Per a altres tràmits, feina o formació, Logos sí que t\'ajuda.' : 'Para ayudas al alquiler, vivienda social o cualquier trámite de vivienda, dirígete a la Oficina de Vivienda de Tarragona o a la Agència de l\'Habitatge de Catalunya. Si puedes quedarte sin casa o es urgente, ve a los Servicios Sociales de tu ayuntamiento. Para otros trámites, empleo o formación, Logos sí te ayuda.'}</p></div>`);
   if(IS_ADMIN) bloques.push(`<div class="nec-admin" style="margin:6px 0 12px;"><h5 style="margin:0 0 4px;">🛠️ ${esCA ? 'Mode administració' : 'Modo administración'}</h5><div class="nec-item-d" style="margin:0;">${esCA ? 'Pots treure un tràmit amb la ✕ o afegir-ne un de nou al final de cada prestació.' : 'Puedes quitar un trámite con la ✕ o añadir uno nuevo al final de cada prestación.'}</div></div>`);
   // «Documentos y certificados»: datos completos de la persona. «Citas previas»: certificado digital y citas.
   if(a.id === 'cat-documentos' || a.id === 'cat-citas'){
@@ -2304,7 +2328,7 @@ function necesidadesAcordeonHtml(a){
     ajustes.filter(x => !x.oculto && x.url).forEach(x => items.push({ titulo: (LANG === 'ca' && x.titulo_ca) ? x.titulo_ca : x.titulo_es, url: x.url, desc: '', sid: null, nombre: n.nombre.es + ' — ' + x.titulo_es, necId: n.id, origen: 'admin', ajusteId: x.id }));
     let cuerpo;
     if(items.length){
-      cuerpo = items.map(it => { __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
+      cuerpo = (!NEC_LO_HAGO_YO && a.id !== 'cat-vivienda' ? necContactoLogosHtml(esCA) : '') + items.map(it => { __NEC_ITEMS.push(it); return itemTramiteHtml(it, __NEC_ITEMS.length - 1, esCA); }).join('');
     } else {
       __NEC_ITEMS.push({ nombre: n.nombre.es });
       const idx = __NEC_ITEMS.length - 1;
@@ -7337,7 +7361,7 @@ async function renderDashboard(){
         const idxT = window.__MIS_TRAMITES.push(tr) - 1;
         const esCAt = LANG === 'ca';
         const botones = (tr.estado === 'hecho' || tr.estado === 'anulado') ? '' : `<div class="nec-item-b" style="margin-top:8px;">
-            ${enlace ? `<a class="nec-btn nec-btn-yo" href="${enlace}" target="_blank" rel="noopener">🔗 ${esCAt ? 'Anar al tràmit' : 'Ir al trámite'}</a>` : `<a class="nec-btn nec-btn-llamar" href="tel:+34630461560">📞 ${esCAt ? 'Trucar a Logos' : 'Llamar a Logos'}</a><button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCAt ? 'Demanar cita' : 'Pedir cita'}</button>`}
+            ${enlace && NEC_LO_HAGO_YO ? `<a class="nec-btn nec-btn-yo" href="${enlace}" target="_blank" rel="noopener">🔗 ${esCAt ? 'Anar al tràmit' : 'Ir al trámite'}</a>` : `<a class="nec-btn nec-btn-llamar" href="tel:+34630461560">📞 ${esCAt ? 'Trucar a Logos' : 'Llamar a Logos'}</a><button class="nec-btn" onclick="showScreen('cita');renderCitaForm()">📅 ${esCAt ? 'Demanar cita' : 'Pedir cita'}</button>`}
             ${tr.estado === 'derivado_logos' ? '' : `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramiteExistente(${idxT})">🤝 ${esCAt ? 'Necessito ajuda' : 'Necesito ayuda'}</button>`}
             <button class="nec-btn" style="color:var(--alert);border-color:var(--alert);" onclick="anularMiTramite('${tr.id}')">✖ ${esCAt ? 'Anul·lar tràmit' : 'Anular trámite'}</button>
           </div>`;
