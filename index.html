@@ -1984,7 +1984,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-05 · v106 (necesidades: «Lo hago yo» en pausa en todas las áreas, también vivienda; en su lugar, contactar con Logos por teléfono, WhatsApp, cita o en la sede; firma del consentimiento en el móvil)';
+const APP_VERSION_ACOMP = '2026-11-08 · v107 (enlace y QR de inscripción para familias de Jóvenes en acción: ?familias) · antes: v106 (necesidades: «Lo hago yo» en pausa en todas las áreas, también vivienda; en su lugar, contactar con Logos por teléfono, WhatsApp, cita o en la sede; firma del consentimiento en el móvil)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -10485,6 +10485,58 @@ window.LOGOSNAV_APP = {
   programar(400);
 })();
 
+</script>
+<script>
+// ===== Enlace / QR de inscripción para familias de Jóvenes en acción · v107 =====
+// acompanya.logostgn.cat/?familias  →  bienvenida · crear cuenta o entrar · consentimiento · añadir hijos/as.
+// La sección «Familias» sigue oculta en el menú para el resto; la ven quien llega con el enlace y las familias ya inscritas.
+(function(){
+  const CLAVE = 'logos_familia_inv';
+  let inv = false;
+  try { const q = new URLSearchParams(location.search); inv = q.has('familias') || /familias/i.test(location.hash || ''); if(inv) localStorage.setItem(CLAVE, '1'); } catch(e){}
+  const marcado = () => { try { return localStorage.getItem(CLAVE) === '1'; } catch(e){ return inv; } };
+  const ca = () => (typeof LANG !== 'undefined' && LANG === 'ca');
+  const L = (es, c) => ca() ? c : es;
+  function mostrarBoton(){ const b = document.getElementById('sidebar-familias-btn'); if(b) b.style.display = ''; }
+  function bienvenida(){
+    if(document.getElementById('fam-inv-ov')) return;
+    const ov = document.createElement('div'); ov.id = 'fam-inv-ov';
+    ov.style.cssText = 'position:fixed;inset:0;z-index:99990;background:rgba(15,25,45,.6);display:flex;align-items:center;justify-content:center;padding:16px;';
+    ov.innerHTML = `<div style="background:#fff;border-radius:20px;max-width:440px;width:100%;padding:22px 22px 18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.5);border-top:6px solid #F2BC2C;font-family:inherit;">
+      <div style="font-size:12px;font-weight:800;letter-spacing:.04em;color:#1F6B3E;text-transform:uppercase;">🌱 ${L('Jóvenes en acción · Logos', 'Joves en acció · Logos')}</div>
+      <h2 style="margin:4px 0 8px;font-size:22px;color:#1B2333;">👨‍👩‍👧 ${L('Inscribe a tu familia', 'Inscriu la teva família')}</h2>
+      <p style="margin:0 0 12px;font-size:14.5px;line-height:1.55;color:#3A4254;">${L('Así podrás autorizar las actividades de tus hijos/as, recibir los avisos de Logos y hablar con el equipo.', 'Així podràs autoritzar les activitats dels teus fills/es, rebre els avisos de Logos i parlar amb l\'equip.')}</p>
+      <ol style="margin:0 0 16px 18px;padding:0;font-size:14.5px;line-height:1.7;color:#1B2333;">
+        <li>${L('<b>Crea tu cuenta</b> (o entra si ya tienes una).', '<b>Crea el teu compte</b> (o entra si ja en tens un).')}</li>
+        <li>${L('<b>Acepta</b> el consentimiento de datos.', '<b>Accepta</b> el consentiment de dades.')}</li>
+        <li>${L('<b>Añade a tus hijos/as</b> con su fecha de nacimiento.', '<b>Afegeix els teus fills/es</b> amb la data de naixement.')}</li></ol>
+      <button id="fam-inv-ok" style="width:100%;background:#1F8A4C;color:#fff;border:0;border-radius:999px;padding:13px;font-size:15.5px;font-weight:800;cursor:pointer;font-family:inherit;">${L('Empezar', 'Començar')} ›</button>
+      <p style="margin:10px 0 0;font-size:12px;color:#6B7280;text-align:center;">${L('¿Necesitas ayuda? Ven a Logos o llámanos y te inscribimos.', 'Necessites ajuda? Vine a Logos o truca\'ns i t\'inscrivim.')}</p></div>`;
+    document.body.appendChild(ov);
+    ov.querySelector('#fam-inv-ok').onclick = () => { ov.remove(); try { if(typeof showScreen === 'function') showScreen('home'); } catch(e){} };
+  }
+  async function trasEntrar(){
+    if(typeof sb === 'undefined' || !sb) return;
+    let user = null; try { const { data } = await sb.auth.getSession(); user = data && data.session ? data.session.user : null; } catch(e){}
+    if(!user){ if(marcado() && inv) bienvenida(); return; }
+    let tiene = false;
+    try { const r = await sb.from('menores_familia').select('id', { count: 'exact', head: true }).eq('familiar_usuario_id', user.id); tiene = !r.error && (r.count || 0) > 0; } catch(e){}
+    if(tiene || marcado()) mostrarBoton();
+    if(marcado() && !window.__famInvHecho){
+      window.__famInvHecho = true;
+      const ov = document.getElementById('fam-inv-ov'); if(ov) ov.remove();
+      setTimeout(() => { try { showScreen('familias'); renderFamilias(); } catch(e){} }, 300);
+      if(tiene){ try { localStorage.removeItem(CLAVE); } catch(e){} }   // ya inscrita: la próxima vez entra normal (el botón sigue)
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(trasEntrar, 1200);
+    try { if(typeof sb !== 'undefined' && sb) sb.auth.onAuthStateChange((ev, session) => { if(session) setTimeout(trasEntrar, 900); }); } catch(e){}
+  });
+  // al añadir el primer hijo/a, la invitación ya ha cumplido
+  const o = window.anadirMenor;
+  if(typeof o === 'function') window.anadirMenor = async function(){ const r = await o.apply(this, arguments); try { localStorage.removeItem(CLAVE); } catch(e){} mostrarBoton(); return r; };
+})();
 </script>
 </body>
 </html>
