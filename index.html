@@ -1140,6 +1140,7 @@ body{font-size:15.5px;}
 .blog-boton a:hover{filter:brightness(1.08);}
 .blog-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
 .blog-tarjeta{display:flex;flex-direction:column;background:#fff;border:1px solid #E3E7EE;border-radius:16px;overflow:hidden;text-decoration:none;color:#1B2333;box-shadow:0 4px 16px rgba(20,30,50,.06);transition:transform .15s,box-shadow .15s;}
+.blog-tarjeta__img{position:relative;}.blog-portada{position:relative;}.blog-tarjeta__img::after,.blog-portada:not(.blog-portada--video)::after{content:"";position:absolute;right:10px;bottom:10px;width:72px;height:42px;box-sizing:border-box;padding:4px 7px;background:#fff url("logo-sidebar.png") center/contain no-repeat;background-origin:content-box;border-radius:9px;box-shadow:0 2px 8px rgba(15,23,42,.25);pointer-events:none;}
 .blog-tarjeta:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(20,30,50,.12);}
 .blog-tarjeta__img{display:block;aspect-ratio:16/9;background:var(--b-s) center/cover no-repeat;}
 .blog-tarjeta__img--color{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--b-a),var(--b-s));font-size:40px;}
@@ -9496,6 +9497,8 @@ function blogTarjetaHtml(x, ca, href, op){
 }
 
 // ---------- Blog: lector a pantalla completa ----------
+async function canalIdiomasAcomp(){ const m = {}; try { const r = await sb.rpc('canal_idiomas', { p_donde: 'acompanya' }); if(!r.error && Array.isArray(r.data)) r.data.forEach(o => { m[o.id] = o; }); } catch(e){} return m; }
+function canalLocAcomp(x, m){ const o = m[x.id], l = typeof LANG !== 'undefined' && LANG === 'ca' ? 'ca' : 'es'; if(!o) return x; const y = Object.assign({}, x); if(o.portadas && o.portadas[l]) y.imagen_url = o.portadas[l]; if(o.categorias && o.categorias[l]) y.categoria = o.categorias[l]; return y; }
 async function blogAbrirAcomp(id){
   const ca = typeof LANG !== 'undefined' && LANG === 'ca';
   let ov = document.getElementById('blog-ov'); if(ov) ov.remove();
@@ -9503,7 +9506,7 @@ async function blogAbrirAcomp(id){
   ov.innerHTML = `<div class="blog-ov-bar"><button type="button" onclick="blogCerrarAcomp()">← ${ca ? 'Tornar' : 'Volver'}</button><button type="button" class="b2" id="blog-ov-comp">${ca ? 'Compartir' : 'Compartir'}</button></div><div class="blog-ov-in"><p style="text-align:center;color:#6B7385;">…</p></div>`;
   document.body.appendChild(ov); document.body.style.overflow = 'hidden';
   try { history.pushState({ blog: id }, ''); } catch(e){}
-  let x = null; try { const r = await sb.rpc('canal_articulo', { p_id: id, p_donde: 'acompanya' }); if(!r.error) x = r.data; } catch(e){}
+  let x = null; try { const r = await sb.rpc('canal_articulo', { p_id: id, p_donde: 'acompanya' }); if(!r.error) x = r.data; if(x && x.id) x = canalLocAcomp(x, await canalIdiomasAcomp()); } catch(e){}
   const inn = ov.querySelector('.blog-ov-in');
   if(!x || !x.id){ inn.innerHTML = `<p style="text-align:center;">${ca ? 'Aquest article ja no està publicat.' : 'Este artículo ya no está publicado.'}</p>`; return; }
   inn.innerHTML = blogArticuloHtml(x, ca, { video: canalVidHtml, etiquetaVideo: ca ? 'Veure el vídeo' : 'Ver el vídeo', lectura: ca ? 'de lectura' : 'de lectura' });
@@ -9521,7 +9524,7 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape' && document.ge
 
 async function pintarCanalAcomp(){
   const host = document.getElementById('canal-acomp'); if(!host) return;
-  let L = null; try { const r = await sb.rpc('canal_publico', { p_donde: 'acompanya' }); if(!r.error) L = r.data; } catch(e){}
+  let L = null; try { const r = await sb.rpc('canal_publico', { p_donde: 'acompanya' }); if(!r.error) L = r.data; if(Array.isArray(L) && L.length){ const m = await canalIdiomasAcomp(); L = L.map(x => canalLocAcomp(x, m)); } } catch(e){}
   if(!Array.isArray(L) || !L.length){ host.hidden = true; return; }
   const ca = typeof LANG !== 'undefined' && LANG === 'ca', loc = ca ? 'ca-ES' : 'es-ES';
   const tit = x => ca && x.titulo_ca ? x.titulo_ca : x.titulo, txt = x => ca && x.texto_ca ? x.texto_ca : (x.texto || '');
