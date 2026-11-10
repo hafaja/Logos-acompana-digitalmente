@@ -1140,7 +1140,6 @@ body{font-size:15.5px;}
 .blog-boton a:hover{filter:brightness(1.08);}
 .blog-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
 .blog-tarjeta{display:flex;flex-direction:column;background:#fff;border:1px solid #E3E7EE;border-radius:16px;overflow:hidden;text-decoration:none;color:#1B2333;box-shadow:0 4px 16px rgba(20,30,50,.06);transition:transform .15s,box-shadow .15s;}
-.blog-tarjeta__img{position:relative;}.blog-portada{position:relative;}.blog-tarjeta__img::after,.blog-portada:not(.blog-portada--video)::after{content:"";position:absolute;right:10px;bottom:10px;width:72px;height:42px;box-sizing:border-box;padding:4px 7px;background:#fff url("logo-sidebar.png") center/contain no-repeat;background-origin:content-box;border-radius:9px;box-shadow:0 2px 8px rgba(15,23,42,.25);pointer-events:none;}
 .blog-tarjeta:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(20,30,50,.12);}
 .blog-tarjeta__img{display:block;aspect-ratio:16/9;background:var(--b-s) center/cover no-repeat;}
 .blog-tarjeta__img--color{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--b-a),var(--b-s));font-size:40px;}
@@ -1985,7 +1984,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-08 · v107 (enlace y QR de inscripción para familias de Jóvenes en acción: ?familias) · antes: v106 (necesidades: «Lo hago yo» en pausa en todas las áreas, también vivienda; en su lugar, contactar con Logos por teléfono, WhatsApp, cita o en la sede; firma del consentimiento en el móvil)';
+const APP_VERSION_ACOMP = '2026-11-10 · v107 (Proyecto Raíces: firmar la autorización en el móvil con el QR de la Intranet, sin cuenta)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -9497,8 +9496,6 @@ function blogTarjetaHtml(x, ca, href, op){
 }
 
 // ---------- Blog: lector a pantalla completa ----------
-async function canalIdiomasAcomp(){ const m = {}; try { const r = await sb.rpc('canal_idiomas', { p_donde: 'acompanya' }); if(!r.error && Array.isArray(r.data)) r.data.forEach(o => { m[o.id] = o; }); } catch(e){} return m; }
-function canalLocAcomp(x, m){ const o = m[x.id], l = typeof LANG !== 'undefined' && LANG === 'ca' ? 'ca' : 'es'; if(!o) return x; const y = Object.assign({}, x); if(o.portadas && o.portadas[l]) y.imagen_url = o.portadas[l]; if(o.categorias && o.categorias[l]) y.categoria = o.categorias[l]; return y; }
 async function blogAbrirAcomp(id){
   const ca = typeof LANG !== 'undefined' && LANG === 'ca';
   let ov = document.getElementById('blog-ov'); if(ov) ov.remove();
@@ -9506,7 +9503,7 @@ async function blogAbrirAcomp(id){
   ov.innerHTML = `<div class="blog-ov-bar"><button type="button" onclick="blogCerrarAcomp()">← ${ca ? 'Tornar' : 'Volver'}</button><button type="button" class="b2" id="blog-ov-comp">${ca ? 'Compartir' : 'Compartir'}</button></div><div class="blog-ov-in"><p style="text-align:center;color:#6B7385;">…</p></div>`;
   document.body.appendChild(ov); document.body.style.overflow = 'hidden';
   try { history.pushState({ blog: id }, ''); } catch(e){}
-  let x = null; try { const r = await sb.rpc('canal_articulo', { p_id: id, p_donde: 'acompanya' }); if(!r.error) x = r.data; if(x && x.id) x = canalLocAcomp(x, await canalIdiomasAcomp()); } catch(e){}
+  let x = null; try { const r = await sb.rpc('canal_articulo', { p_id: id, p_donde: 'acompanya' }); if(!r.error) x = r.data; } catch(e){}
   const inn = ov.querySelector('.blog-ov-in');
   if(!x || !x.id){ inn.innerHTML = `<p style="text-align:center;">${ca ? 'Aquest article ja no està publicat.' : 'Este artículo ya no está publicado.'}</p>`; return; }
   inn.innerHTML = blogArticuloHtml(x, ca, { video: canalVidHtml, etiquetaVideo: ca ? 'Veure el vídeo' : 'Ver el vídeo', lectura: ca ? 'de lectura' : 'de lectura' });
@@ -9524,7 +9521,7 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape' && document.ge
 
 async function pintarCanalAcomp(){
   const host = document.getElementById('canal-acomp'); if(!host) return;
-  let L = null; try { const r = await sb.rpc('canal_publico', { p_donde: 'acompanya' }); if(!r.error) L = r.data; if(Array.isArray(L) && L.length){ const m = await canalIdiomasAcomp(); L = L.map(x => canalLocAcomp(x, m)); } } catch(e){}
+  let L = null; try { const r = await sb.rpc('canal_publico', { p_donde: 'acompanya' }); if(!r.error) L = r.data; } catch(e){}
   if(!Array.isArray(L) || !L.length){ host.hidden = true; return; }
   const ca = typeof LANG !== 'undefined' && LANG === 'ca', loc = ca ? 'ca-ES' : 'es-ES';
   const tit = x => ca && x.titulo_ca ? x.titulo_ca : x.titulo, txt = x => ca && x.texto_ca ? x.texto_ca : (x.texto || '');
@@ -9627,6 +9624,87 @@ async function firmaMovilIniciar(){
   pinta();
 }
 document.addEventListener('DOMContentLoaded', () => setTimeout(firmaMovilIniciar, 50));
+
+// ---------- Proyecto Raíces: firmar la autorización en el móvil (QR desde la Intranet) · SQL 87 ----------
+async function raicesFirmaIniciar(){
+  let token = ''; try { token = new URLSearchParams(location.search).get('raices') || ''; } catch(e){}
+  if(!/^[0-9a-f]{32,64}$/i.test(token) || !sb) return;
+  const ov = document.createElement('div'); ov.id = 'fm-ov'; ov.className = 'fm-ov';
+  ov.innerHTML = '<div class="fm-in"><p style="text-align:center;margin-top:40px;">…</p></div>'; document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+  let info = null; try { const r = await sb.rpc('raices_firma_ver', { p_token: token }); if(!r.error) info = r.data; } catch(e){}
+  let esCA = (info && info.idioma === 'ca') || (typeof LANG !== 'undefined' && LANG === 'ca');
+  const DECL = [
+    ['Cuento con el consentimiento expreso del otro progenitor/representante legal.', 'Compto amb el consentiment exprés de l\'altre progenitor/representant legal.'],
+    ['Ostento la patria potestad en exclusiva por resolución judicial firme.', 'Tinc la pàtria potestat en exclusiva per resolució judicial ferma.'],
+    ['Existe resolución judicial que suspende o limita la patria potestad del otro progenitor.', 'Hi ha una resolució judicial que suspèn o limita la pàtria potestat de l\'altre progenitor.'],
+    ['Actúo con autorización judicial expresa para decidir sobre la participación de los menores.', 'Actuo amb autorització judicial expressa per decidir sobre la participació dels menors.'],
+    ['Actúo según el art. 156 del Código Civil (violencia de género o contra los hijos/as) y he comunicado la participación al otro progenitor.', 'Actuo segons l\'art. 156 del Codi Civil (violència de gènere o contra els fills/es) i he comunicat la participació a l\'altre progenitor.']];
+  const pinta = () => {
+    const L = (es, ca) => esCA ? ca : es, inn = ov.querySelector('.fm-in');
+    const est = info && info.estado;
+    if(est !== 'pendiente'){
+      inn.innerHTML = `<div class="fm-cab"><img src="logo-sidebar.png" alt="Logos" onerror="this.remove()"></div><div class="fm-fin">${est === 'firmada' ? '✅' : '⌛'}<h2>${est === 'firmada' ? L('Esta autorización ya está firmada', 'Aquesta autorització ja està signada') : L('Este QR ya no sirve', 'Aquest QR ja no serveix')}</h2><p>${est === 'firmada' ? L('No hace falta hacer nada más.', 'No cal fer res més.') : L('Ha caducado o no existe. Pide a la técnica de Logos que genere uno nuevo.', 'Ha caducat o no existeix. Demana a la tècnica de Logos que en generi un de nou.')}</p></div>`;
+      return;
+    }
+    const men = (info.menores || []).filter(Boolean);
+    inn.innerHTML = `<div class="fm-cab"><img src="logo-sidebar.png" alt="Logos" onerror="this.remove()"><div class="fm-lang"><button type="button" class="${esCA ? '' : 'on'}" data-l="es">ES</button><button type="button" class="${esCA ? 'on' : ''}" data-l="ca">CA</button></div></div>
+      <h1>${L('Hola', 'Hola')}${info.nombre ? ', ' + canalEsc(info.nombre) : ''} 👋</h1>
+      <p class="fm-int">🌳 <b>${L('Proyecto Raíces: Reconexión Familiar', 'Projecte Raíces: Reconnexió Familiar')}</b><br>${L('Lee la autorización hasta el final. Después marca las casillas y firma con el dedo.', 'Llegeix l\'autorització fins al final. Després marca les caselles i signa amb el dit.')}</p>
+      <div class="fm-doc" id="fm-doc">
+        <h2 style="font-size:15px;text-align:center;margin:10px 0 2px;">${L('AUTORIZACIÓN PARA LA RECOGIDA Y TRATAMIENTO DE DATOS DE CARÁCTER PERSONAL', 'AUTORITZACIÓ PER A LA RECOLLIDA I EL TRACTAMENT DE DADES DE CARÀCTER PERSONAL')}</h2>
+        <p style="font-size:12px;color:#666;text-align:center;margin:0 0 8px;">${L('Proyecto Raíces · Expediente', 'Projecte Raíces · Expedient')} ${canalEsc(info.codigo || '')}</p>
+        <p>${L('El Proyecto Raíces ofrece a las familias un espacio, presencial y virtual, de apoyo psicológico, educativo, social y recreativo: atención psicológica, mediación familiar, talleres, ludotecas y actividades de ocio (campus de verano y Navidad), para fortalecer la convivencia, el bienestar emocional y las relaciones familiares, especialmente en hogares con niñas, niños o jóvenes en situación de vulnerabilidad.', 'El Projecte Raíces ofereix a les famílies un espai, presencial i virtual, de suport psicològic, educatiu, social i recreatiu: atenció psicològica, mediació familiar, tallers, ludoteques i activitats de lleure (casal d\'estiu i Nadal), per enfortir la convivència, el benestar emocional i les relacions familiars, especialment en llars amb nenes, nens o joves en situació de vulnerabilitat.')}</p>
+        <p><b>${L('Responsable del tratamiento', 'Responsable del tractament')}:</b> Associació Logos – Projectes Socials · NIF G55725436 · Carrer de la Pau del Protectorat, 14 – 43004 Tarragona · 630 46 15 60 · info@logostgn.cat</p>
+        <p><b>${L('Finalidad', 'Finalitat')}:</b> ${L('gestión de la participación en el proyecto, cofinanciado por el Programa FSE+ de Inclusión Social, Garantía Infantil y lucha contra la pobreza, y su seguimiento, gestión financiera, verificación y auditoría.', 'gestió de la participació en el projecte, cofinançat pel Programa FSE+ d\'Inclusió Social, Garantia Infantil i lluita contra la pobresa, i el seu seguiment, gestió financera, verificació i auditoria.')}</p>
+        <p><b>${L('Legitimación', 'Legitimació')}:</b> ${L('art. 6.1 c) y e) del Reglamento (UE) 2016/679, en cumplimiento de los arts. 8 y 72 del Reglamento (UE) 2021/1060.', 'art. 6.1 c) i e) del Reglament (UE) 2016/679, en compliment dels arts. 8 i 72 del Reglament (UE) 2021/1060.')}</p>
+        <p><b>${L('Destinatarios', 'Destinataris')}:</b> ${L('UAFSE (Autoridad de Gestión y de Certificación), Ministerio de Derechos Sociales, Consumo y Agenda 2030, Comisión Europea, Autoridad de Auditoría del FSE+, Tribunal de Cuentas Europeo y Nacional, empresas adjudicatarias contratadas por Hogar SI y otros organismos de control.', 'UAFSE (Autoritat de Gestió i de Certificació), Ministeri de Drets Socials, Consum i Agenda 2030, Comissió Europea, Autoritat d\'Auditoria del FSE+, Tribunal de Comptes Europeu i Nacional, empreses adjudicatàries contractades per Hogar SI i altres organismes de control.')}</p>
+        <p><b>${L('Datos', 'Dades')}:</b> ${L('los aportados por la propia familia: datos personales y de categorías especiales (art. 9 RGPD).', 'els aportats per la mateixa família: dades personals i de categories especials (art. 9 RGPD).')}</p>
+        <p><b>${L('Tus derechos', 'Els teus drets')}:</b> ${L('acceso, rectificación, supresión, limitación, portabilidad y oposición (arts. 15 a 23 RGPD), en info@logostgn.cat o presencialmente en la sede. También puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es). Puedes retirar este consentimiento cuando quieras.', 'accés, rectificació, supressió, limitació, portabilitat i oposició (arts. 15 a 23 RGPD), a info@logostgn.cat o presencialment a la seu. També pots reclamar davant l\'Agència Espanyola de Protecció de Dades (www.aepd.es). Pots retirar aquest consentiment quan vulguis.')}</p>
+        ${men.length ? `<p><b>${L('Menores que participan', 'Menors que hi participen')}:</b> ${men.map(canalEsc).join(', ')}</p>` : ''}
+        <p style="color:#666;font-size:12px;">${L('Fin del documento.', 'Fi del document.')}</p></div>
+      <p class="fm-av" id="fm-av">⬇️ ${L('Baja hasta el final del documento para continuar.', 'Baixa fins al final del document per continuar.')}</p>
+      <div class="fm-bloq" id="fm-bloq">
+        <label class="fm-ck"><input type="checkbox" id="rf-c1"> <span><b>*</b> ${L('He leído y comprendido la información y AUTORIZO el tratamiento y la cesión de mis datos y los de las personas indicadas.', 'He llegit i entès la informació i AUTORITZO el tractament i la cessió de les meves dades i les de les persones indicades.')}</span></label>
+        <label class="fm-ck"><input type="checkbox" id="rf-c2"> <span><b>*</b> ${L('AUTORIZO la participación en el Proyecto Raíces de las personas indicadas, incluidas las personas menores de edad', 'AUTORITZO la participació al Projecte Raíces de les persones indicades, incloses les persones menors d\'edat')}${men.length ? ' (' + men.map(canalEsc).join(', ') + ')' : ''}.</span></label>
+        <div class="fm-opt"><div class="fm-opt-t">${L('Solo si firma una sola persona representante legal: declaro responsablemente que…', 'Només si signa una sola persona representant legal: declaro responsablement que…')}</div>
+          <select id="rf-decl" style="width:100%;padding:10px;border-radius:10px;border:1px solid #CBD3E0;font-size:14px;"><option value="">${L('— No aplica (firmamos las dos personas) —', '— No s\'aplica (signem les dues persones) —')}</option>${DECL.map(d => `<option value="${canalEsc(d[0])}">${canalEsc(L(d[0], d[1]))}</option>`).join('')}</select></div>
+        <div class="fm-firma-t">✍️ ${L('Tu firma', 'La teva signatura')}</div>
+        <canvas id="fm-canvas" width="900" height="360" class="fm-canvas"></canvas>
+        <button type="button" class="fm-borrar" id="fm-borrar">🗑️ ${L('Borrar y volver a firmar', 'Esborrar i tornar a signar')}</button>
+        <div id="fm-err"></div>
+        <button type="button" class="fm-ok" id="fm-ok">✅ ${L('Firmar', 'Signar')}</button>
+      </div>`;
+    inn.querySelectorAll('.fm-lang button').forEach(b => b.onclick = () => { esCA = b.dataset.l === 'ca'; pinta(); });
+    const doc = document.getElementById('fm-doc'), bloq = document.getElementById('fm-bloq');
+    const abrir = () => { if(bloq.classList.contains('on')) return; bloq.classList.add('on'); document.getElementById('fm-av').innerHTML = '✅ ' + L('Has llegado al final. Ahora marca las casillas y firma.', 'Has arribat al final. Ara marca les caselles i signa.'); };
+    doc.addEventListener('scroll', () => { if(doc.scrollTop + doc.clientHeight >= doc.scrollHeight - 14) abrir(); });
+    if(doc.scrollHeight <= doc.clientHeight + 14) abrir();
+    const cv = document.getElementById('fm-canvas'), ctx = cv.getContext('2d'); let dib = false, trazos = 0;
+    ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#17181C';
+    const pos = ev => { const r = cv.getBoundingClientRect(), t = ev.touches ? ev.touches[0] : ev; return { x: (t.clientX - r.left) * cv.width / r.width, y: (t.clientY - r.top) * cv.height / r.height }; };
+    const ini = ev => { ev.preventDefault(); dib = true; trazos++; const p = pos(ev); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+    const mov = ev => { if(!dib) return; ev.preventDefault(); const p = pos(ev); ctx.lineTo(p.x, p.y); ctx.stroke(); };
+    const fin = () => { dib = false; };
+    cv.addEventListener('touchstart', ini, { passive: false }); cv.addEventListener('touchmove', mov, { passive: false }); cv.addEventListener('touchend', fin);
+    cv.addEventListener('mousedown', ini); cv.addEventListener('mousemove', mov); cv.addEventListener('mouseup', fin); cv.addEventListener('mouseleave', fin);
+    document.getElementById('fm-borrar').onclick = () => { ctx.clearRect(0, 0, cv.width, cv.height); trazos = 0; };
+    document.getElementById('fm-ok').onclick = async () => {
+      const err = document.getElementById('fm-err'), fallo = m => { err.innerHTML = `<div class="fm-e">${m}</div>`; };
+      if(!bloq.classList.contains('on')) return fallo(L('Primero baja hasta el final del documento.', 'Primer baixa fins al final del document.'));
+      if(!document.getElementById('rf-c1').checked || !document.getElementById('rf-c2').checked) return fallo(L('Marca las dos casillas obligatorias (*).', 'Marca les dues caselles obligatòries (*).'));
+      if(!trazos) return fallo(L('Falta tu firma.', 'Falta la teva signatura.'));
+      const b = document.getElementById('fm-ok'); b.disabled = true; b.textContent = '⏳ ' + L('Enviando…', 'Enviant…');
+      const out = document.createElement('canvas'); out.width = 500; out.height = 200; out.getContext('2d').drawImage(cv, 0, 0, 500, 200);
+      let ok = false, msg = '';
+      try { const r = await sb.rpc('raices_firma_firmar', { p_token: token, p_firma: out.toDataURL('image/png'), p_datos: true, p_participacion: true, p_declaracion: document.getElementById('rf-decl').value || null, p_dispositivo: (navigator.userAgent || '').slice(0, 200) }); ok = !r.error && r.data === true; msg = r.error ? r.error.message : ''; } catch(e){ msg = e.message; }
+      if(!ok){ b.disabled = false; b.textContent = '✅ ' + L('Firmar', 'Signar'); return fallo(msg ? canalEsc(msg) : L('No se ha podido enviar. Puede que el QR haya caducado: pide uno nuevo.', 'No s\'ha pogut enviar. Pot ser que el QR hagi caducat: demana\'n un de nou.')); }
+      inn.innerHTML = `<div class="fm-cab"><img src="logo-sidebar.png" alt="Logos" onerror="this.remove()"></div><div class="fm-fin">✅<h2>${L('¡Firmado! Gracias', 'Signat! Gràcies')}</h2><p>${L('Tu autorización ha llegado a Logos. Ya puedes devolver el móvil o cerrar esta página.', 'La teva autorització ha arribat a Logos. Ja pots tornar el mòbil o tancar aquesta pàgina.')}</p></div>`;
+      try { history.replaceState(null, '', location.pathname); } catch(e){}
+    };
+  };
+  pinta();
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(raicesFirmaIniciar, 60));
 
 
 // ---------- Botón «Aa»: ayudas para ver y leer mejor (se recuerdan en este móvil u ordenador) ----------
@@ -10488,58 +10566,6 @@ window.LOGOSNAV_APP = {
   programar(400);
 })();
 
-</script>
-<script>
-// ===== Enlace / QR de inscripción para familias de Jóvenes en acción · v107 =====
-// acompanya.logostgn.cat/?familias  →  bienvenida · crear cuenta o entrar · consentimiento · añadir hijos/as.
-// La sección «Familias» sigue oculta en el menú para el resto; la ven quien llega con el enlace y las familias ya inscritas.
-(function(){
-  const CLAVE = 'logos_familia_inv';
-  let inv = false;
-  try { const q = new URLSearchParams(location.search); inv = q.has('familias') || /familias/i.test(location.hash || ''); if(inv) localStorage.setItem(CLAVE, '1'); } catch(e){}
-  const marcado = () => { try { return localStorage.getItem(CLAVE) === '1'; } catch(e){ return inv; } };
-  const ca = () => (typeof LANG !== 'undefined' && LANG === 'ca');
-  const L = (es, c) => ca() ? c : es;
-  function mostrarBoton(){ const b = document.getElementById('sidebar-familias-btn'); if(b) b.style.display = ''; }
-  function bienvenida(){
-    if(document.getElementById('fam-inv-ov')) return;
-    const ov = document.createElement('div'); ov.id = 'fam-inv-ov';
-    ov.style.cssText = 'position:fixed;inset:0;z-index:99990;background:rgba(15,25,45,.6);display:flex;align-items:center;justify-content:center;padding:16px;';
-    ov.innerHTML = `<div style="background:#fff;border-radius:20px;max-width:440px;width:100%;padding:22px 22px 18px;box-shadow:0 24px 60px -16px rgba(0,0,0,.5);border-top:6px solid #F2BC2C;font-family:inherit;">
-      <div style="font-size:12px;font-weight:800;letter-spacing:.04em;color:#1F6B3E;text-transform:uppercase;">🌱 ${L('Jóvenes en acción · Logos', 'Joves en acció · Logos')}</div>
-      <h2 style="margin:4px 0 8px;font-size:22px;color:#1B2333;">👨‍👩‍👧 ${L('Inscribe a tu familia', 'Inscriu la teva família')}</h2>
-      <p style="margin:0 0 12px;font-size:14.5px;line-height:1.55;color:#3A4254;">${L('Así podrás autorizar las actividades de tus hijos/as, recibir los avisos de Logos y hablar con el equipo.', 'Així podràs autoritzar les activitats dels teus fills/es, rebre els avisos de Logos i parlar amb l\'equip.')}</p>
-      <ol style="margin:0 0 16px 18px;padding:0;font-size:14.5px;line-height:1.7;color:#1B2333;">
-        <li>${L('<b>Crea tu cuenta</b> (o entra si ya tienes una).', '<b>Crea el teu compte</b> (o entra si ja en tens un).')}</li>
-        <li>${L('<b>Acepta</b> el consentimiento de datos.', '<b>Accepta</b> el consentiment de dades.')}</li>
-        <li>${L('<b>Añade a tus hijos/as</b> con su fecha de nacimiento.', '<b>Afegeix els teus fills/es</b> amb la data de naixement.')}</li></ol>
-      <button id="fam-inv-ok" style="width:100%;background:#1F8A4C;color:#fff;border:0;border-radius:999px;padding:13px;font-size:15.5px;font-weight:800;cursor:pointer;font-family:inherit;">${L('Empezar', 'Començar')} ›</button>
-      <p style="margin:10px 0 0;font-size:12px;color:#6B7280;text-align:center;">${L('¿Necesitas ayuda? Ven a Logos o llámanos y te inscribimos.', 'Necessites ajuda? Vine a Logos o truca\'ns i t\'inscrivim.')}</p></div>`;
-    document.body.appendChild(ov);
-    ov.querySelector('#fam-inv-ok').onclick = () => { ov.remove(); try { if(typeof showScreen === 'function') showScreen('home'); } catch(e){} };
-  }
-  async function trasEntrar(){
-    if(typeof sb === 'undefined' || !sb) return;
-    let user = null; try { const { data } = await sb.auth.getSession(); user = data && data.session ? data.session.user : null; } catch(e){}
-    if(!user){ if(marcado() && inv) bienvenida(); return; }
-    let tiene = false;
-    try { const r = await sb.from('menores_familia').select('id', { count: 'exact', head: true }).eq('familiar_usuario_id', user.id); tiene = !r.error && (r.count || 0) > 0; } catch(e){}
-    if(tiene || marcado()) mostrarBoton();
-    if(marcado() && !window.__famInvHecho){
-      window.__famInvHecho = true;
-      const ov = document.getElementById('fam-inv-ov'); if(ov) ov.remove();
-      setTimeout(() => { try { showScreen('familias'); renderFamilias(); } catch(e){} }, 300);
-      if(tiene){ try { localStorage.removeItem(CLAVE); } catch(e){} }   // ya inscrita: la próxima vez entra normal (el botón sigue)
-    }
-  }
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(trasEntrar, 1200);
-    try { if(typeof sb !== 'undefined' && sb) sb.auth.onAuthStateChange((ev, session) => { if(session) setTimeout(trasEntrar, 900); }); } catch(e){}
-  });
-  // al añadir el primer hijo/a, la invitación ya ha cumplido
-  const o = window.anadirMenor;
-  if(typeof o === 'function') window.anadirMenor = async function(){ const r = await o.apply(this, arguments); try { localStorage.removeItem(CLAVE); } catch(e){} mostrarBoton(); return r; };
-})();
 </script>
 </body>
 </html>
