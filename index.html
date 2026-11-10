@@ -1984,7 +1984,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-10 · v107 (Proyecto Raíces: firmar la autorización en el móvil con el QR de la Intranet, sin cuenta)';
+const APP_VERSION_ACOMP = '2026-11-10 · v108 (consentimiento v3: texto en preguntas, seguridad y confidencialidad, 5 años de conservación, estudios de investigación)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -7017,69 +7017,77 @@ async function descargarCertificadoPDF(){
   }
 }
 
-// Texto legal del consentimiento · versión 2 (oct. 2026, revisada con el jurista). Se usa en la pantalla, en el alta presencial y en el PDF.
-const CONSENT_VERSION = 'v2.1-2026-10';
+// Texto legal del consentimiento · versión 3 (nov. 2026: v2.1 del jurista + mejoras del modelo URV). Se usa en la pantalla, en el alta presencial y en el PDF.
+const CONSENT_VERSION = 'v3-2026-11';
 function textoLegalConsentimientoHtml(esCA){
   const L = (es, ca) => esCA ? ca : es;
   const h = t => `<h3 style="font-size:13.5px;margin:16px 0 4px;">${t}</h3>`;
   const p = t => `<p style="font-size:12px;line-height:1.6;margin:0 0 4px;">${t}</p>`;
   const ul = items => `<ul style="font-size:12px;line-height:1.6;margin:0;padding-left:16px;">${items.map(x => `<li>${x}</li>`).join('')}</ul>`;
   const enc = [
-    ['Supabase Inc.', L('Base de datos y archivos de Logos Acompanya y de la intranet', 'Base de dades i arxius de Logos Acompanya i de la intranet')],
-    ['Netlify Inc.', L('Alojamiento de la web de la entidad', 'Allotjament del web de l\'entitat')],
-    ['GitHub Inc. (Microsoft)', L('Alojamiento de las aplicaciones Logos Acompanya e intranet', 'Allotjament de les aplicacions Logos Acompanya i intranet')],
-    ['Nominalia Internet S.L.', L('Dominio logostgn.cat y correo electrónico', 'Domini logostgn.cat i correu electrònic')],
-    ['Google (Cloud Translation)', L('Traducción en directo, solo cuando se usa el traductor', 'Traducció en directe, només quan es fa servir el traductor')],
-    ['Anthropic PBC', L('Asistente de orientación con inteligencia artificial, solo cuando se le escribe', 'Assistent d\'orientació amb intel·ligència artificial, només quan s\'hi escriu')]
+    ['Supabase Inc.', L('Base de datos de Logos Acompanya: tu cuenta, citas, trámites y documentos (servidores en la Unión Europea)', 'Base de dades de Logos Acompanya: el teu compte, cites, tràmits i documents (servidors a la Unió Europea)')],
+    ['Netlify Inc.', L('Alojamiento de la app Logos Acompanya', 'Allotjament de l\'app Logos Acompanya')],
+    ['Nominalia Internet S.L.', L('Dominio logostgn.cat y correo electrónico de Logos', 'Domini logostgn.cat i correu electrònic de Logos')],
+    ['Google (Cloud Translation)', L('Traductor de la app, solo cuando lo usas', 'Traductor de l\'app, només quan el fas servir')],
+    ['Anthropic PBC', L('Asistente de orientación con inteligencia artificial, solo cuando le escribes', 'Assistent d\'orientació amb intel·ligència artificial, només quan li escrius')]
   ];
   return `
-    ${h(L('1. Responsable del tratamiento', '1. Responsable del tractament'))}
-    ${p(`Associació Logos Projectes Socials · NIF: G55725436<br>${L('Calle de la Pau del Protectorat, 14, 43004 Tarragona', 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona')}<br>${L('Correo electrónico', 'Correu electrònic')}: info@logostgn.cat`)}
+    ${p(L('<em>Versión 3 · noviembre de 2026. Léelo con calma; si tienes dudas, pregúntanos antes de firmar.</em>', '<em>Versió 3 · novembre de 2026. Llegeix-ho amb calma; si tens dubtes, pregunta\'ns abans de signar.</em>'))}
+    ${h(L('a) ¿Quién es el responsable de tus datos?', 'a) Qui és el responsable de les teves dades?'))}
+    ${p(`Associació Logos – Projectes Socials · NIF: G55725436<br>${L('Calle de la Pau del Protectorat, 14, 43004 Tarragona', 'Carrer de la Pau del Protectorat, 14, 43004 Tarragona')} · ${L('Teléfono', 'Telèfon')}: 630 46 15 60<br>${L('Correo de contacto y de protección de datos', 'Correu de contacte i de protecció de dades')}: info@logostgn.cat`)}
+    ${p(L('Te atendemos en la sede, en el horario publicado, o en el espacio de un programa que se te indique por escrito con su dirección. A distancia, por Logos Acompanya, teléfono o correo electrónico.', 'T\'atenem a la seu, en l\'horari publicat, o a l\'espai d\'un programa que se t\'indiqui per escrit amb la seva adreça. A distància, per Logos Acompanya, telèfon o correu electrònic.'))}
 
-    ${h(L('2. Lugar donde se te atiende', '2. Lloc on se t\'atén'))}
-    ${p(L('La atención presencial se presta en un lugar identificable y localizable: la sede de la entidad, en la Calle de la Pau del Protectorat, 14, 43004 Tarragona, en el horario publicado, o en el espacio de un programa que se te indique por escrito con su dirección. La atención a distancia se presta a través de Logos Acompanya, por teléfono o por correo electrónico.',
-      'L\'atenció presencial es presta en un lloc identificable i localitzable: la seu de l\'entitat, al Carrer de la Pau del Protectorat, 14, 43004 Tarragona, en l\'horari publicat, o a l\'espai d\'un programa que se t\'indiqui per escrit amb la seva adreça. L\'atenció a distància es presta a través de Logos Acompanya, per telèfon o per correu electrònic.'))}
+    ${h(L('b) ¿Qué datos tratamos y para qué?', 'b) Quines dades tractem i per a què?'))}
+    ${p(L('Usamos tus datos solo para acompañarte y para justificar ese acompañamiento ante quien lo financia. Lo que nos das al usar Logos Acompanya:', 'Fem servir les teves dades només per acompanyar-te i per justificar aquest acompanyament davant de qui el finança. El que ens dones en fer servir Logos Acompanya:'))}
+    ${ul([L('Al crear tu cuenta o en el alta presencial: nombre, teléfono, correo, documento de identidad, fecha de nacimiento, municipio y situación (lo necesario para orientarte).', 'En crear el compte o a l\'alta presencial: nom, telèfon, correu, document d\'identitat, data de naixement, municipi i situació (el necessari per orientar-te).'),
+      L('Lo que pides en la app: citas, necesidades, trámites y ayudas que te interesan.', 'El que demanes a l\'app: cites, necessitats, tràmits i ajuts que t\'interessen.'),
+      L('Los documentos que subes y tu firma del consentimiento (en la app o en tu móvil con un QR).', 'Els documents que puges i la teva signatura del consentiment (a l\'app o al teu mòbil amb un QR).'),
+      L('Lo que escribes al asistente de orientación o en los mensajes con Logos.', 'El que escrius a l\'assistent d\'orientació o als missatges amb Logos.')])}
+    ${p(L('Para qué:', 'Per a què:'))}
+    ${ul([L('Gestionar tus citas, trámites y tu participación en los programas de Logos.', 'Gestionar les teves cites, tràmits i la teva participació en els programes de Logos.'),
+      L('Avisarte por la app, teléfono, WhatsApp o correo de tus citas y de tus trámites.', 'Avisar-te per l\'app, telèfon, WhatsApp o correu de les teves cites i tràmits.'),
+      L('Cumplir las obligaciones de las subvenciones y convenios y justificarlas.', 'Complir les obligacions de les subvencions i convenis i justificar-les.'),
+      L('Hacer estadísticas y memorias con datos anonimizados (sin nombres).', 'Fer estadístiques i memòries amb dades anonimitzades (sense noms).')])}
 
-    ${h(L('3. Finalidad del tratamiento', '3. Finalitat del tractament'))}
-    ${p(L('Los datos personales facilitados serán tratados para:', 'Les dades personals facilitades seran tractades per a:'))}
-    ${ul([L('La gestión administrativa, operativa y funcional de tu participación en programas y servicios.', 'La gestió administrativa, operativa i funcional de la teva participació en programes i serveis.'),
-      L('Contactarte por teléfono, WhatsApp o correo electrónico para tus citas, trámites y seguimiento.', 'Contactar-te per telèfon, WhatsApp o correu electrònic per a les teves cites, tràmits i seguiment.'),
-      L('El cumplimiento de obligaciones legales derivadas de subvenciones y convenios, y su justificación.', 'El compliment d\'obligacions legals derivades de subvencions i convenis, i la seva justificació.'),
-      L('La elaboración de estadísticas y memorias con datos anonimizados.', 'L\'elaboració d\'estadístiques i memòries amb dades anonimitzades.')])}
-
-    ${h(L('4. Legitimación', '4. Legitimació'))}
+    ${h(L('c) ¿Con qué base legal?', 'c) Amb quina base legal?'))}
     ${p(L('El tratamiento se basa en el Reglamento (UE) 2016/679 (RGPD) y en la Ley Orgánica 3/2018 (LOPDGDD):', 'El tractament es basa en el Reglament (UE) 2016/679 (RGPD) i en la Llei orgànica 3/2018 (LOPDGDD):'))}
     ${ul([L('La prestación del servicio de acompañamiento que solicitas (art. 6.1.b RGPD).', 'La prestació del servei d\'acompanyament que sol·licites (art. 6.1.b RGPD).'),
       L('El cumplimiento de obligaciones legales (art. 6.1.c RGPD).', 'El compliment d\'obligacions legals (art. 6.1.c RGPD).'),
-      L('El cumplimiento de una misión de interés público vinculada a los programas sociales (art. 6.1.e RGPD).', 'El compliment d\'una missió d\'interès públic vinculada als programes socials (art. 6.1.e RGPD).'),
-      L('Para datos especialmente protegidos, el art. 9.2 del RGPD.', 'Per a dades especialment protegides, l\'art. 9.2 del RGPD.'),
-      L('Tu consentimiento expreso y voluntario (art. 6.1.a RGPD), solo para dos cosas opcionales: recibir información de actividades, cursos y novedades de Logos, y el uso de tu imagen y voz (apartado 10).', 'El teu consentiment exprés i voluntari (art. 6.1.a RGPD), només per a dues coses opcionals: rebre informació d\'activitats, cursos i novetats de Logos, i l\'ús de la teva imatge i veu (apartat 10).')])}
+      L('Una misión de interés público vinculada a los programas sociales (art. 6.1.e RGPD).', 'Una missió d\'interès públic vinculada als programes socials (art. 6.1.e RGPD).'),
+      L('Para datos especialmente protegidos (salud, origen, situación social), el art. 9.2 del RGPD.', 'Per a dades especialment protegides (salut, origen, situació social), l\'art. 9.2 del RGPD.'),
+      L('Tu consentimiento expreso y voluntario (art. 6.1.a RGPD), solo para lo opcional: recibir información de actividades, cursos y novedades de Logos, y el uso de tu imagen y voz.', 'El teu consentiment exprés i voluntari (art. 6.1.a RGPD), només per al que és opcional: rebre informació d\'activitats, cursos i novetats de Logos, i l\'ús de la teva imatge i veu.')])}
 
-    ${h(L('5. Destinatarios', '5. Destinataris'))}
+    ${h(L('d) ¿Quién más puede ver tus datos?', 'd) Qui més pot veure les teves dades?'))}
     ${p(L('Los datos no se ceden a terceros, excepto:', 'Les dades no se cedeixen a tercers, excepte:'))}
     ${ul([L('Administraciones públicas que lo requieran por obligación legal. En el proyecto «Mirada Endavant», los datos imprescindibles se comunican al Departamento de Derechos Sociales e Inclusión de la Generalitat de Catalunya para justificar la subvención (Orden DSO/283/2023).', 'Administracions públiques que ho requereixin per obligació legal. En el projecte «Mirada Endavant», les dades imprescindibles es comuniquen al Departament de Drets Socials i Inclusió de la Generalitat de Catalunya per justificar la subvenció (Ordre DSO/283/2023).'),
       L('Entidades colaboradoras o financiadoras, cuando sea necesario para el programa.', 'Entitats col·laboradores o finançadores, quan sigui necessari per al programa.')])}
-
-    ${h(L('6. Proveedores tecnológicos (encargados del tratamiento)', '6. Proveïdors tecnològics (encarregats del tractament)'))}
-    ${p(L('Para prestar el servicio, Logos utiliza estos proveedores, que tratan los datos solo por cuenta de Logos y siguiendo sus instrucciones (art. 28 RGPD):', 'Per prestar el servei, Logos fa servir aquests proveïdors, que tracten les dades només per compte de Logos i seguint les seves instruccions (art. 28 RGPD):'))}
+    ${p(L('Proveedores tecnológicos (encargados del tratamiento): tratan los datos solo por cuenta de Logos y siguiendo sus instrucciones (art. 28 RGPD):', 'Proveïdors tecnològics (encarregats del tractament): tracten les dades només per compte de Logos i seguint les seves instruccions (art. 28 RGPD):'))}
     <table style="width:100%;border-collapse:collapse;font-size:11.5px;margin:4px 0 6px;">${enc.map(([n, d]) => `<tr><td style="border:1px solid #ddd;padding:4px 6px;font-weight:700;width:38%;">${n}</td><td style="border:1px solid #ddd;padding:4px 6px;">${d}</td></tr>`).join('')}</table>
     ${p(L('Todos cumplen el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD) y aplican medidas de seguridad adecuadas. Cuando alguno trata datos fuera del Espacio Económico Europeo, se aplican las garantías del capítulo V del RGPD: la decisión de adecuación de la Comisión Europea para el Marco de Privacidad de Datos UE-EE. UU. o las cláusulas contractuales tipo aprobadas por la Comisión.',
       'Tots compleixen el Reglament (UE) 2016/679 (RGPD) i la Llei orgànica 3/2018 (LOPDGDD) i apliquen mesures de seguretat adequades. Quan algun tracta dades fora de l\'Espai Econòmic Europeu, s\'apliquen les garanties del capítol V del RGPD: la decisió d\'adequació de la Comissió Europea per al Marc de Privadesa de Dades UE-EUA o les clàusules contractuals tipus aprovades per la Comissió.'))}
 
-    ${h(L('7. Seguridad de los datos', '7. Seguretat de les dades'))}
-    ${p(L('Los datos viajan cifrados (HTTPS) y se guardan cifrados en los servidores. Además, los datos más sensibles —notas de seguimiento, nombres de referencia, nombres de menores y de docentes— se guardan con un cifrado adicional (AES-256) cuya clave solo conoce el sistema. Solo accede el personal autorizado de Logos, con usuario personal y verificación en dos pasos.',
-      'Les dades viatgen xifrades (HTTPS) i es guarden xifrades als servidors. A més, les dades més sensibles —notes de seguiment, noms de referència, noms de menors i de docents— es guarden amb un xifratge addicional (AES-256) la clau del qual només coneix el sistema. Només hi accedeix el personal autoritzat de Logos, amb usuari personal i verificació en dos passos.'))}
+    ${h(L('e) ¿Cómo protegemos tus datos?', 'e) Com protegim les teves dades?'))}
+    ${ul([L('Logos Acompanya funciona siempre cifrada (HTTPS) y tus datos se guardan cifrados en servidores de la Unión Europea.', 'Logos Acompanya funciona sempre xifrada (HTTPS) i les teves dades es guarden xifrades en servidors de la Unió Europea.'),
+      L('Los datos más sensibles (notas de seguimiento, nombres de menores) llevan un cifrado adicional (AES-256).', 'Les dades més sensibles (notes de seguiment, noms de menors) porten un xifratge addicional (AES-256).'),
+      L('Tu cuenta está protegida por tu contraseña: no la compartas. En tu móvil solo se guarda lo necesario para no tener que entrar cada vez y tus preferencias (idioma, tamaño de letra).', 'El teu compte està protegit per la teva contrasenya: no la comparteixis. Al teu mòbil només es guarda el necessari per no haver d\'entrar cada vegada i les teves preferències (idioma, mida de lletra).'),
+      L('Dentro de Logos solo ven tus datos las personas del equipo que te atienden, con usuario personal y verificación en dos pasos. Todo el personal firma un compromiso de confidencialidad.', 'Dins de Logos només veuen les teves dades les persones de l\'equip que t\'atenen, amb usuari personal i verificació en dos passos. Tot el personal signa un compromís de confidencialitat.'),
+      L('Logos toma como referencia las medidas del Esquema Nacional de Seguridad (Real Decreto 311/2022).', 'Logos pren com a referència les mesures de l\'Esquema Nacional de Seguretat (Reial decret 311/2022).'),
+      L('Consejo: no escribas al asistente datos de salud ni contraseñas; para eso, habla con tu técnica o técnico.', 'Consell: no escriguis a l\'assistent dades de salut ni contrasenyes; per a això, parla amb la teva tècnica o tècnic.')])}
 
-    ${h(L('8. Tus derechos y cómo retirar el consentimiento', '8. Els teus drets i com retirar el consentiment'))}
+    ${h(L('f) Tus derechos, retirar el consentimiento y reclamar', 'f) Els teus drets, retirar el consentiment i reclamar'))}
     ${p(L('Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad. Puedes <strong>retirar tu consentimiento en cualquier momento</strong>, sin que afecte a lo hecho antes de retirarlo (art. 7.3 RGPD): desde Logos Acompanya (Mi espacio › Mi consentimiento › «Retirar mi consentimiento» o «Pedir que borren mis datos»), escribiendo a info@logostgn.cat o en la sede. Se te responderá en un plazo máximo de un mes. Los datos que la ley obliga a conservar se guardarán bloqueados solo el tiempo exigido (art. 17.3 RGPD). Si no estás de acuerdo, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).',
       'Pots exercir els drets d\'accés, rectificació, supressió, oposició, limitació i portabilitat. Pots <strong>retirar el teu consentiment en qualsevol moment</strong>, sense que afecti el que s\'ha fet abans de retirar-lo (art. 7.3 RGPD): des de Logos Acompanya (El meu espai › El meu consentiment › «Retirar el meu consentiment» o «Demanar que esborrin les meves dades»), escrivint a info@logostgn.cat o a la seu. Se\'t respondrà en un termini màxim d\'un mes. Les dades que la llei obliga a conservar es guardaran bloquejades només el temps exigit (art. 17.3 RGPD). Si no hi estàs d\'acord, pots reclamar davant l\'Agència Espanyola de Protecció de Dades (www.aepd.es).'))}
+    ${p(L('Lo que la ley obliga a guardar (por ejemplo, la justificación de una subvención) no se borra al retirar el consentimiento: queda <strong>bloqueado y separado de tu identidad</strong>, y solo se usa si una autoridad lo exige. Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (C/ Jorge Juan, 6, 28001 Madrid · www.aepd.es).', 'El que la llei obliga a guardar (per exemple, la justificació d\'una subvenció) no s\'esborra en retirar el consentiment: queda <strong>bloquejat i separat de la teva identitat</strong>, i només es fa servir si una autoritat ho exigeix. Si creus que no hem tractat bé les teves dades, pots reclamar davant l\'Agència Espanyola de Protecció de Dades (C/ Jorge Juan, 6, 28001 Madrid · www.aepd.es).'))}
 
-    ${h(L('9. Conservación de los datos', '9. Conservació de les dades'))}
-    ${p(L('Los datos se conservarán mientras exista relación con la entidad y durante los plazos legales exigidos. Después se suprimirán o anonimizarán.', 'Les dades es conservaran mentre existeixi relació amb l\'entitat i durant els terminis legals exigits. Després se suprimiran o anonimitzaran.'))}
+    ${h(L('g) ¿Cuánto tiempo guardamos tus datos?', 'g) Quant de temps guardem les teves dades?'))}
+    ${p(L('Mientras te acompañamos y, después, <strong>5 años</strong> desde el final de la atención o del programa. Si una subvención exige más (por ejemplo, el FSE+), se guardan bloqueados el tiempo que pida. Después se borran o se anonimizan.', 'Mentre t\'acompanyem i, després, <strong>5 anys</strong> des del final de l\'atenció o del programa. Si una subvenció n\'exigeix més (per exemple, el FSE+), es guarden bloquejades el temps que demani. Després s\'esborren o s\'anonimitzen.'))}
 
-    ${h(L('10. Imagen, voz y difusión pública (opcional y voluntario)', '10. Imatge, veu i difusió pública (opcional i voluntari)'))}
+    ${h(L('Imagen, voz y difusión pública (opcional y voluntario)', 'Imatge, veu i difusió pública (opcional i voluntari)'))}
     ${p(L('Solo si marcas esta autorización (es opcional): Logos podrá usar fotos, vídeos o grabaciones de tu voz tomados en sus actividades, y tu testimonio, para darlos a conocer públicamente en Logos Acompanya, la web logostgn.cat, redes sociales y memorias, con finalidades informativas, educativas y de difusión. Si no la marcas, no cambia nada en la atención que recibes. Puedes cambiar tu decisión cuando quieras desde la app o en la sede.',
       'Només si marques aquesta autorització (és opcional): Logos podrà fer servir fotos, vídeos o enregistraments de la teva veu presos a les seves activitats, i el teu testimoni, per donar-los a conèixer públicament a Logos Acompanya, al web logostgn.cat, a xarxes socials i a memòries, amb finalitats informatives, educatives i de difusió. Si no la marques, no canvia res en l\'atenció que reps. Pots canviar la teva decisió quan vulguis des de l\'app o a la seu.'))}
+
+    ${h(L('Estudios de investigación (opcional y voluntario)', 'Estudis de recerca (opcional i voluntari)'))}
+    ${p(L('Logos colabora con universidades, como la Universitat Rovira i Virgili, en estudios sobre pobreza, cuidados o alimentación aprobados por un comité de ética. Nunca pasamos tus datos sin preguntarte: si te invitamos a uno, te daremos su propia hoja de información (quién lo hace, para qué y quién es responsable de los datos) y firmarás un consentimiento aparte. Decir que no no cambia nada en tu atención, y puedes dejarlo cuando quieras.', 'Logos col·labora amb universitats, com la Universitat Rovira i Virgili, en estudis sobre pobresa, cures o alimentació aprovats per un comitè d\'ètica. Mai no passem les teves dades sense preguntar-t\'ho: si et convidem a un, et donarem el seu propi full d\'informació (qui el fa, per a què i qui és responsable de les dades) i signaràs un consentiment a part. Dir que no no canvia res en la teva atenció, i ho pots deixar quan vulguis.'))}
 
     <h3 style="font-size:13.5px;margin:16px 0 4px;color:#7A4A1F;">${L('Cláusula sobre responsabilidad en trámites', 'Clàusula sobre responsabilitat en tràmits')}</h3>
     ${p(L('La Associació Logos Projectes Socials presta un servicio de acompañamiento, apoyo y orientación en la realización de trámites administrativos y gestiones digitales. La entidad no es responsable del resultado final de los trámites, ni de su resolución, plazos de respuesta, incidencias técnicas o eventual denegación, ya que estos dependen exclusivamente de los organismos y administraciones competentes.',
@@ -8609,7 +8617,7 @@ function renderConsentStep(avisoBloqueo){
       <fieldset class="cons-imagen">
         <legend>${esCA ? 'Autoritzacions opcionals · pots marcar-les o no' : 'Autorizaciones opcionales · puedes marcarlas o no'}</legend>
         <label class="checkbox-row"><input type="checkbox" id="cons-contacto"> ${esCA ? "ACCEPTO rebre informació d'activitats, cursos i novetats de Logos per WhatsApp, correu o telèfon." : "ACEPTO recibir información de actividades, cursos y novedades de Logos por WhatsApp, correo o teléfono."}</label>
-        <label class="checkbox-row"><input type="checkbox" id="cons-imagen"> ${esCA ? "AUTORITZO que Logos difongui públicament la meva imatge, veu o testimoni (apartat 10)." : "AUTORIZO que Logos difunda públicamente mi imagen, voz o testimonio (apartado 10)."}</label>
+        <label class="checkbox-row"><input type="checkbox" id="cons-imagen"> ${esCA ? "AUTORITZO que Logos difongui públicament la meva imatge, veu o testimoni (apartat «Imatge, veu i difusió pública»)." : "AUTORIZO que Logos difunda públicamente mi imagen, voz o testimonio (apartado «Imagen, voz y difusión pública»)."}</label>
         <p class="subtle" style="margin:4px 0 0;font-size:12.5px;">${esCA ? "Són voluntàries: si no les marques, no canvia res en l'atenció que reps. Les pots canviar quan vulguis." : "Son voluntarias: si no las marcas, no cambia nada en la atención que recibes. Puedes cambiarlas cuando quieras."}</p>
       </fieldset>
       <p class="subtle" style="margin-top:8px;">${esCA ? '* Obligatori per continuar.' : '* Obligatorio para continuar.'}</p>
@@ -9585,7 +9593,7 @@ async function firmaMovilIniciar(){
         <label class="fm-ck"><input type="checkbox" id="fm-c2"> <span><b>*</b> ${L('AUTORIZO la comunicación de mis datos a los organismos públicos que lo requieran legalmente.', 'AUTORITZO la comunicació de les meves dades als organismes públics que ho requereixin legalment.')}</span></label>
         <div class="fm-opt"><div class="fm-opt-t">${L('Voluntarias (si no las marcas, no cambia nada)', 'Voluntàries (si no les marques, no canvia res)')}</div>
           <label class="fm-ck"><input type="checkbox" id="fm-c3"> <span>${L('ACEPTO recibir información de actividades, cursos y novedades de Logos por WhatsApp, correo o teléfono.', 'ACCEPTO rebre informació d\'activitats, cursos i novetats de Logos per WhatsApp, correu o telèfon.')}</span></label>
-          <label class="fm-ck"><input type="checkbox" id="fm-c4"> <span>${L('AUTORIZO la difusión pública de mi imagen, voz o testimonio (apartado 10).', 'AUTORITZO la difusió pública de la meva imatge, veu o testimoni (apartat 10).')}</span></label></div>
+          <label class="fm-ck"><input type="checkbox" id="fm-c4"> <span>${L('AUTORIZO la difusión pública de mi imagen, voz o testimonio (apartado «Imagen, voz y difusión pública»).', 'AUTORITZO la difusió pública de la meva imatge, veu o testimoni (apartat «Imatge, veu i difusió pública»).')}</span></label></div>
         <div class="fm-firma-t">✍️ ${L('Tu firma', 'La teva signatura')}</div>
         <canvas id="fm-canvas" width="900" height="360" class="fm-canvas"></canvas>
         <button type="button" class="fm-borrar" id="fm-borrar">🗑️ ${L('Borrar y volver a firmar', 'Esborrar i tornar a signar')}</button>
