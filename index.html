@@ -193,6 +193,8 @@
   .nec-item-d{font-size:12.5px;color:var(--ink-soft);line-height:1.45;margin-top:3px;}
   .nec-rev{display:inline-block;font-size:11px;font-weight:700;color:#1F6B3A;background:#E7F5EC;border:1px solid #BFE3CB;border-radius:999px;padding:1px 8px;margin:4px 0 0;}
   .nec-meta{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+  .ct-dia.ct-dia-lleno{opacity:.45;cursor:not-allowed;}
+  .ct-dia-ll{display:block;font-style:normal;font-size:10px;font-weight:700;color:#8A4B12;}
   .nec-item-logos{border-color:#F0D9A8;background:#FFFBF2;}
   .nec-tag-logos{display:inline-block;font-size:11px;font-weight:700;color:#8A4B12;background:#FBEEDA;border:1px solid #F0D9A8;border-radius:999px;padding:1px 8px;vertical-align:middle;margin-left:4px;}
   .nec-destino{font-size:12px;color:#1F6B3A;margin-top:6px;line-height:1.4;}
@@ -1925,7 +1927,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-11 · v111 (catálogo 2026 + lista de Luis: citas previas, paro, autónomos, adultos, salud; trámites «con Logos»)';
+const APP_VERSION_ACOMP = '2026-11-11 · v112 (citas: sin nombres de técnicos, se piden a Logos; máximo 4 citas al día)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -7687,6 +7689,19 @@ async function renderCitaForm(){
     <div id="ct-resumen"></div>
   `;
   ctPasos();
+  citaMarcarDiasCompletos(dias.map(d => hoyLocalIso(d)));
+}
+// v112: días que ya tienen 4 citas → «Completo» (SQL-93). Sin el SQL, no se marca nada y se comprueba al elegir el día.
+async function citaMarcarDiasCompletos(isos){
+  if(!isos.length) return;
+  try {
+    const r = await sb.rpc('citas_dias_completos', { p_desde: isos[0], p_hasta: isos[isos.length - 1] });
+    if(r.error || !Array.isArray(r.data)) return;
+    window.__citaDiasCompletos = new Set(r.data.map(x => String(x.fecha || x).slice(0, 10)));
+    const esCA = LANG === 'ca';
+    document.querySelectorAll('#cita-dias [data-dia]').forEach(b => { if(window.__citaDiasCompletos.has(b.dataset.dia)){ b.classList.add('ct-dia-lleno'); b.disabled = true; b.title = esCA ? 'Complet' : 'Completo';
+      if(!b.querySelector('.ct-dia-ll')) b.insertAdjacentHTML('beforeend', `<em class="ct-dia-ll">${esCA ? 'Complet' : 'Completo'}</em>`); } });
+  } catch(e){}
 }
 // Pasos de arriba: se marcan solos según lo que ya ha elegido la persona
 function ctPasos(){
@@ -7710,7 +7725,7 @@ function ctElegirHora(fecha, hora){
       <div class="ct-res-x">
         <div><b>🕘 ${hora}</b> h</div>
         <div>${porTel ? `📞 ${esCA ? 'Per telèfon' : 'Por teléfono'}${telCita ? ' · ' + escAttr(telCita) : ''}` : `🏢 ${esCA ? 'A Logos' : 'En Logos'} · C/ de la Pau del Protectorat, 14`}</div>
-        <div>👤 ${tecNombre ? escAttr(tecNombre) : (esCA ? 'La primera persona disponible' : 'La primera persona disponible')}</div>
+        <div>👤 ${tecNombre ? escAttr(tecNombre) : (esCA ? 'T\'atendrà l\'equip de Logos' : 'Te atenderá el equipo de Logos')}</div>
       </div></div>
     <button class="ct-ok" onclick="reservarCita('${fecha}','${hora}', true)">✅ ${esCA ? 'Confirmar la cita' : 'Confirmar la cita'}</button>
     <button class="ct-cambiar" onclick="window.__citaHoraSel=null;document.getElementById('ct-resumen').innerHTML='';document.querySelectorAll('#cita-horas .ct-hora').forEach(b=>b.classList.remove('sel'));ctPasos()">${esCA ? 'Canviar l\'hora' : 'Cambiar la hora'}</button>
@@ -7735,6 +7750,13 @@ async function seleccionarDiaCita(fechaIso){
     ...tecsSel.map(k => sb.rpc('tecnico_disponibilidad', { p_fecha: fechaIso, p_clave: k }).then(r => r.error ? null : r.data, () => null))
   ]);
   if(window.__citaDia !== fechaIso || citaTecsSel().join(',') !== tec) return; // el usuario ya ha cambiado de día o de técnico
+  { const totalDia = (ocupacion || []).reduce((n, o) => n + (Number(o.ocupadas) || 0), 0);
+    if(totalDia >= CITAS_MAX_DIA || (window.__citaDiasCompletos || new Set()).has(fechaIso)){
+      cont.innerHTML = `<div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);"><p style="margin:0;">📅 ${esCA ? `Aquest dia ja està <strong>complet</strong> (com a màxim ${CITAS_MAX_DIA} cites al dia). Tria un altre dia.` : `Este día ya está <strong>completo</strong> (como máximo ${CITAS_MAX_DIA} citas al día). Elige otro día.`}</p></div>`;
+      const b = document.querySelector(`#cita-dias [data-dia="${fechaIso}"]`); if(b) b.classList.add('ct-dia-lleno');
+      window.__citaHoraSel = null; { const rr = document.getElementById('ct-resumen'); if(rr) rr.innerHTML = ''; } ctPasos();
+      return;
+    } }
   const ocupTec = new Set(); dispTecs.forEach(d => ((d && d.ocupadas) || []).forEach(h => ocupTec.add(String(h).slice(0,5))));
   const tramosLista = dispTecs.map(d => d && Array.isArray(d.tramos) ? d.tramos : null);   // [] = tiene horario propio y ese día no trabaja (SQL 79)
   const tramosTec = tramosLista.some(Boolean) ? true : null;
@@ -7819,7 +7841,7 @@ function citaModosHtml(){
   ${m === 'telefono' ? `<div class="cita-tel">
     <label for="cita-tel-in">${esCA ? 'A quin telèfon et truquem?' : '¿A qué teléfono te llamamos?'}</label>
     <input id="cita-tel-in" type="tel" inputmode="tel" autocomplete="tel" value="${escAttr(tel)}" placeholder="600 000 000" oninput="window.__citaTel=this.value">
-    <ul><li>${esCA ? `El tècnic et trucarà des del <strong>${LOGOS_TEL_CITAS}</strong> a l'hora de la cita.` : `El técnico te llamará desde el <strong>${LOGOS_TEL_CITAS}</strong> a la hora de la cita.`}</li>
+    <ul><li>${esCA ? `Logos et trucarà des del <strong>${LOGOS_TEL_CITAS}</strong> a l'hora de la cita.` : `Logos te llamará desde el <strong>${LOGOS_TEL_CITAS}</strong> a la hora de la cita.`}</li>
     <li>${esCA ? 'Procura estar en un lloc tranquil i tenir els papers a mà.' : 'Procura estar en un lugar tranquilo y tener los papeles a mano.'}</li>
     <li>${esCA ? 'Si no pots atendre la trucada, cancel·la la cita.' : 'Si no puedes atender la llamada, cancela la cita.'}</li></ul>
   </div>` : ''}`;
@@ -7849,7 +7871,13 @@ async function cambiarModoCita(id, modo){
 }
 
 // --- Elegir técnico (SQL 39). Si el SQL no está ejecutado, la lista sale vacía y todo funciona como antes ---
+// v112: ya NO se elige técnico ni se ven nombres del equipo: la cita se pide a Logos y Logos la reparte.
+// Para volver a dejar elegir técnico: poner true.
+const CITA_ELEGIR_TECNICO = false;
+// Máximo de citas al día que se pueden pedir desde la app (SQL-93 lo controla también en Supabase)
+const CITAS_MAX_DIA = 4;
 async function cargarTecnicosCita(){
+  if(!CITA_ELEGIR_TECNICO){ window.__tecnicosCita = []; window.__citaTecs = []; window.__citaTec = ''; return []; }
   if(window.__tecnicosCita && Date.now() - (window.__tecnicosCitaT || 0) < 5*60*1000) return window.__tecnicosCita;
   let lista = [];
   try { const r = await sb.rpc('tecnicos_citas'); if(!r.error && Array.isArray(r.data)) lista = r.data.filter(t => t && t.clave && t.nombre); } catch(e){}
@@ -7862,7 +7890,7 @@ function citaTecsNombre(esCA){
   const n = citaTecsSel().map(k => ((window.__tecnicosCita || []).find(t => t.clave === k) || {}).nombre || '').filter(Boolean);
   return n.join(esCA ? ' i ' : ' y ');
 }
-function citaConQuien(c){ return c ? [c.tecnico_nombre, c.tecnico2_nombre].filter(Boolean).join(LANG === 'ca' ? ' i ' : ' y ') : ''; }
+function citaConQuien(c){ if(!CITA_ELEGIR_TECNICO) return ''; return c ? [c.tecnico_nombre, c.tecnico2_nombre].filter(Boolean).join(LANG === 'ca' ? ' i ' : ' y ') : ''; }
 function citaTecnicosHtml(tecnicos){
   const esCA = LANG === 'ca', sel = citaTecsSel();
   const ini = n => String(n || '?').trim().split(/\s+/).slice(0,2).map(x => x[0] || '').join('').toUpperCase();
@@ -7921,7 +7949,7 @@ async function reservarCita(fecha, hora, yaConfirmado){
   }
   if(error){
     document.getElementById('cita-horas').insertAdjacentHTML('afterbegin',
-      `<div class="auth-error">${error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar' + (tecsR.length > 1 ? ' per a una de les dues persones' : '') + '. Tria una altra.' : 'Esta hora se acaba de ocupar' + (tecsR.length > 1 ? ' para una de las dos personas' : '') + '. Elige otra.') : (error.message.includes('ya no está disponible') ? (esCA ? 'Aquesta persona ja no atén cites. Tria\'n una altra.' : 'Esta persona ya no atiende citas. Elige otra.') : error.message)}</div>`);
+      `<div class="auth-error">${/DIA_COMPLETO/.test(error.message) ? (esCA ? `Aquest dia s'acaba d'omplir (màxim ${CITAS_MAX_DIA} cites al dia). Tria un altre dia.` : `Este día se acaba de llenar (máximo ${CITAS_MAX_DIA} citas al día). Elige otro día.`) : error.message.includes('completo') || error.message.includes('complet') ? (esCA ? 'Aquesta hora s\'acaba d\'ocupar' + (tecsR.length > 1 ? ' per a una de les dues persones' : '') + '. Tria una altra.' : 'Esta hora se acaba de ocupar' + (tecsR.length > 1 ? ' para una de las dos personas' : '') + '. Elige otra.') : (error.message.includes('ya no está disponible') ? (esCA ? 'Aquesta persona ja no atén cites. Tria\'n una altra.' : 'Esta persona ya no atiende citas. Elige otra.') : error.message)}</div>`);
     seleccionarDiaCita(fecha);
     window.__reservandoCita = false;
     return;
