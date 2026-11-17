@@ -1358,8 +1358,9 @@ body{font-size:15.5px;}
         <div id="guia-card-host"></div>
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
         <p class="subtle" id="home-sub">Encuentra el trámite o la ayuda que necesitas en Tarragona.</p>
-        <div class="panel-card" id="nec-nota" style="background:#EEF4FB;border-color:#CFE0F5;margin-bottom:12px;border-radius:16px;">🔗 <strong>Puedes hacer el trámite tú mismo/a.</strong> Cada botón «Lo hago yo» te lleva a la página oficial correcta del trámite. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.</div>
+        <div class="panel-card" id="nec-nota" style="background:#EEF4FB;border-color:#CFE0F5;margin-bottom:12px;border-radius:16px;">🔗 <strong>Puedes hacer el trámite tú mismo/a.</strong> Cada botón «Lo hago yo» te lleva a la página oficial correcta del trámite. ¿No sabes por dónde empezar? <strong>Cuéntanos tu situación</strong> y te orientamos.</div>
         <div id="nec-carrusel"></div>
+        <div id="nec-empezar"></div>
         <div class="nb"><span class="nb-i">🔎</span><input id="nec-q" type="search" autocomplete="off" oninput="necBuscar()" aria-label="Buscar"></div>
         <div id="nec-res" class="nb-res" aria-live="polite"></div>
         <div id="ambitos-grid"></div>
@@ -1679,8 +1680,8 @@ function setLang(lang){
     ? '💡 De moment, per a qualsevol tràmit o ajuda, <strong>contacta amb Logos</strong>: per telèfon, per WhatsApp, demanant cita o venint a la seu. T\'atenem i t\'acompanyem.'
     : '💡 De momento, para cualquier trámite o ayuda, <strong>contacta con Logos</strong>: por teléfono, por WhatsApp, pidiendo cita o viniendo a la sede. Te atendemos y te acompañamos.';
   else if(nn) nn.innerHTML = (lang === 'ca')
-    ? '🔗 <strong>Pots fer el tràmit tu mateix/a.</strong> Cada botó «Ho faig jo» et porta a la pàgina oficial correcta del tràmit. I si ho prefereixes, <strong>Logos t\'ajuda</strong>: només cal que ens ho demanis.'
-    : '🔗 <strong>Puedes hacer el trámite tú mismo/a.</strong> Cada botón «Lo hago yo» te lleva a la página oficial correcta del trámite. Y si lo prefieres, <strong>Logos te ayuda</strong>: solo tienes que pedirlo.';
+    ? '🔗 <strong>Pots fer el tràmit tu mateix/a.</strong> Cada botó «Ho faig jo» et porta a la pàgina oficial correcta del tràmit. No saps per on començar? <strong>Explica\'ns la teva situació</strong> i t\'orientem.'
+    : '🔗 <strong>Puedes hacer el trámite tú mismo/a.</strong> Cada botón «Lo hago yo» te lleva a la página oficial correcta del trámite. ¿No sabes por dónde empezar? <strong>Cuéntanos tu situación</strong> y te orientamos.';
   document.getElementById('trust-title').textContent = T.trustTitle;
   document.getElementById('trust-body').textContent = T.trustBody;
   document.getElementById('back-to-home').innerHTML = T.backHome;
@@ -1723,12 +1724,13 @@ function renderAmbitos(){
   grid.innerHTML = `
     <div class="section-label" style="margin:4px 0 10px;">${esCA ? 'O tria un tema' : 'O elige un tema'}</div>
     <div class="areas-grid">${TAXONOMIA.map((a, i) => tarjeta(a, i)).join('')}</div>
-    <div class="areas-ayuda">
+  `;
+  { const ne = document.getElementById('nec-empezar'); if(ne) ne.innerHTML = `
+    <div class="areas-ayuda" style="margin:14px 0 16px;">
       <div class="emoji-grande">🤔</div>
       <div style="flex:1;min-width:200px;"><strong>${esCA ? 'No saps per on començar?' : '¿No sabes por dónde empezar?'}</strong><br><span class="subtle">${esCA ? 'Explica\'ns la teva situació i t\'ajudem a trobar-ho.' : 'Cuéntanos tu situación y te ayudamos a encontrarlo.'}</span></div>
       <button class="link-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">${esCA ? 'Explicar-ho →' : 'Contarlo →'}</button>
-    </div>
-  `;
+    </div>`; }
   const q = document.getElementById('nec-q'); if(q) q.placeholder = esCA ? 'Ex.: necessito ajuda per pagar el lloguer' : 'Ej.: necesito ayuda para pagar el alquiler';
   renderCarruselNec();
   if(q && q.value) necBuscar();
@@ -1843,14 +1845,19 @@ function necContactoLogosHtml(esCA, corto){
     <small>📍 C/ de la Pau del Protectorat, 14 · Tarragona${typeof logosHorarioTexto === 'function' ? ' · ' + logosHorarioTexto() : ''}</small></div>`;
 }
 function LOGOS_CONTACTOS_LISTA(){ try { return LOGOS_CONTACTOS; } catch(e){ return []; } }
+// v116 (decisión de David): en los trámites ya no sale «Necesito ayuda de Logos»; la gente lo hace ella misma con «Lo hago yo».
+// Para pedir ayuda queda «¿No sabes por dónde empezar? → Contarlo», justo debajo del carrusel. Solo los trámites que se hacen
+// con Logos (sin enlace oficial) siguen mostrando el botón de ayuda, porque no tienen otro.
+const NEC_AYUDA_LOGOS = false;
+function necConAyuda(tieneYo){ return NEC_AYUDA_LOGOS || !(NEC_LO_HAGO_YO && tieneYo); }
 // Mismo formato que en cada trámite: «Lo hago yo» (enlace oficial) o «Necesito ayuda de Logos».
 function ncBotones(i, esCA){
   const r = NEC_RAPIDOS[i];
   const ayuda = CURRENT_USER
     ? `<button class="nc-ayuda" onclick="event.stopPropagation();ncAyuda(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`
     : `<a class="nc-ayuda" href="tel:+34630461560" onclick="event.stopPropagation()">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`;
-  if(!NEC_LO_HAGO_YO) return ayuda;
-  return `<a class="nc-go" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation();ncYo(${i})">🔗 ${esCA ? 'Ho faig jo' : 'Lo hago yo'}</a>${ayuda}`;
+  if(!NEC_LO_HAGO_YO || !r.u) return ayuda;
+  return `<a class="nc-go" href="${r.u}" target="_blank" rel="noopener" onclick="event.stopPropagation();ncYo(${i})">🔗 ${esCA ? 'Ho faig jo' : 'Lo hago yo'}</a>${necConAyuda(true) ? ayuda : ''}`;
 }
 function ncYo(i){ if(CURRENT_USER) registrarTramiteApp(NEC_RAPIDOS[i].es, 'solo'); }
 async function ncAyuda(i){
@@ -1915,7 +1922,7 @@ function necBuscar(){
     return e.tipo === 'link'
       ? `<div class="nb-card" id="nb-card-${i}"><div style="display:flex;gap:12px;align-items:center;"><span class="nb-ri">${e.em}</span><span><strong>${escAttr(t)}</strong><br><small style="color:var(--ink-soft);">${escAttr(sub)}</small></span></div>
           <div class="nec-item-b">${NEC_LO_HAGO_YO && e.u ? `<a class="nec-btn nec-btn-yo" href="${e.u}" target="_blank" rel="noopener" onclick="necYoRes(${i})">🔗 ${esCA ? 'Ho faig jo' : 'Lo hago yo'}</a>` : ''}${e.cita ? `<a class="nec-btn nec-btn-cita" href="${escAttr(e.cita)}" target="_blank" rel="noopener" onclick="necYoRes(${i})">📅 ${esCA ? 'Demanar cita' : 'Pedir cita'}</a>` : ''}
-          ${CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="necAyudaRes(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>` : `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`}</div></div>`
+          ${!necConAyuda(!!e.u) ? '' : CURRENT_USER ? `<button class="nec-btn nec-btn-ayuda" onclick="necAyudaRes(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>` : `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`}</div></div>`
       : `<button class="nb-r" onclick="necAbrir('${escAttr(e.amb)}','${escAttr(e.nec)}')"><span class="nb-ri">${e.em}</span><span><strong>${escAttr(t)}</strong><small>${escAttr(sub)}</small></span></button>`;
   }).join('');
 }
@@ -1933,7 +1940,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
+const APP_VERSION_ACOMP = '2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2023,7 +2030,7 @@ function accionesLogosHtml(esCA){
 // Tarjeta de un trámite del catálogo 2026: «Lo hago yo» (sitio oficial correcto) + «Necesito ayuda de Logos»
 function catItemHtml(e, i, esCA, sinLogos){
   const t = (es, ca) => escAttr(esCA ? (ca || es) : es);
-  const ayuda = sinLogos ? '' : (CURRENT_USER
+  const ayuda = (sinLogos || !necConAyuda(!!e.u)) ? '' : (CURRENT_USER
     ? `<button class="nec-btn nec-btn-ayuda" onclick="pedirAyudaTramite(${i})">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</button>`
     : `<a class="nec-btn nec-btn-ayuda" href="tel:+34630461560">🤝 ${esCA ? 'Necessito ajuda de Logos' : 'Necesito ayuda de Logos'}</a>`);
   if(e.logos){
@@ -2214,7 +2221,7 @@ function necesidadesAcordeonHtml(a){
   const bloques = [];
   bloques.push(`<div class="nec-card nec-aviso-ok" style="border-color:#BFE3CB;background:#EEF8F1;"><div class="nec-card-t">🔗 ${esCA ? 'Et portem al lloc correcte' : 'Te llevamos al sitio correcto'}</div>
     <p class="nec-item-d" style="margin:0;">${esCA ? 'Cada «Ho faig jo» obre la pàgina oficial correcta del tràmit (Generalitat, Estat o Consell Comarcal) perquè el puguis fer tu mateix/a.' : 'Cada «Lo hago yo» abre la página oficial correcta del trámite (Generalitat, Estado o Consell Comarcal) para que puedas hacerlo tú mismo/a.'}
-    ${sinLogos ? '' : (esCA ? ' Si et costa, toca «Necessito ajuda de Logos» i t\'acompanyem.' : ' Si te cuesta, toca «Necesito ayuda de Logos» y te acompañamos.')}</p></div>`);
+    ${sinLogos ? '' : NEC_AYUDA_LOGOS ? (esCA ? ' Si et costa, toca «Necessito ajuda de Logos» i t\'acompanyem.' : ' Si te cuesta, toca «Necesito ayuda de Logos» y te acompañamos.') : (esCA ? ' Si no saps per on començar, a l\'inici tens «No saps per on començar?».' : ' Si no sabes por dónde empezar, al inicio tienes «¿No sabes por dónde empezar?».')}</p></div>`);
   if(sinLogos) bloques.push(`<div class="nec-card" style="border-color:#E0A526;background:#FFF8E6;"><div class="nec-card-t">ℹ️ ${esCA ? 'Logos no porta temes d\'habitatge' : 'Logos no lleva temas de vivienda'}</div>
     <p class="nec-item-d" style="margin:0;">${esCA ? 'Aquí tens els tràmits oficials per fer-los tu mateix/a. Per a dubtes, adreça\'t a l\'Oficina d\'Habitatge de Tarragona o a l\'Agència de l\'Habitatge de Catalunya.' : 'Aquí tienes los trámites oficiales para hacerlos tú mismo/a. Para dudas, dirígete a la Oficina de Vivienda de Tarragona o a la Agència de l\'Habitatge de Catalunya.'}</p></div>`);
   const grupos = (a.grupos || []).map((g, gi) => {
@@ -9946,10 +9953,10 @@ function guiaSlidesAcomp(){
           L('🧓 <strong>Mayores, discapacidad y dependencia</strong> · 💼 <strong>Trabajo y pensiones</strong>', '🧓 <strong>Gent gran, discapacitat i dependència</strong> · 💼 <strong>Treball i pensions</strong>'),
           L('📄 <strong>Documentos y certificados</strong> · 📅 <strong>Citas previas y trámites digitales</strong>', '📄 <strong>Documents i certificats</strong> · 📅 <strong>Cites prèvies i tràmits digitals</strong>'),
           L('Dentro de cada tema se despliegan las prestaciones: toca una para ver sus trámites.', 'Dins de cada tema es desplieguen les prestacions: toca\'n una per veure els seus tràmits.')] },
-    { e: '🤝', img: 'prof', t: L('Dos formas de hacer un trámite', 'Dues formes de fer un tràmit'),
-      p: L('En cada trámite verás dos botones. Tú eliges:', 'A cada tràmit veuràs dos botons. Tu tries:'),
+    { e: '🤝', img: 'prof', t: L('Cómo se hace un trámite', 'Com es fa un tràmit'),
+      p: L('En cada trámite:', 'A cada tràmit:'),
       l: [L('<strong>🔗 Lo hago yo</strong>: te lleva a la web oficial y lo haces tú.', '<strong>🔗 Ho faig jo</strong>: et porta a la web oficial i ho fas tu.'),
-          L('<strong>🤝 Necesito ayuda de Logos</strong>: avisamos a una persona del equipo, que te contacta y te acompaña.', '<strong>🤝 Necessito ajuda de Logos</strong>: avisem una persona de l\'equip, que et contacta i t\'acompanya.'),
+          L('¿No sabes por dónde empezar? Justo debajo del carrusel, pulsa <strong>«Contarlo →»</strong> y te orientamos.', 'No saps per on començar? Just a sota del carrusel, prem <strong>«Explicar-ho →»</strong> i t\'orientem.'),
           L('<strong>Vivienda</strong>: Logos no lleva este tema. Ahí verás solo los enlaces oficiales (Oficina de Vivienda de Tarragona y Agència de l\'Habitatge).', '<strong>Habitatge</strong>: Logos no porta aquest tema. Hi veuràs només els enllaços oficials (Oficina d\'Habitatge de Tarragona i Agència de l\'Habitatge).')] },
     { e: '🤔', t: L('¿No sabes por dónde empezar?', 'No saps per on començar?'),
       p: L('No pasa nada. Hay una opción para eso:', 'No passa res. Hi ha una opció per a això:'),
