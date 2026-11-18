@@ -1200,6 +1200,19 @@ body{font-size:15.5px;}
 .nec-contacto p{margin:0 0 8px;font-size:13.5px;color:#4B3A10;}
 .nec-contacto small{display:block;margin-top:8px;font-size:12px;color:#6B5A30;}
 
+/* v119 · «¿No sabes qué trámite necesitas?», cita = propuesta, máximo de citas al día */
+.nst{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#FFF6DD,#FFFBF0);border:2px solid #F2BC2C;border-radius:18px;padding:16px 18px;margin:4px 0 16px;box-shadow:0 4px 14px rgba(242,188,44,.18);}
+.nst-i{font-size:38px;line-height:1;}
+.nst-t{flex:1;min-width:210px;display:flex;flex-direction:column;gap:4px;}
+.nst-t strong{font-size:17px;color:#5A3F00;}
+.nst-t span{font-size:14px;color:#5D4A1F;line-height:1.45;}
+.nst-b{display:flex;gap:8px;flex-wrap:wrap;width:100%;}
+.nst-btn{flex:1 1 200px;border:none;border-radius:12px;padding:12px 14px;font-weight:800;font-size:15px;background:#1E3F66;color:#fff;cursor:pointer;min-height:48px;}
+.nst-btn-2{background:#fff;color:#1E3F66;border:2px solid #1E3F66;}
+.ct-prop{background:#EEF4FB;border:1.5px solid #BFD3EA;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.5;color:#1F3B5C;margin:0 0 14px;}
+.ct-prop span{display:inline-block;margin-top:4px;font-size:13px;}
+.ct-prop.corta{font-size:13px;margin:10px 0;}
+.ct-max{background:#FFF4D6;border:1.5px solid #F2BC2C;border-radius:12px;padding:10px 12px;font-size:14px;color:#5A3F00;margin:0 0 10px;}
 /* v117 · En el móvil (sobre todo iPhone), si un campo tiene la letra de menos de 16 px, al tocarlo la página se
    amplía sola y se queda descuadrada. Todos los campos de escribir van a 16 px en pantallas pequeñas o táctiles. */
 @media (max-width: 820px), (pointer: coarse){
@@ -1370,8 +1383,8 @@ html, body{ max-width:100%; overflow-x:clip; }
         <h2 class="screen-title" id="home-title">¿En qué podemos ayudarte?</h2>
         <p class="subtle" id="home-sub">Encuentra el trámite o la ayuda que necesitas en Tarragona.</p>
         <div class="panel-card" id="nec-nota" style="background:#EEF4FB;border-color:#CFE0F5;margin-bottom:12px;border-radius:16px;">🔗 <strong>Puedes hacer el trámite tú mismo/a.</strong> Cada botón «Lo hago yo» te lleva a la página oficial correcta del trámite. ¿No sabes por dónde empezar? <strong>Cuéntanos tu situación</strong> y te orientamos.</div>
-        <div id="nec-carrusel"></div>
         <div id="nec-empezar"></div>
+        <div id="nec-carrusel"></div>
         <div class="nb"><span class="nb-i">🔎</span><input id="nec-q" type="search" autocomplete="off" oninput="necBuscar()" aria-label="Buscar"></div>
         <div id="nec-res" class="nb-res" aria-live="polite"></div>
         <div id="ambitos-grid"></div>
@@ -1736,12 +1749,7 @@ function renderAmbitos(){
     <div class="section-label" style="margin:4px 0 10px;">${esCA ? 'O tria un tema' : 'O elige un tema'}</div>
     <div class="areas-grid">${TAXONOMIA.map((a, i) => tarjeta(a, i)).join('')}</div>
   `;
-  { const ne = document.getElementById('nec-empezar'); if(ne) ne.innerHTML = `
-    <div class="areas-ayuda" style="margin:14px 0 16px;">
-      <div class="emoji-grande">🤔</div>
-      <div style="flex:1;min-width:200px;"><strong>${esCA ? 'No saps per on començar?' : '¿No sabes por dónde empezar?'}</strong><br><span class="subtle">${esCA ? 'Explica\'ns la teva situació i t\'ajudem a trobar-ho.' : 'Cuéntanos tu situación y te ayudamos a encontrarlo.'}</span></div>
-      <button class="link-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">${esCA ? 'Explicar-ho →' : 'Contarlo →'}</button>
-    </div>`; }
+  { const ne = document.getElementById('nec-empezar'); if(ne) ne.innerHTML = noSeTramiteHtml(esCA); }
   const q = document.getElementById('nec-q'); if(q) q.placeholder = esCA ? 'Ex.: necessito ajuda per pagar el lloguer' : 'Ej.: necesito ayuda para pagar el alquiler';
   renderCarruselNec();
   if(q && q.value) necBuscar();
@@ -1873,6 +1881,7 @@ function ncBotones(i, esCA){
 function ncYo(i){ if(CURRENT_USER) registrarTramiteApp(NEC_RAPIDOS[i].es, 'solo'); }
 async function ncAyuda(i){
   const esCA = LANG === 'ca', c = document.getElementById('nc-bt-' + i); if(!c) return;
+  if(!(await tramiteUnicoOk(NEC_RAPIDOS[i].es))) return;
   ncParar();
   c.innerHTML = `<div class="nc-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div>`;
   await registrarTramiteApp(NEC_RAPIDOS[i].es, 'ayuda');
@@ -1940,6 +1949,7 @@ function necBuscar(){
 function necYoRes(i){ const e = (window.__NEC_RES || [])[i]; if(e && CURRENT_USER) registrarTramiteApp(e.es, 'solo'); }
 async function necAyudaRes(i){
   const e = (window.__NEC_RES || [])[i]; if(!e) return;
+  if(!(await tramiteUnicoOk(e.es))) return;
   const esCA = LANG === 'ca', c = document.querySelector('#nb-card-' + i + ' .nec-item-b'); if(!c) return;
   c.innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div><div class="nec-item-b" style="margin-top:6px;">${accionesLogosHtml(esCA)}</div>`;
   await registrarTramiteApp(e.es, 'ayuda');
@@ -1951,7 +1961,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
+const APP_VERSION_ACOMP = '2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -1998,6 +2008,29 @@ function enlaceDeTramite(nombre){
   return s && s.enlace_oficial ? s.enlace_oficial : null;
 }
 // Registra el trámite y avisa a la Intranet: modo 'solo' (lo hace la propia persona) o 'ayuda' (necesita a Logos)
+// v119 · Cada persona, UN solo trámite en marcha a la vez (decisión de Logos). Devuelve true si puede seguir.
+async function tramiteUnicoOk(nombre){
+  if(!CURRENT_USER) return true;
+  let otros = [];
+  try { const r = await sb.from('tramites').select('nombre_servicio, estado').eq('usuario_id', CURRENT_USER.id).not('estado', 'in', '(hecho,anulado)'); otros = (r.data || []).filter(t => String(t.nombre_servicio).trim().toLowerCase() !== String(nombre || '').trim().toLowerCase()); } catch(e){ return true; }
+  if(!otros.length) return true;
+  const esCA = LANG === 'ca';
+  tramiteUnicoAviso(otros[0].nombre_servicio, esCA);
+  return false;
+}
+function tramiteUnicoAviso(actual, esCA){
+  const ov = document.createElement('div'); ov.className = 'ctj-ov'; ov.id = 'tu-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
+  ov.addEventListener('click', e => { if(e.target === ov) ov.remove(); });
+  ov.innerHTML = `<div class="ctj-ov-in" style="text-align:left;">
+    <button class="ctj-x" aria-label="${esCA ? 'Tancar' : 'Cerrar'}" onclick="document.getElementById('tu-ov').remove()">✕</button>
+    <div style="font-size:34px;line-height:1;margin:0 0 8px;">☝️</div>
+    <h3 style="margin:0 0 8px;">${esCA ? 'Només un tràmit alhora' : 'Solo un trámite a la vez'}</h3>
+    <p style="margin:0 0 8px;">${esCA ? 'Ara tens en marxa:' : 'Ahora tienes en marcha:'} <strong>«${escAttr(actual)}»</strong>.</p>
+    <p style="margin:0 0 14px;">${esCA ? 'Per poder atendre bé tothom, a Logos cada persona porta <strong>un sol tràmit</strong> a la vegada. Quan aquest estigui acabat podràs començar-ne un altre. Si ja no el necessites, el pots anul·lar a «El meu espai» → Els meus tràmits.' : 'Para poder atender bien a todo el mundo, en Logos cada persona lleva <strong>un solo trámite</strong> a la vez. Cuando este esté terminado podrás empezar otro. Si ya no lo necesitas, puedes anularlo en «Mi espacio» → Mis trámites.'}</p>
+    <div class="ctj-acc"><button class="ctj-btn ctj-btn-2" onclick="document.getElementById('tu-ov').remove();showScreen('profile');renderDashboard()">${esCA ? 'Veure el meu tràmit' : 'Ver mi trámite'}</button><button class="ctj-btn" onclick="document.getElementById('tu-ov').remove()">${esCA ? 'Entesos' : 'Entendido'}</button></div>
+  </div>`;
+  document.body.appendChild(ov);
+}
 async function registrarTramiteApp(nombre, modo){
   if(!CURRENT_USER) return false;
   const p = window.__perfilActual || {};
@@ -2005,6 +2038,7 @@ async function registrarTramiteApp(nombre, modo){
   let existente = null;
   try { const r = await sb.from('tramites').select('id, estado').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', nombre).not('estado', 'in', '(hecho,anulado)').limit(1); existente = (r.data || [])[0] || null; } catch(e) {}
   if(existente && (modo === 'solo' || existente.estado === 'derivado_logos')) return true;
+  if(!existente){ try { const o = await sb.from('tramites').select('id').eq('usuario_id', CURRENT_USER.id).not('estado', 'in', '(hecho,anulado)').limit(1); if((o.data || []).length) return false; } catch(e){} }   // v119: un solo trámite
   const estado = modo === 'ayuda' ? 'derivado_logos' : 'en_curso';
   try {
     if(existente) await sb.from('tramites').update({ estado }).eq('id', existente.id);
@@ -2074,6 +2108,7 @@ function catItemHtml(e, i, esCA, sinLogos){
 }
 async function pedirAyudaTramite(i){
   const it = __NEC_ITEMS[i]; if(!it) return;
+  if(!(await tramiteUnicoOk(it.nombre))) return;
   const esCA = LANG === 'ca';
   const caja = document.getElementById('nec-item-' + i); if(!caja) return;
   caja.querySelector('.nec-item-b').innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div>
@@ -2082,6 +2117,7 @@ async function pedirAyudaTramite(i){
 }
 async function avisarLogosNecesidad(i){
   const it = __NEC_ITEMS[i]; if(!it) return;
+  if(!(await tramiteUnicoOk(it.nombre))) return;
   const esCA = LANG === 'ca';
   const caja = document.getElementById('nec-vacia-' + i); if(!caja) return;
   caja.innerHTML = `<div class="nec-ok">✅ ${esCA ? 'Hem avisat Logos. Un tècnic et contactarà aviat.' : 'Hemos avisado a Logos. Un técnico te contactará pronto.'}</div><div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}</div>`;
@@ -2245,12 +2281,24 @@ function necesidadesAcordeonHtml(a){
 }
 async function avisarAyudaCita(){
   const esCA = LANG === 'ca';
+  if(!(await tramiteUnicoOk('Ayuda para pedir una cita previa o el certificado digital'))) return;
   const c = document.getElementById('nec-cita-ok'); if(!c) return;
   c.innerHTML = `<div class="nec-ok" style="margin-top:8px;">✅ ${esCA ? 'Hem avisat Logos: t\'ajudarem a demanar la cita.' : 'Hemos avisado a Logos: te ayudaremos a pedir la cita.'}</div><div class="nec-item-b" style="margin-top:8px;">${accionesLogosHtml(esCA)}</div>`;
   await registrarTramiteApp('Ayuda para pedir una cita previa o el certificado digital', 'ayuda');
 }
 
 
+// v119 · Reforzado: si la persona no sabe qué trámite necesita, que pida ayuda a Logos (bien visible, arriba)
+function noSeTramiteHtml(esCA){
+  return `<div class="nst">
+    <div class="nst-i" aria-hidden="true">🤔</div>
+    <div class="nst-t"><strong>${esCA ? 'No saps quin tràmit necessites?' : '¿No sabes qué trámite necesitas?'}</strong>
+      <span>${esCA ? 'No passa res: explica\'ns la teva situació amb les teves paraules i un tècnic de Logos et dirà què has de fer.' : 'No pasa nada: cuéntanos tu situación con tus palabras y un técnico de Logos te dirá qué tienes que hacer.'}</span></div>
+    <div class="nst-b">
+      <button class="nst-btn" onclick="CURRENT_AMBITO=null;showProximamente(null)">✍️ ${esCA ? 'Demanar ajuda a Logos' : 'Pedir ayuda a Logos'}</button>
+      <button class="nst-btn nst-btn-2" onclick="showScreen('cita');renderCitaForm()">📅 ${esCA ? 'Demanar cita d\'orientació' : 'Pedir cita de orientación'}</button>
+    </div></div>`;
+}
 function showProximamente(nombre){
   if(nombre === null){
     renderOrientacionForm();
@@ -2340,6 +2388,7 @@ async function crearTramiteDesdeServicio(servicioId){
   const s = SERVICIOS.find(x => x.id === servicioId);
   if(!s) return;
 
+  if(!(await tramiteUnicoOk(s.nombre.es))) return;   // v119: un solo trámite a la vez
   // Evitar el mismo trámite abierto dos veces
   try {
     const { data: ya } = await sb.from('tramites').select('id').eq('usuario_id', CURRENT_USER.id).eq('nombre_servicio', s.nombre.es).not('estado', 'in', '(hecho,anulado)').limit(1);
@@ -7629,6 +7678,7 @@ async function misCitasPedidasHtml(){
   const fmt = f => new Date(f + 'T00:00:00').toLocaleDateString(ca ? 'ca-ES' : 'es-ES', { weekday:'short', day:'numeric', month:'short' });
   return `<div class="panel-card" style="margin-bottom:14px;">
     <h3 style="margin-bottom:8px;">📅 ${ca ? 'Les teves cites demanades' : 'Tus citas pedidas'}</h3>
+    <p class="subtle" style="margin:0 0 6px;font-size:12px;">ℹ️ ${ca ? 'Són propostes: Logos les pot canviar segons els horaris i la disponibilitat.' : 'Son propuestas: Logos puede cambiarlas según los horarios y la disponibilidad.'}</p>
     <p class="subtle" style="margin:0 0 6px;font-size:12.5px;">${data.length < MAX_CITAS_FUTURAS ? (ca ? `➕ Pots demanar una altra cita a sota (fins a ${MAX_CITAS_FUTURAS} a la vegada).` : `➕ Puedes pedir otra cita aquí debajo (hasta ${MAX_CITAS_FUTURAS} a la vez).`) : ''}</p>
     ${data.map(c => `<div class="list-row"><span>${fmt(c.fecha)} · ${String(c.hora).slice(0,5)}${citaConQuien(c) ? ` <span class="chip" style="background:#E6F0FA;color:#1F4E79;">👤 ${escAttr(citaConQuien(c))}</span>` : ''}</span>
       <button class="link-btn" style="font-size:12.5px;border:1px solid var(--alert);color:var(--alert);border-radius:999px;padding:4px 12px;" onclick="cancelarCita('${c.id}','cita')">✖ ${ca ? 'Cancel·lar cita' : 'Cancelar cita'}</button></div>`).join('')}
@@ -7638,7 +7688,7 @@ async function misCitasPedidasHtml(){
 // --- Pedir cita ---
 
 // Máximo de citas futuras activas por persona (evita pedir citas indefinidas)
-const MAX_CITAS_FUTURAS = 3;   // se pueden tener varias citas a la vez (p. ej. para trámites distintos)
+const MAX_CITAS_FUTURAS = 1;   // v119: una cita a la vez (una cita = un trámite)
 const CONSULTA_DIAS_VISIBLE = 14;
 async function citasFuturasPropias(){
   if(!CURRENT_USER) return [];
@@ -7649,6 +7699,10 @@ async function citasFuturasPropias(){
   } catch(e){ return []; }
 }
 
+// v119 · La cita es una PROPUESTA: Logos puede cambiarla según horarios y disponibilidad
+function citaPropuestaHtml(esCA, corta){
+  return `<div class="ct-prop${corta ? ' corta' : ''}">ℹ️ ${esCA ? '<strong>La cita que demanes és una proposta a Logos.</strong> Logos es reserva el dret de canviar-la i tornar-te a citar segons els horaris i la disponibilitat. Si cal, et direm el nou dia i hora.' : '<strong>La cita que pidas es una propuesta a Logos.</strong> Logos se reserva el derecho de cambiarla y volver a citarte según los horarios y la disponibilidad. Si hace falta, te diremos el nuevo día y hora.'}${corta ? '' : `<br><span>${esCA ? `Una cita és per a <strong>un sol tràmit</strong>. Màxim ${CITAS_MAX_DIA} cites al dia.` : `Una cita es para <strong>un solo trámite</strong>. Máximo ${CITAS_MAX_DIA} citas al día.`}</span>`}</div>`;
+}
 async function renderCitaForm(){
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
@@ -7660,9 +7714,9 @@ async function renderCitaForm(){
     document.getElementById('cita-content').innerHTML = `
       <h2 class="screen-title">${esCA ? 'Demanar cita' : 'Pedir cita'}</h2>
       <div class="panel-card" style="background:var(--ochre-soft);border-color:var(--ochre);">
-        <p style="margin:0 0 8px;"><strong>${esCA ? `Ja tens ${MAX_CITAS_FUTURAS} cites pendents` : `Ya tienes ${MAX_CITAS_FUTURAS} citas pendientes`}</strong></p>
+        <p style="margin:0 0 8px;"><strong>${MAX_CITAS_FUTURAS === 1 ? (esCA ? 'Ja tens una cita pendent' : 'Ya tienes una cita pendiente') : (esCA ? `Ja tens ${MAX_CITAS_FUTURAS} cites pendents` : `Ya tienes ${MAX_CITAS_FUTURAS} citas pendientes`)}</strong></p>
         <p style="margin:0 0 10px;">${esCA ? 'La propera' : 'La próxima'}: ${f} · ${String(c.hora).slice(0,5)}</p>
-        <p class="subtle" style="margin:0 0 12px;">${esCA ? 'És el màxim a la vegada. Per demanar-ne una altra, cancel·la\'n alguna o espera que passi. També pots trucar a Logos.' : 'Es el máximo a la vez. Para pedir otra, cancela alguna o espera a que pase. También puedes llamar a Logos.'}</p>
+        <p class="subtle" style="margin:0 0 12px;">${MAX_CITAS_FUTURAS === 1 ? (esCA ? 'A Logos cada persona té una cita a la vegada (una cita = un tràmit). Si necessites canviar-la, cancel·la-la o canvia-la des de «El meu espai». També pots trucar a Logos.' : 'En Logos cada persona tiene una cita a la vez (una cita = un trámite). Si necesitas cambiarla, cancélala o cámbiala desde «Mi espacio». También puedes llamar a Logos.') : ''}${esCA ? (MAX_CITAS_FUTURAS === 1 ? '' : 'És el màxim a la vegada. Per demanar-ne una altra, cancel·la\'n alguna o espera que passi. També pots trucar a Logos.') : (MAX_CITAS_FUTURAS === 1 ? '' : 'Es el máximo a la vez. Para pedir otra, cancela alguna o espera a que pase. También puedes llamar a Logos.')}</p>
         <button class="primary-btn" style="margin:0;" onclick="showScreen('profile');renderDashboard()">${esCA ? 'Veure les meves cites' : 'Ver mis citas'}</button>
       </div>`;
     return;
@@ -7702,6 +7756,7 @@ async function renderCitaForm(){
     <div class="ct-hero"><div class="ct-hero-i">📅</div><div><h2>${esCA ? 'Demana la teva cita' : 'Pide tu cita'}</h2><p>${esCA ? 'En 4 passos, sense esperes. A Logos o per telèfon.' : 'En 4 pasos, sin esperas. En Logos o por teléfono.'}</p></div></div>
     <div class="ct-pasos" id="ct-pasos" tabindex="0" role="region" aria-label="${esCA ? 'Passos per demanar cita' : 'Pasos para pedir cita'}">${pasosCt.map((p, i) => `<span data-i="${i}"><b>${i + 1}</b>${p}</span>`).join('')}</div>
     ${citaCambioAvisoHtml(esCA)}
+    ${citaPropuestaHtml(esCA)}
     ${logosEstadoHtml()}
     ${misCitasBloque}
     <div class="cita-paso"><span class="cita-num">1</span> ${esCA ? 'Com vols la cita?' : '¿Cómo quieres la cita?'}</div>
@@ -7709,6 +7764,7 @@ async function renderCitaForm(){
     ${tecnicos.length ? `<div class="cita-paso"><span class="cita-num">2</span> ${esCA ? 'Amb qui vols la cita?' : '¿Con quién quieres la cita?'}</div>
     <div id="cita-tecnicos" class="cita-tec-lista">${citaTecnicosHtml(tecnicos)}</div>
     <div class="cita-paso"><span class="cita-num">3</span> ${esCA ? 'Tria el dia' : 'Elige el día'}</div>` : `<div class="cita-paso"><span class="cita-num">2</span> ${esCA ? 'Tria el dia' : 'Elige el día'}</div>`}
+    <div class="ct-max">📌 ${esCA ? `<strong>Cada dia només es poden demanar ${CITAS_MAX_DIA} cites.</strong> Quan un dia surt «Complet», tria'n un altre.` : `<strong>Cada día solo se pueden pedir ${CITAS_MAX_DIA} citas.</strong> Cuando un día sale «Completo», elige otro.`}</div>
     <div class="ct-dias" id="cita-dias">${diasHtml}</div>
     <p class="subtle" style="font-size:12px;margin-top:10px;">🕘 ${logosHorarioTexto()}</p>
     <div id="cita-horas" style="margin-top:16px;"></div>
@@ -7753,7 +7809,8 @@ function ctElegirHora(fecha, hora){
         <div>${porTel ? `📞 ${esCA ? 'Per telèfon' : 'Por teléfono'}${telCita ? ' · ' + escAttr(telCita) : ''}` : `🏢 ${esCA ? 'A Logos' : 'En Logos'} · C/ de la Pau del Protectorat, 14`}</div>
         <div>👤 ${tecNombre ? escAttr(tecNombre) : (esCA ? 'T\'atendrà l\'equip de Logos' : 'Te atenderá el equipo de Logos')}</div>
       </div></div>
-    <button class="ct-ok" onclick="reservarCita('${fecha}','${hora}', true)">✅ ${esCA ? 'Confirmar la cita' : 'Confirmar la cita'}</button>
+    ${citaPropuestaHtml(esCA, true)}
+    <button class="ct-ok" onclick="reservarCita('${fecha}','${hora}', true)">✅ ${esCA ? 'Enviar la proposta de cita' : 'Enviar la propuesta de cita'}</button>
     <button class="ct-cambiar" onclick="window.__citaHoraSel=null;document.getElementById('ct-resumen').innerHTML='';document.querySelectorAll('#cita-horas .ct-hora').forEach(b=>b.classList.remove('sel'));ctPasos()">${esCA ? 'Canviar l\'hora' : 'Cambiar la hora'}</button>
   </div>`;
   ctPasos();
@@ -7901,7 +7958,7 @@ async function cambiarModoCita(id, modo){
 // Para volver a dejar elegir técnico: poner true.
 const CITA_ELEGIR_TECNICO = false;
 // Máximo de citas al día que se pueden pedir desde la app (SQL-93 lo controla también en Supabase)
-const CITAS_MAX_DIA = 4;
+const CITAS_MAX_DIA = 3;   // v119: como mucho 3 citas al día desde Logos Acompanya (SQL-110)
 async function cargarTecnicosCita(){
   if(!CITA_ELEGIR_TECNICO){ window.__tecnicosCita = []; window.__citaTecs = []; window.__citaTec = ''; return []; }
   if(window.__tecnicosCita && Date.now() - (window.__tecnicosCitaT || 0) < 5*60*1000) return window.__tecnicosCita;
@@ -8052,8 +8109,9 @@ function mostrarCitaConfirmada(c, pCorreo, esCambio){
   ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', esCA ? 'Cita confirmada' : 'Cita confirmada');
   ov.innerHTML = `<div class="ctj-ov-in">
     <button class="ctj-x" aria-label="${esCA ? 'Tancar' : 'Cerrar'}" onclick="document.getElementById('ctj-ov').remove()">✕</button>
-    <div class="ctj-ok">✅ ${esCambio ? (esCA ? 'Cita canviada' : 'Cita cambiada') : (esCA ? 'Cita demanada' : 'Cita pedida')}</div>
+    <div class="ctj-ok">✅ ${esCambio ? (esCA ? 'Proposta de canvi enviada' : 'Propuesta de cambio enviada') : (esCA ? 'Proposta de cita enviada a Logos' : 'Propuesta de cita enviada a Logos')}</div>
     ${citaTarjetaHtml(c, { titulo: esCambio ? (esCA ? 'La teva nova cita' : 'Tu nueva cita') : (esCA ? 'Confirmació de la teva cita' : 'Confirmación de tu cita'), botones: false })}
+    ${citaPropuestaHtml(esCA, true)}
     <div id="ctj-correo" class="ctj-correo" aria-live="polite"></div>
     <div class="ctj-acc">
       <button class="ctj-btn ctj-btn-2" onclick="citaICS(window.__citaUltima)">📅 ${esCA ? 'Afegir al meu calendari' : 'Añadir a mi calendario'}</button>
