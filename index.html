@@ -1983,7 +1983,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-19 · v121 (contraseña olvidada: de momento solo por correo) · antes: 2026-11-19 · v120 (entrada más fácil: «Es mi primera vez» / «Ya uso Logos»; contraseña olvidada por correo, WhatsApp o SMS; tras entrar con provisional, elegir la propia; «te atendemos por orden de llegada») · antes: 2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
+const APP_VERSION_ACOMP = '2026-11-19 · v120 (entrada más fácil: «Es mi primera vez» / «Ya uso Logos»; contraseña olvidada por correo, WhatsApp o SMS; tras entrar con provisional, elegir la propia; «te atendemos por orden de llegada») · antes: 2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -4294,19 +4294,20 @@ function renderAuthStep(errorMsg, okMsg){
       <div class="field"><label>${m === 'signup' ? (esCA ? 'Tria una contrasenya' : 'Elige una contraseña') : t.password}</label><div class="au-pw"><input type="password" id="auth-password" autocomplete="${m === 'login' ? 'current-password' : 'new-password'}">${authOjo('auth-password')}</div></div>
       ${m === 'signup' ? `<div class="field"><label>${esCA ? 'Repeteix la contrasenya' : 'Repite la contraseña'}</label><div class="au-pw"><input type="password" id="auth-password2" autocomplete="new-password">${authOjo('auth-password2')}</div></div>` : ''}
       <button class="primary-btn" id="auth-submit-btn" onclick="submitAuth()">${m === 'login' ? t.entrar : t.crearCuenta}</button>
-      ${m === 'login' ? `<button class="au-olvido" onclick="window.__authEmail=(document.getElementById('auth-email')||{}).value||'';AUTH_MODE='olvido';renderAuthStep()">🤔 ${esCA ? 'Has oblidat la contrasenya? T\'enviem un correu per triar-ne una de nova' : '¿Has olvidado tu contraseña? Te enviamos un correo para elegir una nueva'}</button>` : ''}
+      ${m === 'login' ? `<button class="au-olvido" onclick="window.__authEmail=(document.getElementById('auth-email')||{}).value||'';AUTH_MODE='olvido';renderAuthStep()">🤔 ${esCA ? 'Has oblidat la contrasenya? Te l\'enviem per correu, WhatsApp o SMS' : '¿Has olvidado tu contraseña? Te la enviamos por correo, WhatsApp o SMS'}</button>` : ''}
     </div>
     <p class="subtle" style="margin:14px 0 6px;font-size:13px;">${esCA ? 'Com funciona:' : 'Cómo funciona:'}</p>
     ${authPasosHtml(esCA)}
     <button class="link-btn" style="margin:8px 0 0;" onclick="guiaAbrirAcomp()">❓ ${esCA ? 'Mira com funciona (1 minut)' : 'Mira cómo funciona (1 minuto)'}</button>`;
 }
 function renderOlvidoClave(errorMsg, okMsg){
-  const esCA = LANG === 'ca', c = 'email';   // v121: de momento, solo por correo (WhatsApp y SMS quedan preparados para más adelante)
+  const esCA = LANG === 'ca', c = window.__olvidoCanal || 'email';
   const op = (k, ic, es, ca) => `<button class="au-op au-op-s${c === k ? ' on' : ''}" onclick="window.__olvidoCanal='${k}';renderAuthStep()"><span class="au-op-i">${ic}</span><strong>${esCA ? ca : es}</strong></button>`;
   document.getElementById('entrada-panel').innerHTML = `
     <button class="link-btn" onclick="AUTH_MODE='login';renderAuthStep()">← ${esCA ? 'Tornar a entrar' : 'Volver a entrar'}</button>
     <h2 class="screen-title" style="margin-top:6px;">🔑 ${esCA ? 'He oblidat la contrasenya' : 'He olvidado mi contraseña'}</h2>
-    <p class="subtle">${esCA ? 'T\'enviem un correu amb un enllaç per triar una contrasenya nova.' : 'Te enviamos un correo con un enlace para elegir una contraseña nueva.'}</p>
+    <p class="subtle">${esCA ? 'Tria com vols rebre el missatge per triar una contrasenya nova:' : 'Elige cómo quieres recibir el mensaje para elegir una contraseña nueva:'}</p>
+    <div class="au-elige au-elige-3">${op('email', '📧', 'Por correo', 'Per correu')}${op('whatsapp', '🟢', 'Por WhatsApp', 'Per WhatsApp')}${op('sms', '📱', 'Por SMS', 'Per SMS')}</div>
     ${errorMsg ? `<div class="auth-error">${errorMsg}</div>` : ''}${okMsg ? `<div class="auth-ok">${okMsg}</div>` : ''}
     <div class="au-caja">
     ${c === 'email' ? `
@@ -4319,7 +4320,7 @@ function renderOlvidoClave(errorMsg, okMsg){
       <div class="field"><label>${esCA ? 'Nom i cognoms' : 'Nombre y apellidos'}</label><input type="text" id="olv-nom" autocomplete="name"></div>
       <button class="primary-btn" id="olv-btn" onclick="pedirAyudaClave('${c}')">${c === 'whatsapp' ? '🟢' : '📱'} ${esCA ? 'Demanar la contrasenya provisional' : 'Pedir la contraseña provisional'}</button>`}
     </div>
-    <p class="subtle" style="font-size:13px;margin-top:12px;">📞 ${esCA ? 'No recordes el correu o no el pots obrir? Truca a Logos al <a href="tel:+34630461560">630 46 15 60</a> o passa per l\'oficina i t\'ajudem.' : '¿No recuerdas el correo o no puedes abrirlo? Llama a Logos al <a href="tel:+34630461560">630 46 15 60</a> o pasa por la oficina y te ayudamos.'}</p>`;
+    <p class="subtle" style="font-size:13px;margin-top:12px;">📞 ${esCA ? 'Si és urgent, truca a Logos al <a href="tel:+34630461560">630 46 15 60</a>.' : 'Si es urgente, llama a Logos al <a href="tel:+34630461560">630 46 15 60</a>.'}</p>`;
 }
 async function pedirAyudaClave(canal){
   const esCA = LANG === 'ca', tel = (document.getElementById('olv-tel').value || '').trim(), email = (document.getElementById('auth-email').value || '').trim(), nom = (document.getElementById('olv-nom').value || '').trim();
