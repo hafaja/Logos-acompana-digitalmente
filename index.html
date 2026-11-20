@@ -866,6 +866,15 @@ body{font-size:15.5px;}
   #guia-ov .gi-body{padding:12px 16px 4px;}
   #guia-ov .gi-dot{width:8px;height:8px;} #guia-ov .gi-dot.on{width:22px;}
 }
+/* v124 · Aviso «Logos está cerrado ahora» */
+.lc-ov{position:fixed;inset:0;background:rgba(15,22,40,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;}
+.lc-box{background:#fff;border-radius:18px;max-width:420px;width:100%;padding:22px 20px 18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25);}
+.lc-ic{font-size:40px;line-height:1;margin-bottom:6px;}
+.lc-box h3{margin:0 0 8px;font-size:20px;color:#9B1C1C;}
+.lc-box p{margin:0 0 10px;font-size:14.5px;line-height:1.5;color:#33415C;}
+.lc-prox{background:#E3F5E8;color:#17663A !important;border-radius:10px;padding:8px 10px;}
+.lc-hor{font-size:12.5px !important;color:#5D6B82 !important;}
+.lc-mientras{font-size:13px !important;background:#F3F6FA;border-radius:10px;padding:8px 10px;}
 /* v123 · Añadir la clase a mi calendario */
 .cmp-clase{flex-wrap:wrap;}
 .cmp-clase-acc{display:flex;flex-basis:100%;justify-content:flex-end;align-items:center;gap:12px;margin:-2px 0 0;}
@@ -1990,7 +1999,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-20 · v123 (Aula Virtual: «A mi calendario» en cada clase en línea —Google Calendar y archivo .ics para iPhone y Outlook—) · antes: v122 (conexión más fuerte: reintentos automáticos si falla la red, nada se queda colgado, aviso sin internet) · antes: 2026-11-19 · v121 (contraseña olvidada: de momento solo por correo) · antes: 2026-11-19 · v120 (entrada más fácil: «Es mi primera vez» / «Ya uso Logos»; contraseña olvidada por correo, WhatsApp o SMS; tras entrar con provisional, elegir la propia; «te atendemos por orden de llegada») · antes: 2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
+const APP_VERSION_ACOMP = '2026-11-20 · v124 (fuera del horario de atención y en los días cerrados, todo cerrado al público: no se pueden pedir citas, trámites ni ayuda) · antes: v123 (Aula Virtual: «A mi calendario» en cada clase en línea —Google Calendar y archivo .ics para iPhone y Outlook—) · antes: v122 (conexión más fuerte: reintentos automáticos si falla la red, nada se queda colgado, aviso sin internet) · antes: 2026-11-19 · v121 (contraseña olvidada: de momento solo por correo) · antes: 2026-11-19 · v120 (entrada más fácil: «Es mi primera vez» / «Ya uso Logos»; contraseña olvidada por correo, WhatsApp o SMS; tras entrar con provisional, elegir la propia; «te atendemos por orden de llegada») · antes: 2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -2062,6 +2071,7 @@ function tramiteUnicoAviso(actual, esCA){
 }
 async function registrarTramiteApp(nombre, modo){
   if(!CURRENT_USER) return false;
+  if(logosCerradoBloquea()) return false;
   const p = window.__perfilActual || {};
   const quien = p.nombre_completo || CURRENT_USER.email;
   let existente = null;
@@ -2376,6 +2386,7 @@ function renderOrientacionForm(){
 }
 
 async function guardarConsultaOrientacion(){
+  if(logosCerradoBloquea()) return;
   const esCA = LANG === 'ca';
   const btn = document.getElementById('orient-save-btn');
   const texto = document.getElementById('orient-texto').value.trim();
@@ -2413,6 +2424,7 @@ async function guardarConsultaOrientacion(){
 }
 
 async function crearTramiteDesdeServicio(servicioId){
+  if(logosCerradoBloquea()) return;
   const esCA = LANG === 'ca';
   const s = SERVICIOS.find(x => x.id === servicioId);
   if(!s) return;
@@ -3010,8 +3022,40 @@ function logosEstadoAhora(){
   }
   return { abierto:false };
 }
+// v124 · FUERA DEL HORARIO, TODO CERRADO AL PÚBLICO: no se pueden pedir citas, trámites ni ayuda (también lo impide la base de datos, SQL 118)
+window.__diasCerrados = window.__diasCerrados || null;
+async function logosCargarDiasCerrados(){
+  try { const hoy = hoyLocalIso(); const { data, error } = await sb.from('dias_cerrados').select('fecha, motivo').gte('fecha', hoy).order('fecha', { ascending: true }).limit(60); if(!error) window.__diasCerrados = data || []; } catch(e){}
+}
+function logosHoyCerradoMotivo(){ const hoy = hoyLocalIso(); const d = (window.__diasCerrados || []).find(x => x.fecha === hoy); return d ? (d.motivo || '') : null; }
+function logosAbiertoAlPublico(){ return IS_STAFF || (logosEstadoAhora().abierto && logosHoyCerradoMotivo() === null); }
+function logosCerradoBloquea(){
+  if(logosAbiertoAlPublico()) return false;
+  const ca = LANG === 'ca', e = logosEstadoAhora(), motivo = logosHoyCerradoMotivo();
+  const nomDia = d => (ca ? ['dilluns','dimarts','dimecres','dijous','divendres'] : ['lunes','martes','miércoles','jueves','viernes'])[d - 1] || '';
+  const cuando = !motivo && e.proximo ? (e.dias === 0 ? (ca ? 'avui' : 'hoy') : e.dias === 1 ? (ca ? 'demà' : 'mañana') : (ca ? 'el ' : 'el ') + nomDia(e.dia)) + ' ' + (ca ? 'a les' : 'a las') + ' ' + e.proximo : '';
+  const viejo = document.getElementById('logos-cerrado-ov'); if(viejo) viejo.remove();
+  const ov = document.createElement('div'); ov.id = 'logos-cerrado-ov'; ov.className = 'lc-ov';
+  ov.innerHTML = `<div class="lc-box" role="dialog" aria-modal="true">
+    <div class="lc-ic">🌙</div>
+    <h3>${ca ? 'Logos està tancat ara' : 'Logos está cerrado ahora'}</h3>
+    <p>${motivo !== null ? (ca ? 'Avui l\'oficina està tancada al públic' : 'Hoy la oficina está cerrada al público') + (motivo ? ` (${escAttr(motivo)})` : '') + '.' : (ca ? 'Fora de l\'horari d\'atenció no es poden demanar cites, tràmits ni ajuda.' : 'Fuera del horario de atención no se pueden pedir citas, trámites ni ayuda.')}</p>
+    ${cuando ? `<p class="lc-prox">🟢 ${ca ? 'Tornem a obrir' : 'Volvemos a abrir'} <strong>${cuando}</strong>.</p>` : ''}
+    <p class="lc-hor">${logosHorarioTexto()}</p>
+    <p class="lc-mientras">${ca ? 'Mentrestant pots consultar els teus tràmits, les teves cites i els teus documents a «El meu espai», i fer els cursos de l\'Aula Virtual.' : 'Mientras tanto puedes consultar tus trámites, tus citas y tus documentos en «Mi espacio», y hacer los cursos del Aula Virtual.'}</p>
+    <button class="primary-btn" style="margin:0;" onclick="document.getElementById('logos-cerrado-ov').remove()">${ca ? 'D\'acord' : 'De acuerdo'}</button>
+  </div>`;
+  ov.addEventListener('click', ev => { if(ev.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  return true;
+}
+// Si la base de datos responde «cerrado» (por ejemplo, la persona tenía la página abierta desde antes de cerrar)
+document.addEventListener('DOMContentLoaded', () => setTimeout(logosCargarDiasCerrados, 400));
+(function(){ const al = window.alert.bind(window); window.alert = m => { const t = String(m == null ? '' : m); if(/LOGOS_CERRADO/.test(t)){ if(!logosCerradoBloquea()) al(t.replace(/^.*LOGOS_CERRADO:\s*/, '')); return; } al(m); }; })();
+function logosErrorCerrado(err){ if(err && /LOGOS_CERRADO/.test(String(err.message || err))){ logosCerradoBloquea() || alert(String(err.message).replace(/^LOGOS_CERRADO:\s*/, '')); return true; } return false; }
 function logosEstadoHtml(){
-  const ca = LANG === 'ca', e = logosEstadoAhora();
+  const ca = LANG === 'ca', e = Object.assign({}, logosEstadoAhora());
+  if(logosHoyCerradoMotivo() !== null && e.abierto){ e.abierto = false; e.proximo = null; }
   const nomDia = d => (ca ? ['dilluns','dimarts','dimecres','dijous','divendres'] : ['lunes','martes','miércoles','jueves','viernes'])[d - 1] || '';
   let txt, bg, col;
   if(e.abierto){
@@ -3224,6 +3268,7 @@ function incAbrir(destinoInicial){
   setTimeout(() => { const i = document.getElementById('inc-asunto'); if(i) i.focus(); }, 60);
 }
 async function incEnviar(){
+  if(logosCerradoBloquea()) return;
   const msg = document.getElementById('inc-msg'), btn = document.getElementById('inc-env');
   const destino = window.__incDestino, asunto = (document.getElementById('inc-asunto').value || '').trim(), texto = (document.getElementById('inc-texto').value || '').trim();
   if(!destino){ msg.innerHTML = `<div class="auth-error">${incT('Elige a quién va dirigida.', 'Tria a qui va adreçada.')}</div>`; return; }
@@ -7871,6 +7916,7 @@ function citaPropuestaHtml(esCA, corta){
   return `<div class="ct-prop${corta ? ' corta' : ''}">ℹ️ ${esCA ? '<strong>La cita que demanes és una proposta a Logos.</strong> Logos es reserva el dret de canviar-la i tornar-te a citar segons els horaris i la disponibilitat. Si cal, et direm el nou dia i hora.' : '<strong>La cita que pidas es una propuesta a Logos.</strong> Logos se reserva el derecho de cambiarla y volver a citarte según los horarios y la disponibilidad. Si hace falta, te diremos el nuevo día y hora.'}${corta ? '' : `<br><span>${esCA ? `Una cita és per a <strong>un sol tràmit</strong>. Màxim ${CITAS_MAX_DIA} cites al dia.` : `Una cita es para <strong>un solo trámite</strong>. Máximo ${CITAS_MAX_DIA} citas al día.`}</span>`}</div>`;
 }
 async function renderCitaForm(){
+  if(logosCerradoBloquea()){ try { showScreen('home'); } catch(e){} return; }
   if(bloquearSinConsentimiento()) return;
   const esCA = LANG === 'ca';
   document.getElementById('cita-content').innerHTML = `<div class="placeholder">${esCA ? 'Carregant…' : 'Cargando…'}</div>`;
@@ -8164,6 +8210,7 @@ function elegirTecnicoCita(clave){
 async function reservarCita(fecha, hora, yaConfirmado){
   const esCA = LANG === 'ca';
   if(window.__reservandoCita) return;
+  if(logosCerradoBloquea()) return;
   window.__reservandoCita = true;
   try {
     if(!window.__citaReemplaza && (await citasFuturasPropias()).length >= MAX_CITAS_FUTURAS){ window.__reservandoCita = false; renderCitaForm(); return; }
@@ -10033,6 +10080,7 @@ async function ejecutarAccionAsistente(i, btn){
   }
   if(a.tipo === 'avisar_tecnico'){
     if(!CURRENT_USER || btn.disabled) return;
+    if(logosCerradoBloquea()) return;
     btn.disabled = true;
     const resumen = String(a.resumen || window.__asistenteHistorial.filter(m => m.role === 'user').map(m => m.content).join(' / ')).slice(0, 1500);
     const { error } = await sb.from('consultas_orientacion').insert({ usuario_id: CURRENT_USER.id, texto_consulta: '🧑‍💼 [Desde el técnico virtual] ' + resumen });
