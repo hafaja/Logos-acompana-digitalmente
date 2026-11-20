@@ -866,6 +866,13 @@ body{font-size:15.5px;}
   #guia-ov .gi-body{padding:12px 16px 4px;}
   #guia-ov .gi-dot{width:8px;height:8px;} #guia-ov .gi-dot.on{width:22px;}
 }
+/* v123 · Añadir la clase a mi calendario */
+.cmp-clase{flex-wrap:wrap;}
+.cmp-clase-acc{display:flex;flex-basis:100%;justify-content:flex-end;align-items:center;gap:12px;margin:-2px 0 0;}
+.cmp-clase-acc a{margin-left:0 !important;}
+.cl-cal{display:inline-flex;gap:6px;align-items:center;font-size:12px;white-space:nowrap;}
+.cl-cal a{color:#2463B8;font-weight:700;text-decoration:none;}
+.cl-cal button{border:1px solid #C9D6E6;background:#fff;border-radius:6px;font-size:11px;padding:1px 6px;color:#2463B8;cursor:pointer;}
 /* ===== Aula Virtual con aspecto de campus (menú, lista de cursos y tareas pendientes) ===== */
 .cmp{display:grid;grid-template-columns:220px minmax(0,1fr) 270px;gap:18px;align-items:start;}
 .cmp-menu{position:sticky;top:12px;background:linear-gradient(180deg,#1B4E95,#2463B8);border-radius:20px;padding:14px 10px;color:#fff;box-shadow:0 14px 30px -18px rgba(22,63,122,.8);}
@@ -1983,7 +1990,7 @@ async function necAbrir(amb, nec){
 }
 
 let __NEC_ITEMS = [];
-const APP_VERSION_ACOMP = '2026-11-19 · v122 (conexión más fuerte: reintentos automáticos si falla la red, nada se queda colgado, aviso sin internet) · antes: 2026-11-19 · v121 (contraseña olvidada: de momento solo por correo) · antes: 2026-11-19 · v120 (entrada más fácil: «Es mi primera vez» / «Ya uso Logos»; contraseña olvidada por correo, WhatsApp o SMS; tras entrar con provisional, elegir la propia; «te atendemos por orden de llegada») · antes: 2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
+const APP_VERSION_ACOMP = '2026-11-20 · v123 (Aula Virtual: «A mi calendario» en cada clase en línea —Google Calendar y archivo .ics para iPhone y Outlook—) · antes: v122 (conexión más fuerte: reintentos automáticos si falla la red, nada se queda colgado, aviso sin internet) · antes: 2026-11-19 · v121 (contraseña olvidada: de momento solo por correo) · antes: 2026-11-19 · v120 (entrada más fácil: «Es mi primera vez» / «Ya uso Logos»; contraseña olvidada por correo, WhatsApp o SMS; tras entrar con provisional, elegir la propia; «te atendemos por orden de llegada») · antes: 2026-11-18 · v119 («¿No sabes qué trámite necesitas?» bien visible arriba; un solo trámite a la vez; una cita a la vez; máximo 3 citas al día; la cita es una propuesta que Logos puede cambiar) · antes: 2026-11-18 · v118 (trámites Bretxa: «Construir un futur») · antes: 2026-11-18 · v117 (fuera los 4 trámites que solo se hacían con Logos y abrían su WhatsApp: orientación laboral, cursos, salud mental e informe de esfuerzo de integración; móvil: los campos ya no hacen zoom al tocarlos —letra de 16 px— y nada se sale de la pantalla al escribir datos largos) · antes: 2026-11-17 · v116 (trámites: fuera «Necesito ayuda de Logos», la gente lo hace ella misma con «Lo hago yo»; «¿No sabes por dónde empezar?» sube justo debajo del carrusel) · antes: 2026-11-12 · v115 (catálogo revisado: Seguridad Social, SEPE y Generalitat uno a uno; botón «Pedir cita»; fuera los trámites del Ayuntamiento)';
 // Ajustes del catálogo hechos por la administración (tabla catalogo_ajustes): trámites ocultos y trámites añadidos
 let CATALOGO_AJUSTES = [];
 let CATALOGO_AJUSTES_OK = false;
@@ -5367,12 +5374,35 @@ async function renderAulaCiudadano(sec){
   cmpFiltrar();
   try { for(const b of document.querySelectorAll('#aulaciudadano-content [data-chat-curso]')){ const n = await cursoChatNuevos(b.dataset.chatCurso); if(n) b.insertAdjacentHTML('beforeend', ` <span class="cchat-badge">${n}</span>`); } } catch(e){}
 }
+// v123 · «Añadir a mi calendario» en cada clase en línea (Google Calendar y archivo .ics para iPhone / Outlook)
+function claseGcal(cl, c){
+  const p2 = n => String(n).padStart(2, '0');
+  const [y, m, d] = String(cl.fecha).split('-').map(Number), [hh, mm] = String(cl.hora || '10:00').slice(0, 5).split(':').map(Number);
+  const ini = new Date(y, m - 1, d, hh, mm), fin = new Date(ini.getTime() + (Number(cl.duracion_min) || 60) * 60000);
+  const f = x => `${x.getFullYear()}${p2(x.getMonth() + 1)}${p2(x.getDate())}T${p2(x.getHours())}${p2(x.getMinutes())}00`;
+  const tit = (cl.titulo || (c && c.nombre) || 'Clase') + ' · Logos';
+  const det = [c && c.nombre ? c.nombre : '', cl.docente_nombre ? cl.docente_nombre : '', cl.enlace_meet ? cl.enlace_meet : '', 'https://acompanya.logostgn.cat/?ir=formaciones'].filter(Boolean).join('\n');
+  return { ini, fin, tit, det, g: 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(tit) + '&dates=' + f(ini) + '/' + f(fin) + '&ctz=Europe/Madrid&details=' + encodeURIComponent(det) + '&location=' + encodeURIComponent(cl.enlace_meet || 'Aula Virtual de Logos') };
+}
+function claseIcs(id){
+  const cl = (window.__claseMapa || {})[id]; if(!cl) return;
+  const D = claseGcal(cl, (window.__cmpCursos || {})[cl.curso_id]);
+  const u = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''), e = t => String(t || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Associacio Logos//Aula Virtual//ES', 'BEGIN:VEVENT', 'UID:clase-' + cl.id + '@logostgn.cat', 'DTSTAMP:' + u(new Date()), 'DTSTART:' + u(D.ini), 'DTEND:' + u(D.fin),
+    'SUMMARY:' + e(D.tit), 'DESCRIPTION:' + e(D.det), 'LOCATION:' + e(cl.enlace_meet || 'Aula Virtual de Logos'), cl.enlace_meet ? 'URL:' + cl.enlace_meet : '', 'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:' + e(D.tit), 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].filter(Boolean).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' })); a.download = 'clase-logos.ics'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function claseCalBotones(cl){
+  const esCA = LANG === 'ca'; window.__claseMapa = window.__claseMapa || {}; window.__claseMapa[cl.id] = cl;
+  const D = claseGcal(cl, (window.__cmpCursos || {})[cl.curso_id]);
+  return `<span class="cl-cal"><a href="${escAttr(D.g)}" target="_blank" rel="noopener" title="${esCA ? 'Afegir a Google Calendar' : 'Añadir a Google Calendar'}">📅 ${esCA ? 'Al meu calendari' : 'A mi calendario'}</a><button type="button" onclick="claseIcs('${escAttr(cl.id)}')" title="${esCA ? 'iPhone, Outlook i altres calendaris' : 'iPhone, Outlook y otros calendarios'}">.ics</button></span>`;
+}
 function cmpClaseHtml(cl, largo){
   const esCA = LANG === 'ca', d = new Date(cl.fecha + 'T00:00:00');
   const c = (window.__cmpCursos || {})[cl.curso_id];
   return `<div class="cmp-clase"><div class="cmp-clase-f"><strong>${d.getDate()}</strong><small>${d.toLocaleDateString(esCA ? 'ca-ES' : 'es-ES', { month: 'short' }).replace('.', '')}</small></div>
     <div><strong>${String(cl.hora || '').slice(0, 5)}</strong> · ${escAttr(cl.titulo || (c && c.nombre) || '')}${largo && c ? `<br><small class="subtle" style="margin:0;">${escAttr(c.nombre || '')}</small>` : ''}</div>
-    ${cl.enlace_meet ? `<a href="${escAttr(cl.enlace_meet)}" target="_blank" rel="noopener">${esCA ? 'Entrar' : 'Entrar'} →</a>` : ''}</div>`;
+    <div class="cmp-clase-acc">${cl.enlace_meet ? `<a href="${escAttr(cl.enlace_meet)}" target="_blank" rel="noopener">${esCA ? 'Entrar' : 'Entrar'} →</a>` : ''}${claseCalBotones(cl)}</div></div>`;
 }
 
 async function apuntarmeCurso(cursoId){
@@ -5615,7 +5645,7 @@ async function abrirCursoCiudadano(cursoId){
     ? proximasClases.map(c => `
         <div class="list-row">
           <span>${new Date(c.fecha+'T00:00:00').toLocaleDateString(esCA?'ca-ES':'es-ES', {weekday:'short', day:'numeric', month:'short'})} · ${c.hora.slice(0,5)}</span>
-          ${c.enlace_meet ? `<a href="${c.enlace_meet}" target="_blank" rel="noopener" class="link-btn">${iconoPlataforma[c.plataforma]||'🎥'} ${esCA?'Unir-me':'Unirme'}</a>` : `<span class="subtle">${esCA?'Sense enllaç encara':'Sin enlace todavía'}</span>`}
+          <span style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">${c.enlace_meet ? `<a href="${escAttr(c.enlace_meet)}" target="_blank" rel="noopener" class="link-btn">${iconoPlataforma[c.plataforma]||'🎥'} ${esCA?'Unir-me':'Unirme'}</a>` : `<span class="subtle">${esCA?'Sense enllaç encara':'Sin enlace todavía'}</span>`}${c.estado === 'cancelada' ? '' : claseCalBotones(c)}</span>
         </div>`).join('')
     : `<div class="empty-note">${esCA ? 'Encara no hi ha classes programades.' : 'Todavía no hay clases programadas.'}</div>`;
 
